@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 
@@ -37,5 +38,6 @@ public class BankInfoProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toast.makeText(getActivity(), "Eureka ! I learned how to use Github ! ", Toast.LENGTH_SHORT).show();
     }
 }
