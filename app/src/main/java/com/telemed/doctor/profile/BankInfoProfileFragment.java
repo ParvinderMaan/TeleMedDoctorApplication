@@ -39,5 +39,7 @@ public class BankInfoProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toast.makeText(getActivity(), "Eureka ! I learned how to use Github ! ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Life is full of joys and sorrows", Toast.LENGTH_SHORT).show();
+
     }
 }
