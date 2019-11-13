@@ -1,0 +1,50 @@
+<resources>
+    <!--        Application-->
+    <string name="app_name">TeleMedDoctorApplication</string>
+    <string name="title_doctor_app">Doctors App</string>
+
+    <!--    SignUpIFragment-->
+    <string name="title_sign_up">Sign Up</string>
+    <string name="title_complete_form">Please complete your email and password</string>
+    <string name="hint_enter_email">Enter your email</string>
+    <string name="hint_enter_password">Enter your password</string>
+    <string name="hint_confirm_password">Confirm your password</string>
+    <string name="title_continue">Continue</string>
+    <string name="title_cancel">Cancel</string>
+
+
+    <!--    SignUpIIFragment-->
+
+    <string name="title_personal_info">Personal info</string>
+    <string name="title_doctor_name">Doctors name</string>
+    <string name="title_doctor_surname">Doctors surname</string>
+
+    <!--    SignUpIIIFragment-->
+
+
+    <string name="sign_up">Not a user? <b>Sign Up</b></string>
+
+    <!--    MyConsultFragment-->
+    <string name="estimate_time"><b>Estimate</b> \n <font size="12">2 minutes </font></string>
+    <string name="last_appointment_time"><b>10/10/19</b> \n <font size="10">4:30 PM - 5:00 PM</font></string>
+
+    <!--    MySortFragment-->
+
+    <string name="hint_search">Search</string>
+
+
+    <!--    SettingFragment-->
+    <!--    DUMMY LIST -->
+    <string-array name="array_language">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>Portuguese</item>
+    </string-array>
+
+    <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="term_and_condition">I have Read and Accept <b>Terms of Use </b>and<b>Privacy Policy</b></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

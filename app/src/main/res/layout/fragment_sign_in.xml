@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
+    android:layout_height="match_parent"
+    tools:context=".signin.SignInFragment">
+<include
+    android:id="@+id/progress_bar"
+    layout="@layout/layout_progress_bar"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_usr_email"
+        android:textColor="@color/colorBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:longClickable="false"
+        android:textColorHint="@color/colorLightBlue"
+        app:backgroundTint="@color/colorBlue"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_above="@+id/edt_usr_password"
+        android:inputType="textEmailAddress" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_usr_password"
+        android:padding="@dimen/_10sdp"
+        android:textColor="@color/colorBlue"
+        app:backgroundTint="@color/colorBlue"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:ems="10"
+        android:longClickable="false"
+        android:textColorHint="@color/colorLightBlue"
+        android:layout_centerInParent="true"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_usr_password"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorBlue"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:text="I forgot my password" />
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_forgot_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp"
+        android:background="@drawable/rounded_background_i"
+        android:paddingStart="@dimen/_40sdp"
+        android:paddingEnd="@dimen/_40sdp"
+        android:text="Log In"
+        android:textSize="@dimen/_14sdp"
+        android:textAllCaps="false"
+        android:textColor="@drawable/selector_text_blue"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/selector_text_blue"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="22sp"
+
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:text="@string/sign_up" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_logo_blue" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_alignBottom="@+id/imageView"
+        android:textColor="@color/colorRed"
+        android:fontFamily="@font/circular_std_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Doctors App" />
+
+</RelativeLayout>

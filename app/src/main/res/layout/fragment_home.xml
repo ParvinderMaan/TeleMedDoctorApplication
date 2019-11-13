@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <ImageView
+           android:id="@+id/imageView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           app:srcCompat="@drawable/ic_logo_blue" />
+
+       <TextView
+           android:id="@+id/textView"
+           android:layout_marginBottom="@dimen/_10sdp"
+           android:layout_alignBottom="@+id/imageView"
+           android:textColor="@color/colorRed"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           android:text="Doctor App" />
+   </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:includeFontPadding="false"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:text="Hello, Doctor Alfonso."
+            android:textAlignment="center"
+            android:textColor="@color/colorBlue"
+            android:textColorHint="@color/colorLightBlue"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:includeFontPadding="false"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:text="How can we help"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlue"
+            android:textColorHint="@color/colorLightBlue"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:includeFontPadding="false"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:text="you today ?"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlue"
+            android:textColorHint="@color/colorLightBlue"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_my_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/rounded_background_i"
+        android:paddingStart="@dimen/_40sdp"
+        android:paddingEnd="@dimen/_40sdp"
+        android:text="My Schedule"
+        android:textColor="@drawable/selector_text_blue"
+        android:textAllCaps="false"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_my_consults"
+                    android:layout_width="wrap_content"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:textColor="@drawable/selector_text_blue"
+
+                    app:drawableLeftCompat="@drawable/ic_my_consult"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="My Consults"
+                    android:textAlignment="textStart"
+                    android:textColorHint="@color/colorLightBlue" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_my_dashboard"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:drawableTint="@color/colorBlue"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:textColor="@drawable/selector_text_blue"
+                    app:drawableLeftCompat="@drawable/ic_dashboard"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="My Dashboard"
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:textColorHint="@color/colorLightBlue" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_my_profile"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:drawableTint="@color/colorBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:drawablePadding="@dimen/_5sdp"
+                    app:drawableLeftCompat="@drawable/ic_profile"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="View Profile"
+                    android:textAlignment="textStart"
+                    android:textColor="@drawable/selector_text_blue"
+                    android:textColorHint="@color/colorLightBlue" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    app:drawableLeftCompat="@drawable/ic_setting"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:textStyle="bold"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:text="Setting"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textColor="@drawable/selector_text_blue"
+                    android:textAlignment="textStart"
+                    android:textColorHint="@color/colorLightBlue" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_sign_out"
+                    android:layout_width="wrap_content"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    app:drawableLeftCompat="@drawable/ic_logout"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:text="Logout"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textColor="@drawable/selector_text_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:textColorHint="@color/colorLightBlue" />
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

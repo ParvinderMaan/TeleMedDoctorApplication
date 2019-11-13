@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:background="@drawable/img_splash"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@android:color/transparent"
+        android:layout_weight=".5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical">
+    </LinearLayout>
+    <LinearLayout
+        android:background="@android:color/transparent"
+        android:layout_weight=".5"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_splash"
+           app:srcCompat="@drawable/ic_splash"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_14sdp"
+            android:text="Helping you feel your best"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="screen_start_margin">@dimen/_20sdp</dimen>
+    <dimen name="screen_end_margin">@dimen/_20sdp</dimen>
+
+    <dimen name="screen_start_padding">@dimen/_20sdp</dimen>
+    <dimen name="screen_end_padding">@dimen/_20sdp</dimen>
+
+
+</resources>
