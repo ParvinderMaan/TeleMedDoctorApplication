@@ -175,7 +175,6 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
@@ -227,7 +226,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".1"
                         android:orientation="vertical">
                         <!--                  nothing-->
 
@@ -236,7 +235,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".85"
+                        android:layout_weight=".9"
                         android:orientation="vertical">
 
                         <TableLayout
@@ -370,7 +369,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
@@ -379,7 +378,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".1"
                         android:orientation="vertical">
 
                         <TableLayout
@@ -390,8 +389,7 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_1sdp"
-                               >
+                                >
 
                                 <!-- first element of the row-->
                                 <LinearLayout
@@ -400,8 +398,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="9"
@@ -417,7 +416,7 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
+
                                 >
 
                                 <!-- first element of the row-->
@@ -427,8 +426,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="10"
@@ -444,7 +444,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                 >
 
                                 <!-- first element of the row-->
@@ -454,8 +453,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="11"
@@ -469,7 +469,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                 >
 
                                 <!-- first element of the row-->
@@ -479,8 +478,10 @@
                                     android:gravity="center">
 
                                     <TextView
+
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="12"
@@ -496,7 +497,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                 >
 
                                 <!-- first element of the row-->
@@ -506,8 +506,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="13"
@@ -523,7 +524,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                >
 
                                 <!-- first element of the row-->
@@ -533,8 +533,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="14"
@@ -550,7 +551,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                 >
 
                                 <!-- first element of the row-->
@@ -560,8 +560,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="15"
@@ -576,7 +577,6 @@
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="@dimen/_1sdp"
                                >
 
                                 <!-- first element of the row-->
@@ -586,8 +586,9 @@
                                     android:gravity="center">
 
                                     <TextView
+                                        android:layout_margin="0.20dp"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_height="@dimen/_20sdp"
                                         android:background="@color/colorGrey"
                                         android:gravity="center"
                                         android:text="16"
@@ -606,7 +607,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight=".85"
+                        android:layout_weight=".9"
                         android:orientation="vertical">
 
 <!--                        <com.telemed.doctor.util.NonSwipeViewPager-->
@@ -616,14 +617,13 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_weekly_schedule"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:overScrollMode="never"
+                            tools:listitem="@layout/list_item_schedule"
                             android:tooltipText="Click on Synchronize Schedule Button to Edit" />
                     </LinearLayout>
                 </LinearLayout>
-
-
-
+ut
             </LinearLayout>
             </LinearLayout>
         </ScrollView>

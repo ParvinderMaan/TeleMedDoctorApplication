@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TableLayout
-        android:background="@color/colorWhite"
+        android:background="@color/colorLightBlue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="*">
@@ -12,11 +12,11 @@
         <!-- first row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -25,7 +25,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -35,7 +35,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -45,7 +45,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -64,7 +64,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -73,7 +73,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -88,10 +88,10 @@
         <!-- second row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -100,17 +100,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@color/colorBlue"
-                android:text=" "
-                android:gravity="center"
-                android:textAlignment="center"
-                />
-
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -120,7 +110,17 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@color/colorBlue"
+                android:text=" "
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -130,7 +130,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -140,7 +140,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -151,7 +151,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -164,10 +164,10 @@
         <!-- 3th row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -177,7 +177,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -187,7 +187,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -196,7 +196,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -207,7 +207,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -217,7 +217,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -227,7 +227,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -241,10 +241,10 @@
         <!-- 4 row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -254,7 +254,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
@@ -264,7 +264,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -274,7 +274,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -285,7 +285,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -295,7 +295,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -306,7 +306,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -319,10 +319,10 @@
         <!-- 5th row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
@@ -332,7 +332,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -342,7 +342,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -353,7 +353,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -364,7 +364,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -374,7 +374,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -385,7 +385,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -399,10 +399,10 @@
         <!-- 6th row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -412,7 +412,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -422,7 +422,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -432,7 +432,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -442,7 +442,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -452,7 +452,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -461,7 +461,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -475,21 +475,21 @@
         <!-- 7th row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
-                android:background="@color/colorWhite"
-                android:text="A"
+                android:background="@color/colorBlue"
+                android:text=" "
                 android:gravity="center"
 
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -499,7 +499,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -509,7 +509,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -520,17 +520,8 @@
                 android:textAlignment="center"
                 />
 
-            <View
-
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@color/colorBlue"
-                android:text="A"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:textColor="#000" />
-
-             <TextView android:layout_margin="0.25dp" 
+            <TextView
+                android:layout_margin="0.20dp"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -539,7 +530,17 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+
+             <TextView android:layout_margin="0.20dp" 
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@color/colorBlue"
+                android:text=" "
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -553,10 +554,11 @@
         <!-- 8th row of the table layout-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- first element of the row-->
-             <TextView android:layout_margin="0.25dp" 
+             <TextView
+                 android:layout_margin="0.20dp"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -566,7 +568,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -576,7 +578,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorBlue" />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -587,7 +589,7 @@
                 />
 
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -597,7 +599,7 @@
                 android:gravity="center"
                 android:textAlignment="center"
                 />
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -607,7 +609,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
@@ -618,7 +620,7 @@
                 android:textAlignment="center"
                 />
 
-             <TextView android:layout_margin="0.25dp" 
+             <TextView android:layout_margin="0.20dp" 
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"

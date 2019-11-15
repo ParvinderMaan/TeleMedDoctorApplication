@@ -88,6 +88,11 @@ public class HomeFragment extends Fragment {
                     ((HomeActivity) getActivity()).showMyDashboardFragment();
                 break;
 
+            case R.id.tv_notification:
+                if (getActivity() != null)
+                    ((HomeActivity) getActivity()).showNotificationFragment();
+                break;
+
             case R.id.tv_setting:
                 if (getActivity() != null)
                     ((HomeActivity) getActivity()).showSettingFragment();

@@ -189,6 +189,29 @@
                     android:textColorHint="@color/colorLightBlue" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_notification"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:drawableTint="@color/colorBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:drawablePadding="@dimen/_5sdp"
+                    app:drawableLeftCompat="@drawable/ic_profile"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="Notification"
+                    android:textAlignment="textStart"
+                    android:textColor="@drawable/selector_text_blue"
+                    android:textColorHint="@color/colorLightBlue" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

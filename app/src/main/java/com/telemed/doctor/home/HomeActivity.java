@@ -29,6 +29,7 @@ import com.telemed.doctor.videocall.AppointmentSummaryFragment;
 import com.telemed.doctor.videocall.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
+
 import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class HomeActivity extends BaseActivity {
@@ -222,5 +223,13 @@ public class HomeActivity extends BaseActivity {
     public void showSignOutDialog() {
         SignOutDialogFragment fragment= SignOutDialogFragment.newInstance();
         fragment.show(getSupportFragmentManager(),"TAG");
+    }
+
+    public void showNotificationFragment() {
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.fl_container, NotificationFragment.newInstance())
+//                .addToBackStack("NotificationFragment")
+//                .commit();
+
     }
 }
