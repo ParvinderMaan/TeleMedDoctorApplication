@@ -1,27 +1,30 @@
 package com.telemed.doctor.notification;
 
 
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telemed.doctor.R;
-import com.telemed.doctor.util.DividerItemDecoration;
+import com.telemed.doctor.home.HomeActivity;
 
 
 public class NotificationFragment extends Fragment {
 
 
     private RecyclerView rvNotification;
+    private FloatingActionButton fbtnDeleteAllNotification;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -40,7 +43,10 @@ public class NotificationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        return localInflater.inflate(R.layout.fragment_notification, container, false);
+
     }
 
     @Override
@@ -49,21 +55,31 @@ public class NotificationFragment extends Fragment {
 
         initRecyclerView(v);
 
+        ImageButton ibtnClose = v.findViewById(R.id.ibtn_close);
+        ibtnClose.setOnClickListener(v1 -> {
+
+            if (getActivity() != null)
+                ((HomeActivity) getActivity()).popTopMostFragment();
+        });
+
+        fbtnDeleteAllNotification = v.findViewById(R.id.fbtn_delete_all);
+        fbtnDeleteAllNotification.setOnClickListener(v1 -> {
+
+            fbtnDeleteAllNotification.hide();
+        });
+
+
     }
 
 
-
-
-
-
-    void initRecyclerView(View v) {
-        rvNotification=v.findViewById(R.id.rv_notification);
+    private void initRecyclerView(View v) {
+        rvNotification = v.findViewById(R.id.rv_notification);
         rvNotification.setHasFixedSize(true);
         rvNotification.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        NotificationAdapter mAdapter=new NotificationAdapter(getActivity());
+        NotificationAdapter mAdapter = new NotificationAdapter(getActivity());
         rvNotification.setAdapter(mAdapter);
-     //   mAdapter.setOnClickListener(() -> { });
+        //   mAdapter.setOnClickListener(() -> { });
 
 //        Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.custom_divider);
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);

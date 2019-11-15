@@ -73,12 +73,12 @@ public class MyConsultFragment extends Fragment {
             }
 
             @Override
-            public void onItemClickMedicalRecord(int pos) {
+            public void onItemClickMore(int pos) {
 
-                if(getActivity() !=null){
-                    ((HomeActivity)getActivity()).showMedicalRecordFragment();
-
-                }
+//                if(getActivity() !=null){
+//                    ((HomeActivity)getActivity()).showMedicalRecordFragment();
+//
+//                }
             }
         });
 

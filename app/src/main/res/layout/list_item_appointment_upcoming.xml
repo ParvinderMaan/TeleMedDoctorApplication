@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
                 android:textAlignment="center"
-                android:includeFontPadding="false"
+                android:includeFontPadding="true"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="5:30PM - 6:00PM" />
@@ -157,7 +157,7 @@
             android:layout_weight=".5">
 
             <Button
-                android:id="@+id/btn_medical_record"
+                android:id="@+id/btn_more"
                 android:layout_width="match_parent"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
@@ -167,10 +167,10 @@
 
                 android:background="@drawable/rounded_background_iii"
                 android:layout_height="wrap_content"
-                android:text="Medical Records" />
+                android:text="More" />
         </LinearLayout>
 
-
+<!--        Medical Records-->
 
 
 

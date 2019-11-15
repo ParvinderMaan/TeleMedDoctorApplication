@@ -47,7 +47,7 @@ public class AppointmentConfirmIFragment extends Fragment {
 
 
 
-        TextView btnMedicalRecord = v.findViewById(R.id.btn_medical_record);
+        TextView btnMedicalRecord = v.findViewById(R.id.btn_more);
         btnMedicalRecord.setOnClickListener(v1 -> {
 
 

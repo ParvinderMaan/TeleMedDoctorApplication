@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
@@ -31,11 +32,11 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
 
      static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final Button btnMedicalRecord;
+        private final Button btnMore;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            btnMedicalRecord=itemView.findViewById(R.id.btn_medical_record);
+            btnMore=itemView.findViewById(R.id.btn_more);
 
 
         }
@@ -50,17 +51,18 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
 
 
             });
-            btnMedicalRecord.setOnClickListener(new View.OnClickListener() {
+            btnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(listener!=null){
-                        listener.onItemClickMedicalRecord(0);
+                        listener.onItemClickMore(0);
                     }
                 }
             });
         }
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -87,7 +89,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
     public interface OnItemClickListener {
         void onItemClick(int position);
 
-        void onItemClickMedicalRecord(int pos);
+        void onItemClickMore(int pos);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){

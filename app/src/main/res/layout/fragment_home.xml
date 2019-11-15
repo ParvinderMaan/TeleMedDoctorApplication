@@ -117,30 +117,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_my_consults"
                     android:layout_width="wrap_content"
-                    android:paddingEnd="@dimen/_10sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:focusable="false"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:textColor="@drawable/selector_text_blue"
 
-                    app:drawableLeftCompat="@drawable/ic_my_consult"
                     android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_5sdp"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:text="My Consults"
                     android:textAlignment="textStart"
-                    android:textColorHint="@color/colorLightBlue" />
-
-
+                    android:textColor="@drawable/selector_text_blue"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableLeftCompat="@drawable/ic_my_consult" />
+<!--                https://www.flaticon.com/free-icon/list_149347-->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_my_dashboard"
                     android:paddingEnd="@dimen/_10sdp"
@@ -199,7 +200,7 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:drawablePadding="@dimen/_5sdp"
-                    app:drawableLeftCompat="@drawable/ic_profile"
+                    app:drawableLeftCompat="@drawable/ic_notification"
                     android:focusable="false"
                     android:clickable="true"
                     android:textSize="16sp"

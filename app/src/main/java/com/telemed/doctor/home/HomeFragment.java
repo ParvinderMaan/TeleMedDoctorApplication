@@ -19,7 +19,7 @@ import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
 
 public class HomeFragment extends Fragment {
 
-    private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard, tvSetting, tvSignOut;
+    private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard,tvNotification, tvSetting, tvSignOut;
     private Button btnMySchedule;
 
     public static HomeFragment newInstance() {
@@ -60,6 +60,9 @@ public class HomeFragment extends Fragment {
 
         tvMyDashboard = v.findViewById(R.id.tv_my_dashboard);
         tvMyDashboard.setOnClickListener(mClickListener);
+
+        tvNotification = v.findViewById(R.id.tv_notification);
+        tvNotification.setOnClickListener(mClickListener);
 
 
         tvSetting = v.findViewById(R.id.tv_setting);

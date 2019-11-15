@@ -16,6 +16,7 @@ import com.telemed.doctor.consult.MyConsultFragment;
 import com.telemed.doctor.interfacer.OnFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
+import com.telemed.doctor.notification.NotificationFragment;
 import com.telemed.doctor.profile.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
@@ -226,10 +227,10 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void showNotificationFragment() {
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fl_container, NotificationFragment.newInstance())
-//                .addToBackStack("NotificationFragment")
-//                .commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, NotificationFragment.newInstance())
+                .addToBackStack("NotificationFragment")
+                .commit();
 
     }
 }
