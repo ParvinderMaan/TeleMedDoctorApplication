@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".chat.ChatFragment">
+
+    <!--    header layout-->
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_start_padding"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/screen_end_padding"
+        android:paddingBottom="@dimen/_10sdp">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_pic"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/img_patient"
+            app:civ_border_color="@color/colorWhite"
+            app:civ_border_width="@dimen/_1sdp" />
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_toEndOf="@+id/iv_profile_pic"
+            android:text="Pordon Giles"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+
+        <ImageButton
+            android:id="@+id/ibtn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cross_grey" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/ibtn_menu"-->
+<!--            android:layout_below="@+id/tv_header"-->
+<!--            android:layout_toEndOf="@+id/tv_location"-->
+<!--            app:srcCompat="@drawable/ic_arrow_down"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
+
+
+    </RelativeLayout>
+
+    <!--    main layout-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat"
+        android:layout_below="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:stackFromEnd="true"
+        app:reverseLayout="true"
+        android:scrollbars="none" />
+    <!--create message layout-->
+    <LinearLayout
+        android:id="@+id/ll_create_message"
+        android:layout_width="match_parent"
+        android:background="#E7E7E7"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_weight=".85"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_type_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_background_i"
+                android:inputType="textMultiLine"
+                android:maxLength="200"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textCursorDrawable="@null" />
+
+            <requestFocus />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight=".15"
+            android:layout_width="0dp"
+            android:layout_gravity="center|bottom"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_send_message"
+                android:text="Send"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="#3F51B5"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

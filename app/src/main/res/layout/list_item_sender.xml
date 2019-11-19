@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_out_message"
+    android:layout_gravity="end"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="50dp"
+    android:layout_marginTop="8dp"
+    android:layout_width="wrap_content"
+    android:padding="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:background="@drawable/img_sender"
+        android:id="@+id/cd"
+        android:gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_out_message"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:maxWidth="250dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:includeFontPadding="false"
+                android:text="Hi how are you ?"
+                android:textColor="@color/colorWhite" />
+            <TextView
+                android:id="@+id/tv_out_seen"
+                android:layout_below="@+id/cd"
+                android:visibility="visible"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/_5sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:includeFontPadding="false"
+                android:layout_width="wrap_content"
+                android:text="11:00 am"
+                android:textAllCaps="false"
+                android:textColor="@color/colorLightWhite"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_out_date"-->
+<!--        android:layout_below="@+id/cd"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="3dp"-->
+<!--        android:layout_toStartOf="@+id/tv_out_seen"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        android:includeFontPadding="false"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:text="11:00 am"-->
+<!--        android:textColor="@color/colorLightBlue"-->
+<!--        android:textSize="10sp" />-->
+
+
+</RelativeLayout>

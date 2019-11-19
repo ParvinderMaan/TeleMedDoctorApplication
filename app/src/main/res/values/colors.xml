@@ -7,7 +7,7 @@
     <color name="colorBlack" >#CC000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#395596</color>        <!--  #443CFC            #395596-->
-    <color name="colorLightBlue">#66443CFC</color>
+    <color name="colorLightBlue">#66395596</color>
     <color name="colorLightGrey">#d3d3d3</color>
     <color name="colorRed">#Eb5966</color>         <!--    #EB4156             #Eb5966-->
     <color name="colorLightWhite">#99FFFFFF</color>

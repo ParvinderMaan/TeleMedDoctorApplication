@@ -159,7 +159,7 @@
             <Button
                 android:id="@+id/btn_more"
                 android:layout_width="match_parent"
-                android:textColor="@color/colorWhite"
+                android:textColor="@drawable/selector_text_white"
                 android:textStyle="bold"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"

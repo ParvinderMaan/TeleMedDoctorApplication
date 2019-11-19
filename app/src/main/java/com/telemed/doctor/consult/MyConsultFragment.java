@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
@@ -23,6 +26,7 @@ import com.telemed.doctor.util.DividerItemDecoration;
 
 public class MyConsultFragment extends Fragment {
 
+    private PopupMenu mPopupMenu;
 
     private RecyclerView rvAppointmentsUpcoming,rvAppointmentsHistory;
 
@@ -42,12 +46,9 @@ public class MyConsultFragment extends Fragment {
         initUpcomingRecyclerView(v);
         initHistoryAppointmentRecyclerView(v);
 
-        v.findViewById(R.id.ibtn_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getActivity()!=null)
-                ((HomeActivity)getActivity()).popTopMostFragment();
-            }
+        v.findViewById(R.id.ibtn_close).setOnClickListener(v1 -> {
+            if(getActivity()!=null)
+            ((HomeActivity)getActivity()).popTopMostFragment();
         });
 
     }
@@ -59,8 +60,7 @@ public class MyConsultFragment extends Fragment {
         rvAppointmentsUpcoming.setHasFixedSize(true);
         LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
         rvAppointmentsUpcoming.setLayoutManager(mLinearLayoutManager);
-
-        AppointmentUpcomingAdapter mAdapter=new AppointmentUpcomingAdapter();
+        AppointmentUpcomingAdapter mAdapter=new AppointmentUpcomingAdapter( getActivity());
         rvAppointmentsUpcoming.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
             @Override
@@ -73,12 +73,25 @@ public class MyConsultFragment extends Fragment {
             }
 
             @Override
-            public void onItemClickMore(int pos) {
+            public void onItemClickMore(String tag, int pos) {
+                                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
 
-//                if(getActivity() !=null){
-//                    ((HomeActivity)getActivity()).showMedicalRecordFragment();
+//               switch (tag){
 //
-//                }
+//
+//                   case "TAG_CHAT":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
+//                       break;
+//                   case "TAG_GALLERY":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
+//
+//                       break;
+//                   case "TAG_MEDICAL_RECORD":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
+//
+//                       break;
+//               }
+
             }
         });
 

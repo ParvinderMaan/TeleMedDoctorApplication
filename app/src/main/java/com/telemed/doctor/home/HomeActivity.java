@@ -1,19 +1,16 @@
 package com.telemed.doctor.home;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseActivity;
+import com.telemed.doctor.chat.ChatFragment;
 import com.telemed.doctor.consult.MyConsultFragment;
-import com.telemed.doctor.interfacer.OnFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
@@ -31,7 +28,6 @@ import com.telemed.doctor.videocall.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
 
-import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class HomeActivity extends BaseActivity {
 
@@ -148,12 +144,9 @@ public class HomeActivity extends BaseActivity {
                 .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance())
                 .addToBackStack("AppointmentConfirmIFragment")
                 .commit();
-
-
     }
 
     public void showPatientGalleryFragment() {
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_container, PatientGalleryFragment.newInstance())
                 .addToBackStack("PatientGalleryFragment")
@@ -162,7 +155,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void showMyScheduleFragment() {
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_container, MyScheduleFragment.newInstance())
                 .addToBackStack("MyScheduleFragment")
@@ -170,7 +162,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void showScheduleSychronizeFragment() {
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_container, ScheduleSychronizeFragment.newInstance())
                 .addToBackStack("ScheduleSychronizeFragment")
@@ -231,6 +222,15 @@ public class HomeActivity extends BaseActivity {
                 .add(R.id.fl_container, NotificationFragment.newInstance())
                 .addToBackStack("NotificationFragment")
                 .commit();
+
+    }
+
+    public void showChatFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, ChatFragment.newInstance())
+                .addToBackStack("ChatFragment")
+                .commit();
+
 
     }
 }

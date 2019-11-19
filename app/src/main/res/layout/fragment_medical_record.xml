@@ -16,10 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingTop="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp">
+        android:paddingStart="@dimen/screen_start_padding"
+        android:paddingTop="@dimen/screen_top_padding"
+        android:paddingEnd="@dimen/screen_end_padding"
+        android:paddingBottom="@dimen/screen_bottom_padding">
 
         <TextView
             android:id="@+id/tv_header"
@@ -38,9 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_cross_blue"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp" />
+            app:srcCompat="@drawable/ic_cross_blue" />
     </RelativeLayout>
 
     <!--    main layout-->

@@ -62,13 +62,9 @@ public class SignInFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
-
-        // create ContextThemeWrapper from the original Activity Context with the custom theme
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
-        // clone the inflater using the ContextThemeWrapper
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        // inflate the layout using the cloned inflater, not default inflater
-        return localInflater.inflate(R.layout.fragment_sign_in, null, false);
+        return localInflater.inflate(R.layout.fragment_sign_in, container, false);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.telemed.doctor.interfacer;
+package com.telemed.doctor.interfacor;
 
 public interface OnFragmentSelectedListener {
 
