@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlue"
-        android:orientation="horizontal"
         android:paddingStart="@dimen/screen_start_padding"
         android:paddingTop="@dimen/_10sdp"
         android:paddingEnd="@dimen/screen_end_padding"
@@ -26,28 +25,61 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_pic"
-            android:layout_width="@dimen/_56sdp"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_centerVertical="true"
+            android:layout_width="@dimen/_46sdp"
+            android:layout_height="@dimen/_46sdp"
             android:src="@drawable/img_patient"
             app:civ_border_color="@color/colorWhite"
             app:civ_border_width="@dimen/_1sdp" />
-
-        <TextView
-            android:id="@+id/tv_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_toEndOf="@+id/iv_profile_pic"
-            android:text="Pordon Giles"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="RtlSymmetry" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/iv_profile_pic"
+                android:text="Pordon Giles"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+           <LinearLayout
+               android:orientation="horizontal"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+               <TextView
+                   android:id="@+id/tv_header2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="@dimen/_10sdp"
+                   android:layout_toEndOf="@+id/iv_profile_pic"
+                   android:text="Online"
+                   android:padding="@dimen/_2sdp"
+                   android:textColor="@color/colorWhite"
+                   android:textSize="12sp"
+                   android:textStyle="bold" />
+
+               <ImageButton
+                   android:id="@+id/ibtn_menu"
+                   app:srcCompat="@drawable/ic_arrow_down"
+                   android:background="@android:color/transparent"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" />
+           </LinearLayout>
+
+        </LinearLayout>
 
 
-        <ImageButton
+
+
+
+
+            <ImageButton
             android:id="@+id/ibtn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,14 +88,7 @@
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_cross_grey" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/ibtn_menu"-->
-<!--            android:layout_below="@+id/tv_header"-->
-<!--            android:layout_toEndOf="@+id/tv_location"-->
-<!--            app:srcCompat="@drawable/ic_arrow_down"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content" />-->
+
 
 
     </RelativeLayout>

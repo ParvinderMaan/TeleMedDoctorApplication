@@ -59,9 +59,9 @@ public class SignUpIIIFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity()!=null)
-                    startActivity(new Intent(getActivity(), HomeActivity.class));
-                    ((RouterActivity)getActivity()).finish();
+                 if(getActivity()!=null)
+                ((RouterActivity)getActivity()).showSignUpVFragment();
+
 
 
             }

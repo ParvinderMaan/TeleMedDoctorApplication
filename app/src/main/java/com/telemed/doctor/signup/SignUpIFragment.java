@@ -123,10 +123,12 @@ public class SignUpIFragment extends Fragment {
 
 
             case R.id.btn_continue:
-                if(isFormValid()){
-                    if(getActivity()!=null)
-                        ((RouterActivity)getActivity()).showSignUpIIFragment();
-                }
+//                if(isFormValid()){
+//                    if(getActivity()!=null)
+//                        ((RouterActivity)getActivity()).showSignUpIIFragment();
+//                }
+                ((RouterActivity)getActivity()).showSignUpIIFragment();
+
                 break;
 
         }

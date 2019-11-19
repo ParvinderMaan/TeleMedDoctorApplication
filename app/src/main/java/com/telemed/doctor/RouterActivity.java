@@ -13,6 +13,8 @@ import com.telemed.doctor.signin.SignInFragment;
 import com.telemed.doctor.signup.SignUpIFragment;
 import com.telemed.doctor.signup.SignUpIIFragment;
 import com.telemed.doctor.signup.SignUpIIIFragment;
+import com.telemed.doctor.signup.SignUpIVFragment;
+import com.telemed.doctor.signup.SignUpVFragment;
 import com.telemed.doctor.splash.SplashFragment;
 
 public class RouterActivity extends BaseActivity {
@@ -69,6 +71,22 @@ public class RouterActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_container, SignUpIIIFragment.newInstance())
                 .addToBackStack("SignUpIIIFragment")
+                .commit();
+
+    }
+
+    public void showSignUpIVFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, SignUpIVFragment.newInstance())
+                .addToBackStack("SignUpIVFragment")
+                .commit();
+
+    }
+
+    public void showSignUpVFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, SignUpVFragment.newInstance())
+                .addToBackStack("SignUpVFragment")
                 .commit();
 
     }
