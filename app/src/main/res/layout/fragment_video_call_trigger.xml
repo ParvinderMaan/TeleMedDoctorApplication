@@ -29,6 +29,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/colorBlue"
             android:textSize="20sp"
+            android:ellipsize="end"
             android:textStyle="bold" />
 
         <ImageButton

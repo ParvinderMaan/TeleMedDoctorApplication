@@ -72,12 +72,250 @@
 
 
                 <!--           child-->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_document"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:nestedScrollingEnabled="false"
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/rv_document"-->
+<!--                    android:layout_marginTop="@dimen/_20sdp"-->
+<!--                    android:nestedScrollingEnabled="false"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--                child one-->
+                <RelativeLayout
+                    android:id="@+id/rl_doc_one"
+                    android:animateLayoutChanges="true"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background_ii">
+
+                    <TextView
+                        android:id="@+id/tv_doc_one"
+                        android:textColorHint="@color/colorWhite"
+                        android:hint="Click to add (doc/pdf)"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:layout_toLeftOf="@+id/pb_bar_one"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_bar_one"
+                        android:visibility="invisible"
+                        android:layout_toLeftOf="@+id/ibtn_upload_one"
+                        android:layout_centerHorizontal="true"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_upload_one"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_upload"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+<!--                child two-->
+                <RelativeLayout
+                    android:id="@+id/rl_doc_two"
+                    android:animateLayoutChanges="true"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background_ii">
+
+                    <TextView
+                        android:id="@+id/tv_doc_two"
+                        android:textColorHint="@color/colorWhite"
+                        android:hint="Click to add (doc/pdf)"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:layout_toLeftOf="@+id/pb_bar_two"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_bar_two"
+                        android:visibility="invisible"
+                        android:layout_toLeftOf="@+id/ibtn_upload_two"
+                        android:layout_centerHorizontal="true"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_upload_two"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_upload"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+<!--                child three-->
+                <RelativeLayout
+                    android:id="@+id/rl_doc_three"
+                    android:animateLayoutChanges="true"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background_ii">
+
+                    <TextView
+                        android:id="@+id/tv_doc_three"
+                        android:textColorHint="@color/colorWhite"
+                        android:hint="Click to add (doc/pdf)"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:layout_toLeftOf="@+id/pb_bar_three"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_bar_three"
+                        android:visibility="invisible"
+                        android:layout_toLeftOf="@+id/ibtn_upload_three"
+                        android:layout_centerHorizontal="true"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_upload_three"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_upload"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <!--                child four-->
+                <RelativeLayout
+                    android:id="@+id/rl_doc_four"
+                    android:animateLayoutChanges="true"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background_ii">
+
+                    <TextView
+                        android:id="@+id/tv_doc_four"
+                        android:textColorHint="@color/colorWhite"
+                        android:hint="Click to add (doc/pdf)"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:layout_toLeftOf="@+id/pb_bar_four"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_bar_four"
+                        android:visibility="invisible"
+                        android:layout_toLeftOf="@+id/ibtn_upload_four"
+                        android:layout_centerHorizontal="true"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_upload_four"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_upload"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <!--                child five-->
+                <RelativeLayout
+                    android:id="@+id/rl_doc_five"
+                    android:animateLayoutChanges="true"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background_ii">
+
+                    <TextView
+                        android:id="@+id/tv_doc_five"
+                        android:textColorHint="@color/colorWhite"
+                        android:hint="Click to add (doc/pdf)"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:layout_toLeftOf="@+id/ibtn_upload_five"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_bar_five"
+                        android:visibility="invisible"
+                        android:layout_toLeftOf="@+id/ibtn_upload_five"
+                        android:layout_centerHorizontal="true"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_upload_five"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_upload"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_marginTop="@dimen/_40sdp"

@@ -6,16 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:focusableInTouchMode="true"
     android:background="@color/colorBlue"
     tools:context=".profile.ProfessionalInfoProfileFragment">
     <!--parent -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/screen_start_margin"
+        android:layout_marginTop="@dimen/screen_top_margin"
+        android:layout_marginEnd="@dimen/screen_end_padding"
+        android:layout_marginBottom="@dimen/screen_bottom_margin"
         android:orientation="vertical">
         <!--            child-->
         <androidx.appcompat.widget.AppCompatEditText

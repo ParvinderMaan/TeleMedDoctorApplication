@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
         tvBasicInfo.setSelected(true);
         tvProfessionalInfo.setSelected(false);
         tvBankInfo.setSelected(false);
-        showFragment("BASIC_TAG");
+        showFragment("TAG_BASIC");
     }
 
     private void initView(View v) {
@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
         switch (tag) {
 
-            case "BASIC_TAG":
+            case "TAG_BASIC":
                 if (mBasicInfoFragment.isAdded()) ft.show(mBasicInfoFragment);
                  else ft.add(R.id.fl_container, mBasicInfoFragment);
                 if (mProfessionalInfoFragment.isAdded())  ft.hide(mProfessionalInfoFragment);
@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
                 ft.commit();
 
                 break;
-            case "PROFESSIONAL_TAG":
+            case "TAG_PROFESSIONAL":
                 if (mProfessionalInfoFragment.isAdded()) ft.show(mProfessionalInfoFragment);
                 else ft.add(R.id.fl_container, mProfessionalInfoFragment);
                 if (mBasicInfoFragment.isAdded())  ft.hide(mBasicInfoFragment);
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
                 ft.commit();
 
                 break;
-            case "BANK_TAG":
+            case "TAG_BANK":
                 if (mBankInfoFragment.isAdded()) ft.show(mBankInfoFragment);
                 else ft.add(R.id.fl_container, mBankInfoFragment);
                 if (mBasicInfoFragment.isAdded())  ft.hide(mBasicInfoFragment);
@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
 
           switch (v.getId()){
 
-              case R.id.ibtn_back:
+              case R.id.ibtn_close:
                    if(getActivity()!=null)
                        ((HomeActivity)getActivity()).popTopMostFragment();
                   break;
@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment {
                   tvBasicInfo.setSelected(true);
                   tvProfessionalInfo.setSelected(false);
                   tvBankInfo.setSelected(false);
-                  showFragment("BASIC_TAG");
+                  showFragment("TAG_BASIC");
 
                   break;
               case R.id.tv_professional_info:
@@ -129,13 +129,13 @@ public class ProfileFragment extends Fragment {
                   tvBasicInfo.setSelected(false);
                   tvProfessionalInfo.setSelected(true);
                   tvBankInfo.setSelected(false);
-                  showFragment("PROFESSIONAL_TAG");
+                  showFragment("TAG_PROFESSIONAL");
                   break;
               case R.id.tv_bank_info:
                   tvBasicInfo.setSelected(false);
                   tvProfessionalInfo.setSelected(false);
                   tvBankInfo.setSelected(true);
-                  showFragment("BANK_TAG");
+                  showFragment("TAG_BANK");
                   break;
           }
 

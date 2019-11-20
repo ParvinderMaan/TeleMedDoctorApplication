@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
+
+    <!-- NOTE: This list should be displayed in a list
+    instead of nested layouts -->
+
+    <LinearLayout
+        android:id="@+id/ll_rate_the_appointment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:gravity="center"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/_8sdp"
+        android:paddingLeft="@dimen/screen_start_padding"
+        android:paddingRight="@dimen/screen_end_padding"
+        android:paddingTop="@dimen/_8sdp">
+
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginRight="@dimen/_16sdp"-->
+        <!--            app:srcCompat="@drawable/ic_video_call" />-->
+
+        <TextView
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Rate the Appointment"
+            android:textColor="#808080"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+    <View
+        android:background="@color/colorLightGrey"
+        style="@style/DividerStyle"/>
+
+    <LinearLayout
+        android:id="@+id/ll_precribe_the_appointment"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="@dimen/screen_start_padding"
+        android:paddingRight="@dimen/screen_end_padding"
+        android:paddingTop="8dp">
+
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginRight="@dimen/_16sdp"-->
+        <!--            app:srcCompat="@drawable/ic_medical_record" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Prescribe the Patient"
+            android:textColor="#808080"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

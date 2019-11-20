@@ -122,4 +122,11 @@ public class RouterActivity extends BaseActivity {
             finish();
         }
     }
+
+
+    // temp method ...
+    public void popTillFragment(String tag, int flag) {
+        getSupportFragmentManager().popBackStack(tag,flag);
+
+    }
 }

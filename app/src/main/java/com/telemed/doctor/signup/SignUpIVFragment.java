@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.RouterActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,12 +32,23 @@ public class SignUpIVFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_up_iv, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+
+
+
+        v.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                       if(getActivity()!=null)
+                           ((RouterActivity)getActivity()).showSignUpVFragment();
+
+            }
+        });
     }
 }

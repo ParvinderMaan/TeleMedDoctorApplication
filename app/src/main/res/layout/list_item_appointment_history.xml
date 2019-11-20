@@ -17,7 +17,7 @@
             android:padding="@dimen/_5sdp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".3">
+            android:layout_weight=".25">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_weight=".7">
+            android:layout_weight=".65">
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,8 +59,28 @@
 
         </LinearLayout>
 
+      <LinearLayout
+          android:layout_gravity="center"
+          android:layout_weight=".1"
+          android:orientation="vertical"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content">
 
+          <androidx.appcompat.widget.AppCompatImageButton
+             android:id="@+id/ibtn_more"
+              android:layout_width="wrap_content"
+              app:srcCompat="@drawable/ic_more"
+              android:paddingStart="@dimen/_5sdp"
+              android:paddingEnd="@dimen/_5sdp"
+              android:paddingTop="@dimen/_5sdp"
+              android:paddingBottom="@dimen/_5sdp"
+              android:background="@android:color/transparent"
+              android:layout_height="wrap_content"/>
+          <Space
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/_20sdp"/>
 
+      </LinearLayout>
 
 
     </LinearLayout>
@@ -110,6 +130,8 @@
                 android:background="@android:color/transparent"
                 android:layout_height="wrap_content"
                 android:text="@string/last_appointment_time" />
+
+
         </LinearLayout>
 
 

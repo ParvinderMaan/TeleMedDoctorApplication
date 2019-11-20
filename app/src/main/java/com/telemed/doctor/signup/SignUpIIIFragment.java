@@ -60,7 +60,7 @@ public class SignUpIIIFragment extends Fragment {
             public void onClick(View v) {
 
                  if(getActivity()!=null)
-                ((RouterActivity)getActivity()).showSignUpVFragment();
+                ((RouterActivity)getActivity()).showSignUpIVFragment();
 
 
 

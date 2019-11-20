@@ -56,7 +56,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private RecyclerView.ViewHolder createAddItemViewHolder(ViewGroup parent) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_add_document, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_add_document, parent, false);
         final ExtraItemViewHolder holder = new ExtraItemViewHolder(v);
         return holder;
 
