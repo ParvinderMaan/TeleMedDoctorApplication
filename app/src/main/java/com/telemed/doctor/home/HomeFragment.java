@@ -1,6 +1,7 @@
 package com.telemed.doctor.home;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,18 +15,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class HomeFragment extends Fragment {
 
     private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard,tvNotification, tvSetting, tvSignOut;
     private Button btnMySchedule;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +50,7 @@ public class HomeFragment extends Fragment {
 
 
         btnMySchedule = v.findViewById(R.id.btn_my_schedule);
-        btnMySchedule.setOnClickListener(mClickListener);
+        btnMySchedule.setOnClickListener(mOnClickListener);
 
 
 
@@ -51,63 +58,63 @@ public class HomeFragment extends Fragment {
 
 
         tvMyProfile = v.findViewById(R.id.tv_my_profile);
-        tvMyProfile.setOnClickListener(mClickListener);
+        tvMyProfile.setOnClickListener(mOnClickListener);
 
 
         tvMyConsults = v.findViewById(R.id.tv_my_consults);
-        tvMyConsults.setOnClickListener(mClickListener);
+        tvMyConsults.setOnClickListener(mOnClickListener);
 
 
         tvMyDashboard = v.findViewById(R.id.tv_my_dashboard);
-        tvMyDashboard.setOnClickListener(mClickListener);
+        tvMyDashboard.setOnClickListener(mOnClickListener);
 
         tvNotification = v.findViewById(R.id.tv_notification);
-        tvNotification.setOnClickListener(mClickListener);
+        tvNotification.setOnClickListener(mOnClickListener);
 
 
         tvSetting = v.findViewById(R.id.tv_setting);
-        tvSetting.setOnClickListener(mClickListener);
+        tvSetting.setOnClickListener(mOnClickListener);
 
 
         tvSignOut = v.findViewById(R.id.tv_sign_out);
-        tvSignOut.setOnClickListener(mClickListener);
+        tvSignOut.setOnClickListener(mOnClickListener);
     }
 
 
-    private View.OnClickListener mClickListener = v -> {
+    private View.OnClickListener mOnClickListener = v -> {
         switch (v.getId()) {
             case R.id.tv_my_profile:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showMyProfileFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ProfileFragment");
                 break;
 
             case R.id.tv_my_consults:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showMyConsultsFragment();
+                if (mFragmentListener!= null)
+                    mFragmentListener.showFragment("MyConsultFragment");
                 break;
 
             case R.id.tv_my_dashboard:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showMyDashboardFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("MyDashboardFragment");
                 break;
 
             case R.id.tv_notification:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showNotificationFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("NotificationFragment");
                 break;
 
             case R.id.tv_setting:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showSettingFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("SettingFragment");
                 break;
             case R.id.tv_sign_out:
 
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showSignOutDialog();
+                if (mFragmentListener != null)
+                    mFragmentListener.showDialog("SignOutDialog");
                 break;
             case R.id.btn_my_schedule:
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showMyScheduleFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("MyScheduleFragment");
                 break;
         }
 

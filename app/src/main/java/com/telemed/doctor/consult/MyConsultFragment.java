@@ -1,6 +1,7 @@
 package com.telemed.doctor.consult;
 
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.util.DividerItemDecoration;
 
 
@@ -25,14 +27,17 @@ public class MyConsultFragment extends Fragment {
 
 
     private RecyclerView rvAppointmentsUpcoming, rvAppointmentsHistory;
-    private UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment;
-    private HistoryOptionsBottomSheetFragment mHistoryOptionsBottomSheetFragment;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public static MyConsultFragment newInstance() {
         return new MyConsultFragment();
     }
 
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_consult, container, false);
@@ -46,12 +51,10 @@ public class MyConsultFragment extends Fragment {
         initHistoryAppointmentRecyclerView(v);
 
         v.findViewById(R.id.ibtn_close).setOnClickListener(v1 -> {
-            if (getActivity() != null)
-                ((HomeActivity) getActivity()).popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
         });
 
-        mUpcomingOptionsBottomSheetFragment = new UpcomingOptionsBottomSheetFragment();
-        mHistoryOptionsBottomSheetFragment=new HistoryOptionsBottomSheetFragment();
     }
 
 
@@ -66,17 +69,18 @@ public class MyConsultFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
 
-                if (getActivity() != null) {
-                    ((HomeActivity) getActivity()).showVideoCallTriggerFragment();
+                if (mFragmentListener != null) {
+                    mFragmentListener.showFragment("VideoCallTriggerFragment");
 
                 }
             }
 
             @Override
             public void onItemClickMore(String tag, int pos) {
-//                                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
-
-                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(), mUpcomingOptionsBottomSheetFragment.getTag());
+                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
+                        UpcomingOptionsBottomSheetFragment.newInstance();
+                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
+                        mUpcomingOptionsBottomSheetFragment.getTag());
 
 //               switch (tag){
 //
@@ -133,8 +137,8 @@ public class MyConsultFragment extends Fragment {
 
             @Override
             public void onItemMoreClick(int position) {
-
-                mHistoryOptionsBottomSheetFragment.showNow(getChildFragmentManager(), mHistoryOptionsBottomSheetFragment.getTag());
+                 HistoryOptionsBottomSheetFragment mHistoryOptionsBottomSheetFragment=HistoryOptionsBottomSheetFragment.newInstance();
+                 mHistoryOptionsBottomSheetFragment.showNow(getChildFragmentManager(), mHistoryOptionsBottomSheetFragment.getTag());
 
 
             }
@@ -147,42 +151,37 @@ public class MyConsultFragment extends Fragment {
 
         switch (tag) {
 
-
             case "TAG_IMAGE":
-                mUpcomingOptionsBottomSheetFragment.dismiss();
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showPatientGalleryFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("PatientGalleryFragment");
                 break;
 
             case "TAG_VIDEO_CALL":
-                mUpcomingOptionsBottomSheetFragment.dismiss();
 
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showVideoCallTriggerFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("VideoCallTriggerFragment");
                 break;
 
             case "TAG_MEDICAL_RECORD":
-                mUpcomingOptionsBottomSheetFragment.dismiss();
 
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showMedicalRecordFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("MedicalRecordFragment");
                 break;
 
 
          //------------------------------------------------------------------------------------
 
             case "TAG_RATE_APPOINTMENT":
-                mHistoryOptionsBottomSheetFragment.dismiss();
 
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showPatientRatingFragment();
+
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("PatientRatingFragment");
                 break;
 
             case "TAG_PRESCRIBE_PATIENT":
-                mHistoryOptionsBottomSheetFragment.dismiss();
 
-                if (getActivity() != null)
-                    ((HomeActivity) getActivity()).showAppointmentSummaryFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("AppointmentSummaryFragment");
                 break;
 
 

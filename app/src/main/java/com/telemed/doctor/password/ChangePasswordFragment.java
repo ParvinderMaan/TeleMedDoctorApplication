@@ -1,6 +1,7 @@
 package com.telemed.doctor.password;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,10 +14,13 @@ import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class ChangePasswordFragment extends Fragment {
 
+
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -25,7 +29,11 @@ public class ChangePasswordFragment extends Fragment {
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,8 +43,8 @@ public class ChangePasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         v.findViewById(R.id.ibtn_close).setOnClickListener(v1 -> {
-            if(getActivity()!=null)
-                ((HomeActivity)getActivity()).popTopMostFragment();
+            if(mFragmentListener!=null)
+                mFragmentListener.popTopMostFragment();
 
         });
     }

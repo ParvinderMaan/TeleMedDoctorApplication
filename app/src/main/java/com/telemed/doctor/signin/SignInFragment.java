@@ -2,6 +2,7 @@ package com.telemed.doctor.signin;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +19,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +38,7 @@ import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.Status;
@@ -53,11 +59,16 @@ public class SignInFragment extends BaseFragment {
     private String mUserEmail, mUserPassword;
     private SignInViewModel mViewModel;
     private ProgressBar progressBar;
+    private RouterFragmentSelectedListener mFragmentListener;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,8 +92,8 @@ public class SignInFragment extends BaseFragment {
         mViewModel.getShowHomeActivity().observe(this, aBoolean -> {
             if (aBoolean) {
 
-                if (getActivity() != null) {
-                    startActivity(new Intent(getActivity(), HomeActivity.class));
+                if (mFragmentListener != null) {
+                    mFragmentListener.startActivity("HomeActivity");
                     getActivity().finish();
                 }
             }
@@ -126,6 +137,9 @@ public class SignInFragment extends BaseFragment {
         tvSignUp.setOnClickListener(mOnClickListener);
         tvForgotPassword.setOnClickListener(mOnClickListener);
         btnSignIn.setOnClickListener(mOnClickListener);
+
+        edtUsrEmail.setOnEditorActionListener(mEditorActionListener);
+        edtUsrPassword.setOnEditorActionListener(mEditorActionListener);
     }
 
 
@@ -134,14 +148,14 @@ public class SignInFragment extends BaseFragment {
 
             case R.id.tv_sign_up:
 
-                if (getActivity() != null)
-                    ((RouterActivity) getActivity()).showSignUpIFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("SignUpIFragment");
                 break;
 
             case R.id.tv_forgot_password:
 
-                if (getActivity() != null)
-                    ((RouterActivity) getActivity()).showForgotPasswordFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ForgotPasswordFragment");
                 break;
 
             case R.id.btn_sign_in:
@@ -174,6 +188,7 @@ public class SignInFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         mOnClickListener = null;
+        mEditorActionListener=null;
         super.onDestroyView();
     }
 
@@ -219,8 +234,8 @@ public class SignInFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             mViewModel.setProgress(false);
-            if (getActivity() != null) {
-                startActivity(new Intent(getActivity(), HomeActivity.class));
+            if (mFragmentListener!= null) {
+                mFragmentListener.startActivity("HomeActivity");
                 getActivity().finish();
             }
 //---------------------------------------------------------------
@@ -229,4 +244,42 @@ public class SignInFragment extends BaseFragment {
 
         }
     };
+
+
+    private EditText.OnEditorActionListener mEditorActionListener=new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (v.getId()) {
+
+                case R.id.edt_usr_email:
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        if(edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
+                        return true;
+                    }
+                    break;
+
+
+                case R.id.edt_usr_password:
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        if(edtUsrPassword.isFocused()) edtUsrPassword.clearFocus(); hideSoftKeyboard(getActivity());
+                        return true;
+                    }
+
+                    break;
+
+
+
+            }
+
+
+            return false;
+        }
+    };
+
+    private void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 }

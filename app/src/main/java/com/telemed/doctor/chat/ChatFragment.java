@@ -1,6 +1,7 @@
 package com.telemed.doctor.chat;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.TimeUtil;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class ChatFragment extends BaseFragment {
     private RecyclerView rvChat;
     private LinearLayoutManager mLLayoutManager;
     private ChatAdapter mChatAdapter;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -41,6 +44,12 @@ public class ChatFragment extends BaseFragment {
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
     }
 
     @Override
@@ -76,11 +85,11 @@ public class ChatFragment extends BaseFragment {
         mPopupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_gallery:
-                    if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
+                    if(mFragmentListener !=null) mFragmentListener.showFragment("PatientGalleryFragment");
 
                     break;
                 case R.id.menu_medical_record:
-                    if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
+                    if(mFragmentListener !=null) mFragmentListener.showFragment("MedicalRecordFragment");
 
                     break;
                 case R.id.menu_delete:

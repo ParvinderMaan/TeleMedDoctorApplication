@@ -6,15 +6,15 @@
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/colorBlue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".signup.SignUpIIFragment">
  <RelativeLayout
      android:layout_width="match_parent"
-     android:layout_weight=".25"
      android:gravity="center"
-     android:layout_height="0dp">
+     android:layout_height="wrap_content">
      <ImageView
          android:id="@+id/imageView"
          android:layout_width="wrap_content"
@@ -32,6 +32,11 @@
          android:layout_height="wrap_content"
          android:layout_centerHorizontal="true"
          android:text="@string/title_doctor_app" />
+
+     <include
+         android:id="@+id/progress_bar"
+         layout="@layout/layout_progress_bar"/>
+
  </RelativeLayout>
 <LinearLayout
     android:layout_width="match_parent"
@@ -54,7 +59,6 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:hint=""
                 android:text="@string/title_personal_info"
                 app:backgroundTint="@color/colorWhite"
@@ -79,18 +83,21 @@
                android:orientation="vertical"
                android:layout_height="wrap_content">
                <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/edt_doc_name"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:ems="10"
                    android:hint=""
+                   android:imeOptions="actionNext"
                    android:text=""
+                   android:maxLines="1"
+                   android:longClickable="false"
                    app:backgroundTint="@color/colorWhite"
                    android:includeFontPadding="false"
                    android:textColorHint="@color/colorLightBlue"
                    android:padding="@dimen/_10sdp"
                    android:textStyle="bold"
                    android:textColor="@color/colorWhite"
-                   android:inputType="textEmailAddress" />
+                   android:inputType="text" />
 
                <TextView
                    android:layout_width="match_parent"
@@ -110,17 +117,21 @@
                android:layout_height="wrap_content">
 
                <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/edt_doc_surname"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:hint=""
                    android:text=""
+                   android:imeOptions="actionDone"
+                   android:maxLines="1"
+                   android:longClickable="false"
                    app:backgroundTint="@color/colorWhite"
                    android:includeFontPadding="false"
                    android:textColorHint="@color/colorLightBlue"
                    android:padding="@dimen/_10sdp"
                    android:textStyle="bold"
                    android:textColor="@color/colorWhite"
-                   android:inputType="textEmailAddress" />
+                   android:inputType="text"/>
 
                <TextView
                    android:layout_width="match_parent"
@@ -134,9 +145,9 @@
            </LinearLayout>
        </LinearLayout>
             <!--            child-->
+
             <LinearLayout
                 android:layout_marginTop="@dimen/_20sdp"
-
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -148,28 +159,37 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_dob"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
                         android:text=""
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:longClickable="false"
                         app:backgroundTint="@color/colorWhite"
                         android:includeFontPadding="false"
                         android:textColorHint="@color/colorLightBlue"
                         android:padding="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Date of birth"
+                        android:text="@string/title_dob"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
-                        android:paddingStart="@dimen/_10sdp" />
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
                 </LinearLayout>
+
+                <!--                child-->
                 <LinearLayout
 
                     android:layout_width="0dp"
@@ -178,66 +198,123 @@
                     android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_birth_city"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:longClickable="false"
                         app:backgroundTint="@color/colorWhite"
                         android:includeFontPadding="false"
-
                         android:textColorHint="@color/colorLightBlue"
                         android:padding="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
-                        android:text="Birth City"
+                        android:text="@string/title_birth_city"
                         android:textColorHint="@color/colorLightBlue"
                         android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--            child-->
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_birth_country"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:text=""
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                         />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_birth_country"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+
+<!--                child-->
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_nationality"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:text=""
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
                         />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:text="@string/title_nationality"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
                 </LinearLayout>
             </LinearLayout>
 <!--           child-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/_20sdp"
 
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:backgroundTint="@color/colorBlue"
-                    android:hint=""
-                    android:text=""
-                    app:backgroundTint="@color/colorWhite"
-                    android:includeFontPadding="false"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:padding="@dimen/_10sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:inputType="textEmailAddress" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Birth Country"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:paddingStart="@dimen/_10sdp" />
-
-
-            </LinearLayout>
 
             <!--           child-->
             <LinearLayout
@@ -246,11 +323,17 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_speciality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlue"
                     android:hint=""
+                    android:clickable="true"
+                    android:focusable="false"
                     android:text=""
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:longClickable="false"
                     app:drawableRightCompat="@drawable/ic_arrow_down"
                     app:backgroundTint="@color/colorWhite"
                     android:includeFontPadding="false"
@@ -258,7 +341,7 @@
                     android:padding="@dimen/_10sdp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"
-                    android:inputType="textEmailAddress" />
+                   />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -273,6 +356,87 @@
             </LinearLayout>
             <!--           child-->
 
+            <!--            child-->
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_language_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:clickable="true"
+                        android:focusable="false"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:text=""
+                        android:maxLines="1"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_language_one"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_language_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:text=""
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:text="@string/title_language_two"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!--           child-->
             <LinearLayout
                 android:layout_marginTop="@dimen/_20sdp"
@@ -280,113 +444,21 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_addr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:text=""
+                    android:maxLines="1"
+                    android:longClickable="false"
                     app:backgroundTint="@color/colorWhite"
                     android:includeFontPadding="false"
                     android:textColorHint="@color/colorLightBlue"
                     android:padding="@dimen/_10sdp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"
-                    android:inputType="textEmailAddress" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sub Speciality"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:paddingStart="@dimen/_10sdp" />
-
-
-            </LinearLayout>
-            <!--           child-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
-                    android:hint=""
-                    android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
-                    android:padding="@dimen/_10sdp"
-                    android:text=""
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/colorWhite" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Language 1"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:paddingStart="@dimen/_10sdp" />
-
-
-            </LinearLayout>
-            <!--           child-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
-                    android:hint=""
-                    android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
-                    android:padding="@dimen/_10sdp"
-                    android:text=""
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/colorWhite" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Language 2"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:paddingStart="@dimen/_10sdp" />
-
-
-            </LinearLayout>
-            <!--           child-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
-                    android:hint=""
-                    android:text=""
-                    app:backgroundTint="@color/colorWhite"
-                    android:includeFontPadding="false"
-                    android:textColorHint="@color/colorLightBlue"
-                    android:padding="@dimen/_10sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="text" />
 
 
             </LinearLayout>
@@ -409,17 +481,20 @@
                     android:textColorHint="@color/colorLightBlue" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_email"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:text=""
+                    android:longClickable="false"
                     app:backgroundTint="@color/colorWhite"
                     android:includeFontPadding="false"
                     android:textColorHint="@color/colorLightBlue"
                     android:padding="@dimen/_10sdp"
                     android:textStyle="bold"
+                    android:imeOptions="actionDone"
                     android:textColor="@color/colorWhite"
                     android:inputType="textEmailAddress" />
 
@@ -427,6 +502,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Email"
+                    android:maxLines="1"
+                    android:longClickable="false"
                     android:includeFontPadding="false"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue"

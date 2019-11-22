@@ -1,6 +1,7 @@
 package com.telemed.doctor.password;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,12 +15,14 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
 public class ForgotPasswordFragment extends Fragment {
 
 
     private TextView tvCancel;
+    private RouterFragmentSelectedListener mFragmentListener;
 
     public ForgotPasswordFragment() {
         // Required empty public constructor
@@ -28,7 +31,11 @@ public class ForgotPasswordFragment extends Fragment {
     public static ForgotPasswordFragment newInstance() {
         return new ForgotPasswordFragment();
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,8 +52,8 @@ public class ForgotPasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity()!=null)
-                    ((RouterActivity)getActivity()).popTopMostFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
 
 
             }

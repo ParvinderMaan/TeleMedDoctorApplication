@@ -1,6 +1,7 @@
 package com.telemed.doctor.dashboard;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 import java.util.ArrayList;
 
@@ -32,11 +34,17 @@ public class MyDashboardFragment extends Fragment {
 
 
     private LineChart mLineChart;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public static MyDashboardFragment  newInstance() {
        return new MyDashboardFragment();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +60,8 @@ public class MyDashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         v.findViewById(R.id.ibtn_close).setOnClickListener(v1 -> {
-            if(getActivity()!=null)
-                ((HomeActivity)getActivity()).popTopMostFragment();
+            if(mFragmentListener!=null)
+                mFragmentListener.popTopMostFragment();
         });
         initLineChart(v);
     }

@@ -1,6 +1,7 @@
 package com.telemed.doctor.schedule;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.util.NonSwipeViewPager;
 
 
@@ -35,11 +37,15 @@ public class MyScheduleFragment extends Fragment {
     private WeeklyScheduleAdapter mAdapter;
     private static int currentVisibleItem=0;
     private Button btnSynchronizeSchedule;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public static MyScheduleFragment newInstance() {
         return new MyScheduleFragment() ;
     }
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,8 +76,8 @@ public class MyScheduleFragment extends Fragment {
         //
         ImageButton ibtnClose = v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v13 -> {
-            if(getActivity()!=null){
-                ((HomeActivity)getActivity()).popTopMostFragment();
+            if(mFragmentListener!=null){
+                mFragmentListener.popTopMostFragment();
             }
 
         });
@@ -81,8 +87,8 @@ public class MyScheduleFragment extends Fragment {
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
         btnSynchronizeSchedule.setOnClickListener(v14 -> {
 
-            if(getActivity()!=null){
-                ((HomeActivity)getActivity()).showScheduleSychronizeFragment();
+            if(mFragmentListener!=null){
+                mFragmentListener.showFragment("ScheduleSychronizeFragment");
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.telemed.doctor.videocall;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +14,21 @@ import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class VideoCallFragment extends Fragment {
 
 
+    private HomeFragmentSelectedListener mFragmentListener;
+
     public static VideoCallFragment newInstance() {
         return new VideoCallFragment();
+    }
+
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
     }
 
 
@@ -35,8 +44,8 @@ public class VideoCallFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity() !=null)
-                    ((HomeActivity)getActivity()).showDoctorDocumentFragment();
+                if(mFragmentListener !=null)
+                    mFragmentListener.showFragment("DoctorDocumentFragment");
 
             }
         });
@@ -46,8 +55,8 @@ public class VideoCallFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity() !=null)
-                    ((HomeActivity)getActivity()).showAppointmentSummaryFragment();
+                if(mFragmentListener !=null)
+                    mFragmentListener.showFragment("AppointmentSummaryFragment");
 
             }
         });
@@ -56,8 +65,8 @@ public class VideoCallFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity() !=null)
-                    ((HomeActivity)getActivity()).showPatientGalleryFragment();
+                if(mFragmentListener !=null)
+                    mFragmentListener.showFragment("PatientGalleryFragment");
 
             }
         });

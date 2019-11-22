@@ -1,7 +1,7 @@
 package com.telemed.doctor.signup;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,14 +16,15 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
-import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
 public class SignUpIIIFragment extends Fragment {
 
 
     private TextView tvCancel;
-    private Button btnSignUp;
+    private Button btnContinue;
+    private RouterFragmentSelectedListener mFragmentListener;
 
     public SignUpIIIFragment() {
         // Required empty public constructor
@@ -32,7 +33,11 @@ public class SignUpIIIFragment extends Fragment {
     public static SignUpIIIFragment newInstance() {
         return new SignUpIIIFragment();
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,20 +52,20 @@ public class SignUpIIIFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity()!=null)
-                    ((RouterActivity)getActivity()).popTopMostFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
 
 
             }
         });
 
-        btnSignUp=v.findViewById(R.id.btn_sign_up);
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        btnContinue =v.findViewById(R.id.btn_continue);
+        btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                 if(getActivity()!=null)
-                ((RouterActivity)getActivity()).showSignUpIVFragment();
+                 if(mFragmentListener!=null)
+                     mFragmentListener.showFragment("SignUpIVFragment");
 
 
 

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class NotificationFragment extends Fragment {
@@ -25,6 +26,7 @@ public class NotificationFragment extends Fragment {
 
     private RecyclerView rvNotification;
     private FloatingActionButton fbtnDeleteAllNotification;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -33,6 +35,12 @@ public class NotificationFragment extends Fragment {
 
     public static NotificationFragment newInstance() {
         return new NotificationFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
     }
 
     @Override
@@ -58,8 +66,8 @@ public class NotificationFragment extends Fragment {
         ImageButton ibtnClose = v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
 
-            if (getActivity() != null)
-                ((HomeActivity) getActivity()).popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
         });
 
         fbtnDeleteAllNotification = v.findViewById(R.id.fbtn_delete_all);

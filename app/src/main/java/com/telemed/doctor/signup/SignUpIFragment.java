@@ -1,70 +1,94 @@
 package com.telemed.doctor.signup;
 
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
-public class SignUpIFragment extends Fragment {
+public class SignUpIFragment extends BaseFragment {
     private AppCompatEditText edtUsrEmail, edtUsrPassword, edtUsrConfirmPassword;
     private TextView tvCancel;
-    private Button btnContinue;
+    private AppCompatButton btnContinue;
+    private RouterFragmentSelectedListener mFragmentListener;
+    private ProgressBar progressBar;
 
     public static SignUpIFragment newInstance() {
         return new SignUpIFragment();
     }
 
-    @SuppressLint("InflateParams")
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_sign_up_one, null, false);
+        return localInflater.inflate(R.layout.fragment_sign_up_one, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
+        initListener();
+
+    }
+
+    private void initListener() {
         tvCancel.setOnClickListener(mClickListener);
         btnContinue.setOnClickListener(mClickListener);
 
+        edtUsrEmail.setOnEditorActionListener(mEditorActionListener);
+        edtUsrPassword.setOnEditorActionListener(mEditorActionListener);
+        edtUsrConfirmPassword.setOnEditorActionListener(mEditorActionListener);
     }
+
     private void initView(View v) {
-        edtUsrEmail=v.findViewById(R.id.edt_email);
-        edtUsrPassword=v.findViewById(R.id.edt_password);
-        edtUsrConfirmPassword=v.findViewById(R.id.edt_confirm_password);
-        btnContinue=v.findViewById(R.id.btn_continue);
-        tvCancel=v.findViewById(R.id.tv_cancel);
+        edtUsrEmail = v.findViewById(R.id.edt_email);
+        edtUsrPassword = v.findViewById(R.id.edt_password);
+        edtUsrConfirmPassword = v.findViewById(R.id.edt_confirm_password);
+        btnContinue = v.findViewById(R.id.btn_continue);
+        tvCancel = v.findViewById(R.id.tv_cancel);
+        progressBar = v.findViewById(R.id.progress_bar);
+        // @initialization
+        progressBar.setVisibility(View.INVISIBLE);
+
+
     }
+
     private boolean isFormValid() {
-        String mUserEmail  = edtUsrEmail.getText().toString();
-        String mUserPassword  = edtUsrPassword.getText().toString();
-        String mUserConfirmPassword  = edtUsrConfirmPassword.getText().toString();
+        String mUserEmail = edtUsrEmail.getText().toString();
+        String mUserPassword = edtUsrPassword.getText().toString();
+        String mUserConfirmPassword = edtUsrConfirmPassword.getText().toString();
 
 
-
-
-        if(TextUtils.isEmpty(mUserEmail)) {
+        if (TextUtils.isEmpty(mUserEmail)) {
             edtUsrEmail.setError("Enter Email address");
             return false;
         }
@@ -74,15 +98,13 @@ public class SignUpIFragment extends Fragment {
             return false;
         }
 
-        if(!Validator.isEmailValid(mUserEmail)){
+        if (!Validator.isEmailValid(mUserEmail)) {
             edtUsrEmail.setError("Enter valid email address");
             return false;
         }
 
 
-
-
-        if(TextUtils.isEmpty(mUserPassword)) {
+        if (TextUtils.isEmpty(mUserPassword)) {
             edtUsrPassword.setError("Enter password");
             return false;
         }
@@ -92,8 +114,18 @@ public class SignUpIFragment extends Fragment {
             return false;
         }
 
+        if (!(mUserPassword.length() >= 6)) {
+            edtUsrPassword.setError("Password is short");
+            return false;
+        }
 
-        if(TextUtils.isEmpty(mUserConfirmPassword)) {
+        if (!Validator.isAlphaNumeric(mUserPassword)) {
+            edtUsrPassword.setError("Password must be alphanumeric");
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(mUserConfirmPassword)) {
             edtUsrConfirmPassword.setError("Enter confirm password");
             return false;
         }
@@ -103,7 +135,7 @@ public class SignUpIFragment extends Fragment {
             return false;
         }
 
-        if(!mUserConfirmPassword.contentEquals(mUserPassword)){
+        if (!mUserConfirmPassword.contentEquals(mUserPassword)) {
             edtUsrConfirmPassword.setError("Your password is not matched");
             return false;
         }
@@ -112,22 +144,29 @@ public class SignUpIFragment extends Fragment {
     }
 
 
-    private View.OnClickListener mClickListener= v -> {
+    private View.OnClickListener mClickListener = v -> {
 
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.tv_cancel:
-                if(getActivity()!=null)
-                    ((RouterActivity)getActivity()).popTopMostFragment();
+                if (mFragmentListener != null)
+                    mFragmentListener.popTopMostFragment();
                 break;
 
 
             case R.id.btn_continue:
-//                if(isFormValid()){
-//                    if(getActivity()!=null)
-//                        ((RouterActivity)getActivity()).showSignUpIIFragment();
-//                }
-                ((RouterActivity)getActivity()).showSignUpIIFragment();
+
+                if (!isNetAvail()) {
+                    makeToast("no internet");
+                    return;
+                }
+
+
+                if (isFormValid()) {
+
+                    attemptSignUp();
+
+                }
 
                 break;
 
@@ -135,4 +174,78 @@ public class SignUpIFragment extends Fragment {
 
 
     };
+
+    private void attemptSignUp() {
+        if (mFragmentListener != null)
+            mFragmentListener.showFragment("SignUpIIFragment");
+
+    }
+
+    private EditText.OnEditorActionListener mEditorActionListener=new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (v.getId()) {
+
+                case R.id.edt_email:
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        if(edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
+                        return true;
+                    }
+                    break;
+
+
+                case R.id.edt_password:
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        if(edtUsrPassword.isFocused()) edtUsrConfirmPassword.requestFocus();
+                        return true;
+                    }
+
+                    break;
+
+                case R.id.edt_confirm_password:
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        if(edtUsrConfirmPassword.isFocused())  edtUsrConfirmPassword.clearFocus(); hideSoftKeyboard(getActivity());
+                        return true;
+                    }
+
+                    break;
+
+            }
+
+
+            return false;
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        releaseResource();
+        super.onDestroyView();
+    }
+
+    private void releaseResource() {
+        tvCancel.setOnClickListener(null);
+        btnContinue.setOnClickListener(null);
+        edtUsrEmail.setOnEditorActionListener(null);
+        edtUsrPassword.setOnEditorActionListener(null);
+        edtUsrConfirmPassword.setOnEditorActionListener(null);
+        mClickListener = null;
+        mEditorActionListener=null;
+    }
+
+
+    private void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    public void setViewState(boolean b){
+        edtUsrEmail.setEnabled(b);
+        edtUsrPassword.setEnabled(b);
+        edtUsrConfirmPassword.setEnabled(b);
+        btnContinue.setEnabled(b);
+
+    }
 }

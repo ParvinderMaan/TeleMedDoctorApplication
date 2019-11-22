@@ -37,14 +37,14 @@
            android:layout_width="@dimen/_76sdp"
            android:layout_height="@dimen/_76sdp"/>
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/ibtn_edit_profile_pic"-->
-<!--            app:srcCompat="@drawable/ic_e"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            -->
-<!--        </ImageButton>-->
+        <ImageButton
+            android:id="@+id/ibtn_edit_profile_pic"
+            app:srcCompat="@drawable/ic_edit_profile"
+            android:background="@drawable/custom_circle_ii"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ImageButton>
 
        <LinearLayout
            android:gravity="center"
@@ -55,7 +55,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <TextView
-               android:id="@+id/tv_doc_name"
+               android:id="@+id/edt_doc_name"
                android:text="Jordon G"
                android:ellipsize="end"
                android:textColor="@color/colorWhite"
@@ -76,7 +76,7 @@
                android:ellipsize="end"
                android:paddingStart="@dimen/_10sdp"
                android:textColor="@color/colorWhite"
-               android:layout_below="@+id/tv_doc_name"
+               android:layout_below="@+id/edt_doc_name"
                android:textSize="@dimen/_14sdp"
                android:layout_toRightOf="@+id/civ_profile_pic"
                android:layout_width="match_parent"

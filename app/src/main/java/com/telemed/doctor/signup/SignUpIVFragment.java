@@ -1,6 +1,7 @@
 package com.telemed.doctor.signup;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,12 +14,15 @@ import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SignUpIVFragment extends Fragment {
 
+
+    private RouterFragmentSelectedListener mFragmentListener;
 
     public SignUpIVFragment() {
         // Required empty public constructor
@@ -28,6 +32,11 @@ public class SignUpIVFragment extends Fragment {
         return new SignUpIVFragment();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,10 +54,22 @@ public class SignUpIVFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                       if(getActivity()!=null)
-                           ((RouterActivity)getActivity()).showSignUpVFragment();
+                       if(mFragmentListener!=null)
+                           mFragmentListener.showFragment("SignUpVFragment");
 
             }
         });
+
+        v.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
+
+            }
+        });
+
+
     }
 }

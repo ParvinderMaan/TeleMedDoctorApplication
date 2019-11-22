@@ -14,4 +14,11 @@ public class Validator  {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+    // check alphanumeric validation
+    public static boolean isAlphaNumeric(String password){
+        String regex = "^[a-zA-Z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return !matcher.matches();
+    }
 }

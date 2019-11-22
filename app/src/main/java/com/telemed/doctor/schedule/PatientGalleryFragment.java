@@ -1,6 +1,7 @@
 package com.telemed.doctor.schedule;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import com.telemed.doctor.R;
 import com.telemed.doctor.appointment.PatientGalleryAdapter;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class PatientGalleryFragment extends Fragment {
@@ -24,6 +26,7 @@ public class PatientGalleryFragment extends Fragment {
 
     private RecyclerView rvPatientImages;
     private ImageButton ibtnClose;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public PatientGalleryFragment() {
     }
@@ -32,6 +35,10 @@ public class PatientGalleryFragment extends Fragment {
         return new PatientGalleryFragment();
     }
 
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_patient_gallery, container, false);
@@ -46,7 +53,7 @@ public class PatientGalleryFragment extends Fragment {
         ibtnClose.setOnClickListener(v1 -> {
 
             if(getActivity()!=null){
-                ((HomeActivity)getActivity()).popTopMostFragment();
+                mFragmentListener.popTopMostFragment();
             }
 
 

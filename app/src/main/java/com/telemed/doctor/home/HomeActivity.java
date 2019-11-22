@@ -2,15 +2,18 @@ package com.telemed.doctor.home;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
 import com.telemed.doctor.R;
+import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.chat.ChatFragment;
 import com.telemed.doctor.consult.MyConsultFragment;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
@@ -28,8 +31,7 @@ import com.telemed.doctor.videocall.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
 
-
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements HomeFragmentSelectedListener {
 
     // to support vector icon for lower versions
     static {
@@ -41,8 +43,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_home);
-        showHomeFragment();
-
+        showFragment("HomeFragment");
     }
 
     // Note : take care of Toolbar presence
@@ -51,186 +52,193 @@ public class HomeActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private void showHomeFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, HomeFragment.newInstance())
-                .addToBackStack("HomeFragment")
-                .commit();
-    }
-
-    public void showMyProfileFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, ProfileFragment.newInstance())
-                .addToBackStack("ProfileFragment")
-                .commit();
-    }
 
     @Override
     public void onBackPressed() {
 
-        if(getSupportFragmentManager().getBackStackEntryCount()>1){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             popTopMostFragment();
 
-        }else{
+        } else {
 
             finish();
         }
     }
 
-    public void showMyConsultsFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, MyConsultFragment.newInstance())
-                .addToBackStack("MyConsultFragment")
-                .commit();
+
+    @Override
+    public void showFragment(String tag) {
+        switch (tag) {
+            case "HomeFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, HomeFragment.newInstance())
+                        .addToBackStack("HomeFragment")
+                        .commit();
+                break;
+
+            case "ProfileFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, HomeFragment.newInstance())
+                        .addToBackStack("ProfileFragment")
+                        .commit();
+                break;
+
+            case "MyConsultFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, MyConsultFragment.newInstance())
+                        .addToBackStack("MyConsultFragment")
+                        .commit();
+                break;
+
+            case "MyDashboardFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, MyDashboardFragment.newInstance())
+                        .addToBackStack("MyDashboardFragment")
+                        .commit();
+                break;
+
+            case "NotificationFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, NotificationFragment.newInstance())
+                        .addToBackStack("NotificationFragment")
+                        .commit();
+                break;
+
+            case "SettingFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, SettingFragment.newInstance())
+                        .addToBackStack("SettingFragment")
+                        .commit();
+                break;
+
+            case "MyScheduleFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, MyScheduleFragment.newInstance())
+                        .addToBackStack("MyScheduleFragment")
+                        .commit();
+                break;
+
+            case "VideoCallTriggerFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, VideoCallTriggerFragment.newInstance())
+                        .addToBackStack("VideoCallTriggerFragment")
+                        .commit();
+                break;
+            case "VideoCallFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, VideoCallFragment.newInstance())
+                        .addToBackStack("VideoCallFragment")
+                        .commit();
+                break;
+
+            case "TermAndConditionFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, TermAndConditionFragment.newInstance())
+                        .addToBackStack("TermAndConditionFragment")
+                        .commit();
+                break;
+
+            case "ChangePasswordFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, ChangePasswordFragment.newInstance())
+                        .addToBackStack("ChangePasswordFragment")
+                        .commit();
+                break;
+
+            case "AppointmentConfirmIFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance())
+                        .addToBackStack("AppointmentConfirmIFragment")
+                        .commit();
+                break;
+
+            case "PatientGalleryFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, PatientGalleryFragment.newInstance())
+                        .addToBackStack("PatientGalleryFragment")
+                        .commit();
+                break;
+
+            case "ChatFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, ChatFragment.newInstance())
+                        .addToBackStack("ChatFragment")
+                        .commit();
+                break;
+
+            case "DoctorDocumentFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, DoctorDocumentFragment.newInstance())
+                        .addToBackStack("DoctorDocumentFragment")
+                        .commit();
+                break;
+
+            case "ScheduleSychronizeFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, ScheduleSychronizeFragment.newInstance())
+                        .addToBackStack("ScheduleSychronizeFragment")
+                        .commit();
+                break;
+
+            case "AppointmentSummaryFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, AppointmentSummaryFragment.newInstance())
+                        .addToBackStack("AppointmentSummaryFragment")
+                        .commit();
+                break;
+
+            case "PatientRatingFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, PatientRatingFragment.newInstance())
+                        .addToBackStack("PatientRatingFragment")
+                        .commit();
+                break;
+            case "MedicalRecordFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, MedicalRecordFragment.newInstance())
+                        .addToBackStack("MedicalRecordFragment")
+                        .commit();
+                break;
+            default:
+                // code block
+
+        }
 
     }
 
-    public void showMyDashboardFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, MyDashboardFragment.newInstance())
-                .addToBackStack("MyDashboardFragment")
-                .commit();
-
-    }
-
-
-    public void showVideoCallTriggerFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, VideoCallTriggerFragment.newInstance())
-                .addToBackStack("VideoCallTriggerFragment")
-                .commit();
-
-    }
-
-
-    public void showVideoCallFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, VideoCallFragment.newInstance())
-                .addToBackStack("VideoCallFragment")
-                .commit();
-
-    }
-
-
-   
-
-    public void showSettingFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, SettingFragment.newInstance())
-                .addToBackStack("SettingFragment")
-                .commit();
-    }
-    public void showTermAndConditionFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, TermAndConditionFragment.newInstance())
-                .addToBackStack("TermAndConditionFragment")
-                .commit();
-    }
-
-    public void showChangePasswordFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, ChangePasswordFragment.newInstance())
-                .addToBackStack("ChangePasswordFragment")
-                .commit();
-    }
-
-    public void showAppointmentConfirmIFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance())
-                .addToBackStack("AppointmentConfirmIFragment")
-                .commit();
-    }
-
-    public void showPatientGalleryFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, PatientGalleryFragment.newInstance())
-                .addToBackStack("PatientGalleryFragment")
-                .commit();
-
-    }
-
-    public void showMyScheduleFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, MyScheduleFragment.newInstance())
-                .addToBackStack("MyScheduleFragment")
-                .commit();
-    }
-
-    public void showScheduleSychronizeFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, ScheduleSychronizeFragment.newInstance())
-                .addToBackStack("ScheduleSychronizeFragment")
-                .commit();
-    }
-
-    public void showMedicalRecordFragment() {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, MedicalRecordFragment.newInstance())
-                .addToBackStack("MedicalRecordFragment")
-                .commit();
-    }
-
-
-    public void showPatientRatingFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, PatientRatingFragment.newInstance())
-                .addToBackStack("PatientRatingFragment")
-                .commit();
-
-    }
-
-    public void showAppointmentSummaryFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, AppointmentSummaryFragment.newInstance())
-                .addToBackStack("AppointmentSummaryFragment")
-                .commit();
-
-    }
-
-    public void showDoctorDocumentFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, DoctorDocumentFragment.newInstance())
-                .addToBackStack("DoctorDocumentFragment")
-                .commit();
-
-    }
-
-     // temp method ...
+    @Override
     public void popTillFragment(String tag, int flag) {
-        getSupportFragmentManager().popBackStack(tag,flag);
+        getSupportFragmentManager().popBackStack(tag, flag);
 
     }
 
+
+    @Override
     public void popTopMostFragment() {
         getSupportFragmentManager().popBackStackImmediate();
 
     }
 
-    public void showSignOutDialog() {
-        SignOutDialogFragment fragment= SignOutDialogFragment.newInstance();
-        fragment.show(getSupportFragmentManager(),"TAG");
+    @Override
+    public void showDialog(String tag) {
+        if (tag.equals("SignOutDialog")) {
+            SignOutDialogFragment fragment = SignOutDialogFragment.newInstance();
+            fragment.show(getSupportFragmentManager(), "TAG");
+        }
     }
 
-    public void showNotificationFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, NotificationFragment.newInstance())
-                .addToBackStack("NotificationFragment")
-                .commit();
-
+    @Override
+    public void startActivity(String tag) {
+        if(tag.equals("RouterActivity")){
+            Intent intent=new Intent(this, RouterActivity.class);
+//          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Bundle b=new Bundle();
+            b.putInt("KEY_SIGN_OUT",1);
+            intent.putExtras(b);
+            startActivity(intent);
+            finish();
+        }
     }
 
-    public void showChatFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_container, ChatFragment.newInstance())
-                .addToBackStack("ChatFragment")
-                .commit();
 
-
-    }
 }

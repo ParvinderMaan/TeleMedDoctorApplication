@@ -18,11 +18,15 @@
     <string name="title_personal_info">Personal info</string>
     <string name="title_doctor_name">Doctors name</string>
     <string name="title_doctor_surname">Doctors surname</string>
+    <string name="title_birth_country">Birth-Country</string>
+    <string name="title_nationality">Nationality</string>
+    <string name="title_language_one">Language 1</string>
+    <string name="title_language_two">Language 2</string>
 
     <!--    SignUpIIIFragment-->
 
 
-    <string name="sign_up">Not a user? <b>Sign Up</b></string>
+    <string name="sign_up">Not a user ? <b>Sign Up</b></string>
 
     <!--    MyConsultFragment-->
     <string name="estimate_time"><b>Estimate</b> \n <font size="12">2 minutes </font></string>
@@ -46,5 +50,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_dob">Date of birth</string>
+    <string name="title_birth_city">Birth - City</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.telemed.doctor.splash;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,13 +14,22 @@ import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
-public class SplashFragment extends Fragment {
+public class SplashFragment extends BaseFragment {
     private static final int SPLASH_TIME_OUT = 5000;
+    private RouterFragmentSelectedListener mFragmentListener;
 
     public static SplashFragment  newInstance() {
         return new SplashFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
     }
 
     @Override
@@ -30,7 +40,6 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        Toast.makeText(getActivity(), ""+"onViewCreated", Toast.LENGTH_SHORT).show();
         mHandler.sendEmptyMessageDelayed(1, SPLASH_TIME_OUT);
     }
 
@@ -38,7 +47,6 @@ public class SplashFragment extends Fragment {
     @Override
     public void onDestroyView() {
         mHandler.removeMessages(1);
-//        Toast.makeText(getActivity(), ""+"onDestroyView", Toast.LENGTH_SHORT).show();
         super.onDestroyView();
     }
 
@@ -47,8 +55,8 @@ public class SplashFragment extends Fragment {
         @Override
         public void handleMessage(@NonNull Message msg) {
 
-            if(getActivity()!=null)
-               ((RouterActivity)getActivity()).showSignInFragment();
+            if(mFragmentListener!=null)
+                mFragmentListener.showFragment("SignInFragment");
 
 
         }

@@ -1,6 +1,7 @@
 package com.telemed.doctor.miscellaneous;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,20 +13,24 @@ import androidx.fragment.app.DialogFragment;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
-
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class SignOutDialogFragment extends DialogFragment {
 
-    private OnFragmentInteractionListener mListener;
 
-
+    private HomeFragmentSelectedListener mFragmentListener;
+    private static String TAG = "";
 
     public static SignOutDialogFragment newInstance() {
         return new SignOutDialogFragment();
     }
 
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @NonNull
     @Override
@@ -34,31 +39,41 @@ public class SignOutDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Log Out");
         builder.setMessage("Are you sure you would like to logout ?");
-
         builder.setPositiveButton("YES", (dialog, which) -> {
-            Intent intent=new Intent(getActivity(), RouterActivity.class);
-//          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            getActivity().finish();
 
+            TAG = "YES";dismiss();
         });
 
-        builder.setNegativeButton("NO", (dialog, which) -> dismiss());
+        builder.setNegativeButton("NO", (dialog, which) -> {
+            TAG = "NO";dismiss();
+        });
         return builder.create();
     }
-
-
-
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mFragmentListener = null;
     }
 
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+            switch (TAG){
+                case "YES":
+                    mFragmentListener.startActivity("RouterActivity");
+                    break;
+                case "NO":
+                    // nothing
+                    break;
+
+            }
     }
+
+
 }

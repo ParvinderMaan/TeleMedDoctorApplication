@@ -1,6 +1,7 @@
 package com.telemed.doctor.videocall;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,21 @@ import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class VideoCallTriggerFragment extends Fragment {
 
 
+    private HomeFragmentSelectedListener mFragmentListener;
+
     public static VideoCallTriggerFragment newInstance() {
         return new VideoCallTriggerFragment();
     }
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,16 +42,16 @@ public class VideoCallTriggerFragment extends Fragment {
         v.findViewById(R.id.ibtn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).popTopMostFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
             }
         });
 
         v.findViewById(R.id.btn_join_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).showVideoCallFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.showFragment("VideoCallFragment");
             }
         });
 

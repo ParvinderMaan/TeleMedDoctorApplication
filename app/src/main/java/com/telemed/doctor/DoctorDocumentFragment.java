@@ -1,6 +1,7 @@
 package com.telemed.doctor;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 /**
@@ -21,10 +23,16 @@ import com.telemed.doctor.home.HomeActivity;
 public class DoctorDocumentFragment extends Fragment {
 
 
+    private HomeFragmentSelectedListener mFragmentListener;
+
     public static DoctorDocumentFragment newInstance() {
         return new DoctorDocumentFragment();
     }
 
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,8 +45,8 @@ public class DoctorDocumentFragment extends Fragment {
         v.findViewById(R.id.ibtn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).popTopMostFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
             }
         });
 
@@ -47,8 +55,8 @@ public class DoctorDocumentFragment extends Fragment {
         btnMedicalRecord.setOnClickListener(v1 -> {
 
 
-            if (getActivity() != null)
-                ((HomeActivity) getActivity()).showMedicalRecordFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("MedicalRecordFragment");
 
         });
     }

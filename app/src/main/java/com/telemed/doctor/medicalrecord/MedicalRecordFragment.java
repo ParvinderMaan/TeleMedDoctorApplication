@@ -1,6 +1,7 @@
 package com.telemed.doctor.medicalrecord;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,17 +18,23 @@ import android.widget.ImageButton;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 public class MedicalRecordFragment extends Fragment {
     private RecyclerView rvPatientDrug,rvMedicalHistory,rvCurrentMedication;
     private ImageButton ibtnClose;
+    private HomeFragmentSelectedListener mFragmentListener;
 
 
     public static MedicalRecordFragment newInstance() {
         return new MedicalRecordFragment() ;
     }
 
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_medical_record, container, false);
@@ -44,8 +51,8 @@ public class MedicalRecordFragment extends Fragment {
         ibtnClose=(ImageButton)v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
 
-            if(getActivity()!=null){
-                ((HomeActivity)getActivity()).popTopMostFragment();
+            if(mFragmentListener!=null){
+                mFragmentListener.popTopMostFragment();
             }
         });
 

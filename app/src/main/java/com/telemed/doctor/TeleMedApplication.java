@@ -15,7 +15,7 @@ public class TeleMedApplication extends Application {
     public void onCreate() {
         super.onCreate();
         currentApplication = this;
-
+//implementation 'pub.devrel:easypermissions:3.0.0'
 
 //        ObjectWatcher mObjectWatcher= AppWatcher.INSTANCE.getObjectWatcher();
 //        AppWatcher.config = AppWatcher.config.copy(watchFragmentViews = false)

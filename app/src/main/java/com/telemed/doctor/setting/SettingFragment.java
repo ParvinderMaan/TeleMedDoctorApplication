@@ -3,6 +3,7 @@ package com.telemed.doctor.setting;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ import java.util.ArrayList;
  */
 public class SettingFragment extends Fragment {
     private TextView tvSelectedLanguage;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -34,7 +37,10 @@ public class SettingFragment extends Fragment {
         return new SettingFragment();
     }
 
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_setting, container, false);
@@ -47,18 +53,16 @@ public class SettingFragment extends Fragment {
         v.findViewById(R.id.ibtn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).popTopMostFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.popTopMostFragment();
             }
         });
         tvSelectedLanguage=v.findViewById(R.id.tv_selected_language);
         tvSelectedLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null){
-                    showLanguageDialog();
 
-                }
+                showLanguageDialog();
 
             }
         });
@@ -68,8 +72,8 @@ public class SettingFragment extends Fragment {
         v.findViewById(R.id.ibtn_change_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).showChangePasswordFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.showFragment("ChangePasswordFragment");
             }
         });
 
@@ -77,8 +81,8 @@ public class SettingFragment extends Fragment {
         v.findViewById(R.id.ibtn_term_and_condition).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                    ((HomeActivity)getActivity()).showTermAndConditionFragment();
+                if(mFragmentListener!=null)
+                    mFragmentListener.showFragment("TermAndConditionFragment");
             }
         });
 

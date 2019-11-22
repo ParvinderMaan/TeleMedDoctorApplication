@@ -1,6 +1,7 @@
 package com.telemed.doctor;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class PatientRatingFragment extends Fragment {
@@ -20,12 +22,16 @@ public class PatientRatingFragment extends Fragment {
              ibtnRatingStarFour, ibtnRatingStarFive;
      private RatingBar mRatingBar;
      private ImageButton ibtnClose;
+    private HomeFragmentSelectedListener mFragmentListener;
 
     public  static PatientRatingFragment newInstance() {
        return new PatientRatingFragment();
     }
 
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_patient_rating, container, false);
@@ -42,8 +48,8 @@ public class PatientRatingFragment extends Fragment {
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
-            if(getActivity()!=null){
-                ((HomeActivity)getActivity()).popTillFragment("MyConsultFragment",0);
+            if(mFragmentListener!=null){
+                mFragmentListener.popTillFragment("MyConsultFragment",0);
             }
 
         });

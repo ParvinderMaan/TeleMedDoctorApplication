@@ -234,6 +234,38 @@
 
                 </LinearLayout>
                 <!--           child-->
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_20sdp"
+
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorBlue"
+                        android:hint=""
+                        android:text=""
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        android:inputType="textEmailAddress" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NPI No"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp" />
+
+
+                </LinearLayout>
+                <!--           child-->
 
 
                 <RelativeLayout
@@ -250,38 +282,18 @@
                         android:text="@string/term_and_condition" />
 
                 </RelativeLayout>
-                <!--           child-->
-                <RelativeLayout
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/btn_s"
-                        android:layout_width="wrap_content"
-                        android:textColor="@drawable/selector_text_white"
-                        android:textStyle="bold"
-                        android:layout_centerHorizontal="true"
-                        android:paddingStart="@dimen/_40sdp"
-                        android:paddingEnd="@dimen/_40sdp"
-                        android:textAllCaps="false"
-                        android:background="@drawable/rounded_background_ii"
-                        android:gravity="center"
-                        android:layout_marginBottom="@dimen/_20sdp"
-                        android:layout_height="wrap_content"
-                        android:text="Attached Resume" />
-                </RelativeLayout>
 
 
 
                 <!--           child-->
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/btn_sign_up"
+                        android:id="@+id/btn_continue"
                         android:layout_width="wrap_content"
                         android:textColor="@drawable/selector_text_white"
                         android:textStyle="bold"
@@ -293,7 +305,7 @@
                         android:gravity="center"
                         android:textSize="@dimen/_14sdp"
                         android:layout_height="wrap_content"
-                        android:text="Sign Up" />
+                        android:text="Continue" />
                 </RelativeLayout>
 
                 <!--           child-->

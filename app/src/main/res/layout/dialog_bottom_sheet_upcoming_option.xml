@@ -2,18 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/colorWhite">
+    android:background="@color/colorBlue">
 
     <!-- NOTE: This list should be displayed in a list
     instead of nested layouts -->
 
     <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/screen_start_margin"
+        android:layout_marginEnd="@dimen/screen_end_margin"
         android:id="@+id/ll_images"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:gravity="center"
+        android:gravity="start"
+
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/_8sdp"
@@ -21,11 +26,12 @@
         android:paddingRight="@dimen/screen_end_padding"
         android:paddingTop="@dimen/_8sdp">
 
-        <!--        <androidx.appcompat.widget.AppCompatImageView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginRight="@dimen/_16sdp"-->
-        <!--            app:srcCompat="@drawable/ic_video_call" />-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_16sdp"
+                    app:srcCompat="@drawable/ic_earth" />
 
         <TextView
             android:paddingTop="@dimen/_5sdp"
@@ -34,20 +40,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Images"
-            android:textColor="#808080"
+            android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
     </LinearLayout>
-    <View
-        android:background="@color/colorLightGrey"
-        style="@style/DividerStyle"/>
+<!--    <View-->
+<!--        android:background="@color/colorLightGrey"-->
+<!--        style="@style/DividerStyle"/>-->
 
     <LinearLayout
         android:id="@+id/ll_video_call"
-        android:gravity="center"
+        android:gravity="start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/screen_start_margin"
+        android:layout_marginEnd="@dimen/screen_end_margin"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
@@ -55,18 +65,21 @@
         android:paddingRight="@dimen/screen_end_padding"
         android:paddingTop="8dp">
 
-        <!--        <androidx.appcompat.widget.AppCompatImageView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginRight="@dimen/_16sdp"-->
-        <!--            app:srcCompat="@drawable/ic_medical_record" />-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_marginRight="@dimen/_16sdp"
+            app:srcCompat="@drawable/ic_earth" />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Video Call"
-            android:textColor="#808080"
+            android:textColor="@color/colorWhite"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:textSize="16sp" />
@@ -78,13 +91,16 @@
 
 
 
-    <View
-        android:background="@color/colorLightGrey"
-        style="@style/DividerStyle"/>
+<!--    <View-->
+<!--        android:background="@color/colorLightGrey"-->
+<!--        style="@style/DividerStyle"/>-->
 
     <LinearLayout
         android:id="@+id/ll_medical_record"
-        android:gravity="center"
+        android:gravity="start"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/screen_start_margin"
+        android:layout_marginEnd="@dimen/screen_end_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -95,18 +111,19 @@
         android:paddingRight="@dimen/screen_end_padding"
         android:paddingTop="8dp">
 
-        <!--        <androidx.appcompat.widget.AppCompatImageView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginRight="@dimen/_16sdp"-->
-        <!--            app:srcCompat="@drawable/ic_medical_record" />-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/_16sdp"
+            app:srcCompat="@drawable/ic_earth" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Medical Record"
-            android:textColor="#808080"
+            android:textColor="@color/colorWhite"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:textSize="16sp" />

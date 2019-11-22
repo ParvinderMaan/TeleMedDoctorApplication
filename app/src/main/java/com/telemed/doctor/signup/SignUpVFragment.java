@@ -3,39 +3,30 @@ package com.telemed.doctor.signup;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
-
-import java.io.File;
-
-import static android.app.Activity.RESULT_OK;
+import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +41,7 @@ public class SignUpVFragment extends Fragment {
     private RelativeLayout rlDocOne, rlDocTwo, rlDocThree, rlDocFour, rlDocFive;
     private DocumentAdapter mDocumentAdapter;
     private RecyclerView rvDocument;
+    private RouterFragmentSelectedListener mFragmentListener;
 
 
     public SignUpVFragment() {
@@ -59,7 +51,11 @@ public class SignUpVFragment extends Fragment {
     public static SignUpVFragment newInstance() {
         return new SignUpVFragment();
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,13 +80,13 @@ public class SignUpVFragment extends Fragment {
 //        initListener();
 
 
-        v.findViewById(R.id.btn_sign_up).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Toast.makeText(getActivity(), "please til admin approval", Toast.LENGTH_SHORT).show();
-                if(getActivity()!=null)
-                    ((RouterActivity)getActivity()).popTillFragment("SignInFragment",0);
+                if(mFragmentListener!=null)
+                     mFragmentListener.popTillFragment("SignInFragment",0);
 
             }
         });

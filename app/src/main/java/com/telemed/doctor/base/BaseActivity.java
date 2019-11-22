@@ -1,6 +1,9 @@
 package com.telemed.doctor.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +17,10 @@ public class BaseActivity extends AppCompatActivity {
         return Common.isNetworkAvail(getApplicationContext());
     }
 
-    protected void makeToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+
+
+
+
 
 
 }
