@@ -1,23 +1,26 @@
 package com.telemed.doctor.signup;
 
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +30,8 @@ import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -35,7 +40,7 @@ public class SignUpIIFragment extends BaseFragment {
     private AppCompatTextView tvCancel;
     private RouterFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
-    private TextView edtDocName, edtDocSurname,edtDob,edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
+    private AppCompatEditText edtDocName, edtDocSurname,edtDob,edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
             edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail;
     private String mDocName, mDocSurname,mDob,mBirthCity, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
             mEmail;
@@ -72,14 +77,16 @@ public class SignUpIIFragment extends BaseFragment {
         btnContinue.setOnClickListener(mClickListener);
         tvCancel.setOnClickListener(mClickListener);
         edtDob.setOnClickListener(mClickListener);
+        edtBirthCity.setOnClickListener(mClickListener);
+        edtBirthCountry.setOnClickListener(mClickListener);
+        edtNationality.setOnClickListener(mClickListener);
+        edtSpeciality.setOnClickListener(mClickListener);
+        edtLanguageOne.setOnClickListener(mClickListener);
+        edtLanguageTwo.setOnClickListener(mClickListener);
+
 
         edtDocName.setOnEditorActionListener(mEditorActionListener);
         edtDocSurname.setOnEditorActionListener(mEditorActionListener);
-        edtBirthCountry.setOnEditorActionListener(mEditorActionListener);
-        edtNationality.setOnEditorActionListener(mEditorActionListener);
-        edtSpeciality.setOnEditorActionListener(mEditorActionListener);
-        edtLanguageOne.setOnEditorActionListener(mEditorActionListener);
-        edtLanguageTwo.setOnEditorActionListener(mEditorActionListener);
         edtAddr.setOnEditorActionListener(mEditorActionListener);
         edtEmail.setOnEditorActionListener(mEditorActionListener);
 
@@ -134,15 +141,100 @@ public class SignUpIIFragment extends BaseFragment {
                     return;
                 }
 
-                if (isFormValid()) {
+//                if (isFormValid()) {
                     attemptSignUp();
-                }
+//                }
+
+                break;
+
+            case R.id.edt_birth_city:
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_BIRTH_CITY" );
+
+                break;
+
+            case R.id.edt_birth_country:
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_BIRTH_COUNTRY" );
+
+                break;
+
+
+            case  R.id.edt_nationality:
+
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_NATIONALITY" );
+                break;
+
+            case  R.id.edt_speciality:
+              //  showSpecialityDialog();
+                if (mFragmentListener != null)
+                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_SPECIALITY" );
+                break;
+
+            case  R.id.edt_language_one:
+                   showLanguageDialog(edtLanguageOne);
+
+                break;
+
+            case  R.id.edt_language_two:
+                  showLanguageDialog(edtLanguageTwo);
 
                 break;
         }
 
 
     };
+
+    private void showSpecialityDialog() {
+
+        final ArrayList itemsSelected = new ArrayList();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppCompatAlertDialogStyle);
+        //   builder.setTitle("Select Language ");
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
+        builder.setCustomTitle(dialogView);
+        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
+        editText.setText("Select Speciality");
+        String []mLanguageItems=getResources().getStringArray(R.array.array_speciality);
+
+        builder.setMultiChoiceItems(mLanguageItems, null,
+                (dialog, selectedItemId, isSelected) -> {
+
+                    if (isSelected) {
+                        itemsSelected.add(selectedItemId);
+                    } else if (itemsSelected.contains(selectedItemId)) {
+                        itemsSelected.remove(Integer.valueOf(selectedItemId));
+                    }
+                });
+
+        builder.setSingleChoiceItems(mLanguageItems,-1,new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                edtSpeciality.setText(""+which);
+
+            }
+        });
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.title_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+        Dialog dialog = builder.create();
+        dialog.show();
+
+    }
 
     private void showDatePicker() {
 
@@ -164,7 +256,7 @@ public class SignUpIIFragment extends BaseFragment {
 
     private void attemptSignUp() {
         if (mFragmentListener != null)
-            mFragmentListener.showFragment("SignUpIIIFragment");
+            mFragmentListener.showFragment("SignUpIIIFragment", null);
 
     }
     /*
@@ -281,7 +373,8 @@ public class SignUpIIFragment extends BaseFragment {
 
                 case R.id.edt_doc_surname:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtDocSurname.isFocused()) edtDocSurname.clearFocus();  hideSoftKeyboard(getActivity());
+                        if (edtDocSurname.isFocused()) edtDocSurname.clearFocus();
+                        mFragmentListener.hideSoftKeyboard();
                         return true;
                     }
 
@@ -293,7 +386,7 @@ public class SignUpIIFragment extends BaseFragment {
                 case R.id.edt_addr:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         if (edtAddr.isFocused()) edtEmail.requestFocus();
-                        hideSoftKeyboard(getActivity());
+                        mFragmentListener.hideSoftKeyboard();
                         return true;
                     }
 
@@ -301,8 +394,8 @@ public class SignUpIIFragment extends BaseFragment {
 
                 case R.id.edt_email:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtEmail.isFocused()) edtEmail.clearFocus(); hideSoftKeyboard(getActivity());
-                        hideSoftKeyboard(getActivity());
+                        if (edtEmail.isFocused()) edtEmail.clearFocus();
+                        mFragmentListener.hideSoftKeyboard();
                         return true;
                     }
 
@@ -316,13 +409,63 @@ public class SignUpIIFragment extends BaseFragment {
         }
     };
 
-    private void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null && activity.getCurrentFocus() != null) {
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+
+    public void updateUi(String item, String tag) {
+        switch (tag) {
+
+            case "TAG_NATIONALITY":
+                edtNationality.setText(item);
+
+                break;
+            case "TAG_BIRTH_COUNTRY":
+                edtBirthCountry.setText(item);
+                break;
+
+            case "TAG_BIRTH_CITY":
+                edtBirthCity.setText(item);
+                break;
+
+            case "TAG_SPECIALITY":
+                edtSpeciality.setText(item);
+                break;
+
+
         }
+
     }
+    private void showLanguageDialog(AppCompatEditText edtLanguage) {
+        final String[] mProvinceItems = getResources().getStringArray(R.array.array_language);
+        final ArrayList itemsSelected = new ArrayList();
+        Dialog dialog;
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
+        // builder.setTitle("Select Your Region");
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
+        builder.setCustomTitle(dialogView);
+        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
+        editText.setText("Select your Language");
 
+        builder.setSingleChoiceItems(mProvinceItems, 0, null)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        try {
+                            int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                            edtLanguage.setText(mProvinceItems[selectedPosition]);
+                        } catch (Exception io) {
+                            io.printStackTrace();
+                        }
 
+                        // Do something useful withe the position of the selected radio button
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog = builder.create();
+        dialog.show();
+    }
 }

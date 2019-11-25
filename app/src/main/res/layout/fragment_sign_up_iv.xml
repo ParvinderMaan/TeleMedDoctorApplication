@@ -79,6 +79,7 @@
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
                         <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_routing_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorBlue"
@@ -109,6 +110,8 @@
                         android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_account_number"
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -152,6 +155,7 @@
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
                         <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorBlue"
@@ -184,6 +188,7 @@
                         <androidx.appcompat.widget.AppCompatEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/edt_post_code"
 
                             android:backgroundTint="@color/colorBlue"
                             android:hint=""

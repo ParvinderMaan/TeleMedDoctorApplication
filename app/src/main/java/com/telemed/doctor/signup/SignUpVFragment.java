@@ -75,7 +75,7 @@ public class SignUpVFragment extends Fragment {
                     ((RouterActivity)getActivity()).finish();
          */
 
-//        initView(v);
+        initView(v);
 //
 //        initListener();
 
@@ -141,10 +141,10 @@ public class SignUpVFragment extends Fragment {
         ibtnUploadFive = v.findViewById(R.id.ibtn_upload_five);
 
 
-        rlDocTwo.setVisibility(View.GONE);
-        rlDocThree.setVisibility(View.GONE);
-        rlDocFour.setVisibility(View.GONE);
-        rlDocFive.setVisibility(View.GONE);
+        rlDocTwo.setVisibility(View.INVISIBLE);
+        rlDocThree.setVisibility(View.INVISIBLE);
+        rlDocFour.setVisibility(View.INVISIBLE);
+        rlDocFive.setVisibility(View.INVISIBLE);
 
 
     }

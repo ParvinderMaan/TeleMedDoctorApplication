@@ -36,10 +36,16 @@
 
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="colorAccent">@color/colorBlue</item>
+    <item name="colorAccent">@color/colorRed</item>
     <item name="android:textColorPrimary">@color/colorBlack</item>
     <item name="android:background">@color/colorWhite</item>
     </style>
+
+<!--    <style name="AppCompatAlertDialogStyleII" parent="Theme.AppCompat.Light.Dialog.Alert">-->
+<!--        <item name="colorAccent">@color/colorRed</item>-->
+<!--        <item name="android:textColorPrimary">@color/colorBlack</item>-->
+<!--        <item name="android:background">@color/colorWhite</item>-->
+<!--    </style>-->
 
 
     <style name="PickerStyle" parent="Theme.AppCompat.Light.Dialog">

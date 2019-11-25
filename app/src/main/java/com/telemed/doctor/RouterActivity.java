@@ -1,18 +1,19 @@
 package com.telemed.doctor;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.password.ForgotPasswordFragment;
+import com.telemed.doctor.profile.ChooseTeritoryFragment;
 import com.telemed.doctor.signin.SignInFragment;
 import com.telemed.doctor.signup.SignUpIFragment;
 import com.telemed.doctor.signup.SignUpIIFragment;
@@ -37,11 +38,11 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
         switch (tag) {
             case 0:
-                showFragment("SplashFragment");
+                showFragment("SplashFragment",null );
                 break;
 
             case 1:
-                showFragment("SignInFragment");
+                showFragment("SignInFragment",null );
                 break;
         }
 
@@ -49,38 +50,38 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
-    public void showFragment(String tag) {
+    public void showFragment(String tag, String payload) {
 
         switch (tag) {
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SplashFragment.newInstance())
+                        .add(R.id.fl_container, SplashFragment.newInstance(),"SplashFragment")
 //                      .addToBackStack("SplashFragment")
                         .commit();
                 break;
             case "SignInFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignInFragment.newInstance())
+                        .add(R.id.fl_container, SignInFragment.newInstance(),"SignInFragment")
                         .addToBackStack("SignInFragment")
                         .commit();
                 break;
 
             case "SignUpIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIFragment.newInstance())
+                        .add(R.id.fl_container, SignUpIFragment.newInstance(),"SignUpIFragment")
                         .addToBackStack("SignUpIFragment")
                         .commit();
                 break;
             case "SignUpIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIFragment.newInstance())
+                        .add(R.id.fl_container, SignUpIIFragment.newInstance(),"SignUpIIFragment")
                         .addToBackStack("SignUpIIFragment")
                         .commit();
                 break;
 
             case "SignUpIIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIIFragment.newInstance())
+                        .add(R.id.fl_container, SignUpIIIFragment.newInstance(), "SignUpIIIFragment")
                         .addToBackStack("SignUpIIIFragment")
                         .commit();
                 break;
@@ -88,22 +89,29 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
             case "SignUpIVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIVFragment.newInstance())
+                        .add(R.id.fl_container, SignUpIVFragment.newInstance(),"SignUpIVFragment")
                         .addToBackStack("SignUpIVFragment")
                         .commit();
                 break;
 
             case "SignUpVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpVFragment.newInstance())
+                        .add(R.id.fl_container, SignUpVFragment.newInstance(),"SignUpVFragment")
                         .addToBackStack("SignUpVFragment")
                         .commit();
                 break;
 
             case "ForgotPasswordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, ForgotPasswordFragment.newInstance())
+                        .add(R.id.fl_container, ForgotPasswordFragment.newInstance(),"ForgotPasswordFragment")
                         .addToBackStack("ForgotPasswordFragment")
+                        .commit();
+                break;
+
+            case "ChooseTeritoryFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, ChooseTeritoryFragment.newInstance(payload),"ChooseTeritoryFragment")
+                        .addToBackStack("ChooseTeritoryFragment")
                         .commit();
                 break;
 
@@ -138,6 +146,38 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     public void startActivity(String tag) {
         if (tag.equals("HomeActivity"))
             startActivity(new Intent(this, HomeActivity.class));
+
+    }
+
+    @Override
+    public void hideSoftKeyboard() {
+
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
+        }
+
+
+    }
+
+    @Override
+    public void sendDataToFragment(String fragmentTag, String data, String tag) {
+
+
+
+            switch (fragmentTag){
+
+                case "SignUpIIFragment":
+                    SignUpIIFragment mSignUpIIFragment= (SignUpIIFragment) getSupportFragmentManager().findFragmentByTag("SignUpIIFragment");
+                    if (mSignUpIIFragment != null) {
+                        mSignUpIIFragment.updateUi(data,tag);
+                    }
+                    break;
+            }
 
     }
 

@@ -6,8 +6,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +18,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
-public class SignUpIIIFragment extends Fragment {
-
-
+public class SignUpIIIFragment extends BaseFragment {
+    private AppCompatEditText edtMedicalDegree, edtMdWhere, edtOtherDegree, edtMdOtrWhere, edtDea, edtNpiNo;
     private TextView tvCancel;
     private Button btnContinue;
     private RouterFragmentSelectedListener mFragmentListener;
+    private AppCompatCheckBox cboxReadAndAccept;
+    private String mMedicalDegree, mMdWhere, mOtherDegree, mMdOtrWhere, mDea, mNpiNo;
+    private boolean isReadAndAccept;
+
 
     public SignUpIIIFragment() {
         // Required empty public constructor
@@ -47,31 +54,113 @@ public class SignUpIIIFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        initView(v);
+        initListener(v);
+
+
+
+
+
+
+
+
+    }
+
+    private void initListener(View v) {
+        tvCancel.setOnClickListener(v1 -> {
+
+            if(mFragmentListener!=null)
+                mFragmentListener.popTopMostFragment();
+
+
+        });
+
+        btnContinue.setOnClickListener(v12 -> {
+
+            if(mFragmentListener!=null)
+                mFragmentListener.showFragment("SignUpIVFragment",null );
+
+
+
+        });
+
+    }
+
+    private void initView(View v) {
         tvCancel=v.findViewById(R.id.tv_cancel);
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(mFragmentListener!=null)
-                    mFragmentListener.popTopMostFragment();
-
-
-            }
-        });
-
         btnContinue =v.findViewById(R.id.btn_continue);
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                 if(mFragmentListener!=null)
-                     mFragmentListener.showFragment("SignUpIVFragment");
+        edtMedicalDegree=v.findViewById(R.id.edt_medical_degree);
+        edtMdWhere=v.findViewById(R.id.edt_md_where);
+        edtOtherDegree=v.findViewById(R.id.edt_other_degree);
+        edtMdOtrWhere=v.findViewById(R.id.edt_md_otr_where);
+        edtDea=v.findViewById(R.id.edt_dea);
+        edtNpiNo=v.findViewById(R.id.edt_npi_no);
+        cboxReadAndAccept=v.findViewById(R.id.cbox_read_and_accept);
+
+//----------------------------------------------------------------
+
+    }
 
 
+    private boolean isFormValid() {
 
-            }
-        });
+        mMedicalDegree=edtMedicalDegree.getText().toString();
+        mMdWhere=edtMdWhere.getText().toString();;
+//        mOtherDegree=edtOtherDegree.getText().toString();;
+//        mMdOtrWhere=edtMdOtrWhere.getText().toString();;
+        mDea=edtDea.getText().toString();;
+        mNpiNo=edtNpiNo.getText().toString();;
+        isReadAndAccept=cboxReadAndAccept.isChecked();
 
 
+        if (TextUtils.isEmpty(mMedicalDegree)) {
+            edtMedicalDegree.setError("Enter medical degree");
+            return false;
+        }
+
+        if (mMedicalDegree.contains(" ")) {
+            edtMedicalDegree.setError("No Spaces Allowed");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mMdWhere)) {
+            edtMdWhere.setError("Enter medical degree place");
+            return false;
+        }
+
+        if (mMdWhere.contains(" ")) {
+            edtMdWhere.setError("No Spaces Allowed");
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(mDea)) {
+            edtDea.setError("Enter Dea");
+            return false;
+        }
+
+        if (mDea.contains(" ")) {
+            edtDea.setError("No Spaces Allowed");
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(mNpiNo)) {
+            edtNpiNo.setError("Enter Npi");
+            return false;
+        }
+
+        if (mNpiNo.contains(" ")) {
+            edtNpiNo.setError("No Spaces Allowed");
+            return false;
+        }
+
+        if (!isReadAndAccept) {
+            makeToast("Please read the terms and conditions");
+            return false;
+        }
+
+        return true;
     }
 }

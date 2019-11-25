@@ -46,11 +46,48 @@
     </string-array>
 
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
-    <string name="term_and_condition">I have Read and Accept <b>Terms of Use </b>and<b>Privacy Policy</b></string>
+    <string name="term_and_condition">I have Read and Accept <b>Terms of Use</b> and <b>Privacy Policy</b></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_dob">Date of birth</string>
     <string name="title_birth_city">Birth - City</string>
 
+
+    <!--    DUMMY LIST -->
+    <string-array name="array_speciality">
+        <item>General Surgery</item>
+        <item>Cardiothoracic Surgery</item>
+        <item>Vascular Surgery</item>
+        <item>Cosmetic and Reconstructive Surgery</item>
+        <item>Colorectal Surgery</item>
+        <item>Surgical Oncology</item>
+        <item>Transplant Surgery</item>
+        <item>Trauma Surgery</item>
+        <item>Surgical Endocrinology</item>
+        <item>Orthopedic Surgery</item>
+        <item>Neurosurgery</item>
+        <item>Urology</item>
+        <item>ENT</item>
+        <item>Ophthalmology</item>
+        <item>Obstetrics</item>
+        <item>Gynecology</item>
+        <item>Dermatology</item>
+        <item>Neurology</item>
+        <item>Pathology</item>
+        <item>Radiology</item>
+        <item>Anesthesiology</item>
+        <item>Psychiatry</item>
+        <item>Pediatrics</item>
+        <item>Reproductive Endocrinology</item>
+        <item>Gynecologic Oncology</item>
+        <item>Urogynecology</item>
+        <item>Hand Surgeons</item>
+        <item>Shoulder Surgeons</item>
+        <item>Knee Surgeons</item>
+        <item>Hip Surgeons</item>
+        <item>Spine Surgeons</item>
+        <item>Sports Medicine</item>
+        <item>Orthopedic Oncology</item>
+    </string-array>
 </resources>

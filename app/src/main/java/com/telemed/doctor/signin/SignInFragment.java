@@ -4,21 +4,18 @@ package com.telemed.doctor.signin;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,26 +26,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.telemed.doctor.Post;
 import com.telemed.doctor.R;
-import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.network.ApiResponse;
-import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.Status;
-import com.telemed.doctor.network.WebService;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class SignInFragment extends BaseFragment {
@@ -149,13 +133,13 @@ public class SignInFragment extends BaseFragment {
             case R.id.tv_sign_up:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("SignUpIFragment");
+                    mFragmentListener.showFragment("SignUpIFragment", null);
                 break;
 
             case R.id.tv_forgot_password:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ForgotPasswordFragment");
+                    mFragmentListener.showFragment("ForgotPasswordFragment",null );
                 break;
 
             case R.id.btn_sign_in:

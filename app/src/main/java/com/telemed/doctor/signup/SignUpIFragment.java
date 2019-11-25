@@ -1,7 +1,6 @@
 package com.telemed.doctor.signup;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -177,7 +175,7 @@ public class SignUpIFragment extends BaseFragment {
 
     private void attemptSignUp() {
         if (mFragmentListener != null)
-            mFragmentListener.showFragment("SignUpIIFragment");
+            mFragmentListener.showFragment("SignUpIIFragment",null );
 
     }
 
@@ -204,7 +202,10 @@ public class SignUpIFragment extends BaseFragment {
 
                 case R.id.edt_confirm_password:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if(edtUsrConfirmPassword.isFocused())  edtUsrConfirmPassword.clearFocus(); hideSoftKeyboard(getActivity());
+                        if (edtUsrConfirmPassword.isFocused()){
+                            edtUsrConfirmPassword.clearFocus();
+                            mFragmentListener.hideSoftKeyboard();
+                    }
                         return true;
                     }
 
@@ -234,12 +235,7 @@ public class SignUpIFragment extends BaseFragment {
     }
 
 
-    private void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-        }
-    }
+
 
     public void setViewState(boolean b){
         edtUsrEmail.setEnabled(b);

@@ -79,6 +79,7 @@
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
                         <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_medical_degree"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorBlue"
@@ -109,9 +110,9 @@
                         android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_md_where"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
                             android:backgroundTint="@color/colorBlue"
                             android:hint=""
                             android:text=""
@@ -144,9 +145,9 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_other_degree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
@@ -177,6 +178,7 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_md_otr_where"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlue"
@@ -209,6 +211,7 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_dea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlue"
@@ -241,6 +244,7 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_npi_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlue"
@@ -273,7 +277,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/checkBox"
+                        android:id="@+id/cbox_read_and_accept"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
