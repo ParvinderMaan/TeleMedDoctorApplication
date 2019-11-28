@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/ll_root"
     android:clickable="true"
     android:focusable="true"
+    android:overScrollMode="never"
     android:background="@color/colorBlue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,8 +15,10 @@
     <RelativeLayout
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_weight=".25"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/pb_bar"
+            layout="@layout/layout_progress_bar"/>
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -32,6 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Doctor App" />
+
+
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,6 +97,7 @@
 
                     <TextView
                         android:id="@+id/tv_doc_one"
+                        android:layout_toLeftOf="@+id/ibtn_upload_one"
                         android:textColorHint="@color/colorWhite"
                         android:hint="Click to add (doc/pdf)"
                         android:layout_alignParentStart="true"
@@ -98,20 +105,12 @@
                         android:textSize="20sp"
                         android:ellipsize="end"
                         android:maxLength="15"
-                        android:layout_toLeftOf="@+id/pb_bar_one"
                         android:textColor="@color/colorWhite"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/pb_bar_one"
-                        android:visibility="invisible"
-                        android:layout_toLeftOf="@+id/ibtn_upload_one"
-                        android:layout_centerHorizontal="true"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+
 
                     <ImageButton
                         android:id="@+id/ibtn_upload_one"
@@ -143,22 +142,23 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:textSize="20sp"
+                        android:layout_toLeftOf="@+id/ibtn_upload_two"
+
                         android:ellipsize="end"
                         android:maxLength="15"
-                        android:layout_toLeftOf="@+id/pb_bar_two"
                         android:textColor="@color/colorWhite"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/pb_bar_two"
-                        android:visibility="invisible"
-                        android:layout_toLeftOf="@+id/ibtn_upload_two"
-                        android:layout_centerHorizontal="true"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/pb_bar_two"-->
+<!--                        android:visibility="invisible"-->
+<!--                        android:layout_toLeftOf="@+id/ibtn_upload_two"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        style="@style/TextAppearance.AppCompat.Small"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="@dimen/_20sdp"/>-->
 
                     <ImageButton
                         android:id="@+id/ibtn_upload_two"
@@ -193,20 +193,21 @@
                         android:textSize="20sp"
                         android:ellipsize="end"
                         android:maxLength="15"
-                        android:layout_toLeftOf="@+id/pb_bar_three"
+                        android:layout_toLeftOf="@+id/ibtn_upload_three"
+
                         android:textColor="@color/colorWhite"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/pb_bar_three"
-                        android:visibility="invisible"
-                        android:layout_toLeftOf="@+id/ibtn_upload_three"
-                        android:layout_centerHorizontal="true"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/pb_bar_three"-->
+<!--                        android:visibility="invisible"-->
+<!--                        android:layout_toLeftOf="@+id/ibtn_upload_three"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        style="@style/TextAppearance.AppCompat.Small"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="@dimen/_20sdp"/>-->
 
                     <ImageButton
                         android:id="@+id/ibtn_upload_three"
@@ -241,20 +242,21 @@
                         android:textSize="20sp"
                         android:ellipsize="end"
                         android:maxLength="15"
-                        android:layout_toLeftOf="@+id/pb_bar_four"
+                        android:layout_toLeftOf="@+id/ibtn_upload_four"
+
                         android:textColor="@color/colorWhite"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/pb_bar_four"
-                        android:visibility="invisible"
-                        android:layout_toLeftOf="@+id/ibtn_upload_four"
-                        android:layout_centerHorizontal="true"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/pb_bar_four"-->
+<!--                        android:visibility="invisible"-->
+<!--                        android:layout_toLeftOf="@+id/ibtn_upload_four"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        style="@style/TextAppearance.AppCompat.Small"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="@dimen/_20sdp"/>-->
 
                     <ImageButton
                         android:id="@+id/ibtn_upload_four"
@@ -295,14 +297,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/pb_bar_five"
-                        android:visibility="invisible"
-                        android:layout_toLeftOf="@+id/ibtn_upload_five"
-                        android:layout_centerHorizontal="true"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/pb_bar_five"-->
+<!--                        android:visibility="invisible"-->
+<!--                        android:layout_toLeftOf="@+id/ibtn_upload_five"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        style="@style/TextAppearance.AppCompat.Small"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="@dimen/_20sdp"/>-->
 
                     <ImageButton
                         android:id="@+id/ibtn_upload_five"

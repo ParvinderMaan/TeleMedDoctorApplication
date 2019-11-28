@@ -1,47 +1,65 @@
 package com.telemed.doctor.signup;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignUpVFragment extends Fragment {
-    private int REQUEST_CODE_DOC = 121;
+public class SignUpVFragment extends BaseFragment {
+    private static final int REQUEST_CODE_STORAGE = 210;
+    private static final int REQUEST_CODE_DOCUMENT = 211;
 
 
     private TextView tvDocOne, tvDocTwo, tvDocThree, tvDocFour, tvDocFive;
-    private ProgressBar pbBarOne, pbBarTwo, pbBarThree, pbBarFour, pbBarFive;
     private ImageButton ibtnUploadOne, ibtnUploadTwo, ibtnUploadThree, ibtnUploadFour, ibtnUploadFive;
     private RelativeLayout rlDocOne, rlDocTwo, rlDocThree, rlDocFour, rlDocFive;
     private DocumentAdapter mDocumentAdapter;
     private RecyclerView rvDocument;
     private RouterFragmentSelectedListener mFragmentListener;
+    private LinearLayout llRoot;
+    private ProgressBar pbBar;
 
 
     public SignUpVFragment() {
@@ -77,14 +95,14 @@ public class SignUpVFragment extends Fragment {
 
         initView(v);
 //
-//        initListener();
+        initListener();
 
 
         v.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity(), "please til admin approval", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "please wait till admin approval", Toast.LENGTH_SHORT).show();
                 if(mFragmentListener!=null)
                      mFragmentListener.popTillFragment("SignInFragment",0);
 
@@ -95,26 +113,78 @@ public class SignUpVFragment extends Fragment {
 
     private void initListener() {
 
-        tvDocOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDocument(1);
+        tvDocOne.setOnClickListener(v -> {
 
-
+            if(!isRuntimePermissionGranted()){
+                requestRuntimePermission();
+                return;
             }
+
+            openDocument(1);
+
+
         });
+        tvDocTwo.setOnClickListener(v -> openDocument(2));
+        tvDocThree.setOnClickListener(v -> openDocument(3));
+        tvDocFour.setOnClickListener(v -> openDocument(4));
+        tvDocFive.setOnClickListener(v -> openDocument(5));
+
 
         ibtnUploadOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pbBarOne.setVisibility(View.VISIBLE);
+                pbBar.setVisibility(View.VISIBLE);
                 mHandler.sendEmptyMessageDelayed(1,3000);
 
             }
         });
+
+        ibtnUploadTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pbBar.setVisibility(View.VISIBLE);
+                mHandler.sendEmptyMessageDelayed(2,3000);
+
+            }
+        });
+
+        ibtnUploadThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pbBar.setVisibility(View.VISIBLE);
+                mHandler.sendEmptyMessageDelayed(3,3000);
+
+            }
+        });
+
+        ibtnUploadFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pbBar.setVisibility(View.VISIBLE);
+                mHandler.sendEmptyMessageDelayed(4,3000);
+
+            }
+        });
+
+
+        ibtnUploadFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pbBar.setVisibility(View.VISIBLE);
+                mHandler.sendEmptyMessageDelayed(5,3000);
+
+            }
+        });
+
+
+
+
+
     }
 
     private void initView(View v) {
+
+        llRoot= v.findViewById(R.id.ll_root);
         rlDocOne = v.findViewById(R.id.rl_doc_one);
         rlDocTwo = v.findViewById(R.id.rl_doc_two);
         rlDocThree = v.findViewById(R.id.rl_doc_three);
@@ -128,11 +198,14 @@ public class SignUpVFragment extends Fragment {
         tvDocFour = v.findViewById(R.id.tv_doc_four);
         tvDocFive = v.findViewById(R.id.tv_doc_five);
 
-        pbBarOne = v.findViewById(R.id.pb_bar_one);
-        pbBarTwo = v.findViewById(R.id.pb_bar_two);
-        pbBarThree = v.findViewById(R.id.pb_bar_three);
-        pbBarFour = v.findViewById(R.id.pb_bar_four);
-        pbBarFive = v.findViewById(R.id.pb_bar_five);
+          pbBar = v.findViewById(R.id.pb_bar);
+          pbBar.setVisibility(View.INVISIBLE);
+          pbBar.getIndeterminateDrawable()
+                .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
+//        pbBarTwo = v.findViewById(R.id.pb_bar_two);
+//        pbBarThree = v.findViewById(R.id.pb_bar_three);
+//        pbBarFour = v.findViewById(R.id.pb_bar_four);
+//        pbBarFive = v.findViewById(R.id.pb_bar_five);
 
         ibtnUploadOne = v.findViewById(R.id.ibtn_upload_one);
         ibtnUploadTwo = v.findViewById(R.id.ibtn_upload_two);
@@ -184,54 +257,166 @@ public class SignUpVFragment extends Fragment {
 //
 //        }
 //    };
+    public void openDocument(int index) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("keyName", ""+index);
+//        intent.setType("file/*");
+        intent.setType("application/pdf");
 
-    public void openDocument(int i) {
-        Bundle b = new Bundle();
-        b.putInt("KEY_DOC", 1);
+        startActivityForResult(intent, REQUEST_CODE_DOCUMENT);
+//        Intent in = new Intent(getActivity(), NormalFilePickActivity.class);
+//        Bundle b=new Bundle();
+//        b.putInt("FILE_INFO",index);
+//        in.putExtra("FILE_INDEX",b);
+//        in.putExtra(Constant.MAX_NUMBER, 1);
+//        in.putExtra(NormalFilePickActivity.SUFFIX, new String[]{"doc", "docx", "pdf"});
+//        startActivityForResult(in, REQUEST_CODE_PICK_FILE);
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        String[] mimetypes = {"application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-        startActivityForResult(intent, REQUEST_CODE_DOC, b);
+
+     //   -------------->
+
+
+
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // Check which request it is that we're responding to
-        //Detects request codes
-        if (requestCode == REQUEST_CODE_DOC && resultCode == Activity.RESULT_OK) {
-            Uri selectedFile = data.getData();
-            int x = data.getIntExtra("KEY_DOC", 0);
-            if (x == 1) {
-                tvDocOne.setText("" + selectedFile);
-                ibtnUploadOne.setVisibility(View.VISIBLE);
+        super.onActivityResult(requestCode,resultCode,data);
+        if (resultCode==Activity.RESULT_OK && requestCode == REQUEST_CODE_DOCUMENT && data != null) {
+            String index=data.getStringExtra("keyName");
 
-            } else if (x == 2) {
-                tvDocTwo.setText("" + selectedFile);
-            } else if (x == 3) {
-                tvDocThree.setText("" + selectedFile);
-            } else if (x == 4) {
-                tvDocFour.setText("" + selectedFile);
-            } else if (x == 5) {
-                tvDocFive.setText("" + selectedFile);
+            Uri uri=data.getData();
+
+                Log.e("file path -->",""+uri);
+                switch (index) {
+                    case "1":
+                        tvDocOne.setText(""+uri);
+
+                        break;
+
+                    case "2":
+                        tvDocTwo.setText(""+uri);
+                        break;
+
+                    case "3":
+                        tvDocThree.setText(""+uri);
+                        break;
+
+                    case "4":
+                        tvDocFour.setText(""+uri);
+                        break;
+
+                    case "5":
+                        tvDocFive.setText(""+uri);
+                        break;
+
+                    default:
+                        makeToast("something went wrong");
+
+                }
+
             }
-
         }
-    }
+
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            switch (msg.what){
 
-            pbBarOne.setVisibility(View.INVISIBLE);
+               case 1:
+
+                   pbBar.setVisibility(View.INVISIBLE);
+                   ibtnUploadOne.setImageResource(R.drawable.ic_success);
+                   rlDocTwo.setVisibility(View.VISIBLE);
+                   break;
+
+               case 2:
+                   pbBar.setVisibility(View.INVISIBLE);
+                   ibtnUploadTwo.setImageResource(R.drawable.ic_success);
+                   rlDocThree.setVisibility(View.VISIBLE);
+                   break;
+
+               case 3:
+                   pbBar.setVisibility(View.INVISIBLE);
+                   ibtnUploadThree.setImageResource(R.drawable.ic_success);
+                   rlDocFour.setVisibility(View.VISIBLE);
+                   break;
+
+               case 4:
+                   pbBar.setVisibility(View.INVISIBLE);
+                   ibtnUploadFour.setImageResource(R.drawable.ic_success);
+                   rlDocFive.setVisibility(View.VISIBLE);
+                   break;
+
+               case 5:
+                   pbBar.setVisibility(View.INVISIBLE);
+                   ibtnUploadFive.setImageResource(R.drawable.ic_success);
+                   break;
+           }
+
+
 //---------------------------------------------------------------
 
 //---------------------------------------------------------------
-            ibtnUploadOne.setImageResource(R.drawable.ic_success);
-            rlDocTwo.setVisibility(View.VISIBLE);
+
         }
     };
 
+
+    private boolean isRuntimePermissionGranted() {
+        int reqOne = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
+        return reqOne == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestRuntimePermission() {
+        requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_STORAGE:
+                if (grantResults.length > 0) {
+
+                    boolean permOneAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    if (permOneAccepted)
+//                        Snackbar.make(rlRootView, "Permission Granted, Now you can access device data", Snackbar.LENGTH_LONG).show();
+                        openDocument(1);
+                    else {
+
+                        Snackbar.make(llRoot, "Permission Denied, You cannot access device data", Snackbar.LENGTH_LONG).show();
+
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+//                                showMessageOKCancel("You need to allow access to both the permissions",
+//                                        new DialogInterface.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(DialogInterface dialog, int which) {
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION, CAMERA},
+//                                                            PERMISSION_REQUEST_CODE);
+//                                                }
+//                                            }
+//                                        });
+//                                return;
+//                            }
+//                        }
+
+                    }
+                }
+
+
+                break;
+        }
+    }
 }
+
+/*
+content://com.google.android.apps.docs.storage/document/acc%3D1%3Bdoc%3Dencoded%3DV1SSAZlixDW44x4WEOolAzFUXoGJBhg5Up0I8Uyn6gKP5n9C%2BWCyrQs%3D
+
+content://com.android.providers.downloads.documents/document/1961
+ */
