@@ -50,7 +50,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class SignUpVFragment extends BaseFragment {
     private static final int REQUEST_CODE_STORAGE = 210;
     private static final int REQUEST_CODE_DOCUMENT = 211;
-
+    private static int docIndex;
 
     private TextView tvDocOne, tvDocTwo, tvDocThree, tvDocFour, tvDocFive;
     private ImageButton ibtnUploadOne, ibtnUploadTwo, ibtnUploadThree, ibtnUploadFour, ibtnUploadFive;
@@ -259,7 +259,8 @@ public class SignUpVFragment extends BaseFragment {
 //    };
     public void openDocument(int index) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.putExtra("keyName", ""+index);
+//        intent.putExtra("keyName", ""+index);
+        docIndex=index;
 //        intent.setType("file/*");
         intent.setType("application/pdf");
 
@@ -285,30 +286,30 @@ public class SignUpVFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode==Activity.RESULT_OK && requestCode == REQUEST_CODE_DOCUMENT && data != null) {
-            String index=data.getStringExtra("keyName");
+         //   String index=data.getStringExtra("keyName");
 
             Uri uri=data.getData();
 
                 Log.e("file path -->",""+uri);
-                switch (index) {
-                    case "1":
+                switch (docIndex) {
+                    case 1:
                         tvDocOne.setText(""+uri);
 
                         break;
 
-                    case "2":
+                    case 2:
                         tvDocTwo.setText(""+uri);
                         break;
 
-                    case "3":
+                    case 3:
                         tvDocThree.setText(""+uri);
                         break;
 
-                    case "4":
+                    case 4:
                         tvDocFour.setText(""+uri);
                         break;
 
-                    case "5":
+                    case 5:
                         tvDocFive.setText(""+uri);
                         break;
 
@@ -327,7 +328,6 @@ public class SignUpVFragment extends BaseFragment {
             switch (msg.what){
 
                case 1:
-
                    pbBar.setVisibility(View.INVISIBLE);
                    ibtnUploadOne.setImageResource(R.drawable.ic_success);
                    rlDocTwo.setVisibility(View.VISIBLE);

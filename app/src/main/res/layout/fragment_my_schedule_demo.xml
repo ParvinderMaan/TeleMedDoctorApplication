@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:clickable="true"
+android:focusable="true"
+android:focusableInTouchMode="true"
+android:background="@color/colorWhite"
+android:layout_height="match_parent"
+tools:context=".schedule.MyScheduleDemoFragment">
+<!--    header layout-->
+<RelativeLayout
+    android:id="@+id/ll_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/screen_start_padding"
+    android:paddingTop="@dimen/screen_top_padding"
+    android:paddingEnd="@dimen/screen_end_padding"
+    android:paddingBottom="@dimen/screen_bottom_padding">
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Schedule"
+        android:textColor="@color/colorBlue"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/ibtn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_cross_blue"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp" />
+</RelativeLayout>
+<!--    body layout-->
+
+<ScrollView
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:layout_below="@+id/ll_header"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_synchronize_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/rounded_background_i"
+            android:drawablePadding="@dimen/_10sdp"
+            android:minHeight="0dp"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="Synchronize Schedule"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:drawableTint="@color/colorWhite"
+            android:textColor="@drawable/selector_text_blue"
+            android:textStyle="bold"
+            app:drawableRightCompat="@drawable/ic_arrow_right" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:paddingBottom="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/rounded_background_iii"
+                android:orientation="vertical">
+
+
+
+
+
+
+
+
+                <View
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/colorLightWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"/>
+
+               <LinearLayout
+                   android:orientation="vertical"
+                   android:id="@+id/ll_my_schedule"
+                   android:animateLayoutChanges="true"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+       <RelativeLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <ImageButton
+               android:id="@+id/tv_select_week_day"
+               android:layout_margin="@dimen/_5sdp"
+               android:gravity="center"
+               android:background="@android:color/transparent"
+               app:srcCompat="@drawable/ic_arrow_left_blue"
+               android:layout_alignParentStart="true"
+               android:layout_width="wrap_content"
+               android:paddingStart="@dimen/_5sdp"
+               android:paddingTop="@dimen/_5sdp"
+               android:paddingBottom="@dimen/_5sdp"
+               android:paddingEnd="@dimen/_5sdp"
+               android:minWidth="0dp"
+               android:layout_marginTop="@dimen/_5sdp"
+               android:layout_height="wrap_content"
+               android:includeFontPadding="false"
+               android:textStyle="bold"
+               android:textColor="@color/colorWhite"
+               android:textSize="16sp" />
+           <TextView
+               android:id="@+id/tv_title"
+               android:text="November"
+               android:textStyle="bold"
+               android:layout_centerVertical="true"
+               android:layout_centerHorizontal="true"
+               android:textColor="@color/colorWhite"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+           <ImageButton
+               android:id="@+id/tv_select_timing"
+               android:layout_margin="@dimen/_5sdp"
+               android:gravity="center"
+               android:background="@android:color/transparent"
+               app:srcCompat="@drawable/ic_arrow_right_blue"
+               android:layout_width="wrap_content"
+               android:paddingStart="@dimen/_5sdp"
+               android:paddingTop="@dimen/_5sdp"
+               android:paddingBottom="@dimen/_5sdp"
+               android:paddingEnd="@dimen/_5sdp"
+               android:minWidth="0dp"
+               android:layout_alignParentEnd="true"
+               android:layout_marginTop="@dimen/_5sdp"
+               android:layout_height="wrap_content"
+               android:includeFontPadding="false"
+               android:textStyle="bold"
+               android:textColor="@color/colorWhite"
+               android:textSize="16sp" />
+       </RelativeLayout>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical">
+
+                       <TableLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:stretchColumns="*">
+
+                           <TableRow
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_margin="@dimen/_1sdp"
+                               android:layout_marginTop="@dimen/_10sdp"
+                               android:paddingTop="@dimen/_5sdp"
+                               android:paddingBottom="@dimen/_5sdp">
+
+                               <!-- first element of the row-->
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="1"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="2"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="3"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="4"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="5"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="6"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal"/>
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="7"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+                           </TableRow>
+                       </TableLayout>
+
+                   </LinearLayout>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical">
+
+                       <TableLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:stretchColumns="*">
+
+                           <TableRow
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_margin="@dimen/_1sdp"
+                               android:paddingTop="@dimen/_5sdp"
+                               android:paddingBottom="@dimen/_5sdp">
+
+                               <!-- first element of the row-->
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="8"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="9"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="10"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="11"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="5"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="12"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal"/>
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="13"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+                           </TableRow>
+                       </TableLayout>
+
+                   </LinearLayout>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical">
+
+                       <TableLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:stretchColumns="*">
+
+                           <TableRow
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_margin="@dimen/_1sdp"
+                               android:paddingTop="@dimen/_5sdp"
+                               android:paddingBottom="@dimen/_5sdp">
+
+                               <!-- first element of the row-->
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="14"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="15"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="16"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="17"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="18"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="19"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal"/>
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="20"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+                           </TableRow>
+                       </TableLayout>
+
+                   </LinearLayout>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical">
+
+                       <TableLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:stretchColumns="*">
+
+                           <TableRow
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_margin="@dimen/_1sdp"
+                               android:paddingTop="@dimen/_5sdp"
+                               android:paddingBottom="@dimen/_5sdp">
+
+                               <!-- first element of the row-->
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="21"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="22"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="23"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="24"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="25"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="26"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal"/>
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:gravity="center">
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:background="@drawable/custom_circle"
+                                       android:gravity="center"
+                                       android:text="27"
+                                       android:textColor="@color/colorWhite"
+                                       android:textStyle="normal" />
+                               </LinearLayout>
+                           </TableRow>
+                       </TableLayout>
+
+                   </LinearLayout>
+               </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_below="@+id/edt_usr_msg"
+            android:layout_width="wrap_content"
+            android:textColor="@color/colorBlue"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/_40sdp"
+            android:paddingEnd="@dimen/_40sdp"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_background_i"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Set Schedule" />
+
+
+    </LinearLayout>
+</ScrollView>
+
+
+</RelativeLayout>

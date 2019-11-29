@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -28,23 +29,27 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
+    private long start;
+    private long end;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_router);
+        return;
         // case 0  -----> fresh launch
         // case 1  ----------> sign out
-        int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
-        switch (tag) {
-            case 0:
-                showFragment("SplashFragment",null );
-                break;
-
-            case 1:
-                showFragment("SignInFragment",null );
-                break;
-        }
+//        int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
+//        switch (tag) {
+//            case 0:
+//                showFragment("SplashFragment",null );
+//                break;
+//
+//            case 1:
+//                showFragment("SignInFragment",null );
+//                break;
+//        }
 
 
     }
@@ -188,7 +193,28 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    @Override
+    protected void onPause() {
+        start = System.nanoTime();
+        Log.e("onPause",""+start);
+        super.onPause();
 
 
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+         end = System.nanoTime();
+      //  long elapsedTime = end - start;
+        Log.e("onStop",""+end);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        end = System.nanoTime();
+//        long elapsedTime = end - start;
+        Log.e("onDestroy",""+end);
+    }
 }
