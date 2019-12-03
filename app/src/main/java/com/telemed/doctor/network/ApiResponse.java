@@ -12,11 +12,7 @@ import static com.telemed.doctor.network.Status.SUCCESS;
 public class ApiResponse {
 
     public final Status status;
-
-
     public final Post data;
-
-
     public final Throwable error;
 
     public ApiResponse(Status status, @Nullable Post data, @Nullable Throwable error) {

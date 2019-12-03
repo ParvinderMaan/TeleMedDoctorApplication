@@ -19,9 +19,15 @@
 
     </style>
 
-    <style name="FragmentTheme" parent="AppTheme">
+    <style name="FragmentThemeOne" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorBlue</item>
+
+    </style>
+
+    <style name="FragmentThemeTwo" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorRed</item>
 
     </style>
 

@@ -45,7 +45,7 @@ public class SignUpIFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_sign_up_one, container, false);
     }
@@ -175,7 +175,7 @@ public class SignUpIFragment extends BaseFragment {
 
     private void attemptSignUp() {
         if (mFragmentListener != null)
-            mFragmentListener.showFragment("SignUpIIFragment",null );
+            mFragmentListener.showFragment("OneTimePasswordFragment",null );
 
     }
 

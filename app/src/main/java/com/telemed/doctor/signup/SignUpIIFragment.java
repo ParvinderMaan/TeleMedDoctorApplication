@@ -41,9 +41,9 @@ public class SignUpIIFragment extends BaseFragment {
     private RouterFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
     private AppCompatEditText edtDocName, edtDocSurname,edtDob,edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
-            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail;
+            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail,edtGender,edtCountry,edtState,edtCity;
     private String mDocName, mDocSurname,mDob,mBirthCity, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
-            mEmail;
+            mEmail,mGender,mCountry,mState, mCity;
 
     public SignUpIIFragment() {
 
@@ -106,6 +106,10 @@ public class SignUpIIFragment extends BaseFragment {
         edtAddr = v.findViewById(R.id.edt_addr);
         edtEmail = v.findViewById(R.id.edt_email);
 
+        edtGender= v.findViewById(R.id.edt_gender);
+        edtCountry= v.findViewById(R.id.edt_country);
+        edtState= v.findViewById(R.id.edt_state);
+        edtCity= v.findViewById(R.id.edt_city);
 
 
         btnContinue = v.findViewById(R.id.btn_continue);
@@ -277,6 +281,10 @@ public class SignUpIIFragment extends BaseFragment {
         mAddr = edtAddr.getText().toString();
         mEmail = edtEmail.getText().toString();
 
+        mGender = edtGender.getText().toString();
+        mCountry = edtCountry.getText().toString();
+        mState = edtState.getText().toString();
+        mCity = edtCity.getText().toString();
 
 
 
@@ -321,10 +329,41 @@ public class SignUpIIFragment extends BaseFragment {
             return false;
         }
 
+        if (TextUtils.isEmpty(mGender)) {
+            edtGender.setError("Enter gender");
+            return false;
+        }
+
         if (TextUtils.isEmpty(mSpeciality)) {
             edtSpeciality.setError("Enter speciality");
             return false;
         }
+
+        if (TextUtils.isEmpty(mLanguageOne)) {
+            edtLanguageOne.setError("Enter first language");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mLanguageTwo)) {
+            edtLanguageTwo.setError("Enter second language");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mCountry)) {
+            edtCountry.setError("Enter country");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mState)) {
+            edtState.setError("Enter state");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mCity)) {
+            edtCity.setError("Enter city");
+            return false;
+        }
+
 
 
         if (TextUtils.isEmpty(mAddr)) {
@@ -338,20 +377,7 @@ public class SignUpIIFragment extends BaseFragment {
         }
 
 
-        if (TextUtils.isEmpty(mEmail)) {
-            edtEmail.setError("Enter Email address");
-            return false;
-        }
 
-        if (mEmail.contains(" ")) {
-            edtEmail.setError("No Spaces Allowed");
-            return false;
-        }
-
-        if (!Validator.isEmailValid(mEmail)) {
-            edtEmail.setError("Enter valid email address");
-            return false;
-        }
 
         return true;
     }

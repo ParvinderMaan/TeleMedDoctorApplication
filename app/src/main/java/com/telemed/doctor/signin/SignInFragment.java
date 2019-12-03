@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
@@ -36,14 +37,14 @@ import com.telemed.doctor.network.Status;
 
 
 public class SignInFragment extends BaseFragment {
-
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
+    private RelativeLayout rlRoot;
     private Button btnSignIn;
-    private String mUserEmail, mUserPassword;
     private SignInViewModel mViewModel;
     private ProgressBar progressBar;
     private RouterFragmentSelectedListener mFragmentListener;
+    private String mUserEmail, mUserPassword;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -57,7 +58,7 @@ public class SignInFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentTheme);
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_sign_in, container, false);
     }
@@ -84,28 +85,31 @@ public class SignInFragment extends BaseFragment {
         });
 
 
-        mViewModel.fetchPost().observe(this, new Observer<ApiResponse>() {
-            @Override
-            public void onChanged(ApiResponse apiResponse) {
-                 mViewModel.setProgress(false);
-                if(apiResponse.status== Status.SUCCESS){
-                    makeToast(""+apiResponse.data.toString());
+//        mViewModel.fetchPost().observe(this, new Observer<ApiResponse>() {
+//            @Override
+//            public void onChanged(ApiResponse apiResponse) {
+//                 mViewModel.setProgress(false);
+//                if(apiResponse.status== Status.SUCCESS){
+//                    makeToast(""+apiResponse.data.toString());
+//
+//
+//                }else if(apiResponse.status==Status.ERROR){
+//
+//                    makeToast(""+apiResponse.data.toString());
+//
+//                }
+//
+//            }
+//        });
 
 
-                }else if(apiResponse.status==Status.ERROR){
-
-                    makeToast(""+apiResponse.data.toString());
-
-                }
-
-            }
-        });
 
 
     }
 
 
     private void initView(View v) {
+        rlRoot = v.findViewById(R.id.rl_root);
         progressBar = v.findViewById(R.id.progress_bar);
         edtUsrEmail = v.findViewById(R.id.edt_usr_email);
         edtUsrPassword = v.findViewById(R.id.edt_usr_password);

@@ -319,7 +319,44 @@
                 </LinearLayout>
             </LinearLayout>
 <!--           child-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorBlue"
+                    android:hint=""
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:text=""
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:longClickable="false"
+                    app:drawableRightCompat="@drawable/ic_arrow_down"
+                    app:backgroundTint="@color/colorWhite"
+                    android:includeFontPadding="false"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:padding="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_gender"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:paddingStart="@dimen/_10sdp" />
+
+
+            </LinearLayout>
 
             <!--           child-->
             <LinearLayout
@@ -445,6 +482,132 @@
                 </LinearLayout>
             </LinearLayout>
 
+<!--            child-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_country"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:text=""
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_country"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+
+                <!--                child-->
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_state"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:text=""
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/colorWhite"
+                        android:includeFontPadding="false"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:padding="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorWhite"
+                        android:text="@string/title_state"
+                        android:textColorHint="@color/colorLightBlue"
+                        android:paddingStart="@dimen/_10sdp"
+                        tools:ignore="RtlSymmetry" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--           child-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorBlue"
+                    android:hint=""
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:text=""
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:longClickable="false"
+                    app:drawableRightCompat="@drawable/ic_arrow_down"
+                    app:backgroundTint="@color/colorWhite"
+                    android:includeFontPadding="false"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:padding="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_city"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:paddingStart="@dimen/_10sdp" />
+
+
+            </LinearLayout>
+            <!--           child-->
             <!--           child-->
             <LinearLayout
                 android:layout_marginTop="@dimen/_20sdp"
@@ -484,12 +647,13 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Address"
+                    android:text="@string/title_address"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edt_email"
+                    android:focusable="false"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -509,7 +673,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="@string/title_email"
                     android:maxLines="1"
                     android:longClickable="false"
                     android:includeFontPadding="false"

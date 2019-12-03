@@ -1,13 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".filepicker.FilePickerActivity">
+    <!--    header layout-->
+    <RelativeLayout
+        android:background="@color/colorBlue"
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingTop="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select File"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibtn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cross_grey"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp" />
+    </RelativeLayout>
+    <!-- middle layout-->
 <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:id="@+id/rv_file_pick"
+    android:layout_below="@+id/ll_header"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
+
+    <include
+        android:id="@+id/pb_file_pick"
+        layout="@layout/layout_progress_bar"/>
+
 </RelativeLayout>

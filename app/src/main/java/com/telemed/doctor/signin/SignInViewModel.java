@@ -27,12 +27,10 @@ public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> showHomeActivity=new MutableLiveData<>();
     private MutableLiveData<ApiResponse> mApiResponse=new MutableLiveData<>();
 
-    private final SignInDataModel mDataModel= SignInDataModel.create();
 
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
-//        ((TeleMedApplication)application).helpMe();
 
     }
 
@@ -47,7 +45,6 @@ public class SignInViewModel extends AndroidViewModel {
 
     public void attemptSignIn() {
         setProgress(true);
-        mDataModel.fetchPostFromServer();
 //        WebService webService= ServiceGenerator.createService(WebService.class);
 //        webService.fetchPostInfo().enqueue(new Callback<Post>() {
 //            @Override
@@ -87,11 +84,8 @@ public class SignInViewModel extends AndroidViewModel {
 
 
 
-    public LiveData<ApiResponse> fetchPost(){
 
 
-        return mDataModel.data;
-    }
 
 
 }
