@@ -1,4 +1,4 @@
-package com.telemed.doctor.signup;
+package com.telemed.doctor.signup.view;
 
 
 import android.content.Context;
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
-import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 

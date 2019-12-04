@@ -1,4 +1,4 @@
-package com.telemed.doctor.profile;
+package com.telemed.doctor.profile.view;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.profile.viewmodel.ProfileViewModel;
+import com.telemed.doctor.signin.SignInViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ProfileFragment extends Fragment {
     private TextView tvBasicInfo, tvProfessionalInfo, tvBankInfo;
     private ImageButton ibtnClose;
@@ -29,6 +29,7 @@ public class ProfileFragment extends Fragment {
     private ProfessionalInfoProfileFragment mProfessionalInfoFragment;
     private BasicInfoProfileFragment mBasicInfoFragment;
     private HomeFragmentSelectedListener mFragmentListener;
+    private ProfileViewModel mViewModel;
 
 
     public static ProfileFragment newInstance() {
@@ -50,6 +51,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -130,7 +132,6 @@ public class ProfileFragment extends Fragment {
 
                     break;
                 case R.id.tv_professional_info:
-
                     tvBasicInfo.setSelected(false);
                     tvProfessionalInfo.setSelected(true);
                     tvBankInfo.setSelected(false);
@@ -147,4 +148,18 @@ public class ProfileFragment extends Fragment {
 
         }
     };
+
+    @Override
+    public void onDestroyView() {
+        releaseResource();
+        super.onDestroyView();
+    }
+
+    private void releaseResource() {
+        tvBasicInfo.setOnClickListener(null);
+        tvProfessionalInfo.setOnClickListener(null);
+        tvBankInfo.setOnClickListener(null);
+        ibtnClose.setOnClickListener(null);
+        mClickListener=null;
+    }
 }

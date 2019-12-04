@@ -1,26 +1,21 @@
-package com.telemed.doctor.signup;
+package com.telemed.doctor.signup.view;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +28,6 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.telemed.doctor.R;
-import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.filepicker.FilePickerActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
@@ -43,8 +37,6 @@ import com.vincent.filepicker.filter.entity.NormalFile;
 
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -61,7 +53,6 @@ public class SignUpVFragment extends BaseFragment {
     private TextView tvDocOne, tvDocTwo, tvDocThree, tvDocFour, tvDocFive;
     private ImageButton ibtnUploadOne, ibtnUploadTwo, ibtnUploadThree, ibtnUploadFour, ibtnUploadFive;
     private RelativeLayout rlDocOne, rlDocTwo, rlDocThree, rlDocFour, rlDocFive;
-    private DocumentAdapter mDocumentAdapter;
     private RecyclerView rvDocument;
     private RouterFragmentSelectedListener mFragmentListener;
     private LinearLayout llRoot;

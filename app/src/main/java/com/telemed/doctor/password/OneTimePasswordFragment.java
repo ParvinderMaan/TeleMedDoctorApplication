@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,11 +26,13 @@ import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.base.BaseTextWatcher;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 
 public class OneTimePasswordFragment extends BaseFragment {
     private AppCompatEditText edtOtpOne, edtOtpTwo, edtOtpThree, edtOtpFour;
+    private AppCompatTextView tvCancel;
 
     private RouterFragmentSelectedListener mFragmentListener;
     private AppCompatButton btnContinue;
@@ -73,93 +76,50 @@ public class OneTimePasswordFragment extends BaseFragment {
         edtOtpThree = v.findViewById(R.id.edt_otp_three);
         edtOtpFour = v.findViewById(R.id.edt_otp_four);
         btnContinue=v.findViewById(R.id.btn_continue);
+        tvCancel=v.findViewById(R.id.tv_cancel);
 
     }
 
     private void initListener() {
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        btnContinue.setOnClickListener(mClickListener);
+        tvCancel.setOnClickListener(mClickListener);
+
+        edtOtpOne.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void onClick(View v) {
-
-                if(mFragmentListener!=null)
-                    mFragmentListener.showFragment("SignUpIIFragment",null);
-
+            public void onTextChanged(int start, int before, int count,CharSequence s) {
+                if(count == 1) edtOtpTwo.requestFocus();
             }
         });
 
-
-
-
-        edtOtpOne.addTextChangedListener(new TextWatcher() {
-
+        edtOtpTwo.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 1) edtOtpTwo.requestFocus();
+            public void onTextChanged(int start, int before, int count,CharSequence s) {
+                if(count == 1) edtOtpThree.requestFocus();
+                if(count==0) edtOtpOne.requestFocus();
             }
         });
 
-        edtOtpTwo.addTextChangedListener(new TextWatcher() {
-
+        edtOtpThree.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 1) edtOtpThree.requestFocus();
-                if(s.length()==0) edtOtpOne.requestFocus();
+            public void onTextChanged(int start, int before, int count,CharSequence s) {
+                if(count == 1) edtOtpFour.requestFocus();
+                if(count==0) edtOtpTwo.requestFocus();
             }
         });
 
-        edtOtpThree.addTextChangedListener(new TextWatcher() {
-
+        edtOtpFour.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 1) edtOtpFour.requestFocus();
-                if(s.length()==0) edtOtpTwo.requestFocus();
+            public void onTextChanged(int start, int before, int count,CharSequence s) {
+                if(count==0) edtOtpThree.requestFocus();
             }
         });
 
-        edtOtpFour.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()==0) edtOtpThree.requestFocus();
+        edtOtpFour.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO){
+                attemptVerfication();
             }
+            return false;
         });
-
-        edtOtpFour.setOnEditorActionListener(
-                new EditText.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_GO){
-                            attemptVerfication();
-                        }
-                        return false;
-                    }
-                });
 
 
 
@@ -202,4 +162,44 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     }
 
+    private View.OnClickListener mClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+           switch (v.getId()){
+
+               case R.id.btn_continue:
+                   if(mFragmentListener!=null)
+                       mFragmentListener.showFragment("SignUpIIFragment",null);
+                   break;
+
+               case R.id.tv_cancel:
+                   if(mFragmentListener!=null)
+                       mFragmentListener.popTopMostFragment();
+                   break;
+           }
+
+
+        }
+    };
+
+
+    @Override
+    public void onDestroyView() {
+        releaseResource();
+        super.onDestroyView();
+
+    }
+
+    private void releaseResource() {
+        btnContinue.setOnClickListener(null);
+        tvCancel.setOnClickListener(null);
+        edtOtpOne.addTextChangedListener(null);
+        edtOtpTwo.addTextChangedListener(null);
+        edtOtpThree.addTextChangedListener(null);
+        edtOtpFour.addTextChangedListener(null);
+        edtOtpFour.setOnEditorActionListener(null);
+        mClickListener=null;
+
+    }
 }

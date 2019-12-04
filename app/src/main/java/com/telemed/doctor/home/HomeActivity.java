@@ -17,14 +17,13 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
-import com.telemed.doctor.profile.ProfileFragment;
+import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.MyScheduleDemoFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
 import com.telemed.doctor.password.ChangePasswordFragment;
-import com.telemed.doctor.schedule.MyScheduleFragment;
 import com.telemed.doctor.schedule.ScheduleSychronizeFragment;
 import com.telemed.doctor.setting.SettingFragment;
 import com.telemed.doctor.videocall.AppointmentSummaryFragment;
@@ -79,7 +78,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "ProfileFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, HomeFragment.newInstance())
+                        .add(R.id.fl_container, ProfileFragment.newInstance())
                         .addToBackStack("ProfileFragment")
                         .commit();
                 break;

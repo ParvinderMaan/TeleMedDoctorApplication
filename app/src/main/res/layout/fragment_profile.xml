@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:background="@color/colorBlue"
     android:layout_height="match_parent"
-    tools:context=".profile.ProfileFragment"
+    tools:context=".profile.view.ProfileFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--    back button-->
         <ImageButton

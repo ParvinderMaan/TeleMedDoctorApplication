@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:focusableInTouchMode="true"
     android:background="@color/colorBlue"
-    tools:context=".profile.ProfessionalInfoProfileFragment">
+    tools:context=".profile.view.ProfessionalInfoProfileFragment">
     <!--parent -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +21,15 @@
         <!--            child-->
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:cursorVisible="false"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorBlue"
             android:hint=""
             android:includeFontPadding="false"
             android:inputType="textEmailAddress"
             android:padding="@dimen/_10sdp"
-            android:text="Additional info"
+            android:text="@string/title_additional_info"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorLightBlue"
             android:textStyle="bold"
@@ -49,9 +51,9 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_medical_degree"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
@@ -67,7 +69,8 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Medical Degree"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_medical_degree"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
@@ -80,10 +83,9 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_md_where"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
@@ -98,10 +100,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Where"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_where"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
@@ -115,10 +117,9 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_other_degree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:backgroundTint="@color/colorBlue"
                 android:hint=""
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
@@ -134,7 +135,8 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingStart="@dimen/_10sdp"
-                android:text="Other Degrees"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@string/title_other_degrees"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorLightBlue" />
 
@@ -149,9 +151,9 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_omd_where"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorBlue"
                 android:hint=""
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
@@ -167,7 +169,8 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingStart="@dimen/_10sdp"
-                android:text="Where"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@string/title_where"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorLightBlue" />
 
@@ -182,9 +185,9 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_dea_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorBlue"
                 android:hint=""
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
@@ -200,13 +203,48 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingStart="@dimen/_10sdp"
-                android:text="DEA#"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@string/title_dea"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorLightBlue" />
 
 
         </LinearLayout>
         <!--           child-->
+        <!--           child-->
+        <LinearLayout
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_npi_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:text=""
+                app:backgroundTint="@color/colorWhite"
+                android:includeFontPadding="false"
+                android:textColorHint="@color/colorLightBlue"
+                android:padding="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_npi"
+                android:includeFontPadding="false"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorLightBlue"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"/>
+
+
+        </LinearLayout>
+        <!--           child-->
+
 
 
 <!--        <RelativeLayout-->
@@ -264,7 +302,7 @@
                 android:gravity="center"
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="Save"
+                android:text="@string/title_edit"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_white"
                 android:textSize="@dimen/_14sdp"

@@ -1,4 +1,4 @@
-package com.telemed.doctor.profile;
+package com.telemed.doctor.profile.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,14 +14,12 @@ import com.telemed.doctor.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeritoryAdapter extends RecyclerView.Adapter<TeritoryAdapter.ViewHolder> {
-
-    private static final String TAG = TeritoryAdapter.class.getSimpleName();
-
+public class ChooseOptionAdapter extends RecyclerView.Adapter<ChooseOptionAdapter.ViewHolder> {
+    private static final String TAG = ChooseOptionAdapter.class.getSimpleName();
     private List<String> list;
     private OnItemClickListener onItemClickListener;
 
-    public TeritoryAdapter() {
+    public ChooseOptionAdapter() {
         list=new ArrayList<>();
     }
 
@@ -51,7 +49,7 @@ public class TeritoryAdapter extends RecyclerView.Adapter<TeritoryAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.list_item_teritory, parent, false);
+        View view = inflater.inflate(R.layout.list_item_choose_option, parent, false);
         return new ViewHolder(view);
     }
 

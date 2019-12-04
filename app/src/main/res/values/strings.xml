@@ -1,5 +1,5 @@
 <resources>
-    <!--        Application-->
+    <!--   Application-->
     <string name="app_name">TeleMedDoctorApplication</string>
     <string name="title_doctor_app">Doctors App</string>
 
@@ -20,6 +20,7 @@
     <string name="title_doctor_surname">Doctors surname</string>
     <string name="title_birth_country">Birth-Country</string>
     <string name="title_nationality">Nationality</string>
+    <string name="title_speciality">Speciality</string>
     <string name="title_language_one">Language 1</string>
     <string name="title_language_two">Language 2</string>
     <string name="title_gender">Gender</string>
@@ -47,16 +48,29 @@
     <!--    SignUpVFragment-->
     <string name="title_attached_document">Attached document</string>
     <string name="hint_click_to_add">Click to add (doc/pdf)</string>
-
-
-
-
-
-
-
-
-    <!--    SignUpVFragment-->
     <string name="rationale_storage">This app needs access to your external storage so you can upload documents.</string>
+
+
+    <!--      ProfileFragment-->
+    <string name="title_basic_info">Basic Info</string>
+    <string name="title_save">Save</string>
+    <string name="title_edit">Edit</string>
+
+
+
+
+
+
+    android:text="Address"
+    android:text="Email"
+
+
+
+
+
+
+
+
 
 
     <!--    MyConsultFragment-->

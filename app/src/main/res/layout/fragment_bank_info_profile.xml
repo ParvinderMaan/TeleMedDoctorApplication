@@ -8,7 +8,7 @@
     android:background="@color/colorBlue"
     android:fillViewport="true"
     android:focusableInTouchMode="true"
-    tools:context=".profile.BankInfoProfileFragment">
+    tools:context=".profile.view.BankInfoProfileFragment">
     <!--parent -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +21,15 @@
         <!--            child-->
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:cursorVisible="false"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorBlue"
             android:hint=""
             android:includeFontPadding="false"
             android:inputType="textEmailAddress"
             android:padding="@dimen/_10sdp"
-            android:text="Bank info  ( PayPal )"
+            android:text="@string/title_bank_info"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorLightBlue"
             android:textStyle="bold"
@@ -51,7 +53,6 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
@@ -67,13 +68,13 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Routing Number"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_routing_no"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
 
             <LinearLayout
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -82,13 +83,10 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
-
                     android:text=""
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue"
@@ -98,10 +96,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Account Number"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_account_no"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
@@ -125,7 +123,6 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
@@ -141,13 +138,13 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="City"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_city"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
 
             <LinearLayout
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -156,13 +153,10 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
-
                     android:text=""
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue"
@@ -172,10 +166,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:includeFontPadding="false"
                     android:paddingStart="@dimen/_10sdp"
-                    android:text="Post Code"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_post_code"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue" />
             </LinearLayout>
@@ -200,7 +194,7 @@
                 android:gravity="center"
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
-                android:text="Save"
+                android:text="@string/title_edit"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_white"
                 android:textSize="@dimen/_14sdp"

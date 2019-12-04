@@ -1,4 +1,4 @@
-package com.telemed.doctor.signup;
+package com.telemed.doctor.signup.view;
 
 
 import android.app.AlertDialog;
@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +26,9 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
-import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -153,13 +150,13 @@ public class SignUpIIFragment extends BaseFragment {
 
             case R.id.edt_birth_city:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_BIRTH_CITY" );
+                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_CITY" );
 
                 break;
 
             case R.id.edt_birth_country:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_BIRTH_COUNTRY" );
+                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_COUNTRY" );
 
                 break;
 
@@ -167,13 +164,13 @@ public class SignUpIIFragment extends BaseFragment {
             case  R.id.edt_nationality:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_NATIONALITY" );
+                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_NATIONALITY" );
                 break;
 
             case  R.id.edt_speciality:
               //  showSpecialityDialog();
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseTeritoryFragment","TAG_SPECIALITY" );
+                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_SPECIALITY" );
                 break;
 
             case  R.id.edt_language_one:

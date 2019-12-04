@@ -9,7 +9,7 @@
     android:background="@color/colorBlue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signup.SignUpIIIFragment">
+    tools:context=".signup.view.SignUpIIIFragment">
     <RelativeLayout
         android:gravity="center"
         android:layout_width="match_parent"

@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.telemed.doctor.base.BaseActivity;
@@ -16,13 +13,13 @@ import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.password.ForgotPasswordFragment;
 import com.telemed.doctor.password.OneTimePasswordFragment;
-import com.telemed.doctor.profile.ChooseTeritoryFragment;
+import com.telemed.doctor.profile.view.ChooseOptionFragmnet;
 import com.telemed.doctor.signin.SignInFragment;
-import com.telemed.doctor.signup.SignUpIFragment;
-import com.telemed.doctor.signup.SignUpIIFragment;
-import com.telemed.doctor.signup.SignUpIIIFragment;
-import com.telemed.doctor.signup.SignUpIVFragment;
-import com.telemed.doctor.signup.SignUpVFragment;
+import com.telemed.doctor.signup.view.SignUpIFragment;
+import com.telemed.doctor.signup.view.SignUpIIFragment;
+import com.telemed.doctor.signup.view.SignUpIIIFragment;
+import com.telemed.doctor.signup.view.SignUpIVFragment;
+import com.telemed.doctor.signup.view.SignUpVFragment;
 import com.telemed.doctor.splash.SplashFragment;
 
 
@@ -114,10 +111,10 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                         .commit();
                 break;
 
-            case "ChooseTeritoryFragment":
+            case "ChooseOptionFragmnet":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, ChooseTeritoryFragment.newInstance(payload), "ChooseTeritoryFragment")
-                        .addToBackStack("ChooseTeritoryFragment")
+                        .add(R.id.fl_container, ChooseOptionFragmnet.newInstance(payload), "ChooseOptionFragmnet")
+                        .addToBackStack("ChooseOptionFragmnet")
                         .commit();
                 break;
 

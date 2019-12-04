@@ -1,4 +1,4 @@
-package com.telemed.doctor.signup;
+package com.telemed.doctor.signup.view;
 
 
 import android.content.Context;

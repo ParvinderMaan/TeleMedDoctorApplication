@@ -1,4 +1,4 @@
-package com.telemed.doctor.profile;
+package com.telemed.doctor.profile.view;
 
 
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChooseTeritoryFragment extends Fragment {
+public class ChooseOptionFragmnet extends Fragment {
     public static String  COUNTRY="TYPE_COUNTRY";
     public static String  CITY="TYPE_CITY";
     private RecyclerView rvTeritory;
@@ -38,11 +37,11 @@ public class ChooseTeritoryFragment extends Fragment {
     private ImageButton ibtnClose;
     private TextView tvHeader;
     private String mType;
-    private TeritoryAdapter mAdapter;
+    private ChooseOptionAdapter mAdapter;
 
 
-    public static ChooseTeritoryFragment newInstance(String tag) {
-        ChooseTeritoryFragment chooseTeritoryFragment=new ChooseTeritoryFragment();
+    public static ChooseOptionFragmnet newInstance(String tag) {
+        ChooseOptionFragmnet chooseTeritoryFragment=new ChooseOptionFragmnet();
         Bundle bundle=new Bundle();
         bundle.putString("KEY_",tag);
         chooseTeritoryFragment.setArguments(bundle);
@@ -62,13 +61,13 @@ public class ChooseTeritoryFragment extends Fragment {
              mType=getArguments().getString("KEY_");
 
         }
-        mAdapter=new TeritoryAdapter();
+        mAdapter=new ChooseOptionAdapter();
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_choose_teritory, container, false);
+        return inflater.inflate(R.layout.fragment_choose_option, container, false);
     }
 
     @Override
