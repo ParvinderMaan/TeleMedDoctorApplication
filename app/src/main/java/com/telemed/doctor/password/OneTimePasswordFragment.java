@@ -61,34 +61,34 @@ public class OneTimePasswordFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        initView(v);
+        initListener();
+
+
+    }
+
+    private void initView(View v) {
         edtOtpOne = v.findViewById(R.id.edt_otp_one);
         edtOtpTwo = v.findViewById(R.id.edt_otp_two);
         edtOtpThree = v.findViewById(R.id.edt_otp_three);
         edtOtpFour = v.findViewById(R.id.edt_otp_four);
-
         btnContinue=v.findViewById(R.id.btn_continue);
 
+    }
+
+    private void initListener() {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(mFragmentListener!=null)
-                  mFragmentListener.showFragment("SignUpIIFragment",null);
+                    mFragmentListener.showFragment("SignUpIIFragment",null);
 
             }
         });
 
 
-        edtOtpFour.setOnEditorActionListener(
-                new EditText.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_GO){
-                            attemptVerfication();
-                        }
-                        return false;
-                    }
-                });
+
 
         edtOtpOne.addTextChangedListener(new TextWatcher() {
 
@@ -135,6 +135,7 @@ public class OneTimePasswordFragment extends BaseFragment {
                 if(s.length()==0) edtOtpTwo.requestFocus();
             }
         });
+
         edtOtpFour.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -148,8 +149,21 @@ public class OneTimePasswordFragment extends BaseFragment {
                 if(s.length()==0) edtOtpThree.requestFocus();
             }
         });
-    }
 
+        edtOtpFour.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_GO){
+                            attemptVerfication();
+                        }
+                        return false;
+                    }
+                });
+
+
+
+    }
 
 
     private void attemptVerfication() {

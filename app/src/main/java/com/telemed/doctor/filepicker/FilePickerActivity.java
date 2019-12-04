@@ -122,11 +122,7 @@ public class FilePickerActivity extends BaseActivity {
             }
         });
 
-
-
         mProgressBar = (ProgressBar) findViewById(R.id.pb_file_pick);
-
-
 
 
     }

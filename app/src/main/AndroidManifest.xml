@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
-
     <application
         android:name=".TeleMedApplication"
         android:allowBackup="true"
@@ -19,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-<!--        <activity android:name=".filepicker.FilePickerActivity"/>-->
         <activity
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait"
@@ -33,7 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".filepicker.FilePickerActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".filepicker.FilePickerActivity" />
     </application>
 
 </manifest>

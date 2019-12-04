@@ -31,13 +31,14 @@
             android:fontFamily="@font/circular_std_medium"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Doctor App" />
+            android:text="@string/title_doctor_app" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight=".75"
         android:layout_height="0dp">
         <ScrollView
+            android:overScrollMode="never"
             android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -54,9 +55,8 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlue"
                     android:hint=""
-                    android:text="Additional info"
+                    android:text="@string/title_additional_info"
                     app:backgroundTint="@color/colorWhite"
                     android:includeFontPadding="false"
                     android:textColorHint="@color/colorLightBlue"
@@ -82,7 +82,6 @@
                             android:id="@+id/edt_medical_degree"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorBlue"
                             android:hint=""
                             android:text=""
                             app:backgroundTint="@color/colorWhite"
@@ -96,10 +95,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Medical Degree"
+                            android:text="@string/title_medical_degree"
                             android:includeFontPadding="false"
                             android:textColor="@color/colorWhite"
                             android:textColorHint="@color/colorLightBlue"
+                            android:paddingEnd="@dimen/_10sdp"
                             android:paddingStart="@dimen/_10sdp" />
                     </LinearLayout>
                     <LinearLayout
@@ -113,7 +113,6 @@
                             android:id="@+id/edt_md_where"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorBlue"
                             android:hint=""
                             android:text=""
                             app:backgroundTint="@color/colorWhite"
@@ -128,12 +127,12 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
                             android:includeFontPadding="false"
                             android:textColor="@color/colorWhite"
-                            android:text="Where"
+                            android:text="@string/title_where"
                             android:textColorHint="@color/colorLightBlue"
                             android:paddingStart="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -148,7 +147,6 @@
                         android:id="@+id/edt_other_degree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
                         app:backgroundTint="@color/colorWhite"
@@ -162,10 +160,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Other Degrees"
+                        android:text="@string/title_other_degrees"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
+                        android:paddingEnd="@dimen/_10sdp"
                         android:paddingStart="@dimen/_10sdp" />
 
 
@@ -181,7 +180,6 @@
                         android:id="@+id/edt_md_otr_where"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
                         app:backgroundTint="@color/colorWhite"
@@ -195,18 +193,18 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Where"
+                        android:text="@string/title_where"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
-                        android:paddingStart="@dimen/_10sdp" />
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"/>
 
 
                 </LinearLayout>
                 <!--           child-->
                 <LinearLayout
                     android:layout_marginTop="@dimen/_20sdp"
-
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
@@ -214,7 +212,6 @@
                         android:id="@+id/edt_dea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
                         app:backgroundTint="@color/colorWhite"
@@ -223,15 +220,16 @@
                         android:padding="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="text" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="DEA#"
+                        android:text="@string/title_dea"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
+                        android:paddingEnd="@dimen/_10sdp"
                         android:paddingStart="@dimen/_10sdp" />
 
 
@@ -239,7 +237,6 @@
                 <!--           child-->
                 <LinearLayout
                     android:layout_marginTop="@dimen/_20sdp"
-
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
@@ -247,7 +244,6 @@
                         android:id="@+id/edt_npi_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlue"
                         android:hint=""
                         android:text=""
                         app:backgroundTint="@color/colorWhite"
@@ -261,7 +257,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="NPI No"
+                        android:text="@string/title_npi"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
@@ -309,7 +305,7 @@
                         android:gravity="center"
                         android:textSize="@dimen/_14sdp"
                         android:layout_height="wrap_content"
-                        android:text="Continue" />
+                        android:text="@string/title_continue" />
                 </RelativeLayout>
 
                 <!--           child-->
@@ -326,7 +322,7 @@
                         android:layout_centerHorizontal="true"
                         android:textStyle="bold"
                         android:layout_marginBottom="@dimen/_20sdp"
-                        android:text="Cancel" />
+                        android:text="@string/title_cancel" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
