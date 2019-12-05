@@ -1,6 +1,9 @@
 package com.telemed.doctor.signin;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
@@ -20,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -32,8 +35,7 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-import com.telemed.doctor.network.ApiResponse;
-import com.telemed.doctor.network.Status;
+import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
@@ -45,6 +47,7 @@ public class SignInFragment extends BaseFragment {
     private ProgressBar progressBar;
     private RouterFragmentSelectedListener mFragmentListener;
     private String mUserEmail, mUserPassword;
+    private CustomAlertTextView tvAlert;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -119,6 +122,11 @@ public class SignInFragment extends BaseFragment {
 
         progressBar.setVisibility(View.INVISIBLE);
 
+
+        tvAlert = v.findViewById(R.id.tv_alert);
+
+
+
     }
 
     private void initListener() {
@@ -149,13 +157,9 @@ public class SignInFragment extends BaseFragment {
             case R.id.btn_sign_in:
 
                 if (!isNetAvail()) {
-                    makeToast("no internet");
+                    tvAlert.showTopAlert("no internet");
                     return;
                 }
-
-
-
-
 
                 if (isFormValid()) {
                     attemptSignIn();
@@ -222,10 +226,12 @@ public class SignInFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             mViewModel.setProgress(false);
-            if (mFragmentListener!= null) {
-                mFragmentListener.startActivity("HomeActivity");
-                getActivity().finish();
-            }
+//            if (mFragmentListener!= null) {
+//                mFragmentListener.startActivity("HomeActivity");
+//                getActivity().finish();
+//            }
+
+
 //---------------------------------------------------------------
 
 //---------------------------------------------------------------
@@ -269,5 +275,28 @@ public class SignInFragment extends BaseFragment {
         if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+//    private void hideViews() {
+//        tvAlert.animate().translationY(-tvAlert.getHeight()).setInterpolator(new AccelerateInterpolator(1));
+//
+////        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFabButton.getLayoutParams();
+////        int fabBottomMargin = lp.bottomMargin;
+////        mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+//    }
+//
+//    private void showViews() {
+//        tvAlert.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+////        mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+//    }
+
+    // To animate view slide out from top to bottom
+    public void slideToBottom(View view){
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(0,0,0,0);
+        animate.setDuration(2000);
+        animate.setFillAfter(false);
+        view.startAnimation(animate);
+        view.setVisibility(View.INVISIBLE);
     }
 }

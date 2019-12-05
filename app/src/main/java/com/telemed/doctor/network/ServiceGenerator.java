@@ -2,6 +2,8 @@ package com.telemed.doctor.network;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.telemed.doctor.BuildConfig;
 import com.telemed.doctor.TeleMedApplication;
 
@@ -28,6 +30,7 @@ public class ServiceGenerator {
 
     private static Retrofit.Builder retrofitBuilder
             = new Retrofit.Builder()
+//            .addConverterFactory(new WrapperConverterFactory(GsonConverterFactory.create()));
             .addConverterFactory(GsonConverterFactory.create());
            // .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
@@ -100,12 +103,12 @@ public class ServiceGenerator {
 
     public static Interceptor getBasicInterceptor() {
         return  new Interceptor() {
+            @NonNull
             @Override
-            public Response intercept(Chain chain) throws IOException {
+            public Response intercept(@NonNull Chain chain) throws IOException {
 
                 Request request = chain.request().newBuilder()
                         .addHeader("parameter", "value")
-
                         .build();
 
                 return chain.proceed(request);

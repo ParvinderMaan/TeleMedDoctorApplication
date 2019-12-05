@@ -1,4 +1,4 @@
-package com.telemed.doctor.password;
+package com.telemed.doctor.password.view;
 
 
 import android.content.Context;
@@ -7,20 +7,22 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.password.viewmodel.ChangePasswordViewModel;
 
 
 public class ChangePasswordFragment extends Fragment {
 
 
     private HomeFragmentSelectedListener mFragmentListener;
+    private ChangePasswordViewModel mViewModel;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -37,6 +39,7 @@ public class ChangePasswordFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
         return inflater.inflate(R.layout.fragment_change_password, container, false);
     }
     @Override

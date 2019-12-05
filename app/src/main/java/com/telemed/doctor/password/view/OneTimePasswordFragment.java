@@ -1,8 +1,7 @@
-package com.telemed.doctor.password;
+package com.telemed.doctor.password.view;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,23 +10,21 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProviders;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.base.BaseTextWatcher;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.password.viewmodel.OneTimePasswordViewModel;
 
 
 public class OneTimePasswordFragment extends BaseFragment {
@@ -36,6 +33,8 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     private RouterFragmentSelectedListener mFragmentListener;
     private AppCompatButton btnContinue;
+    private OneTimePasswordViewModel mViewModel;
+    private ProgressBar progressBar;
 
     public OneTimePasswordFragment() {
         // Required empty public constructor
@@ -56,6 +55,7 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(OneTimePasswordViewModel.class);
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeTwo);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_one_time_password, container, false);
@@ -77,6 +77,12 @@ public class OneTimePasswordFragment extends BaseFragment {
         edtOtpFour = v.findViewById(R.id.edt_otp_four);
         btnContinue=v.findViewById(R.id.btn_continue);
         tvCancel=v.findViewById(R.id.tv_cancel);
+
+        progressBar=v.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(getResources().getColor(R.color.colorBlue), android.graphics.PorterDuff.Mode.SRC_IN);
+
 
     }
 

@@ -9,8 +9,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +23,29 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.network.ApiResponse;
+import com.telemed.doctor.network.Status;
+import com.telemed.doctor.signup.model.SignUpIRequest;
+import com.telemed.doctor.signup.model.SignUpIResponse;
+import com.telemed.doctor.signup.viewmodel.SignUpIViewModel;
+import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignUpIFragment extends BaseFragment {
+    private final String TAG = SignUpIFragment.class.getSimpleName();
     private AppCompatEditText edtUsrEmail, edtUsrPassword, edtUsrConfirmPassword;
     private TextView tvCancel;
     private AppCompatButton btnContinue;
     private RouterFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
+    private SignUpIViewModel mViewModel;
+    private CustomAlertTextView tvAlertView;
+    private String mUserEmail, mUserPassword, mUserConfirmPassword;
 
     public static SignUpIFragment newInstance() {
         return new SignUpIFragment();
@@ -45,6 +59,7 @@ public class SignUpIFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(SignUpIViewModel.class);
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_sign_up_one, container, false);
@@ -55,6 +70,37 @@ public class SignUpIFragment extends BaseFragment {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
         initListener();
+
+        mViewModel.getResultant().observe(this, signUpResponse -> {
+
+            switch (signUpResponse.getStatus()) {
+                case SUCCESS:
+                    if (signUpResponse.getData() != null) {
+                        if (mFragmentListener != null)
+                            mFragmentListener.showFragment("OneTimePasswordFragment", null);
+                    }
+
+                    break;
+
+                case FAILURE:
+                    if (signUpResponse.getData() != null) {
+                        tvAlertView.setText(signUpResponse.getData().getMessage());
+                    }
+                    break;
+
+                case ERROR:
+                    if (signUpResponse.getError() != null) {
+                        tvAlertView.setText(signUpResponse.getError());
+                    }
+                    break;
+
+
+            }
+
+        });
+
+        mViewModel.getProgress()
+                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
     }
 
@@ -74,6 +120,7 @@ public class SignUpIFragment extends BaseFragment {
         btnContinue = v.findViewById(R.id.btn_continue);
         tvCancel = v.findViewById(R.id.tv_cancel);
         progressBar = v.findViewById(R.id.progress_bar);
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
         // @initialization
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -81,9 +128,9 @@ public class SignUpIFragment extends BaseFragment {
     }
 
     private boolean isFormValid() {
-        String mUserEmail = edtUsrEmail.getText().toString();
-        String mUserPassword = edtUsrPassword.getText().toString();
-        String mUserConfirmPassword = edtUsrConfirmPassword.getText().toString();
+        mUserEmail = edtUsrEmail.getText().toString();
+        mUserPassword = edtUsrPassword.getText().toString();
+        mUserConfirmPassword = edtUsrConfirmPassword.getText().toString();
 
 
         if (TextUtils.isEmpty(mUserEmail)) {
@@ -155,14 +202,20 @@ public class SignUpIFragment extends BaseFragment {
             case R.id.btn_continue:
 
                 if (!isNetAvail()) {
-                    makeToast("no internet");
+                    tvAlertView.showTopAlert("No Internet");
                     return;
                 }
 
 
                 if (isFormValid()) {
+                    SignUpIRequest in = new SignUpIRequest.Builder()
+                            .setEmail(mUserEmail)
+                            .setPassword(mUserPassword)
+                            .setConfirmPassword(mUserConfirmPassword)
+                            .build();
+                    Log.e(TAG,in.toString());
+                    mViewModel.attemptSignUp(in);
 
-                    attemptSignUp();
 
                 }
 
@@ -173,20 +226,20 @@ public class SignUpIFragment extends BaseFragment {
 
     };
 
-    private void attemptSignUp() {
-        if (mFragmentListener != null)
-            mFragmentListener.showFragment("OneTimePasswordFragment",null );
+//    private void attemptSignUp() {
+//        if (mFragmentListener != null)
+//            mFragmentListener.showFragment("OneTimePasswordFragment",null );
+//
+//    }
 
-    }
-
-    private EditText.OnEditorActionListener mEditorActionListener=new TextView.OnEditorActionListener() {
+    private EditText.OnEditorActionListener mEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch (v.getId()) {
 
                 case R.id.edt_email:
                     if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        if(edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
+                        if (edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
                         return true;
                     }
                     break;
@@ -194,7 +247,7 @@ public class SignUpIFragment extends BaseFragment {
 
                 case R.id.edt_password:
                     if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        if(edtUsrPassword.isFocused()) edtUsrConfirmPassword.requestFocus();
+                        if (edtUsrPassword.isFocused()) edtUsrConfirmPassword.requestFocus();
                         return true;
                     }
 
@@ -202,10 +255,10 @@ public class SignUpIFragment extends BaseFragment {
 
                 case R.id.edt_confirm_password:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtUsrConfirmPassword.isFocused()){
+                        if (edtUsrConfirmPassword.isFocused()) {
                             edtUsrConfirmPassword.clearFocus();
                             mFragmentListener.hideSoftKeyboard();
-                    }
+                        }
                         return true;
                     }
 
@@ -231,17 +284,39 @@ public class SignUpIFragment extends BaseFragment {
         edtUsrPassword.setOnEditorActionListener(null);
         edtUsrConfirmPassword.setOnEditorActionListener(null);
         mClickListener = null;
-        mEditorActionListener=null;
+        mEditorActionListener = null;
     }
 
 
-
-
-    public void setViewState(boolean b){
+    public void setViewState(boolean b) {
         edtUsrEmail.setEnabled(b);
         edtUsrPassword.setEnabled(b);
         edtUsrConfirmPassword.setEnabled(b);
         btnContinue.setEnabled(b);
 
     }
+
+
+    /*
+    failure  ---->
+    {
+  "status": false,
+  "data": {},
+  "message": "PasswordRequiresNonAlphanumeric"
+}
+
+    success ----->
+{
+  "status": true,
+  "data": {},
+  "message": "You are registered Successfully.",
+  "otpCode": 9913,
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzMTMwYWI5Mi1iZTcyLTQxNGItYWY3OS1jZjQ3ODFiMWYzM2MiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc1NTQ0MzA2LCJleHAiOjE1NzU2MzA3MDYsImlhdCI6MTU3NTU0NDMwNn0.Hy9HcI-y5IMdPpoapSSamrjiq7Oxz3fsD5qh4apFMZg"
+}
+     */
+
+
+    /*
+     {"status":true,"data":{},"message":"You are registered Successfully.","otpCode":8297,"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDA1M2VhZC05OTA5LTQwZDAtODgwYy02YzViODk4YzZiNzUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc1NTU0ODI4LCJleHAiOjE1NzU2NDEyMjgsImlhdCI6MTU3NTU1NDgyOH0._ZdYkK2V8es6HxRZ6WjRRH2Er8zpsBvA8kuq_Hy9DYI"}
+     */
 }

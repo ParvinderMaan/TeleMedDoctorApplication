@@ -2,6 +2,9 @@ package com.telemed.doctor;
 
 import android.app.Application;
 
+import com.telemed.doctor.network.ServiceGenerator;
+import com.telemed.doctor.network.WebService;
+
 import java.io.File;
 
 //import leakcanary.AppWatcher;
@@ -15,10 +18,7 @@ public class TeleMedApplication extends Application {
     public void onCreate() {
         super.onCreate();
         currentApplication = this;
-//implementation 'pub.devrel:easypermissions:3.0.0'
 
-//        ObjectWatcher mObjectWatcher= AppWatcher.INSTANCE.getObjectWatcher();
-//        AppWatcher.config = AppWatcher.config.copy(watchFragmentViews = false)
 
     }
 
@@ -32,8 +32,8 @@ public class TeleMedApplication extends Application {
     }
 
 
-    public void helpMe() {
-
+    public WebService getRetrofitInstance() {
+        return ServiceGenerator.createService(WebService.class);
 
     }
 }

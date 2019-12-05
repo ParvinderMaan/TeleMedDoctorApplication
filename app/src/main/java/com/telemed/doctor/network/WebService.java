@@ -1,37 +1,57 @@
 package com.telemed.doctor.network;
+import androidx.lifecycle.LiveData;
 
-
-import com.telemed.doctor.Post;
-
-import java.util.List;
+import com.telemed.doctor.signin.SignInRequest;
+import com.telemed.doctor.signin.SignInResponse;
+import com.telemed.doctor.signup.model.SignUpIRequest;
+import com.telemed.doctor.signup.model.SignUpIResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 
 /**
- * @author Pmaan  on 08-09-2017.
+ * @author Pmaan  on 05-12-2019.
  */
 
 public interface WebService {
 
-//    @GET(WebUrl.THOUGHT_OF_DAY)
-//    @Headers({WebUrl.CONTENT_HEADER, WebUrl.AUTHORIZATION_HEADER})
-//    Observable<ThoughtOfTheDayResponse> fetchThoughtOfTheDay();
 
-//
-//    @Headers({
-//            "Accept: application/json",
-//            "Content-Type: application/json"
-//    })
-//    @GET("Drills/GetDoctorRegisterDrills")
-//    Call<DoctorFormData> getDoctorFormData();
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_I)
+    Call<SignUpIResponse> attemptSignUpOne(@Body SignUpIRequest in);
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_II)
+    Call<SignUpIResponse> attemptSignUpTwo(@Body SignUpIRequest in);
 
 
-        @GET("https://jsonplaceholder.typicode.com/posts")
-        Call<List<Post>> fetchAllPost();
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_III)
+    Call<SignUpIResponse> attemptSignUpThree(@Body SignUpIRequest in);
 
-    @GET("https://jsonplaceholder.typicode.com/todos/1")
-    Call<Post> fetchPostInfo();
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_IV)
+    Call<SignUpIResponse> attemptSignUpFour(@Body SignUpIRequest in);
+
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_V)
+    Call<SignUpIResponse> attemptSignUpFive(@Body SignUpIRequest in);
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_UP_VI)
+    Call<SignUpIResponse> attemptSignUpSix(@Body SignUpIRequest in);
+
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.SIGN_IN)
+    Call<SignInResponse> attemptSignIn(@Body SignInRequest in);
+
+
 
 
 

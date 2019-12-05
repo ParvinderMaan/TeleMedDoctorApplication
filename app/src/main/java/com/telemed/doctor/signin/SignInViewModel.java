@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.telemed.doctor.Post;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
 
@@ -25,7 +24,7 @@ import static com.telemed.doctor.network.Status.SUCCESS;
 public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();
     private MutableLiveData<Boolean> showHomeActivity=new MutableLiveData<>();
-    private MutableLiveData<ApiResponse> mApiResponse=new MutableLiveData<>();
+//    private MutableLiveData<ApiResponse> mApiResponse=new MutableLiveData<>();
 
 
 
@@ -53,14 +52,14 @@ public class SignInViewModel extends AndroidViewModel {
 //                if(response.isSuccessful()){
 //
 //                    Post post = response.body();
-//                    mApiResponse.setValue(new ApiResponse(SUCCESS, post, null));
+//                    mApiResponse.showTopAlert(new ApiResponse(SUCCESS, post, null));
 //
 ////                    makeToast(postList.toString());
 //
 //                }else {
-//                    // data.setValue(ApiResponse.error());
+//                    // data.showTopAlert(ApiResponse.error());
 ////                    makeToast("not succesfull");
-//                    mApiResponse.setValue(new ApiResponse(SUCCESS, response.body(), null));
+//                    mApiResponse.showTopAlert(new ApiResponse(SUCCESS, response.body(), null));
 //                }
 //
 //            }
@@ -68,7 +67,7 @@ public class SignInViewModel extends AndroidViewModel {
 //            @Override
 //            public void onFailure(Call<Post> call, Throwable t) {
 ////                makeToast(" onFailure");
-//                mApiResponse.setValue(new ApiResponse(ERROR, null, t));
+//                mApiResponse.showTopAlert(new ApiResponse(ERROR, null, t));
 //
 //            }
 //        });

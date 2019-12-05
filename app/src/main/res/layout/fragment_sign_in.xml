@@ -10,7 +10,21 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".signin.SignInFragment">
-
+    <com.telemed.doctor.util.CustomAlertTextView
+        android:id="@+id/tv_alert"
+        android:layout_centerHorizontal="true"
+        android:text="No Internet"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <include
         android:id="@+id/progress_bar"
         layout="@layout/layout_progress_bar" />

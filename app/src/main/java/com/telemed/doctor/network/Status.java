@@ -1,8 +1,8 @@
 package com.telemed.doctor.network;
 
 public enum Status {
-    LOADING,
+    FAILURE,
     SUCCESS,
     ERROR,
-    COMPLETED
+
 }

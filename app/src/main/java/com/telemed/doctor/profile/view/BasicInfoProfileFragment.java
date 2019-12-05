@@ -59,7 +59,7 @@ public class BasicInfoProfileFragment extends Fragment {
         edtAddr = v.findViewById(R.id.edt_addr);
         edtEmail = v.findViewById(R.id.edt_email);
 
-  // setting up
+        // setting up
         edtDocName.setText("");
         edtDocSurname.setText("");
         edtDob.setText("");

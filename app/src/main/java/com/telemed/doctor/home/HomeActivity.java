@@ -23,7 +23,7 @@ import com.telemed.doctor.schedule.MyScheduleDemoFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
-import com.telemed.doctor.password.ChangePasswordFragment;
+import com.telemed.doctor.password.view.ChangePasswordFragment;
 import com.telemed.doctor.schedule.ScheduleSychronizeFragment;
 import com.telemed.doctor.setting.SettingFragment;
 import com.telemed.doctor.videocall.AppointmentSummaryFragment;
