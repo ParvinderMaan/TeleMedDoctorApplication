@@ -5,15 +5,17 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.miscellaneous.AbortDialogFragment;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
-import com.telemed.doctor.profile.view.ChooseOptionFragmnet;
+import com.telemed.doctor.profile.view.ChooseOptionActivity;
 import com.telemed.doctor.signin.SignInFragment;
 import com.telemed.doctor.signup.view.SignUpIFragment;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
@@ -25,6 +27,7 @@ import com.telemed.doctor.splash.SplashFragment;
 
 
 public class RouterActivity extends BaseActivity implements RouterFragmentSelectedListener {
+    private final String TAG=RouterActivity.class.getSimpleName();
     // to support vector icon for lower versions
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -53,7 +56,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
-    public void showFragment(String tag, String payload) {
+    public void showFragment(String tag, Object payload) {
 
         switch (tag) {
             case "SplashFragment":
@@ -111,16 +114,16 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                         .commit();
                 break;
 
-            case "ChooseOptionFragmnet":
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, ChooseOptionFragmnet.newInstance(payload), "ChooseOptionFragmnet")
-                        .addToBackStack("ChooseOptionFragmnet")
-                        .commit();
-                break;
+//            case "ChooseOptionFragmnet":
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, ChooseOptionFragmnet.newInstance(payload), "ChooseOptionFragmnet")
+//                        .addToBackStack("ChooseOptionFragmnet")
+//                        .commit();
+//                break;
 
             case "OneTimePasswordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, OneTimePasswordFragment.newInstance(payload), "OneTimePasswordFragment")
+                        .add(R.id.fl_container, OneTimePasswordFragment.newInstance((Object)payload), "OneTimePasswordFragment")
                         .addToBackStack("OneTimePasswordFragment")
                         .commit();
                 break;
@@ -133,16 +136,21 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     @Override
     public void popTopMostFragment() {
         getSupportFragmentManager().popBackStackImmediate();
+
+
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() { // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
 
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            popTopMostFragment();
-
-        } else {
+        Log.e(TAG,""+getSupportFragmentManager().getBackStackEntryCount());
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
+
+        } else if(getSupportFragmentManager().getBackStackEntryCount() == 2) {
+           popTopMostFragment();
+        }else {
+            abortSignUp();
         }
     }
 
@@ -153,9 +161,23 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
-    public void startActivity(String tag) {
+    public void abortSignUp() {
+        AbortDialogFragment fragment = AbortDialogFragment.newInstance();
+        fragment.show(getSupportFragmentManager(), "TAG");
+    }
+
+    @Override
+    public void startActivity(String tag, Object payload) {
         if (tag.equals("HomeActivity"))
             startActivity(new Intent(this, HomeActivity.class));
+
+        if (tag.equals("ChooseOptionActivity")){
+            Intent in=new Intent(this, ChooseOptionActivity.class);
+            in.putExtra("KEY_",(String)payload);
+            startActivity(in);
+
+        }
+
 
 
 

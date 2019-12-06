@@ -1,14 +1,12 @@
 package com.telemed.doctor;
 
 import com.google.gson.JsonSyntaxException;
-import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WrapperError;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.HttpException;
 
-import static com.telemed.doctor.network.Status.ERROR;
 
 public class ErrorHandler {
     private static final int API_STATUS_CODE_LOCAL_ERROR = 0;

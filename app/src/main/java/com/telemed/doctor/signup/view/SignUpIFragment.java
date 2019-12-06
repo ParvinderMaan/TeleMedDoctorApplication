@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,10 +36,13 @@ import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
+import org.json.JSONObject;
+
 
 public class SignUpIFragment extends BaseFragment {
     private final String TAG = SignUpIFragment.class.getSimpleName();
     private AppCompatEditText edtUsrEmail, edtUsrPassword, edtUsrConfirmPassword;
+    private LinearLayout llRoot;
     private TextView tvCancel;
     private AppCompatButton btnContinue;
     private RouterFragmentSelectedListener mFragmentListener;
@@ -76,24 +80,22 @@ public class SignUpIFragment extends BaseFragment {
             switch (signUpResponse.getStatus()) {
                 case SUCCESS:
                     if (signUpResponse.getData() != null) {
-                        if (mFragmentListener != null)
-                            mFragmentListener.showFragment("OneTimePasswordFragment", null);
+                        if (mFragmentListener != null){
+                            SignUpIResponse.Data data = signUpResponse.getData().getData(); // adding Additional Info
+                            data.setEmail(mUserEmail);
+                            mFragmentListener.showFragment("OneTimePasswordFragment", data);
+
+                        }
+
                     }
 
                     break;
 
                 case FAILURE:
-                    if (signUpResponse.getData() != null) {
-                        tvAlertView.setText(signUpResponse.getData().getMessage());
+                    if (signUpResponse.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(signUpResponse.getErrorMsg());
                     }
                     break;
-
-                case ERROR:
-                    if (signUpResponse.getError() != null) {
-                        tvAlertView.setText(signUpResponse.getError());
-                    }
-                    break;
-
 
             }
 
@@ -101,6 +103,9 @@ public class SignUpIFragment extends BaseFragment {
 
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+
+        mViewModel.getViewClickable()
+                .observe(this, isView -> llRoot.setClickable(isView));
 
     }
 
@@ -121,6 +126,8 @@ public class SignUpIFragment extends BaseFragment {
         tvCancel = v.findViewById(R.id.tv_cancel);
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
+        llRoot = v.findViewById(R.id.ll_root);
+
         // @initialization
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -318,5 +325,14 @@ public class SignUpIFragment extends BaseFragment {
 
     /*
      {"status":true,"data":{},"message":"You are registered Successfully.","otpCode":8297,"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDA1M2VhZC05OTA5LTQwZDAtODgwYy02YzViODk4YzZiNzUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc1NTU0ODI4LCJleHAiOjE1NzU2NDEyMjgsImlhdCI6MTU3NTU1NDgyOH0._ZdYkK2V8es6HxRZ6WjRRH2Er8zpsBvA8kuq_Hy9DYI"}
+     */
+
+    /*
+
+    {"status":false,"data":{},"message":"DuplicateUserName"}
+     */
+
+    /*
+    {"status":true,"data":{"otpCode":2039,"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIyZWQxZWQ0Yi1jOTg4LTRkZGUtODgyYi03YTJhNjRhOGM4ZDUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc1NjM1NzM4LCJleHAiOjE1NzU3MjIxMzgsImlhdCI6MTU3NTYzNTczOH0.5HAWFksnTC6mS-N6pHCi6C7j8EA_WX5WeN6582zu7-0"},"message":"You are registered Successfully."}
      */
 }

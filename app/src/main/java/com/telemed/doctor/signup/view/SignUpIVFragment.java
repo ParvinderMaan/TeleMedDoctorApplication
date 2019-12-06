@@ -77,7 +77,7 @@ public class SignUpIVFragment extends Fragment {
             public void onClick(View v) {
 
                 if (mFragmentListener != null)
-                    mFragmentListener.popTopMostFragment();
+                    mFragmentListener.abortSignUp();
 
             }
         });

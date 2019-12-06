@@ -68,7 +68,7 @@ public class SignUpIIIFragment extends BaseFragment {
         tvCancel.setOnClickListener(v1 -> {
 
             if(mFragmentListener!=null)
-                mFragmentListener.popTopMostFragment();
+                mFragmentListener.abortSignUp();
 
 
         });

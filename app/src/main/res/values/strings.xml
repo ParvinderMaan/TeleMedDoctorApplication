@@ -57,20 +57,8 @@
     <string name="title_edit">Edit</string>
 
 
-
-
-
-
     android:text="Address"
     android:text="Email"
-
-
-
-
-
-
-
-
 
 
     <!--    MyConsultFragment-->
@@ -88,17 +76,12 @@
     <string name="title_verification_code">The verification code that get from following email</string>
 
 
-
     <!--    SignInFragment-->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="title_forgot_password">I forgot my password</string>
     <string name="title_log_in">Log In</string>
     <string name="sign_up">Not a user ? <b>Sign Up</b></string>
-
-
-
-
 
 
     <!--    SettingFragment-->

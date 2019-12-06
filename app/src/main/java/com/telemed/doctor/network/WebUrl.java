@@ -25,8 +25,10 @@ public interface WebUrl {
 
 
 
-    String THOUGHT_OF_DAY="GetInsThought";
-    String FETCH_CHAT_ROOM="GetChatRoomList";
+//    String THOUGHT_OF_DAY="GetInsThought";
+//    String FETCH_CHAT_ROOM="GetChatRoomList";
 
 
+    String VERIFY_USER = "Auth/VerifyUser";
+    String RESEND_OTP = "Auth/ResendCode";
 }

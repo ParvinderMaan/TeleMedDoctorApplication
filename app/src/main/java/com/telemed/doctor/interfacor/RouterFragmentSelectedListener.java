@@ -2,11 +2,12 @@ package com.telemed.doctor.interfacor;
 
 public interface RouterFragmentSelectedListener {
 
-    void showFragment(String tag, String payload);
+    void showFragment(String tag, Object payload);
     void popTopMostFragment();
     void popTillFragment(String tag, int flag);
+    void abortSignUp();
 
-    void startActivity(String tag);
+    void startActivity(String tag, Object payload);
     void hideSoftKeyboard();
     void sendDataToFragment(String fragmentTag, String data, String type);
 }

@@ -33,6 +33,7 @@ import java.util.Calendar;
 
 
 public class SignUpIIFragment extends BaseFragment {
+    private final String TAG = SignUpIIFragment.class.getSimpleName();
     private AppCompatButton btnContinue;
     private AppCompatTextView tvCancel;
     private RouterFragmentSelectedListener mFragmentListener;
@@ -128,7 +129,7 @@ public class SignUpIIFragment extends BaseFragment {
 
             case R.id.tv_cancel:
                 if (mFragmentListener != null)
-                    mFragmentListener.popTopMostFragment();
+                    mFragmentListener.abortSignUp();
                 break;
 
             case R.id.edt_dob:
@@ -150,13 +151,15 @@ public class SignUpIIFragment extends BaseFragment {
 
             case R.id.edt_birth_city:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_CITY" );
+                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_BIRTH_CITY");
+//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_CITY" );
 
                 break;
 
             case R.id.edt_birth_country:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_COUNTRY" );
+                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_BIRTH_COUNTRY");
+//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_COUNTRY" );
 
                 break;
 
@@ -164,13 +167,15 @@ public class SignUpIIFragment extends BaseFragment {
             case  R.id.edt_nationality:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_NATIONALITY" );
+                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_NATIONALITY");
+//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_NATIONALITY" );
                 break;
 
             case  R.id.edt_speciality:
               //  showSpecialityDialog();
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_SPECIALITY" );
+                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_SPECIALITY");
+//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_SPECIALITY" );
                 break;
 
             case  R.id.edt_language_one:

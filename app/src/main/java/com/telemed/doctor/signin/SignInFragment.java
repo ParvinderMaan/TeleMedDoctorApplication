@@ -1,9 +1,6 @@
 package com.telemed.doctor.signin;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -81,7 +78,7 @@ public class SignInFragment extends BaseFragment {
             if (aBoolean) {
 
                 if (mFragmentListener != null) {
-                    mFragmentListener.startActivity("HomeActivity");
+                    mFragmentListener.startActivity("HomeActivity", null );
                     getActivity().finish();
                 }
             }

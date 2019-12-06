@@ -18,8 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.telemed.doctor.network.Status.ERROR;
-import static com.telemed.doctor.network.Status.SUCCESS;
 
 public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();
