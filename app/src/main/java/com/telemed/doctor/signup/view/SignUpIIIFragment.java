@@ -55,13 +55,6 @@ public class SignUpIIIFragment extends BaseFragment {
         initView(v);
         initListener(v);
 
-
-
-
-
-
-
-
     }
 
     private void initListener(View v) {

@@ -42,7 +42,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_territory"
+        android:id="@+id/rv_optionz"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

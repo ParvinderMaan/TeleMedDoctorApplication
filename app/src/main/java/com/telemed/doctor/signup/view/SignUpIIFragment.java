@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -27,6 +28,13 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.profile.model.Gender;
+import com.telemed.doctor.profile.model.Language;
+import com.telemed.doctor.profile.model.Speciliaty;
+import com.telemed.doctor.profile.view.ChooseOptionFragment;
+import com.telemed.doctor.signup.model.SignUpIIRequest;
+import com.telemed.doctor.signup.viewmodel.SignUpIIViewModel;
+import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,14 +42,19 @@ import java.util.Calendar;
 
 public class SignUpIIFragment extends BaseFragment {
     private final String TAG = SignUpIIFragment.class.getSimpleName();
+    private static int REQUEST_CODE_SELECT = 121;
     private AppCompatButton btnContinue;
     private AppCompatTextView tvCancel;
+    private CustomAlertTextView tvAlertView;
+
     private RouterFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
-    private AppCompatEditText edtDocName, edtDocSurname,edtDob,edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
-            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail,edtGender,edtCountry,edtState,edtCity;
-    private String mDocName, mDocSurname,mDob,mBirthCity, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
-            mEmail,mGender,mCountry,mState, mCity;
+    private AppCompatEditText edtDocName, edtDocSurname, edtDob, edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
+            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail, edtGender, edtCountry, edtState, edtCity;
+    private String mDocName, mDocSurname, mDob, mBirthCity, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
+            mEmail, mGender, mCountry, mState, mCity;
+    private ChooseOptionFragment mChooseOptionFragmnet;
+    private SignUpIIViewModel mViewModel;
 
     public SignUpIIFragment() {
 
@@ -59,6 +72,7 @@ public class SignUpIIFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(SignUpIIViewModel.class);
         return inflater.inflate(R.layout.fragment_sign_up_two, container, false);
     }
 
@@ -81,7 +95,7 @@ public class SignUpIIFragment extends BaseFragment {
         edtSpeciality.setOnClickListener(mClickListener);
         edtLanguageOne.setOnClickListener(mClickListener);
         edtLanguageTwo.setOnClickListener(mClickListener);
-
+        edtGender.setOnClickListener(mClickListener);
 
         edtDocName.setOnEditorActionListener(mEditorActionListener);
         edtDocSurname.setOnEditorActionListener(mEditorActionListener);
@@ -94,8 +108,8 @@ public class SignUpIIFragment extends BaseFragment {
     private void initView(View v) {
         edtDocName = v.findViewById(R.id.edt_doc_name);
         edtDocSurname = v.findViewById(R.id.edt_doc_surname);
-        edtDob= v.findViewById(R.id.edt_dob);
-        edtBirthCity= v.findViewById(R.id.edt_birth_city);
+        edtDob = v.findViewById(R.id.edt_dob);
+        edtBirthCity = v.findViewById(R.id.edt_birth_city);
         edtBirthCountry = v.findViewById(R.id.edt_birth_country);
         edtNationality = v.findViewById(R.id.edt_nationality);
         edtSpeciality = v.findViewById(R.id.edt_speciality);
@@ -104,15 +118,16 @@ public class SignUpIIFragment extends BaseFragment {
         edtAddr = v.findViewById(R.id.edt_addr);
         edtEmail = v.findViewById(R.id.edt_email);
 
-        edtGender= v.findViewById(R.id.edt_gender);
-        edtCountry= v.findViewById(R.id.edt_country);
-        edtState= v.findViewById(R.id.edt_state);
-        edtCity= v.findViewById(R.id.edt_city);
+        edtGender = v.findViewById(R.id.edt_gender);
+        edtCountry = v.findViewById(R.id.edt_country);
+        edtState = v.findViewById(R.id.edt_state);
+        edtCity = v.findViewById(R.id.edt_city);
 
 
         btnContinue = v.findViewById(R.id.btn_continue);
         tvCancel = v.findViewById(R.id.tv_cancel);
         progressBar = v.findViewById(R.id.progress_bar);
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
 
 
         // @initialization
@@ -134,58 +149,172 @@ public class SignUpIIFragment extends BaseFragment {
 
             case R.id.edt_dob:
 
-               showDatePicker();
+                showDatePicker();
                 break;
 
             case R.id.btn_continue:
                 if (!isNetAvail()) {
-                    makeToast("no internet");
+                    tvAlertView.showTopAlert("No Internet");
                     return;
                 }
 
 //                if (isFormValid()) {
-                    attemptSignUp();
+                SignUpIIRequest in = new SignUpIIRequest.Builder()
+                        .setFirstName("Pappu")
+                        .setLastName("Maan")
+                        .setDateOfBirth("2019-12-09")
+                        .setBirthCity("Abi")
+                        .setBirthCountry("asdasd")
+                        .setNationalityId(2)
+                        .setGenderId(2)
+                        .setSpecialityId(1)
+                        .setPrimaryLanguageId(1)
+                        .setSecondaryLanguageId(2)
+                        .setAddress1("")
+                        .setCity("sdas")
+                        .setCountryId(1)
+                        .setStateId(1)
+                        .setPostalCode("12")
+                        .setPrefAddress("sdasd")
+                        .build();
+                mViewModel.attemptSignUp(in);
 //                }
 
                 break;
 
             case R.id.edt_birth_city:
-                if (mFragmentListener != null)
-                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_BIRTH_CITY");
-//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_CITY" );
+//                    Intent in=new Intent(getActivity(), ChooseOptionActivity.class);
+//                    in.putExtra("KEY_",(String)"TAG_BIRTH_CITY");
+//                    startActivityForResult(in, REQUEST_CODE_SELECT);
 
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_CITY");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        //  if(type.equals("TAG_BIRTH_CITY")) edtBirthCity.setText(item);
+                        //  popChooseOptionFragment();
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case R.id.edt_birth_country:
-                if (mFragmentListener != null)
-                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_BIRTH_COUNTRY");
-//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_BIRTH_COUNTRY" );
-
+//                Intent inn=new Intent(getActivity(), ChooseOptionActivity.class);
+//                inn.putExtra("KEY_",(String)"TAG_BIRTH_COUNTRY");
+//                startActivityForResult(inn, REQUEST_CODE_SELECT);
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_COUNTRY");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+//                        if(type.equals("TAG_BIRTH_COUNTRY")) edtBirthCountry.setText(item);
+//                        popChooseOptionFragment();
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
 
-            case  R.id.edt_nationality:
-
-                if (mFragmentListener != null)
-                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_NATIONALITY");
-//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_NATIONALITY" );
+            case R.id.edt_nationality:
+//                Intent innn=new Intent(getActivity(), ChooseOptionActivity.class);
+//                innn.putExtra("KEY_",(String)"TAG_NATIONALITY");
+//                startActivityForResult(innn, REQUEST_CODE_SELECT);
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_NATIONALITY");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+//                        if(type.equals("TAG_NATIONALITY")) edtNationality.setText(item);
+//                        popChooseOptionFragment();
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
-            case  R.id.edt_speciality:
-              //  showSpecialityDialog();
-                if (mFragmentListener != null)
-                    mFragmentListener.startActivity("ChooseOptionActivity","TAG_SPECIALITY");
-//                    mFragmentListener.showFragment("ChooseOptionFragmnet","TAG_SPECIALITY" );
+            case R.id.edt_speciality:
+//                Intent iz=new Intent(getActivity(), ChooseOptionActivity.class);
+//                iz.putExtra("KEY_",(String)"TAG_SPECIALITY");
+//                startActivityForResult(iz, REQUEST_CODE_SELECT);
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_SPECIALITY");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_SPECIALITY")) {
+                            Speciliaty speciliaty = (Speciliaty) item;
+                            edtSpeciality.setText(speciliaty.getName());
+                            popChooseOptionFragment();
+                        }
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
-            case  R.id.edt_language_one:
-                   showLanguageDialog(edtLanguageOne);
+            case R.id.edt_language_one:
+                //  showLanguageDialog(edtLanguageOne);
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_ONE");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_LANGUAGE_ONE")) {
+                            Language language = (Language) item;
+                            edtLanguageOne.setText(language.getName());
+                            popChooseOptionFragment();
+                        }
 
+
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
-            case  R.id.edt_language_two:
-                  showLanguageDialog(edtLanguageTwo);
+            case R.id.edt_language_two:
+                //   showLanguageDialog(edtLanguageTwo);
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_TWO");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_LANGUAGE_TWO")) {
+                            Language language = (Language) item;
+                            edtLanguageTwo.setText(language.getName());
+                            popChooseOptionFragment();
+                        }
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
+                break;
 
+            case R.id.edt_gender:
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_GENDER");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_GENDER")) {
+                            Gender gender = (Gender) item;
+                            edtGender.setText(gender.getName());
+                        }
+                        popChooseOptionFragment();
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
         }
 
@@ -195,13 +324,13 @@ public class SignUpIIFragment extends BaseFragment {
     private void showSpecialityDialog() {
 
         final ArrayList itemsSelected = new ArrayList();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
         //   builder.setTitle("Select Language ");
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
         builder.setCustomTitle(dialogView);
         TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
         editText.setText("Select Speciality");
-        String []mLanguageItems=getResources().getStringArray(R.array.array_speciality);
+        String[] mLanguageItems = getResources().getStringArray(R.array.array_speciality);
 
         builder.setMultiChoiceItems(mLanguageItems, null,
                 (dialog, selectedItemId, isSelected) -> {
@@ -213,28 +342,27 @@ public class SignUpIIFragment extends BaseFragment {
                     }
                 });
 
-        builder.setSingleChoiceItems(mLanguageItems,-1,new DialogInterface.OnClickListener(){
+        builder.setSingleChoiceItems(mLanguageItems, -1, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                edtSpeciality.setText(""+which);
+                edtSpeciality.setText("" + which);
 
             }
         });
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
 
-                    }
-                })
+            }
+        })
                 .setNegativeButton(getResources().getString(R.string.title_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
                 });
-
 
 
         Dialog dialog = builder.create();
@@ -250,31 +378,28 @@ public class SignUpIIFragment extends BaseFragment {
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog;
-        datePickerDialog = new DatePickerDialog(getActivity(),R.style.PickerStyle ,(view1, year, monthOfYear, dayOfMonth) -> {
-            String x=(monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
+        datePickerDialog = new DatePickerDialog(getActivity(), R.style.PickerStyle, (view1, year, monthOfYear, dayOfMonth) -> {
+            String x = (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
             edtDob.setText(x);
 
         }, mYear, mMonth, mDay);
 
-        datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis()- 568025136000L);  // -18yrs
+        datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis() - 568025136000L);  // -18yrs
         datePickerDialog.show();
     }
 
     private void attemptSignUp() {
-        if (mFragmentListener != null)
-            mFragmentListener.showFragment("SignUpIIIFragment", null);
+//        if (mFragmentListener != null)
+//            mFragmentListener.showFragment("SignUpIIIFragment", null);
 
     }
-    /*
-    mDocName, mDocSurname, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
-            mEmail;
-     */
+
 
     private boolean isFormValid() {
         mDocName = edtDocName.getText().toString();
         mDocSurname = edtDocSurname.getText().toString();
-        mDob= edtDob.getText().toString();
-        mBirthCity= edtBirthCity.getText().toString();
+        mDob = edtDob.getText().toString();
+        mBirthCity = edtBirthCity.getText().toString();
         mBirthCountry = edtBirthCountry.getText().toString();
         mNationality = edtNationality.getText().toString();
         mSpeciality = edtSpeciality.getText().toString();
@@ -287,7 +412,6 @@ public class SignUpIIFragment extends BaseFragment {
         mCountry = edtCountry.getText().toString();
         mState = edtState.getText().toString();
         mCity = edtCity.getText().toString();
-
 
 
         if (TextUtils.isEmpty(mDocName)) {
@@ -367,7 +491,6 @@ public class SignUpIIFragment extends BaseFragment {
         }
 
 
-
         if (TextUtils.isEmpty(mAddr)) {
             edtAddr.setError("Enter speciality");
             return false;
@@ -379,11 +502,8 @@ public class SignUpIIFragment extends BaseFragment {
         }
 
 
-
-
         return true;
     }
-
 
 
     private EditText.OnEditorActionListener mEditorActionListener = new TextView.OnEditorActionListener() {
@@ -407,8 +527,6 @@ public class SignUpIIFragment extends BaseFragment {
                     }
 
                     break;
-
-
 
 
                 case R.id.edt_addr:
@@ -438,35 +556,12 @@ public class SignUpIIFragment extends BaseFragment {
     };
 
 
-    public void updateUi(String item, String tag) {
-        switch (tag) {
-
-            case "TAG_NATIONALITY":
-                edtNationality.setText(item);
-
-                break;
-            case "TAG_BIRTH_COUNTRY":
-                edtBirthCountry.setText(item);
-                break;
-
-            case "TAG_BIRTH_CITY":
-                edtBirthCity.setText(item);
-                break;
-
-            case "TAG_SPECIALITY":
-                edtSpeciality.setText(item);
-                break;
-
-
-        }
-
-    }
     private void showLanguageDialog(AppCompatEditText edtLanguage) {
         final String[] mProvinceItems = getResources().getStringArray(R.array.array_language);
         final ArrayList itemsSelected = new ArrayList();
         Dialog dialog;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         // builder.setTitle("Select Your Region");
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
         builder.setCustomTitle(dialogView);
@@ -495,5 +590,51 @@ public class SignUpIIFragment extends BaseFragment {
                 });
         dialog = builder.create();
         dialog.show();
+    }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if (requestCode == REQUEST_CODE_SELECT && resultCode == Activity.RESULT_OK && data != null) {
+//            String type = data.getStringExtra("KEY_");
+//            String item;
+//            switch (type) {
+//                case "TAG_NATIONALITY":
+//                     item = data.getStringExtra( "TAG_NATIONALITY");
+//                    edtNationality.setText(item);
+//
+//                    break;
+//                case "TAG_BIRTH_COUNTRY":
+//                     item = data.getStringExtra( "TAG_BIRTH_COUNTRY");
+//                    edtBirthCountry.setText(item);
+//                    break;
+//
+//                case "TAG_BIRTH_CITY":
+//                    item = data.getStringExtra( "TAG_BIRTH_CITY");
+//                    edtBirthCity.setText(item);
+//                    break;
+//
+//                case "TAG_SPECIALITY":
+//                    item = data.getStringExtra( "TAG_SPECIALITY");
+//                    edtSpeciality.setText(item);
+//                    break;
+//
+//
+//            }
+//
+//
+//        }
+//    }
+
+    public void popChooseOptionFragment() {
+        if (getChildFragmentManager().getBackStackEntryCount() > 0) {
+            getChildFragmentManager().popBackStackImmediate();
+
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

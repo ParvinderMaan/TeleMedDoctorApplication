@@ -43,6 +43,15 @@ public class ResendOtpResponse implements Parcelable {
     }
 
 
+    @Override
+    public String toString() {
+        return "ResendOtpResponse{" +
+                "status=" + status +
+                ", otpCode=" + otpCode +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
     protected ResendOtpResponse(Parcel in) {
         byte statusVal = in.readByte();
         status = statusVal == 0x02 ? null : statusVal != 0x00;

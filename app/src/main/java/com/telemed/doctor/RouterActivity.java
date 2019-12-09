@@ -114,10 +114,10 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                         .commit();
                 break;
 
-//            case "ChooseOptionFragmnet":
+//            case "ChooseOptionFragment":
 //                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.fl_container, ChooseOptionFragmnet.newInstance(payload), "ChooseOptionFragmnet")
-//                        .addToBackStack("ChooseOptionFragmnet")
+//                        .add(R.id.fl_container, ChooseOptionFragment.newInstance(payload), "ChooseOptionFragment")
+//                        .addToBackStack("ChooseOptionFragment")
 //                        .commit();
 //                break;
 
@@ -171,12 +171,6 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         if (tag.equals("HomeActivity"))
             startActivity(new Intent(this, HomeActivity.class));
 
-        if (tag.equals("ChooseOptionActivity")){
-            Intent in=new Intent(this, ChooseOptionActivity.class);
-            in.putExtra("KEY_",(String)payload);
-            startActivity(in);
-
-        }
 
 
 
@@ -202,15 +196,15 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     public void sendDataToFragment(String fragmentTag, String data, String tag) {
 
 
-        switch (fragmentTag) {
-
-            case "SignUpIIFragment":
-                SignUpIIFragment mSignUpIIFragment = (SignUpIIFragment) getSupportFragmentManager().findFragmentByTag("SignUpIIFragment");
-                if (mSignUpIIFragment != null) {
-                    mSignUpIIFragment.updateUi(data, tag);
-                }
-                break;
-        }
+//        switch (fragmentTag) {
+//
+//            case "SignUpIIFragment":
+//                SignUpIIFragment mSignUpIIFragment = (SignUpIIFragment) getSupportFragmentManager().findFragmentByTag("SignUpIIFragment");
+//                if (mSignUpIIFragment != null) {
+//                    mSignUpIIFragment.updateUi(data, tag);
+//                }
+//                break;
+//        }
 
     }
 

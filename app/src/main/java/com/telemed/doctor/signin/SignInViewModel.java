@@ -9,15 +9,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.telemed.doctor.Post;
-import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.network.ServiceGenerator;
-import com.telemed.doctor.network.WebService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();

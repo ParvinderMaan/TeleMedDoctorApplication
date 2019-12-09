@@ -41,11 +41,12 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
         isViewClickable=new MutableLiveData<>();
     }
 
-    public void attemptResendOtp(JsonObject jsonObject) {
+    public void attemptResendOtp(String email) {
         this.isLoading.setValue(true);
         this.isViewClickable.setValue(false);
-
-        mWebService.attemptResendOtp(jsonObject).enqueue(new Callback<ResendOtpResponse>() {
+        JsonObject json=new JsonObject();
+        json.addProperty("Email",email);
+        mWebService.attemptResendOtp(json).enqueue(new Callback<ResendOtpResponse>() {
             @Override
             public void onResponse(@NonNull Call<ResendOtpResponse> call, @NonNull Response<ResendOtpResponse> response) {
                 isLoading.setValue(false);

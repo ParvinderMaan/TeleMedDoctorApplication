@@ -221,6 +221,7 @@ public class SignUpIFragment extends BaseFragment {
                             .setConfirmPassword(mUserConfirmPassword)
                             .build();
                     Log.e(TAG,in.toString());
+                    clearFocus();
                     mViewModel.attemptSignUp(in);
 
 
@@ -295,11 +296,10 @@ public class SignUpIFragment extends BaseFragment {
     }
 
 
-    public void setViewState(boolean b) {
-        edtUsrEmail.setEnabled(b);
-        edtUsrPassword.setEnabled(b);
-        edtUsrConfirmPassword.setEnabled(b);
-        btnContinue.setEnabled(b);
+    public void clearFocus() {
+        edtUsrEmail.clearFocus();
+        edtUsrPassword.clearFocus();
+        edtUsrConfirmPassword.clearFocus();
 
     }
 

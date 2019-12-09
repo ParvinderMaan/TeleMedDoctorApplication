@@ -16,7 +16,7 @@ public interface WebUrl {
     // child urls
     String SIGN_IN ="Auth/Login";
     String SIGN_UP_I ="Auth/RegisterDoctor";
-    String SIGN_UP_II ="Auth/RegisterDoctor";
+    String SIGN_UP_II ="Auth/AddDoctorPersonalInfo";
     String SIGN_UP_III ="Auth/RegisterDoctor";
     String SIGN_UP_IV ="Auth/RegisterDoctor";
     String SIGN_UP_V ="Auth/RegisterDoctor";
@@ -31,4 +31,5 @@ public interface WebUrl {
 
     String VERIFY_USER = "Auth/VerifyUser";
     String RESEND_OTP = "Auth/ResendCode";
+    String FETCH_DRILLS="Content/GetDrillsPI";
 }

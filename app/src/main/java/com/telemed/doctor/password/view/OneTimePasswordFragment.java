@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.base.BaseTextWatcher;
@@ -44,7 +45,7 @@ import com.telemed.doctor.util.CustomAlertTextView;
 public class OneTimePasswordFragment extends BaseFragment {
     private final String TAG = OneTimePasswordFragment.class.getSimpleName();
     private AppCompatEditText edtOtpOne, edtOtpTwo, edtOtpThree, edtOtpFour;
-    private AppCompatTextView tvCancel,tvUserEmail;
+    private AppCompatTextView tvCancel,tvUserEmail,tvResendCode;
     private LinearLayout llRoot;
     private CustomAlertTextView tvAlertView;
 
@@ -131,7 +132,7 @@ public class OneTimePasswordFragment extends BaseFragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         mOtpServer =response.getData().getOtpCode();
-                        createNotification(); // fake
+                        createNotification(); // fake it
                     }
                     break;
 
@@ -164,6 +165,9 @@ public class OneTimePasswordFragment extends BaseFragment {
         btnContinue=v.findViewById(R.id.btn_continue);
         tvCancel=v.findViewById(R.id.tv_cancel);
         tvUserEmail=v.findViewById(R.id.tv_user_email);
+        tvResendCode=v.findViewById(R.id.tv_resend_code);
+
+
 
         progressBar=v.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -177,6 +181,7 @@ public class OneTimePasswordFragment extends BaseFragment {
     private void initListener() {
         btnContinue.setOnClickListener(mClickListener);
         tvCancel.setOnClickListener(mClickListener);
+        tvResendCode.setOnClickListener(mClickListener);
 
         edtOtpOne.addTextChangedListener(new BaseTextWatcher() {
             @Override
@@ -281,21 +286,35 @@ public class OneTimePasswordFragment extends BaseFragment {
         public void onClick(View v) {
 
            switch (v.getId()){
-
                case R.id.btn_continue:
+                   clearFocus();
                    attemptVerfication();
                    break;
 
                case R.id.tv_cancel:
-                   if(mFragmentListener!=null)
+                   if(mFragmentListener!=null) {
+                       clearFocus();
                        mFragmentListener.abortSignUp();
+                   }
+                       break;
+
+               case R.id.tv_resend_code:
+                   clearFocus();
+                   mViewModel.attemptResendOtp(mEmail);
                    break;
+
            }
 
 
         }
     };
 
+    public void clearFocus(){
+        edtOtpOne.clearFocus();
+        edtOtpTwo.clearFocus();
+        edtOtpThree.clearFocus();
+        edtOtpFour.clearFocus();
+    }
 
     @Override
     public void onDestroyView() {
@@ -375,5 +394,8 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     {"status":true,"message":"You are verified successfully!"}
      */
+/*
 
+{"status":false,"message":"OTP entered is not correct!"}
+ */
 }

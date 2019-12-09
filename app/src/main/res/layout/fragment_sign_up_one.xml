@@ -36,12 +36,11 @@
             android:textColor="@color/colorRed" />
 
         <include
-            android:id="@+id/tv_alert_view"
-            layout="@layout/layout_top_alert_box" />
-
-        <include
             android:id="@+id/progress_bar"
             layout="@layout/layout_progress_bar" />
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
 
     </RelativeLayout>
 
