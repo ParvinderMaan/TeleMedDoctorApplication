@@ -5,15 +5,19 @@ import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.model.VerificationResponse;
 import com.telemed.doctor.password.model.ResendOtpResponse;
 import com.telemed.doctor.profile.model.OptionResponse;
+import com.telemed.doctor.profile.model.StateResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
 import com.telemed.doctor.signup.model.SignUpIRequest;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -41,10 +45,14 @@ public interface WebService {
     @GET(WebUrl.FETCH_DRILLS)
     Call<OptionResponse> fetchDrillInfo();
 
-
     @Headers({WebUrl.CONTENT_HEADER})
+    @GET(WebUrl.FETCH_STATE)
+    Call<StateResponse> fetchStateInfo(@Query("CountryId") String id);
+
+
+//   @Headers({WebUrl.CONTENT_HEADER,})
     @POST(WebUrl.SIGN_UP_II)
-    Call<SignUpIResponse> attemptSignUpTwo(@Body SignUpIIRequest in);
+    Call<SignUpIResponse> attemptSignUpTwo(@HeaderMap Map<String, String> headers, @Body SignUpIIRequest in);
 
 
     @Headers({WebUrl.CONTENT_HEADER})

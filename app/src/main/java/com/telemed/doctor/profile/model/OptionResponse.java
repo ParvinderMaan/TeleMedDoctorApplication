@@ -52,6 +52,10 @@ public class OptionResponse {
         @Expose
         private List<Gender> gender = null;
 
+        @SerializedName("countries")
+        @Expose
+        private List<Country> countries = null;
+
         public List<Language> getLanguages() {
             return languages;
         }
@@ -74,6 +78,14 @@ public class OptionResponse {
 
         public void setGender(List<Gender> gender) {
             this.gender = gender;
+        }
+
+        public List<Country> getCountries() {
+            return countries;
+        }
+
+        public void setCountries(List<Country> countries) {
+            this.countries = countries;
         }
 
     }

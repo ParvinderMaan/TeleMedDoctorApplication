@@ -12,6 +12,7 @@
     <color name="colorRed">#Eb5966</color>         <!--    #EB4156             #Eb5966-->
     <color name="colorLightWhite">#99FFFFFF</color>
     <color name="colorGrey">#D9D9D9</color>
+    <color name="colorGreen">#1aa260</color>
 
 
 </resources>

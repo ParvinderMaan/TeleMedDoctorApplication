@@ -22,15 +22,16 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.base.OnItemClickListener;
+import com.telemed.doctor.profile.model.Country;
 import com.telemed.doctor.profile.model.Gender;
 import com.telemed.doctor.profile.model.Language;
 import com.telemed.doctor.profile.model.Speciliaty;
+import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.viewmodel.ChooseOptionViewModel;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
 import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.util.DividerItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,6 +47,9 @@ public class ChooseOptionFragment extends BaseFragment {
 
     private GenderOptionAdapter mGenderAdapter;
     private SpecialityOptionAdapter mSpecialityAdapter;
+    private CountryOptionAdapter mCountryAdapter;
+    private NationalityOptionAdapter mNationalityAdapter;
+    private StateOptionAdapter mStateAdapter;
 
     private ChooseOptionViewModel mViewModel;
     private ChooseOptionFragmentSelectedListener mFragmentListener;
@@ -69,9 +73,11 @@ public class ChooseOptionFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mLanguageOneAdapter=new LanguageOptionAdapter();
         mLanguageTwoAdapter=new LanguageOptionAdapter();
-
         mSpecialityAdapter=new SpecialityOptionAdapter();
+        mNationalityAdapter=new NationalityOptionAdapter();
+        mCountryAdapter=new CountryOptionAdapter();
         mGenderAdapter=new GenderOptionAdapter();
+        mStateAdapter=new StateOptionAdapter();
         if(getArguments()!=null){
              mType=getArguments().getString("KEY_");
         }
@@ -99,7 +105,7 @@ public class ChooseOptionFragment extends BaseFragment {
             return ;
         }
 
-        mViewModel.fetchDrills();
+        mViewModel.fetchDoctorDrills();
 
 
         mViewModel.getProgress()
@@ -114,21 +120,27 @@ public class ChooseOptionFragment extends BaseFragment {
     private void initValue() {
         switch (mType){
             case "TAG_NATIONALITY":
-                tvHeader.setText(getResources().getString(R.string.title_select_country));
-//                mAdapter.setData(getDummyNationalityData());
+                tvHeader.setText(getResources().getString(R.string.title_select_nationality));
+                rvOptionz.setAdapter(mNationalityAdapter);
+                mViewModel.getCountries().observe(this,mCountryObserver);
+                break;
+
+            case "TAG_STATE":
+                tvHeader.setText(getResources().getString(R.string.title_select_state));
+                rvOptionz.setAdapter(mStateAdapter);
+                mViewModel.getState().observe(this,mStateObserver);
                 break;
 
 
-            case  "TAG_BIRTH_COUNTRY":
-                tvHeader.setText(getResources().getString(R.string.title_select_country));
-//                mAdapter.setData(getDummyNationalityData());
-                break;
+//            case  "TAG_BIRTH_COUNTRY":
+//                tvHeader.setText(getResources().getString(R.string.title_select_country));
+//                rvOptionz.setAdapter(mCountryAdapter);
+//                mViewModel.getCountries().observe(this,mCountryObserver);
+//                break;
 
-
-            case  "TAG_BIRTH_CITY":
-                tvHeader.setText(getResources().getString(R.string.title_select_city));
-//                mAdapter.setData(getDummyNationalityData());
-                break;
+//            case  "TAG_BIRTH_CITY":
+//                tvHeader.setText(getResources().getString(R.string.title_select_city));
+//                break;
 
             case "TAG_SPECIALITY":
                 tvHeader.setText(getResources().getString(R.string.title_select_speciality));
@@ -153,6 +165,15 @@ public class ChooseOptionFragment extends BaseFragment {
                 rvOptionz.setAdapter(mGenderAdapter);
                 mViewModel.getGender().observe(this, mGenderObserver);
                 break;
+
+
+            case "TAG_COUNTRY":
+                tvHeader.setText(getResources().getString(R.string.title_select_country));
+                rvOptionz.setAdapter(mCountryAdapter);
+                mViewModel.getCountries().observe(this, mCountryObserver);
+                break;
+
+
 
         }
 
@@ -190,13 +211,24 @@ public class ChooseOptionFragment extends BaseFragment {
         rvOptionz.setLayoutManager(mLinearLayoutManager);
 
 
-        mLanguageOneAdapter.setListener(new OnItemClickListener<Language>() {
+      mLanguageOneAdapter.setListener(new OnItemClickListener<Language>() {
             @Override
             public void onItemClicked(Language item) {
-                         if(mFragmentListener!=null)
-                             mFragmentListener.onItemSelected(item,"TAG_LANGUAGE_ONE");
+                if(mFragmentListener!=null)
+                    mFragmentListener.onItemSelected(item,"TAG_LANGUAGE_ONE");
             }
         });
+
+        mLanguageTwoAdapter.setListener(new OnItemClickListener<Language>() {
+            @Override
+            public void onItemClicked(Language item) {
+                if(mFragmentListener!=null)
+                    mFragmentListener.onItemSelected(item,"TAG_LANGUAGE_TWO");
+            }
+        });
+
+
+
 
         mGenderAdapter.setListener(new OnItemClickListener<Gender>() {
             @Override
@@ -215,40 +247,39 @@ public class ChooseOptionFragment extends BaseFragment {
         });
 
 
+        mCountryAdapter.setListener(new OnItemClickListener<Country>() {
+            @Override
+            public void onItemClicked(Country item) {
+                if(mFragmentListener!=null)
+                    mViewModel.fetchStateFromCountry(""+item.getId());
+                    mFragmentListener.onItemSelected(item,"TAG_COUNTRY");
+            }
+        });
+
+        mNationalityAdapter.setListener(new OnItemClickListener<Country>() {
+            @Override
+            public void onItemClicked(Country item) {
+                if(mFragmentListener!=null)
+                    mFragmentListener.onItemSelected(item,"TAG_NATIONALITY");
+            }
+        });
+
+
+        mStateAdapter.setListener(new OnItemClickListener<State>() {
+            @Override
+            public void onItemClicked(State item) {
+                if(mFragmentListener!=null)
+                    mFragmentListener.onItemSelected(item,"TAG_STATE");
+            }
+        });
+
+
         Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.custom_divider);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
         rvOptionz.addItemDecoration(dividerItemDecoration);
     }
 
-    private List<String> getDummyNationalityData() {
-        List<String> lstOfNation=new ArrayList<>();
-        lstOfNation.add("Austria");
-        lstOfNation.add("Australia");
-        lstOfNation.add("Afghanistan");
-        lstOfNation.add("Albania");
-        lstOfNation.add("Andorra");
-        lstOfNation.add("Angola");
 
-        lstOfNation.add("Belarus");
-        lstOfNation.add("Belgium");
-        lstOfNation.add("Belize");
-        lstOfNation.add("Chile");
-        lstOfNation.add("China");
-        lstOfNation.add("Colombia");
-
-        lstOfNation.add("Fiji");
-        lstOfNation.add("Finland");
-        lstOfNation.add("France");
-
-        lstOfNation.add("Austria");
-        lstOfNation.add("Australia");
-        lstOfNation.add("Afghanistan");
-        lstOfNation.add("Albania");
-        lstOfNation.add("Andorra");
-        lstOfNation.add("Angola");
-
-        return lstOfNation;
-    }
     private Observer<List<Gender>> mGenderObserver =new Observer<List<Gender>>() {
         @Override
         public void onChanged(List<Gender> genders) {
@@ -270,6 +301,28 @@ public class ChooseOptionFragment extends BaseFragment {
         @Override
         public void onChanged(List<Speciliaty> speciliaties) {
            if(!speciliaties.isEmpty()) mSpecialityAdapter.addAll(speciliaties);
+
+        }
+    };
+
+    private Observer<List<Country>> mCountryObserver=new Observer<List<Country>>() {
+        @Override
+        public void onChanged(List<Country> countries) {
+            if(!countries.isEmpty()) {
+                mNationalityAdapter.addAll(countries);
+                mCountryAdapter.addAll(countries);
+            }
+
+        }
+    };
+
+    private Observer<List<State>> mStateObserver=new Observer<List<State>>() {
+        @Override
+        public void onChanged(List<State> state) {
+            if(!state.isEmpty()) {
+                mStateAdapter.clear();
+                mStateAdapter.addAll(state);
+            }
 
         }
     };

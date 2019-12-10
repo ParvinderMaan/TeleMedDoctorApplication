@@ -1,7 +1,6 @@
 package com.telemed.doctor.signup.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,15 +11,15 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
-import com.telemed.doctor.signup.model.SignUpIRequest;
 import com.telemed.doctor.signup.model.SignUpIResponse;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.telemed.doctor.network.Status.FAILURE;
-import static com.telemed.doctor.network.Status.SUCCESS;
 
 public class SignUpIIViewModel extends AndroidViewModel {
 
@@ -39,24 +38,23 @@ public class SignUpIIViewModel extends AndroidViewModel {
         isLoading=new MutableLiveData<>();
         isViewClickable=new MutableLiveData<>();
     }
-
-    public void attemptSignUp(SignUpIIRequest in) {
+    public void attemptSignUp(SignUpIIRequest in,  Map<String, String> map) {
         this.isLoading.setValue(true);
         this.isViewClickable.setValue(false);
-        mWebService.attemptSignUpTwo(in).enqueue(new Callback<SignUpIResponse>() {
+        mWebService.attemptSignUpTwo(map,in).enqueue(new Callback<SignUpIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIResponse> call, @NonNull Response<SignUpIResponse> response) {
                 isLoading.setValue(false);
                 isViewClickable.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
-                    SignUpIResponse result = response.body();
-                    Log.e("SignUpIIViewModel",result.toString());
-                    if(result.getStatus()){
-                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    }else {
-                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
+//                    SignUpIResponse result = response.body();
+//                    Log.e("SignUpIIViewModel",result.toString());
+//                    if(result.getStatus()){
+//                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
+//                    }else {
+//                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+//                    }
                 }
 
 

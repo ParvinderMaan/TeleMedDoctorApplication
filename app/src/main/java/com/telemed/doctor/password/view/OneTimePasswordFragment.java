@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +55,8 @@ public class OneTimePasswordFragment extends BaseFragment {
     private OneTimePasswordViewModel mViewModel;
     private ProgressBar progressBar;
     private Integer mOtpClient,mOtpServer;
-    private String mEmail;
+    private String mEmail,mAccessToken;
+    private SignUpIResponse.Data objInfo;
 
 
     public OneTimePasswordFragment() {
@@ -79,9 +81,10 @@ public class OneTimePasswordFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         //collect our intent
         if(getArguments()!=null){
-            SignUpIResponse.Data objInfo = getArguments().getParcelable("KEY_");
+            objInfo = getArguments().getParcelable("KEY_");
             if (objInfo != null) mOtpServer =objInfo.getOtpCode();
             if (objInfo != null) mEmail=objInfo.getEmail();
+            if (objInfo != null) mAccessToken=objInfo.getAccessToken();
         }
 
     }
@@ -112,7 +115,9 @@ public class OneTimePasswordFragment extends BaseFragment {
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
                             tvAlertView.showTopAlert(response.getData().getMessage());
-                            mFragmentListener.showFragment("SignUpIIFragment",null);
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            objInfo.setEmail(mEmail);
+                            mFragmentListener.showFragment("SignUpIIFragment",objInfo);
                         }
                     }
                     break;
@@ -131,7 +136,8 @@ public class OneTimePasswordFragment extends BaseFragment {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        mOtpServer =response.getData().getOtpCode();
+                        mOtpServer =response.getData().getData().getOtpCode();
+                        makeToast(""+mOtpServer);
                         createNotification(); // fake it
                     }
                     break;

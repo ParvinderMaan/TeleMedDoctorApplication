@@ -3,7 +3,8 @@ package com.telemed.doctor.profile.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Gender extends Attribute{
+public class Country extends Attribute{
+
 //    @SerializedName("id")
 //    @Expose
 //    private Integer id;
@@ -26,4 +27,6 @@ public class Gender extends Attribute{
 //    public void setName(String name) {
 //        this.name = name;
 //    }
+
 }
+

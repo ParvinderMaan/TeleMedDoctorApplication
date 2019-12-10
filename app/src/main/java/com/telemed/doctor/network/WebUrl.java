@@ -31,5 +31,6 @@ public interface WebUrl {
 
     String VERIFY_USER = "Auth/VerifyUser";
     String RESEND_OTP = "Auth/ResendCode";
-    String FETCH_DRILLS="Content/GetDrillsPI";
+    String FETCH_DRILLS="Content/GetDoctorDrillsPI";
+    String FETCH_STATE = "Content/GetStatesByCountryId";
 }

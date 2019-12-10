@@ -16,28 +16,35 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.profile.model.Country;
 import com.telemed.doctor.profile.model.Gender;
 import com.telemed.doctor.profile.model.Language;
 import com.telemed.doctor.profile.model.Speciliaty;
+import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.view.ChooseOptionFragment;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
+import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SignUpIIFragment extends BaseFragment {
@@ -55,19 +62,39 @@ public class SignUpIIFragment extends BaseFragment {
             mEmail, mGender, mCountry, mState, mCity;
     private ChooseOptionFragment mChooseOptionFragmnet;
     private SignUpIIViewModel mViewModel;
+    private String mAccessToken;
+    private FrameLayout flContainer;
 
     public SignUpIIFragment() {
 
     }
 
-    public static SignUpIIFragment newInstance() {
-        return new SignUpIIFragment();
+    public static SignUpIIFragment newInstance(Object payload) {
+        SignUpIIFragment fragment=new SignUpIIFragment();
+        Bundle bundle=new Bundle();
+        bundle.putParcelable("KEY_", ( SignUpIResponse.Data ) payload);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (RouterFragmentSelectedListener) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //collect our intent
+        if(getArguments()!=null){
+            SignUpIResponse.Data objInfo = getArguments().getParcelable("KEY_");
+            if (objInfo != null) mAccessToken =objInfo.getAccessToken();
+            if (objInfo != null) mEmail =objInfo.getEmail();
+
+            Log.e(TAG,mAccessToken);
+        }
     }
 
     @Override
@@ -82,6 +109,14 @@ public class SignUpIIFragment extends BaseFragment {
         initView(v);
         initListener();
 
+        edtEmail.setText(mEmail);
+
+        mViewModel.getProgress()
+                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+
+
+        mViewModel.getViewClickable()
+                .observe(this, isView -> flContainer.setClickable(isView));
 
     }
 
@@ -96,6 +131,8 @@ public class SignUpIIFragment extends BaseFragment {
         edtLanguageOne.setOnClickListener(mClickListener);
         edtLanguageTwo.setOnClickListener(mClickListener);
         edtGender.setOnClickListener(mClickListener);
+        edtCountry.setOnClickListener(mClickListener);
+        edtState.setOnClickListener(mClickListener);
 
         edtDocName.setOnEditorActionListener(mEditorActionListener);
         edtDocSurname.setOnEditorActionListener(mEditorActionListener);
@@ -106,6 +143,7 @@ public class SignUpIIFragment extends BaseFragment {
     }
 
     private void initView(View v) {
+        flContainer = v.findViewById(R.id.fl_container);
         edtDocName = v.findViewById(R.id.edt_doc_name);
         edtDocSurname = v.findViewById(R.id.edt_doc_surname);
         edtDob = v.findViewById(R.id.edt_dob);
@@ -148,8 +186,26 @@ public class SignUpIIFragment extends BaseFragment {
                 break;
 
             case R.id.edt_dob:
-
                 showDatePicker();
+                break;
+
+            case R.id.edt_state:
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_STATE");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_STATE")) {
+                            State state = (State) item;
+                            edtState.setText(state.getName());
+                            edtState.setTag(state.getId());
+                            popChooseOptionFragment();
+                        }
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case R.id.btn_continue:
@@ -158,66 +214,71 @@ public class SignUpIIFragment extends BaseFragment {
                     return;
                 }
 
-//                if (isFormValid()) {
+                if (isFormValid()) {
                 SignUpIIRequest in = new SignUpIIRequest.Builder()
-                        .setFirstName("Pappu")
-                        .setLastName("Maan")
-                        .setDateOfBirth("2019-12-09")
-                        .setBirthCity("Abi")
-                        .setBirthCountry("asdasd")
-                        .setNationalityId(2)
-                        .setGenderId(2)
-                        .setSpecialityId(1)
-                        .setPrimaryLanguageId(1)
-                        .setSecondaryLanguageId(2)
-                        .setAddress1("")
-                        .setCity("sdas")
-                        .setCountryId(1)
-                        .setStateId(1)
-                        .setPostalCode("12")
-                        .setPrefAddress("sdasd")
+                        .setFirstName(mDocName)
+                        .setLastName(mDocSurname)
+                        .setDateOfBirth(mDob)
+                        .setBirthCity(mBirthCity)
+                        .setBirthCountry(mBirthCountry)
+                        .setNationalityId((Integer) edtNationality.getTag())
+                        .setGenderId((Integer) edtGender.getTag())
+                        .setSpecialityId((Integer) edtSpeciality.getTag())
+                        .setPrimaryLanguageId((Integer) edtLanguageOne.getTag())
+                        .setSecondaryLanguageId((Integer) edtLanguageTwo.getTag())
+                        .setCountryId((Integer) edtCountry.getTag())
+                        .setStateId((Integer) edtState.getTag())
+                        .setCity(mCity)
+                        .setAddress1(mAddr)
                         .build();
-                mViewModel.attemptSignUp(in);
-//                }
+                    Log.e(TAG,in.toString());
+                return;
+
+//                Map<String, String> map = new HashMap<>();
+//                map.put("content-type", "application/json");
+//                map.put("Authorization","Bearer "+mAccessToken);
+//                mViewModel.attemptSignUp(in,map);
+                }
 
                 break;
 
-            case R.id.edt_birth_city:
+//            case R.id.edt_birth_city:
 //                    Intent in=new Intent(getActivity(), ChooseOptionActivity.class);
 //                    in.putExtra("KEY_",(String)"TAG_BIRTH_CITY");
 //                    startActivityForResult(in, REQUEST_CODE_SELECT);
 
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_CITY");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        //  if(type.equals("TAG_BIRTH_CITY")) edtBirthCity.setText(item);
-                        //  popChooseOptionFragment();
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
-                break;
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_CITY");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        //  if(type.equals("TAG_BIRTH_CITY")) edtBirthCity.setText(item);
+//                        //  popChooseOptionFragment();
+//
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.ll_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
+//                break;
 
-            case R.id.edt_birth_country:
+//            case R.id.edt_birth_country:
 //                Intent inn=new Intent(getActivity(), ChooseOptionActivity.class);
 //                inn.putExtra("KEY_",(String)"TAG_BIRTH_COUNTRY");
 //                startActivityForResult(inn, REQUEST_CODE_SELECT);
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_COUNTRY");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_BIRTH_COUNTRY");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
 //                        if(type.equals("TAG_BIRTH_COUNTRY")) edtBirthCountry.setText(item);
 //                        popChooseOptionFragment();
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
-                break;
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.ll_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
+//                break;
 
 
             case R.id.edt_nationality:
@@ -228,12 +289,19 @@ public class SignUpIIFragment extends BaseFragment {
                 mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
                     @Override
                     public void onItemSelected(Object item, String type) {
-//                        if(type.equals("TAG_NATIONALITY")) edtNationality.setText(item);
-//                        popChooseOptionFragment();
+                        if (type.equals("TAG_NATIONALITY")) {
+                            Country country = (Country) item;
+                            edtNationality.setText(country.getName());
+                            edtNationality.setTag(country.getId());
+                            popChooseOptionFragment();
+
+
+                        }
+
                     }
                 });
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -249,12 +317,13 @@ public class SignUpIIFragment extends BaseFragment {
                         if (type.equals("TAG_SPECIALITY")) {
                             Speciliaty speciliaty = (Speciliaty) item;
                             edtSpeciality.setText(speciliaty.getName());
+                            edtSpeciality.setTag(speciliaty.getId());
                             popChooseOptionFragment();
                         }
                     }
                 });
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -268,6 +337,7 @@ public class SignUpIIFragment extends BaseFragment {
                         if (type.equals("TAG_LANGUAGE_ONE")) {
                             Language language = (Language) item;
                             edtLanguageOne.setText(language.getName());
+                            edtLanguageOne.setTag(language.getId());
                             popChooseOptionFragment();
                         }
 
@@ -275,7 +345,7 @@ public class SignUpIIFragment extends BaseFragment {
                     }
                 });
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -289,12 +359,13 @@ public class SignUpIIFragment extends BaseFragment {
                         if (type.equals("TAG_LANGUAGE_TWO")) {
                             Language language = (Language) item;
                             edtLanguageTwo.setText(language.getName());
+                            edtLanguageTwo.setTag(language.getId());
                             popChooseOptionFragment();
                         }
                     }
                 });
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -307,15 +378,38 @@ public class SignUpIIFragment extends BaseFragment {
                         if (type.equals("TAG_GENDER")) {
                             Gender gender = (Gender) item;
                             edtGender.setText(gender.getName());
+                            edtGender.setTag(gender.getId());
+                            popChooseOptionFragment();
                         }
-                        popChooseOptionFragment();
+
                     }
                 });
                 getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_container, mChooseOptionFragmnet)
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
                         .addToBackStack(null)
                         .commit();
                 break;
+
+
+            case R.id.edt_country:
+                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_COUNTRY");
+                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+                    @Override
+                    public void onItemSelected(Object item, String type) {
+                        if (type.equals("TAG_COUNTRY")) {
+                            Country country = (Country) item;
+                            edtCountry.setText(country.getName());
+                            edtCountry.setTag(country.getId());
+                            popChooseOptionFragment();
+                        }
+                    }
+                });
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.fl_container, mChooseOptionFragmnet)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+
         }
 
 
@@ -369,7 +463,7 @@ public class SignUpIIFragment extends BaseFragment {
         dialog.show();
 
     }
-
+           /*     MM/dd/yyyy     */
     private void showDatePicker() {
 
         final Calendar c = Calendar.getInstance();
@@ -379,7 +473,7 @@ public class SignUpIIFragment extends BaseFragment {
 
         DatePickerDialog datePickerDialog;
         datePickerDialog = new DatePickerDialog(getActivity(), R.style.PickerStyle, (view1, year, monthOfYear, dayOfMonth) -> {
-            String x = (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
+            String x = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
             edtDob.setText(x);
 
         }, mYear, mMonth, mDay);
@@ -638,3 +732,9 @@ public class SignUpIIFragment extends BaseFragment {
         super.onDestroyView();
     }
 }
+
+
+/*
+
+{firstName='fuvi', lastName='civib9', dateOfBirth='12/4/2001', birthCity='fhui', birthCountry='ubin9', nationalityId=3, genderId=2, specialityId=8, primaryLanguageId=5, secondaryLanguageId=2, address1='vbibono', city=' yih9j0j0', countryId=5, stateId=128}
+ */

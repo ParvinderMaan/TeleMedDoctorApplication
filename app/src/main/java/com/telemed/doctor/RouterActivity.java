@@ -17,6 +17,7 @@ import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.profile.view.ChooseOptionActivity;
 import com.telemed.doctor.signin.SignInFragment;
+import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.view.SignUpIFragment;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
 import com.telemed.doctor.signup.view.SignUpIIIFragment;
@@ -80,7 +81,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                 break;
             case "SignUpIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIFragment.newInstance(), "SignUpIIFragment")
+                        .add(R.id.fl_container, SignUpIIFragment.newInstance((Object)payload), "SignUpIIFragment")
                         .addToBackStack("SignUpIIFragment")
                         .commit();
                 break;

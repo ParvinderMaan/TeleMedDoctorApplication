@@ -8,6 +8,7 @@ public class SignUpIIRequest {
     @SerializedName("firstName")
     @Expose
     private String firstName;
+
     @SerializedName("lastName")
     @Expose
     private String lastName;
@@ -48,19 +49,12 @@ public class SignUpIIRequest {
     @SerializedName("stateId")
     @Expose
     private Integer stateId;
-    @SerializedName("postalCode")
-    @Expose
-    private String postalCode;
-    @SerializedName("prefAddress")
-    @Expose
-    private String prefAddress;
 
 
     public SignUpIIRequest(String firstName, String lastName, String dateOfBirth, String birthCity,
                            String birthCountry, Integer nationalityId, Integer genderId,
                            Integer specialityId, Integer primaryLanguageId, Integer secondaryLanguageId,
-                           String address1, String city, Integer countryId, Integer stateId, String postalCode,
-                           String prefAddress) {
+                           String address1, String city, Integer countryId, Integer stateId) {
         super();
         this.id = generateId();
         this.firstName = firstName;
@@ -77,8 +71,7 @@ public class SignUpIIRequest {
         this.city = city;
         this.countryId = countryId;
         this.stateId = stateId;
-        this.postalCode = postalCode;
-        this.prefAddress = prefAddress;
+
     }
 
     @Override
@@ -98,8 +91,6 @@ public class SignUpIIRequest {
                 ", city='" + city + '\'' +
                 ", countryId=" + countryId +
                 ", stateId=" + stateId +
-                ", postalCode='" + postalCode + '\'' +
-                ", prefAddress='" + prefAddress + '\'' +
                 '}';
     }
 
@@ -125,8 +116,6 @@ public class SignUpIIRequest {
         private String city;
         private Integer countryId;
         private Integer stateId;
-        private String postalCode;
-        private String prefAddress;
 
         public Builder() {
         }
@@ -201,23 +190,19 @@ public class SignUpIIRequest {
             return this;
         }
 
-        public Builder setPostalCode(String postalCode) {
-            this.postalCode = postalCode;
-            return this;
-        }
 
-        public Builder setPrefAddress(String prefAddress) {
-            this.prefAddress = prefAddress;
-            return this;
-        }
+
+
 
         public SignUpIIRequest build() {
             SignUpIIRequest in = new SignUpIIRequest(firstName, lastName, dateOfBirth, birthCity,
                     birthCountry, nationalityId, genderId,
                     specialityId, primaryLanguageId, secondaryLanguageId,
-                    address1, city, countryId, stateId, postalCode,
-                    prefAddress);
+                    address1, city, countryId, stateId
+            );
             return in;
         }
+
+
     }
 }

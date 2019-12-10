@@ -106,6 +106,9 @@
     <string name="title_select_country">Select Country</string>
     <string name="title_select_language">Select Language</string>
     <string name="title_select_gender">Select Gender</string>
+    <string name="title_select_nationality">Select Nationality</string>
+    <string name="title_select_state">Select State</string>
+
 
 
 

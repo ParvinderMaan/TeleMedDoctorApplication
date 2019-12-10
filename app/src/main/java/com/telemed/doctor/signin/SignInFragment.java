@@ -223,10 +223,10 @@ public class SignInFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             mViewModel.setProgress(false);
-//            if (mFragmentListener!= null) {
-//                mFragmentListener.startActivity("HomeActivity");
-//                getActivity().finish();
-//            }
+            if (mFragmentListener!= null) {
+                mFragmentListener.startActivity("HomeActivity",null);
+                getActivity().finish();
+            }
 
 
 //---------------------------------------------------------------

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/ll_container"
+    android:id="@+id/fl_container"
     android:clickable="true"
     android:focusable="true"
     android:layout_width="match_parent"
     android:focusableInTouchMode="true"
+    android:longClickable="false"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -79,7 +80,6 @@
                 android:textStyle="bold"
                 app:backgroundTint="@color/colorWhite" />
             <!--            child-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,7 +123,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
@@ -213,13 +212,13 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edt_birth_city"
+                        android:id="@+id/edt_nationality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint=""
+                        android:focusable="false"
                         android:clickable="true"
                         android:cursorVisible="false"
-                        android:focusable="false"
-                        android:hint=""
                         android:includeFontPadding="false"
                         android:inputType="textEmailAddress"
                         android:longClickable="false"
@@ -229,15 +228,16 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
                         android:textStyle="bold"
+                        app:drawableRightCompat="@drawable/ic_arrow_down"
                         app:backgroundTint="@color/colorWhite"
-                        app:drawableRightCompat="@drawable/ic_arrow_down" />
+                         />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:paddingStart="@dimen/_10sdp"
-                        android:text="@string/title_birth_city"
+                        android:text="@string/title_nationality"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
                         tools:ignore="RtlSymmetry" />
@@ -261,31 +261,30 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edt_birth_country"
+                        android:id="@+id/edt_birth_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:cursorVisible="false"
-                        android:focusable="false"
                         android:hint=""
                         android:includeFontPadding="false"
                         android:inputType="text"
                         android:longClickable="false"
                         android:maxLines="1"
+                        android:ellipsize="end"
                         android:padding="@dimen/_10sdp"
                         android:text=""
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
                         android:textStyle="bold"
+                        android:imeOptions="actionNext"
                         app:backgroundTint="@color/colorWhite"
-                        app:drawableRightCompat="@drawable/ic_arrow_down" />
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:paddingStart="@dimen/_10sdp"
-                        android:text="@string/title_birth_country"
+                        android:text="@string/title_birth_city"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
                         tools:ignore="RtlSymmetry" />
@@ -300,12 +299,11 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edt_nationality"
+                        android:id="@+id/edt_birth_country"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:cursorVisible="false"
-                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusable="true"
                         android:hint=""
                         android:includeFontPadding="false"
                         android:inputType="textEmailAddress"
@@ -317,14 +315,14 @@
                         android:textColorHint="@color/colorLightBlue"
                         android:textStyle="bold"
                         app:backgroundTint="@color/colorWhite"
-                        app:drawableRightCompat="@drawable/ic_arrow_down" />
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:paddingStart="@dimen/_10sdp"
-                        android:text="@string/title_nationality"
+                        android:text="@string/title_birth_country"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorLightBlue"
                         tools:ignore="RtlSymmetry" />
@@ -378,6 +376,7 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edt_speciality"
+                    android:ellipsize="end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
@@ -515,6 +514,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="true"
+                        android:ellipsize="end"
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:hint=""
@@ -592,9 +592,6 @@
                     android:id="@+id/edt_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:cursorVisible="false"
-                    android:focusable="false"
                     android:hint=""
                     android:includeFontPadding="false"
                     android:inputType="text"
@@ -605,8 +602,7 @@
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/colorWhite"
-                    app:drawableRightCompat="@drawable/ic_arrow_down" />
+                    app:backgroundTint="@color/colorWhite" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -672,6 +668,9 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:focusable="false"
                     android:hint=""
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:imeOptions="actionDone"
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
