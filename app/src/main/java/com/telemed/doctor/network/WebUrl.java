@@ -17,8 +17,8 @@ public interface WebUrl {
     String SIGN_IN ="Auth/Login";
     String SIGN_UP_I ="Auth/RegisterDoctor";
     String SIGN_UP_II ="Auth/AddDoctorPersonalInfo";
-    String SIGN_UP_III ="Auth/RegisterDoctor";
-    String SIGN_UP_IV ="Auth/RegisterDoctor";
+    String SIGN_UP_III ="Auth/AddDoctorProfessionalInfo";
+    String SIGN_UP_IV ="Auth/AddDoctorBankInfo";
     String SIGN_UP_V ="Auth/RegisterDoctor";
     String SIGN_UP_VI ="Auth/RegisterDoctor";
 

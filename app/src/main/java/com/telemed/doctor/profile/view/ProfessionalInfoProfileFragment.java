@@ -16,7 +16,8 @@ import com.telemed.doctor.R;
 
 
 public class ProfessionalInfoProfileFragment extends Fragment {
-    private AppCompatEditText edtMedicalDegree,edtMdWhere,edtOtherDegree,edtOmdWhere,edtDeaNo,edtNpiNo;
+    private AppCompatEditText edtMedicalDegree,edtMdWhere,edtOtherDegree,
+            edtOmdWhere,edtDeaNo,edtNpiNo;
 
     public ProfessionalInfoProfileFragment() {
         // Required empty public constructor

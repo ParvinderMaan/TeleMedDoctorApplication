@@ -117,8 +117,7 @@ public class SignUpIIRequest {
         private Integer countryId;
         private Integer stateId;
 
-        public Builder() {
-        }
+        public Builder() { }
 
         public Builder setFirstName(String firstName) {
             this.firstName = firstName;

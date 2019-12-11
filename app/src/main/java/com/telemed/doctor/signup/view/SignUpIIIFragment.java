@@ -8,20 +8,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.signup.model.SignUpIIIRequest;
+import com.telemed.doctor.signup.viewmodel.SignUpIIIViewModel;
+import com.telemed.doctor.util.CustomAlertTextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SignUpIIIFragment extends BaseFragment {
+    private final String TAG=SignUpIIIFragment.class.getSimpleName();
     private AppCompatEditText edtMedicalDegree, edtMdWhere, edtOtherDegree, edtMdOtrWhere, edtDea, edtNpiNo;
     private TextView tvCancel;
     private Button btnContinue;
@@ -29,14 +40,23 @@ public class SignUpIIIFragment extends BaseFragment {
     private AppCompatCheckBox cboxReadAndAccept;
     private String mMedicalDegree, mMdWhere, mOtherDegree, mMdOtrWhere, mDea, mNpiNo;
     private boolean isReadAndAccept;
+    private String mAccessToken;
+    private SignUpIIIViewModel mViewModel;
+    private ProgressBar progressBar;
+    private LinearLayout llRoot;
+    private CustomAlertTextView tvAlertView;
 
 
     public SignUpIIIFragment() {
         // Required empty public constructor
     }
 
-    public static SignUpIIIFragment newInstance() {
-        return new SignUpIIIFragment();
+    public static SignUpIIIFragment newInstance(Object payload) {
+        SignUpIIIFragment fragment=new SignUpIIIFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("KEY_ACCESS_TOKEN", ( String ) payload);
+        fragment.setArguments(bundle);
+        return fragment;
     }
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,7 +65,18 @@ public class SignUpIIIFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // collect our intent
+        if(getArguments()!=null){
+            mAccessToken = getArguments().getString("KEY_ACCESS_TOKEN");
+            Log.e(TAG,mAccessToken);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(SignUpIIIViewModel.class);
         return inflater.inflate(R.layout.fragment_sign_up_three, container, false);
     }
 
@@ -55,22 +86,82 @@ public class SignUpIIIFragment extends BaseFragment {
         initView(v);
         initListener(v);
 
+        // @initialization
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        mViewModel.getProgress()
+                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+
+
+        mViewModel.getViewClickable()
+                .observe(this, isView -> llRoot.setClickable(isView));
+
+
+        mViewModel.getResultant().observe(this, response -> {
+
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        if (mFragmentListener != null){
+                            //data = response.getData().getData(); // adding Additional Info
+                           //  data.setEmail(mUserEmail);
+                            tvAlertView.showTopAlert(response.getData().getMessage());
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            mFragmentListener.showFragment("SignUpIVFragment", mAccessToken);
+
+                        }
+
+                    }
+
+                    break;
+
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
+
+            }
+
+        });
+
     }
 
     private void initListener(View v) {
         tvCancel.setOnClickListener(v1 -> {
 
             if(mFragmentListener!=null)
-                mFragmentListener.abortSignUp();
+                mFragmentListener.abortSignUpDialog();
 
 
         });
 
         btnContinue.setOnClickListener(v12 -> {
 
-            if(mFragmentListener!=null)
-                mFragmentListener.showFragment("SignUpIVFragment",null );
+            if(!isNetAvail()){
+                tvAlertView.showTopAlert("No Internet");
+                return;
+            }
 
+            if(isFormValid()){
+
+                SignUpIIIRequest in=new SignUpIIIRequest.Builder()
+                        .setMedicalDegree(mMedicalDegree)
+                        .setDegreeFrom(mMdWhere)
+                        .setOtherDegree(mOtherDegree)
+                        .setOtherDegreeFrom(mMdOtrWhere)
+                        .setDeaNumber(mDea)
+                        .setNpiNumber(mNpiNo)
+                        .build();
+
+                Map<String, String> map = new HashMap<>();
+                map.put("content-type", "application/json");
+                map.put("Authorization","Bearer "+mAccessToken);
+
+                mViewModel.attemptSignUp(in,map);
+            }
 
 
         });
@@ -78,6 +169,7 @@ public class SignUpIIIFragment extends BaseFragment {
     }
 
     private void initView(View v) {
+        llRoot=v.findViewById(R.id.ll_root);
         tvCancel=v.findViewById(R.id.tv_cancel);
         btnContinue =v.findViewById(R.id.btn_continue);
 
@@ -89,6 +181,10 @@ public class SignUpIIIFragment extends BaseFragment {
         edtNpiNo=v.findViewById(R.id.edt_npi_no);
         cboxReadAndAccept=v.findViewById(R.id.cbox_read_and_accept);
 
+        progressBar = v.findViewById(R.id.progress_bar);
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
+
+
 //----------------------------------------------------------------
 
     }
@@ -98,8 +194,8 @@ public class SignUpIIIFragment extends BaseFragment {
 
         mMedicalDegree=edtMedicalDegree.getText().toString();
         mMdWhere=edtMdWhere.getText().toString();;
-//        mOtherDegree=edtOtherDegree.getText().toString();;
-//        mMdOtrWhere=edtMdOtrWhere.getText().toString();;
+        mOtherDegree=edtOtherDegree.getText().toString().trim();
+        mMdOtrWhere=edtMdOtrWhere.getText().toString().trim();
         mDea=edtDea.getText().toString();;
         mNpiNo=edtNpiNo.getText().toString();;
         isReadAndAccept=cboxReadAndAccept.isChecked();
@@ -148,10 +244,14 @@ public class SignUpIIIFragment extends BaseFragment {
         }
 
         if (!isReadAndAccept) {
-            makeToast("Please read the terms and conditions");
+//            makeToast("Please read the terms and conditions");
+            tvAlertView.showTopAlert("Please read the terms and conditions");
             return false;
         }
 
         return true;
     }
+
+
+
 }

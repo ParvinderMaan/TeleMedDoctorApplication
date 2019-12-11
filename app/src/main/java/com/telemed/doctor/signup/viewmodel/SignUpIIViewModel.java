@@ -1,6 +1,7 @@
 package com.telemed.doctor.signup.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,6 +12,7 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
+import com.telemed.doctor.signup.model.SignUpIIResponse;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 
 import java.util.Map;
@@ -20,12 +22,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.telemed.doctor.network.Status.FAILURE;
+import static com.telemed.doctor.network.Status.SUCCESS;
 
 public class SignUpIIViewModel extends AndroidViewModel {
-
+    private final String TAG=SignUpIIViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-    private MutableLiveData<ApiResponse<SignUpIResponse>> resultant;
+    private MutableLiveData<ApiResponse<SignUpIIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewClickable;
 
@@ -41,20 +44,23 @@ public class SignUpIIViewModel extends AndroidViewModel {
     public void attemptSignUp(SignUpIIRequest in,  Map<String, String> map) {
         this.isLoading.setValue(true);
         this.isViewClickable.setValue(false);
-        mWebService.attemptSignUpTwo(map,in).enqueue(new Callback<SignUpIResponse>() {
+        Log.e(TAG,in.toString());
+        mWebService.attemptSignUpTwo(map,in).enqueue(new Callback<SignUpIIResponse>() {
             @Override
-            public void onResponse(@NonNull Call<SignUpIResponse> call, @NonNull Response<SignUpIResponse> response) {
+            public void onResponse(@NonNull Call<SignUpIIResponse> call, @NonNull Response<SignUpIIResponse> response) {
                 isLoading.setValue(false);
                 isViewClickable.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
-//                    SignUpIResponse result = response.body();
-//                    Log.e("SignUpIIViewModel",result.toString());
-//                    if(result.getStatus()){
-//                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
-//                    }else {
-//                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-//                    }
+                    SignUpIIResponse result = response.body();
+                    Log.e("SignUpIIViewModel",result.toString());
+                    if(result.getStatus()){
+                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else {
+
                 }
 
 
@@ -62,7 +68,7 @@ public class SignUpIIViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<SignUpIResponse> call, @NonNull Throwable error) {
+            public void onFailure(@NonNull Call<SignUpIIResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
                 isViewClickable.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
@@ -73,7 +79,7 @@ public class SignUpIIViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<ApiResponse<SignUpIResponse>> getResultant() {
+    public MutableLiveData<ApiResponse<SignUpIIResponse>> getResultant() {
         return resultant;
     }
 

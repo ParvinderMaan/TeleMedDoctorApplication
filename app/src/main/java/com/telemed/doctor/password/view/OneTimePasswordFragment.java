@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,9 +29,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.base.BaseTextWatcher;
@@ -104,8 +101,7 @@ public class OneTimePasswordFragment extends BaseFragment {
         initListener();
 
         tvUserEmail.setText(mEmail!=null?mEmail:"");
-        mHandler.sendEmptyMessageDelayed(1, 2000);//fake call
-
+        mHandler.sendEmptyMessageDelayed(1, 2000);  // fake call
         Log.e(TAG,""+ mOtpServer);
 
 
@@ -172,8 +168,6 @@ public class OneTimePasswordFragment extends BaseFragment {
         tvCancel=v.findViewById(R.id.tv_cancel);
         tvUserEmail=v.findViewById(R.id.tv_user_email);
         tvResendCode=v.findViewById(R.id.tv_resend_code);
-
-
 
         progressBar=v.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -300,7 +294,7 @@ public class OneTimePasswordFragment extends BaseFragment {
                case R.id.tv_cancel:
                    if(mFragmentListener!=null) {
                        clearFocus();
-                       mFragmentListener.abortSignUp();
+                       mFragmentListener.abortSignUpDialog();
                    }
                        break;
 

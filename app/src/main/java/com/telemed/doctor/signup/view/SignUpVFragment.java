@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +26,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.filepicker.FilePickerActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.signup.viewmodel.SignUpVViewModel;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.NormalFilePickActivity;
 import com.vincent.filepicker.filter.entity.NormalFile;
@@ -46,6 +48,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  * A simple {@link Fragment} subclass.
  */
 public class SignUpVFragment extends BaseFragment {
+    private final String TAG=SignUpVFragment.class.getSimpleName();
     private static final int REQUEST_CODE_STORAGE = 210;
     private static final int REQUEST_CODE_DOCUMENT = 211;
     private static int docIndex;
@@ -57,14 +60,21 @@ public class SignUpVFragment extends BaseFragment {
     private RouterFragmentSelectedListener mFragmentListener;
     private LinearLayout llRoot;
     private ProgressBar pbBar;
+    private SignUpVViewModel mViewModel;
+    private String mAccessToken;
+    private TextView tvCancel;
 
 
     public SignUpVFragment() {
         // Required empty public constructor
     }
 
-    public static SignUpVFragment newInstance() {
-        return new SignUpVFragment();
+    public static SignUpVFragment newInstance(Object payload) {
+        SignUpVFragment fragment=new SignUpVFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("KEY_ACCESS_TOKEN", ( String ) payload);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -74,7 +84,18 @@ public class SignUpVFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // collect our intent
+        if(getArguments()!=null){
+            mAccessToken = getArguments().getString("KEY_ACCESS_TOKEN");
+            Log.e(TAG,mAccessToken);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(SignUpVViewModel.class);
         return inflater.inflate(R.layout.fragment_sign_up_v, container, false);
     }
 
@@ -100,10 +121,9 @@ public class SignUpVFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity(), "please wait till admin approval", Toast.LENGTH_SHORT).show();
-                if (mFragmentListener != null)
-                    mFragmentListener.popTillFragment("SignInFragment", 0);
-
+//                Toast.makeText(getActivity(), "please wait till admin approval", Toast.LENGTH_SHORT).show();
+//                if (mFragmentListener != null)
+//                    mFragmentListener.popTillFragment("SignInFragment", 0);
             }
         });
 
@@ -175,11 +195,22 @@ public class SignUpVFragment extends BaseFragment {
         });
 
 
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mFragmentListener != null)
+                    mFragmentListener.abortSignUpDialog();
+
+            }
+        });
     }
 
     private void initView(View v) {
-
         llRoot = v.findViewById(R.id.ll_root);
+        tvCancel = v.findViewById(R.id.tv_cancel);
+
         rlDocOne = v.findViewById(R.id.rl_doc_one);
         rlDocTwo = v.findViewById(R.id.rl_doc_two);
         rlDocThree = v.findViewById(R.id.rl_doc_three);

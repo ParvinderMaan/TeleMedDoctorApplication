@@ -5,7 +5,7 @@ public interface RouterFragmentSelectedListener {
     void showFragment(String tag, Object payload);
     void popTopMostFragment();
     void popTillFragment(String tag, int flag);
-    void abortSignUp();
+    void abortSignUpDialog();
 
     void startActivity(String tag, Object payload);
     void hideSoftKeyboard();

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.profile.model.Country;
 import com.telemed.doctor.profile.model.Gender;
 import com.telemed.doctor.profile.model.Language;
@@ -37,6 +39,7 @@ import com.telemed.doctor.profile.model.Speciliaty;
 import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.view.ChooseOptionFragment;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
+import com.telemed.doctor.signup.model.SignUpIIResponse;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -118,6 +121,36 @@ public class SignUpIIFragment extends BaseFragment {
         mViewModel.getViewClickable()
                 .observe(this, isView -> flContainer.setClickable(isView));
 
+        mViewModel.getResultant().observe(this, new Observer<ApiResponse<SignUpIIResponse>>() {
+            @Override
+            public void onChanged(ApiResponse<SignUpIIResponse> response) {
+                switch (response.getStatus()) {
+                    case SUCCESS:
+                        if (response.getData() != null) {
+                            if (mFragmentListener != null){
+                                SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
+                                tvAlertView.showTopAlert(response.getData().getMessage());
+                                tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                                mFragmentListener.showFragment("SignUpIIIFragment", mAccessToken);
+
+                            }
+
+                        }
+
+                        break;
+
+                    case FAILURE:
+                        if (response.getErrorMsg() != null) {
+                            tvAlertView.showTopAlert(response.getErrorMsg());
+                        }
+                        break;
+
+                }
+
+
+            }
+        });
+
     }
 
     private void initListener() {
@@ -182,7 +215,7 @@ public class SignUpIIFragment extends BaseFragment {
 
             case R.id.tv_cancel:
                 if (mFragmentListener != null)
-                    mFragmentListener.abortSignUp();
+                    mFragmentListener.abortSignUpDialog();
                 break;
 
             case R.id.edt_dob:
@@ -231,13 +264,12 @@ public class SignUpIIFragment extends BaseFragment {
                         .setCity(mCity)
                         .setAddress1(mAddr)
                         .build();
-                    Log.e(TAG,in.toString());
-                return;
+//                    Log.e(TAG,in.toString());
 
-//                Map<String, String> map = new HashMap<>();
-//                map.put("content-type", "application/json");
-//                map.put("Authorization","Bearer "+mAccessToken);
-//                mViewModel.attemptSignUp(in,map);
+                Map<String, String> map = new HashMap<>();
+                map.put("content-type", "application/json");
+                map.put("Authorization","Bearer "+mAccessToken);
+                mViewModel.attemptSignUp(in,map);
                 }
 
                 break;

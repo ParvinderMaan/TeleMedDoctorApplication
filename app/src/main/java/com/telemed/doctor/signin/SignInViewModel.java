@@ -9,66 +9,93 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.network.ApiResponse;
+import com.telemed.doctor.network.WebService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.telemed.doctor.network.Status.FAILURE;
+import static com.telemed.doctor.network.Status.SUCCESS;
+
 
 public class SignInViewModel extends AndroidViewModel {
-    private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();
-    private MutableLiveData<Boolean> showHomeActivity=new MutableLiveData<>();
-//    private MutableLiveData<ApiResponse> mApiResponse=new MutableLiveData<>();
+    private final String TAG=SignInViewModel.class.getSimpleName();
+    //@use Dagger instead
+    private final WebService mWebService;
+    private MutableLiveData<ApiResponse<SignInResponse>> resultant;
+    private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<Boolean> isViewClickable;
 
 
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
+        mWebService = ((TeleMedApplication) application).getRetrofitInstance();
+        resultant = new MutableLiveData<>();
+        isLoading=new MutableLiveData<>();
+        isViewClickable=new MutableLiveData<>();
+    }
+
+
+
+    public void attemptSignIn(SignInRequest in) {
+        this.isLoading.setValue(true);
+        this.isViewClickable.setValue(false);
+        Log.e(TAG,in.toString());
+        mWebService.attemptSignIn(in).enqueue(new Callback<SignInResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
+                isLoading.setValue(false);
+                isViewClickable.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    SignInResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else {
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SignInResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewClickable.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
 
     }
 
+    public MutableLiveData<ApiResponse<SignInResponse>> getResultant() {
+        return resultant;
+    }
 
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
     }
 
-    public void setProgress(boolean isLoading) {
-        this.isLoading.setValue(isLoading);
-    }
-
-    public void attemptSignIn() {
-        setProgress(true);
-//        WebService webService= ServiceGenerator.createService(WebService.class);
-//        webService.fetchPostInfo().enqueue(new Callback<Post>() {
-//            @Override
-//            public void onResponse(Call<Post> call, Response<Post> response) {
-//
-//                if(response.isSuccessful()){
-//
-//                    Post post = response.body();
-//                    mApiResponse.showTopAlert(new ApiResponse(SUCCESS, post, null));
-//
-////                    makeToast(postList.toString());
-//
-//                }else {
-//                    // data.showTopAlert(ApiResponse.error());
-////                    makeToast("not succesfull");
-//                    mApiResponse.showTopAlert(new ApiResponse(SUCCESS, response.body(), null));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Post> call, Throwable t) {
-////                makeToast(" onFailure");
-//                mApiResponse.showTopAlert(new ApiResponse(ERROR, null, t));
-//
-//            }
-//        });
-
+    void cancelRequest(){
 
 
     }
 
-    public MutableLiveData<Boolean> getShowHomeActivity() {
-        return showHomeActivity;
+    public MutableLiveData<Boolean> getViewClickable() {
+        return isViewClickable;
     }
-
 
 
 

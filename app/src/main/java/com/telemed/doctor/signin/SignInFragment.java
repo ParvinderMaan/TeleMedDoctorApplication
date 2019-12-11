@@ -36,6 +36,9 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
+    private static final String DEVICE_TYPE="android";
+    private static final String DISCRIMINATOR_TYPE="doctor";
+
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
     private RelativeLayout rlRoot;
@@ -44,7 +47,7 @@ public class SignInFragment extends BaseFragment {
     private ProgressBar progressBar;
     private RouterFragmentSelectedListener mFragmentListener;
     private String mUserEmail, mUserPassword;
-    private CustomAlertTextView tvAlert;
+    private CustomAlertTextView tvAlertView;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -74,36 +77,66 @@ public class SignInFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getShowHomeActivity().observe(this, aBoolean -> {
-            if (aBoolean) {
+        mViewModel.getViewClickable()
+                .observe(this, isView -> rlRoot.setClickable(isView));
 
-                if (mFragmentListener != null) {
-                    mFragmentListener.startActivity("HomeActivity", null );
-                    getActivity().finish();
-                }
+//                if (mFragmentListener != null) {
+//                    mFragmentListener.startActivity("HomeActivity", null );
+//                    getActivity().finish();
+
+
+
+        mViewModel.getResultant().observe(this, response -> {
+
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        SignInResponse.Data infoObj = response.getData().getData(); // adding Additional Info
+                         infoObj.setEmail(mUserEmail);
+                         tvAlertView.showTopAlert(response.getData().getMessage());
+                        if (mFragmentListener != null)
+                            traverseFragment(infoObj);
+                    }
+
+                    break;
+
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
+
             }
+
         });
 
 
-//        mViewModel.fetchPost().observe(this, new Observer<ApiResponse>() {
-//            @Override
-//            public void onChanged(ApiResponse apiResponse) {
-//                 mViewModel.setProgress(false);
-//                if(apiResponse.status== Status.SUCCESS){
-//                    makeToast(""+apiResponse.data.toString());
-//
-//
-//                }else if(apiResponse.status==Status.ERROR){
-//
-//                    makeToast(""+apiResponse.data.toString());
-//
-//                }
-//
-//            }
-//        });
 
+    }
 
+    private void traverseFragment(SignInResponse.Data infoObj) {
+        switch (infoObj.getLastScreenId()){
 
+            case 1: // ---> 2
+                mFragmentListener.showFragment("OneTimePasswordFragment",null);
+                break;
+            case 2: // ---> 3
+                mFragmentListener.showFragment("SignUpIIFragment",null);
+                break;
+            case 3:  // ---> 4
+                mFragmentListener.showFragment("SignUpIIIFragment",null);
+                break;
+            case 4:  // ---> 5
+                mFragmentListener.showFragment("SignUpIVFragment",null);
+                break;
+            case 5:  // ---> 6
+                mFragmentListener.showFragment("SignUpVFragment",null);
+                break;
+                   // ---> default
+             default:
+                 mFragmentListener.startActivity("HomeActivity", null );
+
+        }
 
     }
 
@@ -120,7 +153,7 @@ public class SignInFragment extends BaseFragment {
         progressBar.setVisibility(View.INVISIBLE);
 
 
-        tvAlert = v.findViewById(R.id.tv_alert);
+        tvAlertView = v.findViewById(R.id.tv_alert);
 
 
 
@@ -143,6 +176,7 @@ public class SignInFragment extends BaseFragment {
 
                 if (mFragmentListener != null)
                     mFragmentListener.showFragment("SignUpIFragment", null);
+
                 break;
 
             case R.id.tv_forgot_password:
@@ -153,26 +187,33 @@ public class SignInFragment extends BaseFragment {
 
             case R.id.btn_sign_in:
 
-                if (!isNetAvail()) {
-                    tvAlert.showTopAlert("no internet");
+                if(!isNetAvail()){
+                    tvAlertView.showTopAlert("No Internet");
                     return;
                 }
 
-                if (isFormValid()) {
-                    attemptSignIn();
-//                    mViewModel.attemptSignIn();
+                if(isFormValid()){
+                    SignInRequest in=new SignInRequest.Builder()
+                            .setEmail(mUserEmail)
+                            .setPassword(mUserPassword)
+                            .setDeviceType(DEVICE_TYPE)
+                            .setDeviceId("12345")
+                            .setDiscriminator(DISCRIMINATOR_TYPE)
+                            .build();
+                    mViewModel.attemptSignIn(in);
                 }
+
                 break;
         }
     };
 
-    private void attemptSignIn() {
-
-        mViewModel.setProgress(true);
-        mHandler.sendEmptyMessageDelayed(1, 3000);
-
-
-    }
+//    private void attemptSignIn() {
+//
+//        mViewModel.setProgress(true);
+//        mHandler.sendEmptyMessageDelayed(1, 3000);
+//
+//
+//    }
 
     @Override
     public void onDestroyView() {
@@ -218,23 +259,23 @@ public class SignInFragment extends BaseFragment {
     }
 
 
-    @SuppressLint("HandlerLeak")
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            mViewModel.setProgress(false);
-            if (mFragmentListener!= null) {
-                mFragmentListener.startActivity("HomeActivity",null);
-                getActivity().finish();
-            }
-
-
-//---------------------------------------------------------------
-
-//---------------------------------------------------------------
-
-        }
-    };
+//    @SuppressLint("HandlerLeak")
+//    private final Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            mViewModel.setProgress(false);
+//            if (mFragmentListener!= null) {
+//                mFragmentListener.startActivity("HomeActivity",null);
+//                getActivity().finish();
+//            }
+//
+//
+////---------------------------------------------------------------
+//
+////---------------------------------------------------------------
+//
+//        }
+//    };
 
 
     private EditText.OnEditorActionListener mEditorActionListener=new TextView.OnEditorActionListener() {
@@ -272,28 +313,24 @@ public class SignInFragment extends BaseFragment {
         if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
+
+
+        /*
+
+
+        {
+    "status": true,
+    "message": "Please Confirm Your Email to continue.",
+    "data": {
+        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDA1M2VhZC05OTA5LTQwZDAtODgwYy02YzViODk4YzZiNzUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc2MDQ2OTUzLCJleHAiOjE1NzYxMzMzNTMsImlhdCI6MTU3NjA0Njk1M30.AE8wPmMKk-m7PduK3U-tr-EL65OUNzo0jT6GDiSQJbQ",
+        "lastScreenId": 1,
+        "emailConfirmed": false
+    }
+  }
+         */
     }
 
-//    private void hideViews() {
-//        tvAlert.animate().translationY(-tvAlert.getHeight()).setInterpolator(new AccelerateInterpolator(1));
-//
-////        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFabButton.getLayoutParams();
-////        int fabBottomMargin = lp.bottomMargin;
-////        mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-//    }
-//
-//    private void showViews() {
-//        tvAlert.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-////        mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-//    }
 
-    // To animate view slide out from top to bottom
-    public void slideToBottom(View view){
-        view.setVisibility(View.VISIBLE);
-        TranslateAnimation animate = new TranslateAnimation(0,0,0,0);
-        animate.setDuration(2000);
-        animate.setFillAfter(false);
-        view.startAnimation(animate);
-        view.setVisibility(View.INVISIBLE);
-    }
+
+
 }

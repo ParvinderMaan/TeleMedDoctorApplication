@@ -8,9 +8,16 @@ import com.telemed.doctor.profile.model.OptionResponse;
 import com.telemed.doctor.profile.model.StateResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
+import com.telemed.doctor.signup.model.SignUpIIIRequest;
+import com.telemed.doctor.signup.model.SignUpIIIResponse;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
+import com.telemed.doctor.signup.model.SignUpIIResponse;
 import com.telemed.doctor.signup.model.SignUpIRequest;
 import com.telemed.doctor.signup.model.SignUpIResponse;
+import com.telemed.doctor.signup.model.SignUpIVRequest;
+import com.telemed.doctor.signup.model.SignUpIVResponse;
+import com.telemed.doctor.signup.model.SignUpVRequest;
+import com.telemed.doctor.signup.model.SignUpVResponse;
 
 import java.util.Map;
 
@@ -52,22 +59,22 @@ public interface WebService {
 
 //   @Headers({WebUrl.CONTENT_HEADER,})
     @POST(WebUrl.SIGN_UP_II)
-    Call<SignUpIResponse> attemptSignUpTwo(@HeaderMap Map<String, String> headers, @Body SignUpIIRequest in);
+    Call<SignUpIIResponse> attemptSignUpTwo(@HeaderMap Map<String, String> headers, @Body SignUpIIRequest in);
 
 
-    @Headers({WebUrl.CONTENT_HEADER})
+//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_III)
-    Call<SignUpIResponse> attemptSignUpThree(@Body SignUpIRequest in);
+    Call<SignUpIIIResponse> attemptSignUpThree(@HeaderMap Map<String, String> headers, @Body SignUpIIIRequest in);
 
 
-    @Headers({WebUrl.CONTENT_HEADER})
+//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_IV)
-    Call<SignUpIResponse> attemptSignUpFour(@Body SignUpIRequest in);
+    Call<SignUpIVResponse> attemptSignUpFour(@HeaderMap Map<String, String> headers, @Body SignUpIVRequest in);
 
 
-    @Headers({WebUrl.CONTENT_HEADER})
+//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_V)
-    Call<SignUpIResponse> attemptSignUpFive(@Body SignUpIRequest in);
+    Call<SignUpVResponse> attemptSignUpFive(@HeaderMap Map<String, String> headers, @Body SignUpVRequest in);
 
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_VI)

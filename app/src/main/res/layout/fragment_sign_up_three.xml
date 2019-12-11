@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/ll_root"
     android:clickable="true"
     android:focusable="true"
     android:background="@color/colorBlue"
@@ -13,8 +14,7 @@
     <RelativeLayout
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_weight=".25"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -32,11 +32,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/title_doctor_app" />
+
+
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar"/>
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight=".75"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
         <ScrollView
             android:overScrollMode="never"
             android:fillViewport="true"
@@ -44,7 +51,7 @@
             android:layout_height="match_parent">
             <!--parent -->
             <LinearLayout
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"

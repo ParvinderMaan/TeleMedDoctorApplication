@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.profile.viewmodel.ProfileViewModel;
-import com.telemed.doctor.signin.SignInViewModel;
 
 
 public class ProfileFragment extends Fragment {
@@ -60,10 +59,8 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
 
-        //@ initialization
-        tvBasicInfo.setSelected(true);
-        tvProfessionalInfo.setSelected(false);
-        tvBankInfo.setSelected(false);
+        // @init
+        setTextViewState(true,false,false);
         showFragment("TAG_BASIC");
     }
 
@@ -125,22 +122,16 @@ public class ProfileFragment extends Fragment {
                         mFragmentListener.popTopMostFragment();
                     break;
                 case R.id.tv_basic_info:
-                    tvBasicInfo.setSelected(true);
-                    tvProfessionalInfo.setSelected(false);
-                    tvBankInfo.setSelected(false);
+                    setTextViewState(true,false,false);
                     showFragment("TAG_BASIC");
 
                     break;
                 case R.id.tv_professional_info:
-                    tvBasicInfo.setSelected(false);
-                    tvProfessionalInfo.setSelected(true);
-                    tvBankInfo.setSelected(false);
+                    setTextViewState(false,true,false);
                     showFragment("TAG_PROFESSIONAL");
                     break;
                 case R.id.tv_bank_info:
-                    tvBasicInfo.setSelected(false);
-                    tvProfessionalInfo.setSelected(false);
-                    tvBankInfo.setSelected(true);
+                    setTextViewState(false,false,true);
                     showFragment("TAG_BANK");
                     break;
             }
@@ -161,5 +152,11 @@ public class ProfileFragment extends Fragment {
         tvBankInfo.setOnClickListener(null);
         ibtnClose.setOnClickListener(null);
         mClickListener=null;
+    }
+
+    private void setTextViewState(boolean a, boolean b, boolean c){
+        tvBasicInfo.setSelected(a);
+        tvProfessionalInfo.setSelected(b);
+        tvBankInfo.setSelected(c);
     }
 }

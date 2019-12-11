@@ -15,9 +15,7 @@ import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.miscellaneous.AbortDialogFragment;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
-import com.telemed.doctor.profile.view.ChooseOptionActivity;
 import com.telemed.doctor.signin.SignInFragment;
-import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.view.SignUpIFragment;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
 import com.telemed.doctor.signup.view.SignUpIIIFragment;
@@ -88,7 +86,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
             case "SignUpIIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIIFragment.newInstance(), "SignUpIIIFragment")
+                        .add(R.id.fl_container, SignUpIIIFragment.newInstance((Object)payload), "SignUpIIIFragment")
                         .addToBackStack("SignUpIIIFragment")
                         .commit();
                 break;
@@ -96,14 +94,14 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
             case "SignUpIVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIVFragment.newInstance(), "SignUpIVFragment")
+                        .add(R.id.fl_container, SignUpIVFragment.newInstance((Object)payload), "SignUpIVFragment")
                         .addToBackStack("SignUpIVFragment")
                         .commit();
                 break;
 
             case "SignUpVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpVFragment.newInstance(), "SignUpVFragment")
+                        .add(R.id.fl_container, SignUpVFragment.newInstance((Object)payload), "SignUpVFragment")
                         .addToBackStack("SignUpVFragment")
                         .commit();
                 break;
@@ -142,7 +140,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
-    public void onBackPressed() { // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
+    public void onBackPressed() {      // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
 
         Log.e(TAG,""+getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -151,7 +149,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         } else if(getSupportFragmentManager().getBackStackEntryCount() == 2) {
            popTopMostFragment();
         }else {
-            abortSignUp();
+            abortSignUpDialog();
         }
     }
 
@@ -162,7 +160,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
-    public void abortSignUp() {
+    public void abortSignUpDialog() {
         AbortDialogFragment fragment = AbortDialogFragment.newInstance();
         fragment.show(getSupportFragmentManager(), "TAG");
     }
