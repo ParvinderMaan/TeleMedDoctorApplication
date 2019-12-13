@@ -2,14 +2,13 @@ package com.telemed.doctor;
 
 import android.app.Application;
 
+import com.telemed.doctor.helper.Common;
 import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
 
 import java.io.File;
 
-//import leakcanary.AppWatcher;
-//import leakcanary.LeakCanary;
-//import leakcanary.ObjectWatcher;
+
 
 public class TeleMedApplication extends Application {
     private static TeleMedApplication currentApplication = null;
@@ -35,5 +34,8 @@ public class TeleMedApplication extends Application {
     public WebService getRetrofitInstance() {
         return ServiceGenerator.createService(WebService.class);
 
+    }
+    public boolean isNetAvail() {
+        return Common.isNetworkAvail(getApplicationContext());
     }
 }

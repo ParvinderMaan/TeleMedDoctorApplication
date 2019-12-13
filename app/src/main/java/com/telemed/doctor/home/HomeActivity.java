@@ -15,7 +15,7 @@ import com.telemed.doctor.chat.ChatFragment;
 import com.telemed.doctor.consult.MyConsultFragment;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
-import com.telemed.doctor.miscellaneous.SignOutDialogFragment;
+import com.telemed.doctor.dialog.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
@@ -113,7 +113,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "MyScheduleFragment":
 //                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.fl_container, MyScheduleFragment.newInstance())
+//                        .addView(R.id.fl_container, MyScheduleFragment.newInstance())
 //                        .addToBackStack("MyScheduleFragment")
 //                        .commit();
                 getSupportFragmentManager().beginTransaction()

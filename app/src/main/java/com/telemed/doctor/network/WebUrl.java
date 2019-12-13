@@ -19,7 +19,7 @@ public interface WebUrl {
     String SIGN_UP_II ="Auth/AddDoctorPersonalInfo";
     String SIGN_UP_III ="Auth/AddDoctorProfessionalInfo";
     String SIGN_UP_IV ="Auth/AddDoctorBankInfo";
-    String SIGN_UP_V ="Auth/RegisterDoctor";
+    String SIGN_UP_V ="Auth/DoctorFinalRegistration";
     String SIGN_UP_VI ="Auth/RegisterDoctor";
 
 
@@ -33,4 +33,13 @@ public interface WebUrl {
     String RESEND_OTP = "Auth/ResendCode";
     String FETCH_DRILLS="Content/GetDoctorDrillsPI";
     String FETCH_STATE = "Content/GetStatesByCountryId";
+
+    String UPLOAD_FILE = "Auth/AddDoctorDocument";
+    String DELETE_FILE = "Auth/DeleteDoctorDocument";
+
+
+    // profile
+    String BASIC_PROFILE_INFO = "";
+    String PROFESSIONAL_PROFILE_INFO = "";
+    String BANK_PROFILE_INFO = "";
 }

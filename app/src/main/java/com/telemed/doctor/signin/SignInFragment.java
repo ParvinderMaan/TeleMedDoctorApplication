@@ -32,12 +32,13 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
     private static final String DEVICE_TYPE="android";
-    private static final String DISCRIMINATOR_TYPE="doctor";
+    private static final String DISCRIMINATOR_TYPE="Doctor";
 
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
@@ -94,6 +95,7 @@ public class SignInFragment extends BaseFragment {
                         SignInResponse.Data infoObj = response.getData().getData(); // adding Additional Info
                          infoObj.setEmail(mUserEmail);
                          tvAlertView.showTopAlert(response.getData().getMessage());
+                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         if (mFragmentListener != null)
                             traverseFragment(infoObj);
                     }
@@ -115,26 +117,32 @@ public class SignInFragment extends BaseFragment {
     }
 
     private void traverseFragment(SignInResponse.Data infoObj) {
+        UserInfoWrapper infoWrapper=new UserInfoWrapper();
+        infoWrapper.setAccessToken(infoObj.getAccessToken());
+        infoWrapper.setEmail(infoObj.getEmail());
+        infoWrapper.setEmailConfirmed(infoObj.getEmailConfirmed());
+        infoWrapper.setLastScreenId(infoObj.getLastScreenId());
+
         switch (infoObj.getLastScreenId()){
 
             case 1: // ---> 2
-                mFragmentListener.showFragment("OneTimePasswordFragment",null);
+                mFragmentListener.showFragment("OneTimePasswordFragment",infoWrapper);
                 break;
             case 2: // ---> 3
-                mFragmentListener.showFragment("SignUpIIFragment",null);
+                mFragmentListener.showFragment("SignUpIIFragment",infoWrapper);
                 break;
             case 3:  // ---> 4
-                mFragmentListener.showFragment("SignUpIIIFragment",null);
+                mFragmentListener.showFragment("SignUpIIIFragment",infoWrapper);
                 break;
             case 4:  // ---> 5
-                mFragmentListener.showFragment("SignUpIVFragment",null);
+                mFragmentListener.showFragment("SignUpIVFragment",infoWrapper);
                 break;
             case 5:  // ---> 6
-                mFragmentListener.showFragment("SignUpVFragment",null);
+                mFragmentListener.showFragment("SignUpVFragment",infoWrapper);
                 break;
                    // ---> default
              default:
-                 mFragmentListener.startActivity("HomeActivity", null );
+                 mFragmentListener.startActivity("HomeActivity", infoWrapper );
 
         }
 

@@ -9,7 +9,6 @@ import retrofit2.HttpException;
 
 
 public class ErrorHandler {
-    private static final int API_STATUS_CODE_LOCAL_ERROR = 0;
 
     public static String reportError(Throwable error) {
         String errorMessage;
@@ -27,9 +26,7 @@ public class ErrorHandler {
                 case HttpsURLConnection.HTTP_BAD_REQUEST:
                     errorMessage="Bad Request";
                     break;
-                case API_STATUS_CODE_LOCAL_ERROR:
-                    errorMessage="No Internet Connection";
-                    break;
+
                 default:
                     errorMessage=error.getLocalizedMessage();
 
@@ -41,9 +38,6 @@ public class ErrorHandler {
         } else {
             errorMessage=error.getMessage();
         }
-
-
-
 
         return errorMessage;
     }

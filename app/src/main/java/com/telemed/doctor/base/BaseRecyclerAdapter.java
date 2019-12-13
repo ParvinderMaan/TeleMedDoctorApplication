@@ -118,7 +118,7 @@ public abstract class BaseRecyclerAdapter<T, L extends BaseRecyclerListener, VH 
      */
     public void add(T item) {
         if (item == null) {
-            throw new IllegalArgumentException("Cannot add null item to the Recycler adapter");
+            throw new IllegalArgumentException("Cannot addView null item to the Recycler adapter");
         }
         items.add(item);
         notifyItemInserted(items.size() - 1);
@@ -132,7 +132,7 @@ public abstract class BaseRecyclerAdapter<T, L extends BaseRecyclerListener, VH 
      */
     public void addAll(List<T> items) {
         if (items == null) {
-            throw new IllegalArgumentException("Cannot add `null` items to the Recycler adapter");
+            throw new IllegalArgumentException("Cannot addView `null` items to the Recycler adapter");
         }
         this.items.addAll(items);
         notifyItemRangeInserted(this.items.size() - items.size(), items.size());

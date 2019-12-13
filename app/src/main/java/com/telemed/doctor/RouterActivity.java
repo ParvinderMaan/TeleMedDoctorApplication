@@ -10,9 +10,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.telemed.doctor.base.BaseActivity;
+import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-import com.telemed.doctor.miscellaneous.AbortDialogFragment;
+import com.telemed.doctor.dialog.AbortDialogFragment;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.signin.SignInFragment;
@@ -61,7 +62,8 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
-//                      .addToBackStack("SplashFragment")
+
+//                    .addToBackStack("SplashFragment")
                         .commit();
                 break;
             case "SignInFragment":
@@ -74,6 +76,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SignUpIFragment.newInstance(), "SignUpIFragment")
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
                         .addToBackStack("SignUpIFragment")
                         .commit();
                 break;
@@ -115,7 +118,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
 //            case "ChooseOptionFragment":
 //                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.fl_container, ChooseOptionFragment.newInstance(payload), "ChooseOptionFragment")
+//                        .addView(R.id.fl_container, ChooseOptionFragment.newInstance(payload), "ChooseOptionFragment")
 //                        .addToBackStack("ChooseOptionFragment")
 //                        .commit();
 //                break;
@@ -166,13 +169,15 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
     @Override
+    public void showSignUpSuccessDialog(String msg) {
+        SignUpSuccessDialogFragment fragment = SignUpSuccessDialogFragment.newInstance(msg);
+        fragment.show(getSupportFragmentManager(), "TAG");
+    }
+
+    @Override
     public void startActivity(String tag, Object payload) {
         if (tag.equals("HomeActivity"))
             startActivity(new Intent(this, HomeActivity.class));
-
-
-
-
 
     }
 
@@ -191,21 +196,10 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
     }
 
-    @Override
-    public void sendDataToFragment(String fragmentTag, String data, String tag) {
-
-
-//        switch (fragmentTag) {
-//
-//            case "SignUpIIFragment":
-//                SignUpIIFragment mSignUpIIFragment = (SignUpIIFragment) getSupportFragmentManager().findFragmentByTag("SignUpIIFragment");
-//                if (mSignUpIIFragment != null) {
-//                    mSignUpIIFragment.updateUi(data, tag);
-//                }
-//                break;
-//        }
-
-    }
-
+   
 
 }
+/*
+   .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+
+ */

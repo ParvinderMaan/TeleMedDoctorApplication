@@ -6,8 +6,8 @@ public interface RouterFragmentSelectedListener {
     void popTopMostFragment();
     void popTillFragment(String tag, int flag);
     void abortSignUpDialog();
+    void showSignUpSuccessDialog(String msg);
 
     void startActivity(String tag, Object payload);
     void hideSoftKeyboard();
-    void sendDataToFragment(String fragmentTag, String data, String type);
 }

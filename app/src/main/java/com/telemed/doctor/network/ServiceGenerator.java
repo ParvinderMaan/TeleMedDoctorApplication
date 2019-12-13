@@ -5,10 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.telemed.doctor.BuildConfig;
+import com.telemed.doctor.NoConnectivityException;
 import com.telemed.doctor.TeleMedApplication;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -63,10 +65,12 @@ public class ServiceGenerator {
 
         OkHttpClient modifiedOkHttpClient = okHttpClientBuilder
                 .addInterceptor(getHttpLoggingInterceptor())
-//             .addInterceptor(getBasicInterceptor())
-//               .connectTimeout(30, TimeUnit.SECONDS)
-//               .readTimeout(30, TimeUnit.SECONDS)
-//               .writeTimeout(30, TimeUnit.SECONDS)
+//               .addInterceptor(getBasicInterceptor())
+                 .addInterceptor(getNetworkInterceptor())
+
+                .connectTimeout(30, TimeUnit.SECONDS)
+               .readTimeout(30, TimeUnit.SECONDS)
+               .writeTimeout(30, TimeUnit.SECONDS)
                .build();
 
         retrofitBuilder.client(modifiedOkHttpClient);
@@ -115,4 +119,22 @@ public class ServiceGenerator {
             }
         };
     }
+    public static Interceptor getNetworkInterceptor() {
+        return  new Interceptor() {
+            @NonNull
+            @Override
+            public Response intercept(@NonNull Chain chain) throws IOException {
+                boolean isConnected=TeleMedApplication.getInstance().isNetAvail();
+                if (!isConnected) {
+                    throw new NoConnectivityException();
+                    // Throwing our custom exception 'NoConnectivityException'
+                }
+
+                Request.Builder builder = chain.request().newBuilder();
+                return chain.proceed(builder.build());
+            }
+        };
+    }
+
+
 }

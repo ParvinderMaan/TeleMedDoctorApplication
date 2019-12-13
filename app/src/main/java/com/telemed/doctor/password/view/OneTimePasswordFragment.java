@@ -36,6 +36,7 @@ import com.telemed.doctor.base.BaseTextWatcher;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.viewmodel.OneTimePasswordViewModel;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.util.CustomAlertTextView;
 
@@ -63,7 +64,7 @@ public class OneTimePasswordFragment extends BaseFragment {
     public static OneTimePasswordFragment newInstance(Object payload) {
         OneTimePasswordFragment fragment=new OneTimePasswordFragment();
         Bundle bundle=new Bundle();
-        bundle.putParcelable("KEY_", ( SignUpIResponse.Data ) payload);
+        bundle.putParcelable("KEY_", (UserInfoWrapper) payload); // SignUpIResponse.Data
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -112,7 +113,9 @@ public class OneTimePasswordFragment extends BaseFragment {
                         if (mFragmentListener != null){
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            objInfo.setEmail(mEmail);
+//                            objInfo.setEmail(mEmail);
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setEmail(mEmail);in.setAccessToken(mAccessToken);
                             mFragmentListener.showFragment("SignUpIIFragment",objInfo);
                         }
                     }

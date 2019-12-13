@@ -113,7 +113,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void add(ChatModel item) {
-//        items.add(item);
+//        items.addView(item);
 //        int pos = getItemCount() - 1;             // previous code
 //        notifyItemInserted(pos);
 

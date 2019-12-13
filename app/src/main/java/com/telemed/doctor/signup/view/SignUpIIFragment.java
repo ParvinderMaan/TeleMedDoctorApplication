@@ -38,9 +38,9 @@ import com.telemed.doctor.profile.model.Language;
 import com.telemed.doctor.profile.model.Speciliaty;
 import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.view.ChooseOptionFragment;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
 import com.telemed.doctor.signup.model.SignUpIIResponse;
-import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
@@ -75,7 +75,7 @@ public class SignUpIIFragment extends BaseFragment {
     public static SignUpIIFragment newInstance(Object payload) {
         SignUpIIFragment fragment=new SignUpIIFragment();
         Bundle bundle=new Bundle();
-        bundle.putParcelable("KEY_", ( SignUpIResponse.Data ) payload);
+        bundle.putParcelable("KEY_", (UserInfoWrapper) payload); // SignUpIResponse.Data
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -92,7 +92,7 @@ public class SignUpIIFragment extends BaseFragment {
 
         //collect our intent
         if(getArguments()!=null){
-            SignUpIResponse.Data objInfo = getArguments().getParcelable("KEY_");
+            UserInfoWrapper objInfo = getArguments().getParcelable("KEY_");
             if (objInfo != null) mAccessToken =objInfo.getAccessToken();
             if (objInfo != null) mEmail =objInfo.getEmail();
 
@@ -128,10 +128,12 @@ public class SignUpIIFragment extends BaseFragment {
                     case SUCCESS:
                         if (response.getData() != null) {
                             if (mFragmentListener != null){
-                                SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
+//                                SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
                                 tvAlertView.showTopAlert(response.getData().getMessage());
                                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                mFragmentListener.showFragment("SignUpIIIFragment", mAccessToken);
+                                UserInfoWrapper in=new UserInfoWrapper();
+                                in.setAccessToken(mAccessToken);
+                                mFragmentListener.showFragment("SignUpIIIFragment", in);
 
                             }
 
@@ -289,7 +291,7 @@ public class SignUpIIFragment extends BaseFragment {
 //                    }
 //                });
 //                getChildFragmentManager().beginTransaction()
-//                        .add(R.id.ll_container, mChooseOptionFragmnet)
+//                        .addView(R.id.ll_container, mChooseOptionFragmnet)
 //                        .addToBackStack(null)
 //                        .commit();
 //                break;
@@ -307,7 +309,7 @@ public class SignUpIIFragment extends BaseFragment {
 //                    }
 //                });
 //                getChildFragmentManager().beginTransaction()
-//                        .add(R.id.ll_container, mChooseOptionFragmnet)
+//                        .addView(R.id.ll_container, mChooseOptionFragmnet)
 //                        .addToBackStack(null)
 //                        .commit();
 //                break;

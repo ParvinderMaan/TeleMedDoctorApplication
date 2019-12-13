@@ -74,6 +74,7 @@ public class FilePickerActivity extends BaseActivity {
                     list.add(all);
                     list.addAll(directories);
                     mFolderHelper.fillData(list);
+
                 }
 
                 mAll = directories;

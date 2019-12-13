@@ -25,6 +25,7 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.network.ApiResponse;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIVRequest;
 import com.telemed.doctor.signup.model.SignUpIVResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIVViewModel;
@@ -56,7 +57,7 @@ public class SignUpIVFragment extends BaseFragment {
     public static SignUpIVFragment newInstance(Object payload) {
         SignUpIVFragment fragment=new SignUpIVFragment();
         Bundle bundle=new Bundle();
-        bundle.putString("KEY_ACCESS_TOKEN", ( String ) payload);
+        bundle.putParcelable("KEY_ACCESS_TOKEN", (UserInfoWrapper) payload);
         fragment.setArguments(bundle);
         return fragment;
 
@@ -72,7 +73,9 @@ public class SignUpIVFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         // collect our intent
         if(getArguments()!=null){
-            mAccessToken = getArguments().getString("KEY_ACCESS_TOKEN");
+            UserInfoWrapper objInfo = getArguments().getParcelable("KEY_ACCESS_TOKEN");
+            if (objInfo != null) mAccessToken =objInfo.getAccessToken();
+
             Log.e(TAG,mAccessToken);
         }
     }
@@ -102,10 +105,12 @@ public class SignUpIVFragment extends BaseFragment {
                     case SUCCESS:
                         if (response.getData() != null) {
                             if (mFragmentListener != null){
-                                SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
+//                                SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
                                 tvAlertView.showTopAlert(response.getData().getMessage());
                                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                mFragmentListener.showFragment("SignUpVFragment", mAccessToken);
+                                UserInfoWrapper in=new UserInfoWrapper();
+                                in.setAccessToken(mAccessToken);
+                                mFragmentListener.showFragment("SignUpVFragment", in);
 
                             }
 

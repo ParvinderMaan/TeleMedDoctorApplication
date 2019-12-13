@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
@@ -24,19 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-import com.telemed.doctor.network.ApiResponse;
-import com.telemed.doctor.network.Status;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIRequest;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.viewmodel.SignUpIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
-
-import org.json.JSONObject;
 
 
 public class SignUpIFragment extends BaseFragment {
@@ -49,7 +44,7 @@ public class SignUpIFragment extends BaseFragment {
     private ProgressBar progressBar;
     private SignUpIViewModel mViewModel;
     private CustomAlertTextView tvAlertView;
-    private String mUserEmail, mUserPassword, mUserConfirmPassword;
+    private String mUsrEmail, mUsrPassword, mUsrConfirmPassword;
 
     public static SignUpIFragment newInstance() {
         return new SignUpIFragment();
@@ -75,15 +70,19 @@ public class SignUpIFragment extends BaseFragment {
         initView(v);
         initListener();
 
-        mViewModel.getResultant().observe(this, signUpResponse -> {
+        mViewModel.getResultant().observe(this, response -> {
 
-            switch (signUpResponse.getStatus()) {
+            switch (response.getStatus()) {
                 case SUCCESS:
-                    if (signUpResponse.getData() != null) {
+                    if (response.getData() != null) {
                         if (mFragmentListener != null){
-                            SignUpIResponse.Data data = signUpResponse.getData().getData(); // adding Additional Info
-                            data.setEmail(mUserEmail);
-                            mFragmentListener.showFragment("OneTimePasswordFragment", data);
+                            SignUpIResponse.Data data = response.getData().getData();
+//                            data.setEmail(mUsrEmail);
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setAccessToken(data.getAccessToken());
+                            in.setEmail(mUsrEmail);
+                            in.setOtpCode(data.getOtpCode());
+                            mFragmentListener.showFragment("OneTimePasswordFragment", in);
 
                         }
 
@@ -92,8 +91,9 @@ public class SignUpIFragment extends BaseFragment {
                     break;
 
                 case FAILURE:
-                    if (signUpResponse.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(signUpResponse.getErrorMsg());
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+
                     }
                     break;
 
@@ -105,7 +105,8 @@ public class SignUpIFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.getViewClickable()
-                .observe(this, isView -> llRoot.setClickable(isView));
+                .observe(this, isView -> { llRoot.setClickable(isView);clearFocus();
+                });
 
     }
 
@@ -135,59 +136,59 @@ public class SignUpIFragment extends BaseFragment {
     }
 
     private boolean isFormValid() {
-        mUserEmail = edtUsrEmail.getText().toString();
-        mUserPassword = edtUsrPassword.getText().toString();
-        mUserConfirmPassword = edtUsrConfirmPassword.getText().toString();
+        mUsrEmail = edtUsrEmail.getText().toString();
+        mUsrPassword = edtUsrPassword.getText().toString();
+        mUsrConfirmPassword = edtUsrConfirmPassword.getText().toString();
 
 
-        if (TextUtils.isEmpty(mUserEmail)) {
+        if (TextUtils.isEmpty(mUsrEmail)) {
             edtUsrEmail.setError("Enter Email address");
             return false;
         }
 
-        if (mUserEmail.contains(" ")) {
+        if (mUsrEmail.contains(" ")) {
             edtUsrEmail.setError("No Spaces Allowed");
             return false;
         }
 
-        if (!Validator.isEmailValid(mUserEmail)) {
+        if (!Validator.isEmailValid(mUsrEmail)) {
             edtUsrEmail.setError("Enter valid email address");
             return false;
         }
 
 
-        if (TextUtils.isEmpty(mUserPassword)) {
+        if (TextUtils.isEmpty(mUsrPassword)) {
             edtUsrPassword.setError("Enter password");
             return false;
         }
 
-        if (mUserPassword.contains(" ")) {
+        if (mUsrPassword.contains(" ")) {
             edtUsrPassword.setError("No Spaces Allowed");
             return false;
         }
 
-        if (!(mUserPassword.length() >= 6)) {
+        if (!(mUsrPassword.length() >= 6)) {
             edtUsrPassword.setError("Password is short");
             return false;
         }
 
-        if (!Validator.isAlphaNumeric(mUserPassword)) {
+        if (!Validator.isAlphaNumeric(mUsrPassword)) {
             edtUsrPassword.setError("Password must be alphanumeric");
             return false;
         }
 
 
-        if (TextUtils.isEmpty(mUserConfirmPassword)) {
+        if (TextUtils.isEmpty(mUsrConfirmPassword)) {
             edtUsrConfirmPassword.setError("Enter confirm password");
             return false;
         }
 
-        if (mUserConfirmPassword.contains(" ")) {
+        if (mUsrConfirmPassword.contains(" ")) {
             edtUsrConfirmPassword.setError("No Spaces Allowed");
             return false;
         }
 
-        if (!mUserConfirmPassword.contentEquals(mUserPassword)) {
+        if (!mUsrConfirmPassword.contentEquals(mUsrPassword)) {
             edtUsrConfirmPassword.setError("Your password is not matched");
             return false;
         }
@@ -208,20 +209,20 @@ public class SignUpIFragment extends BaseFragment {
 
             case R.id.btn_continue:
 
-                if (!isNetAvail()) {
-                    tvAlertView.showTopAlert("No Internet");
-                    return;
-                }
+//                if (!isNetAvail()) {
+//                    tvAlertView.showTopAlert("No Internet");
+//                    return;
+//                }
 
 
                 if (isFormValid()) {
                     SignUpIRequest in = new SignUpIRequest.Builder()
-                            .setEmail(mUserEmail)
-                            .setPassword(mUserPassword)
-                            .setConfirmPassword(mUserConfirmPassword)
+                            .setEmail(mUsrEmail)
+                            .setPassword(mUsrPassword)
+                            .setConfirmPassword(mUsrConfirmPassword)
                             .build();
+
                     Log.e(TAG,in.toString());
-                    clearFocus();
                     mViewModel.attemptSignUp(in);
 
 
@@ -234,11 +235,6 @@ public class SignUpIFragment extends BaseFragment {
 
     };
 
-//    private void attemptSignUp() {
-//        if (mFragmentListener != null)
-//            mFragmentListener.showFragment("OneTimePasswordFragment",null );
-//
-//    }
 
     private EditText.OnEditorActionListener mEditorActionListener = new TextView.OnEditorActionListener() {
         @Override

@@ -1,4 +1,4 @@
-package com.telemed.doctor.miscellaneous;
+package com.telemed.doctor.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,22 +10,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-
-public class AbortDialogFragment  extends DialogFragment {
+import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
-    private RouterFragmentSelectedListener mFragmentListener;
+public class SignOutDialogFragment extends DialogFragment {
+
+
+    private HomeFragmentSelectedListener mFragmentListener;
     private static String TAG = "";
 
-    public static AbortDialogFragment newInstance() {
-        return new AbortDialogFragment();
+    public static SignOutDialogFragment newInstance() {
+        return new SignOutDialogFragment();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-          mFragmentListener = (RouterFragmentSelectedListener) context;
+        mFragmentListener = (HomeFragmentSelectedListener) context;
     }
 
     @NonNull
@@ -34,16 +35,14 @@ public class AbortDialogFragment  extends DialogFragment {
         setCancelable(false);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Log Out");
-        builder.setMessage("Are you sure you would like to abort signup ?");
+        builder.setMessage("Are you sure you would like to logout ?");
         builder.setPositiveButton("YES", (dialog, which) -> {
 
-            TAG = "YES";
-            dismiss();
+            TAG = "YES";dismiss();
         });
 
         builder.setNegativeButton("NO", (dialog, which) -> {
-            TAG = "NO";
-            dismiss();
+            TAG = "NO";dismiss();
         });
         return builder.create();
     }
@@ -52,23 +51,26 @@ public class AbortDialogFragment  extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-         mFragmentListener = null;
+        mFragmentListener = null;
     }
+
+
 
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
 
-        switch (TAG) {
-            case "YES":
-                mFragmentListener.popTillFragment("SignInFragment", 0);
-                break;
-            case "NO":
-                // nothing
-                break;
+            switch (TAG){
+                case "YES":
+                    mFragmentListener.startActivity("RouterActivity");
+                    break;
+                case "NO":
+                    // nothing
+                    break;
 
-        }
+            }
     }
+
 
 }

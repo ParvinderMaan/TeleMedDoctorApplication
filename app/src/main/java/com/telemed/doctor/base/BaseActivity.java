@@ -18,7 +18,6 @@ public class BaseActivity extends AppCompatActivity {
         return Common.isNetworkAvail(getApplicationContext());
     }
 
-
     // Note : take care of Toolbar presence
     protected void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

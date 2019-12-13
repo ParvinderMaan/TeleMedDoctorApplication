@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIIIRequest;
 import com.telemed.doctor.signup.viewmodel.SignUpIIIViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -54,7 +55,7 @@ public class SignUpIIIFragment extends BaseFragment {
     public static SignUpIIIFragment newInstance(Object payload) {
         SignUpIIIFragment fragment=new SignUpIIIFragment();
         Bundle bundle=new Bundle();
-        bundle.putString("KEY_ACCESS_TOKEN", ( String ) payload);
+        bundle.putParcelable("KEY_ACCESS_TOKEN", (UserInfoWrapper) payload);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,8 +69,11 @@ public class SignUpIIIFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // collect our intent
+        //collect our intent
         if(getArguments()!=null){
-            mAccessToken = getArguments().getString("KEY_ACCESS_TOKEN");
+            UserInfoWrapper objInfo = getArguments().getParcelable("KEY_ACCESS_TOKEN");
+            if (objInfo != null) mAccessToken =objInfo.getAccessToken();
+
             Log.e(TAG,mAccessToken);
         }
     }
