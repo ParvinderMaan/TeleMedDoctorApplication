@@ -1,22 +1,28 @@
 package com.telemed.doctor;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.telemed.doctor.base.BaseActivity;
+import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.dialog.AbortDialogFragment;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.signin.SignInFragment;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.view.SignUpIFragment;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
 import com.telemed.doctor.signup.view.SignUpIIIFragment;
@@ -25,9 +31,9 @@ import com.telemed.doctor.signup.view.SignUpVFragment;
 import com.telemed.doctor.splash.SplashFragment;
 
 
-
 public class RouterActivity extends BaseActivity implements RouterFragmentSelectedListener {
-    private final String TAG=RouterActivity.class.getSimpleName();
+    private final String TAG = RouterActivity.class.getSimpleName();
+
     // to support vector icon for lower versions
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -62,8 +68,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
-
-//                    .addToBackStack("SplashFragment")
+//                      .addToBackStack("SplashFragment")
                         .commit();
                 break;
             case "SignInFragment":
@@ -76,20 +81,19 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SignUpIFragment.newInstance(), "SignUpIFragment")
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
                         .addToBackStack("SignUpIFragment")
                         .commit();
                 break;
             case "SignUpIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIFragment.newInstance((Object)payload), "SignUpIIFragment")
+                        .add(R.id.fl_container, SignUpIIFragment.newInstance((Object) payload), "SignUpIIFragment")
                         .addToBackStack("SignUpIIFragment")
                         .commit();
                 break;
 
             case "SignUpIIIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIIIFragment.newInstance((Object)payload), "SignUpIIIFragment")
+                        .add(R.id.fl_container, SignUpIIIFragment.newInstance((Object) payload), "SignUpIIIFragment")
                         .addToBackStack("SignUpIIIFragment")
                         .commit();
                 break;
@@ -97,14 +101,14 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
             case "SignUpIVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpIVFragment.newInstance((Object)payload), "SignUpIVFragment")
+                        .add(R.id.fl_container, SignUpIVFragment.newInstance((Object) payload), "SignUpIVFragment")
                         .addToBackStack("SignUpIVFragment")
                         .commit();
                 break;
 
             case "SignUpVFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SignUpVFragment.newInstance((Object)payload), "SignUpVFragment")
+                        .add(R.id.fl_container, SignUpVFragment.newInstance((Object) payload), "SignUpVFragment")
                         .addToBackStack("SignUpVFragment")
                         .commit();
                 break;
@@ -116,16 +120,10 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                         .commit();
                 break;
 
-//            case "ChooseOptionFragment":
-//                getSupportFragmentManager().beginTransaction()
-//                        .addView(R.id.fl_container, ChooseOptionFragment.newInstance(payload), "ChooseOptionFragment")
-//                        .addToBackStack("ChooseOptionFragment")
-//                        .commit();
-//                break;
 
             case "OneTimePasswordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, OneTimePasswordFragment.newInstance((Object)payload), "OneTimePasswordFragment")
+                        .add(R.id.fl_container, OneTimePasswordFragment.newInstance((Object) payload), "OneTimePasswordFragment")
                         .addToBackStack("OneTimePasswordFragment")
                         .commit();
                 break;
@@ -144,7 +142,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
     @Override
     public void onBackPressed() {      // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
-
+/*
         Log.e(TAG,""+getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
@@ -154,6 +152,50 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         }else {
             abortSignUpDialog();
         }
+  */
+        ;
+
+        switch (getActiveFragmentTag()) {
+            case "SignInFragment":
+                finish();
+                break;
+
+            case "SignUpIFragment":
+                popTopMostFragment();
+                break;
+            case "SignUpIIFragment":
+                abortSignUpDialog();
+                break;
+
+            case "SignUpIIIFragment":
+                abortSignUpDialog();
+                break;
+
+
+            case "SignUpIVFragment":
+                abortSignUpDialog();
+                break;
+
+            case "SignUpVFragment":
+                abortSignUpDialog();
+                break;
+
+            case "ForgotPasswordFragment":
+                popTopMostFragment();
+                break;
+
+
+            case "OneTimePasswordFragment":
+                abortSignUpDialog();
+                break;
+            default:
+                // do nothing when count is One
+                finish();
+
+
+        }
+
+
     }
 
     @Override
@@ -176,30 +218,63 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
     @Override
     public void startActivity(String tag, Object payload) {
-        if (tag.equals("HomeActivity"))
-            startActivity(new Intent(this, HomeActivity.class));
+        if (tag.equals("HomeActivity")) {
 
+            Intent in=new Intent(this, HomeActivity.class);
+            in.putExtra("KEY_",((UserInfoWrapper) payload));
+            startActivity(in);
+            finish();
+        }
     }
 
     @Override
     public void hideSoftKeyboard() {
 
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        View view = this.getCurrentFocus();
+//        if (view != null) {
+//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            if (imm != null) {
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//            }
+//
+//        }
+
+        if (getWindow() != null) {
+            getWindow().getDecorView();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
             }
-
         }
-
 
     }
 
-   
+
+    public String getActiveFragmentTag() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return "";
+        }
+        return getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+    }
+
+
+
+
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View v = getCurrentFocus();
+        if (v != null &&
+                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+                v instanceof EditText &&
+                !v.getClass().getName().startsWith("android.webkit.")) {
+            int[] scrcoords = new int[2];
+            v.getLocationOnScreen(scrcoords);
+            float x = ev.getRawX() + v.getLeft() - scrcoords[0];
+            float y = ev.getRawY() + v.getTop() - scrcoords[1];
+
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
+                hideSoftKeyboard();
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 
 }
-/*
-   .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-
- */

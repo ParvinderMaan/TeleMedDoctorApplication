@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -104,8 +105,12 @@ public class SignUpIFragment extends BaseFragment {
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> { llRoot.setClickable(isView);clearFocus();
+        mViewModel.getViewEnabled()
+                .observe(this, isView -> {
+                    edtUsrEmail.setEnabled(isView);
+                    edtUsrPassword.setEnabled(isView);
+                    edtUsrConfirmPassword.setEnabled(isView);
+                    btnContinue.setEnabled(isView);
                 });
 
     }
@@ -131,7 +136,6 @@ public class SignUpIFragment extends BaseFragment {
 
         // @initialization
         progressBar.setVisibility(View.INVISIBLE);
-
 
     }
 
@@ -214,19 +218,10 @@ public class SignUpIFragment extends BaseFragment {
 //                    return;
 //                }
 
-
-                if (isFormValid()) {
-                    SignUpIRequest in = new SignUpIRequest.Builder()
-                            .setEmail(mUsrEmail)
-                            .setPassword(mUsrPassword)
-                            .setConfirmPassword(mUsrConfirmPassword)
-                            .build();
-
-                    Log.e(TAG,in.toString());
-                    mViewModel.attemptSignUp(in);
+                attemptSignUp();
 
 
-                }
+
 
                 break;
 
@@ -234,6 +229,21 @@ public class SignUpIFragment extends BaseFragment {
 
 
     };
+
+    private void attemptSignUp() {
+
+        if (isFormValid()) {
+            SignUpIRequest in = new SignUpIRequest.Builder()
+                    .setEmail(mUsrEmail)
+                    .setPassword(mUsrPassword)
+                    .setConfirmPassword(mUsrConfirmPassword)
+                    .build();
+
+            Log.e(TAG, in.toString());
+            clearFocus();
+            mViewModel.attemptSignUp(in);
+        }
+    }
 
 
     private EditText.OnEditorActionListener mEditorActionListener = new TextView.OnEditorActionListener() {
@@ -258,11 +268,9 @@ public class SignUpIFragment extends BaseFragment {
                     break;
 
                 case R.id.edt_confirm_password:
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtUsrConfirmPassword.isFocused()) {
-                            edtUsrConfirmPassword.clearFocus();
-                            mFragmentListener.hideSoftKeyboard();
-                        }
+                    if (actionId == EditorInfo.IME_ACTION_GO) {
+                        mFragmentListener.hideSoftKeyboard();
+                        attemptSignUp();
                         return true;
                     }
 

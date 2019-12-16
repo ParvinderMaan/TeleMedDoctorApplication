@@ -14,10 +14,8 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
 public class SignOutDialogFragment extends DialogFragment {
-
-
     private HomeFragmentSelectedListener mFragmentListener;
-    private static String TAG = "";
+    private  String TAG;
 
     public static SignOutDialogFragment newInstance() {
         return new SignOutDialogFragment();
@@ -29,15 +27,16 @@ public class SignOutDialogFragment extends DialogFragment {
         mFragmentListener = (HomeFragmentSelectedListener) context;
     }
 
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setCancelable(false);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Log Out");
+        builder.setTitle(getResources().getString(R.string.app_name));
         builder.setMessage("Are you sure you would like to logout ?");
         builder.setPositiveButton("YES", (dialog, which) -> {
-
             TAG = "YES";dismiss();
         });
 
@@ -46,7 +45,6 @@ public class SignOutDialogFragment extends DialogFragment {
         });
         return builder.create();
     }
-
 
     @Override
     public void onDetach() {
@@ -63,7 +61,8 @@ public class SignOutDialogFragment extends DialogFragment {
 
             switch (TAG){
                 case "YES":
-                    mFragmentListener.startActivity("RouterActivity");
+//                    mFragmentListener.startActivity("RouterActivity");
+                    mFragmentListener.signOut();
                     break;
                 case "NO":
                     // nothing
@@ -71,6 +70,7 @@ public class SignOutDialogFragment extends DialogFragment {
 
             }
     }
+
 
 
 }

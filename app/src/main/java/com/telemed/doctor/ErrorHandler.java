@@ -11,7 +11,7 @@ import retrofit2.HttpException;
 public class ErrorHandler {
 
     public static String reportError(Throwable error) {
-        String errorMessage;
+        String errorMessage="Something Went Wrong"; // default msg
         if (error instanceof HttpException) {
             switch (((HttpException) error).code()) {
                 case HttpsURLConnection.HTTP_UNAUTHORIZED:

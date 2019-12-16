@@ -34,7 +34,7 @@ public class ServiceGenerator {
             = new Retrofit.Builder()
 //            .addConverterFactory(new WrapperConverterFactory(GsonConverterFactory.create()));
             .addConverterFactory(GsonConverterFactory.create());
-           // .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+    // .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
     private static OkHttpClient defaultOkHttpClient
             = new OkHttpClient.Builder()
@@ -48,35 +48,32 @@ public class ServiceGenerator {
     public static <S> S createService(Class<S> serviceClass, String baseUrl) {
 
 
-
         return createService(serviceClass, baseUrl, null);
     }
+
     public static <S> S createService(Class<S> serviceClass) {
         return createService(serviceClass, WebUrl.BASE_URL, null);
     }
+
     public static <S> S createService(Class<S> serviceClass, String baseUrl, Interceptor networkInterceptor) {
         OkHttpClient.Builder okHttpClientBuilder = defaultOkHttpClient.newBuilder();
 
-        if(networkInterceptor != null){
+        if (networkInterceptor != null) {
             okHttpClientBuilder.addNetworkInterceptor(networkInterceptor);
         }
-
 
 
         OkHttpClient modifiedOkHttpClient = okHttpClientBuilder
                 .addInterceptor(getHttpLoggingInterceptor())
 //               .addInterceptor(getBasicInterceptor())
-                 .addInterceptor(getNetworkInterceptor())
-
+                .addInterceptor(getNetworkInterceptor())
                 .connectTimeout(30, TimeUnit.SECONDS)
-               .readTimeout(30, TimeUnit.SECONDS)
-               .writeTimeout(30, TimeUnit.SECONDS)
-               .build();
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         retrofitBuilder.client(modifiedOkHttpClient);
-
         retrofitBuilder.baseUrl(baseUrl);
-
         Retrofit retrofit = retrofitBuilder.build();
         return retrofit.create(serviceClass);
     }
@@ -94,19 +91,19 @@ public class ServiceGenerator {
         return cache;
     }
 
-    private static HttpLoggingInterceptor getHttpLoggingInterceptor(){
+    private static HttpLoggingInterceptor getHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
         } else {
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+            httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.NONE);
         }
         return httpLoggingInterceptor;
     }
 
 
     public static Interceptor getBasicInterceptor() {
-        return  new Interceptor() {
+        return new Interceptor() {
             @NonNull
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
@@ -119,12 +116,13 @@ public class ServiceGenerator {
             }
         };
     }
+
     public static Interceptor getNetworkInterceptor() {
-        return  new Interceptor() {
+        return new Interceptor() {
             @NonNull
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
-                boolean isConnected=TeleMedApplication.getInstance().isNetAvail();
+                boolean isConnected = TeleMedApplication.getInstance().isNetAvail();
                 if (!isConnected) {
                     throw new NoConnectivityException();
                     // Throwing our custom exception 'NoConnectivityException'

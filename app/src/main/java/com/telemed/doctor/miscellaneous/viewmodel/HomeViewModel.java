@@ -1,4 +1,4 @@
-package com.telemed.doctor.signin;
+package com.telemed.doctor.miscellaneous.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
@@ -9,8 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,18 +22,13 @@ import retrofit2.Response;
 import static com.telemed.doctor.network.Status.FAILURE;
 import static com.telemed.doctor.network.Status.SUCCESS;
 
-
-public class SignInViewModel extends AndroidViewModel {
-    private final String TAG=SignInViewModel.class.getSimpleName();
+public class HomeViewModel extends AndroidViewModel {
     //@use Dagger instead
     private final WebService mWebService;
-    private MutableLiveData<ApiResponse<SignInResponse>> resultant;
+    private MutableLiveData<ApiResponse<SignOutResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-
-
-
-    public SignInViewModel(@NonNull Application application) {
+    public HomeViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultant = new MutableLiveData<>();
@@ -38,21 +36,16 @@ public class SignInViewModel extends AndroidViewModel {
         isViewEnabled =new MutableLiveData<>();
     }
 
-
-
-    void attemptSignIn(SignInRequest in) {
+    public void attemptSignOut(Map<String, String> in) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        Log.e(TAG,in.toString());
-        mWebService.attemptSignIn(in).enqueue(new Callback<SignInResponse>() {
+        mWebService.attemptSignOut(in).enqueue(new Callback<SignOutResponse>() {
             @Override
-            public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
+            public void onResponse(@NonNull Call<SignOutResponse> call, @NonNull Response<SignOutResponse> response) {
                 isLoading.setValue(false);
                 isViewEnabled.setValue(true);
-
                 if (response.isSuccessful() && response.body()!=null) {
-                    SignInResponse result = response.body();
-                    Log.e(TAG,result.toString());
+                    SignOutResponse result = response.body();
                     if(result.getStatus()){
                         resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
                     }else {
@@ -60,12 +53,10 @@ public class SignInViewModel extends AndroidViewModel {
                     }
                 }
 
-
-
             }
 
             @Override
-            public void onFailure(@NonNull Call<SignInResponse> call, @NonNull Throwable error) {
+            public void onFailure(@NonNull Call<SignOutResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
                 isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
@@ -76,25 +67,17 @@ public class SignInViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<ApiResponse<SignInResponse>> getResultant() {
+    public MutableLiveData<ApiResponse<SignOutResponse>> getSignOutResultant() {
         return resultant;
     }
-
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
     }
 
-    void cancelRequest(){
 
-    }
-
-    MutableLiveData<Boolean> getViewEnabled() {
+    public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
     }
-
-
-
-
 
 
 

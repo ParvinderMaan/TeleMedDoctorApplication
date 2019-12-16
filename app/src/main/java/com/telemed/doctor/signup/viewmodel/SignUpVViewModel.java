@@ -7,15 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.JsonObject;
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.base.BaseCallback;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.signup.model.FileDeleteResponse;
 import com.telemed.doctor.signup.model.FileUploadResponse;
-import com.telemed.doctor.signup.model.SignUpVRequest;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 
 import java.util.Map;
@@ -47,7 +44,7 @@ public class SignUpVViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<FileDeleteResponse>> resultantFileDelete;
 
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isViewClickable;
+    private MutableLiveData<Boolean> isViewEnabled;
 
 
 
@@ -58,18 +55,18 @@ public class SignUpVViewModel extends AndroidViewModel {
         resultantFileUpload= new MutableLiveData<>();
         resultantFileDelete= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isViewClickable=new MutableLiveData<>();
+        isViewEnabled =new MutableLiveData<>();
     }
 
 
     public void attemptSignUp(Map<String, String> map) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         mWebService.attemptSignUpFive(map).enqueue(new Callback<SignUpVResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpVResponse> call, @NonNull Response<SignUpVResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     SignUpVResponse result = response.body();
@@ -90,7 +87,7 @@ public class SignUpVViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<SignUpVResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -111,19 +108,19 @@ public class SignUpVViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<Boolean> getViewClickable() {
-        return isViewClickable;
+    public MutableLiveData<Boolean> getViewEnabled() {
+        return isViewEnabled;
     }
 
 
     public void attemptFileUpload(Map<String, String> token, MultipartBody.Part docFile,int viewIndex) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         mWebService.attemptUploadFile(token,docFile).enqueue(new Callback<FileUploadResponse>() {
             @Override
             public void onResponse(@NonNull Call<FileUploadResponse> call, @NonNull Response<FileUploadResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     FileUploadResponse result = response.body();
@@ -142,7 +139,7 @@ public class SignUpVViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<FileUploadResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -152,12 +149,12 @@ public class SignUpVViewModel extends AndroidViewModel {
 
     public void attemptDeleteFile(Map<String, String> token, int fileId,int viewIndex) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         mWebService.attemptDeleteFile(token,fileId).enqueue(new Callback<FileDeleteResponse>() {
             @Override
             public void onResponse(@NonNull Call<FileDeleteResponse> call, @NonNull Response<FileDeleteResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     FileDeleteResponse result = response.body();
@@ -175,7 +172,7 @@ public class SignUpVViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<FileDeleteResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantFileDelete.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }

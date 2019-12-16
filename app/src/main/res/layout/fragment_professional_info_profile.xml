@@ -18,6 +18,12 @@
         android:layout_marginEnd="@dimen/screen_end_padding"
         android:layout_marginBottom="@dimen/screen_bottom_margin"
         android:orientation="vertical">
+
+        <!--            child-->
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar" />
+        <!--            child-->
         <!--            child-->
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
@@ -55,6 +61,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint=""
+                    android:enabled="false"
+
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
@@ -90,6 +98,7 @@
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
+                    android:enabled="false"
 
                     android:text=""
                     android:textColor="@color/colorWhite"
@@ -121,6 +130,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
+                android:enabled="false"
+
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_10sdp"
@@ -155,6 +166,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
+                android:enabled="false"
+
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_10sdp"
@@ -193,6 +206,8 @@
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_10sdp"
                 android:text=""
+                android:enabled="false"
+
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
@@ -223,6 +238,8 @@
                 android:layout_height="wrap_content"
                 android:hint=""
                 android:text=""
+                android:enabled="false"
+
                 app:backgroundTint="@color/colorWhite"
                 android:includeFontPadding="false"
                 android:textColorHint="@color/colorLightBlue"

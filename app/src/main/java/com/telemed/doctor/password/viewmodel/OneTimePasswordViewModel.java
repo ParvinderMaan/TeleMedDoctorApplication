@@ -30,7 +30,7 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<ResendOtpResponse>> resultantResendOtp;
 
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isViewClickable;
+    private MutableLiveData<Boolean> isViewEnabled;
 
     public OneTimePasswordViewModel(@NonNull Application application) {
         super(application);
@@ -38,19 +38,19 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
         resultantVerifyUser = new MutableLiveData<>();
         resultantResendOtp = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isViewClickable=new MutableLiveData<>();
+        isViewEnabled =new MutableLiveData<>();
     }
 
     public void attemptResendOtp(String email) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         JsonObject json=new JsonObject();
         json.addProperty("Email",email);
         mWebService.attemptResendOtp(json).enqueue(new Callback<ResendOtpResponse>() {
             @Override
             public void onResponse(@NonNull Call<ResendOtpResponse> call, @NonNull Response<ResendOtpResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     ResendOtpResponse result = response.body();
@@ -69,7 +69,7 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<ResendOtpResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantResendOtp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -80,12 +80,12 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
 
     public void attemptVerifyUser(VerficationRequest in) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         mWebService.attemptVerifyUser(in).enqueue(new Callback<VerificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<VerificationResponse> call, @NonNull Response<VerificationResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     VerificationResponse result = response.body();
@@ -104,7 +104,7 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<VerificationResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantVerifyUser.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -120,13 +120,10 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    void cancelRequest(){
 
 
-    }
-
-    public MutableLiveData<Boolean> getViewClickable() {
-        return isViewClickable;
+    public MutableLiveData<Boolean> getViewEnabled() {
+        return isViewEnabled;
     }
 
     public MutableLiveData<ApiResponse<VerificationResponse>> getResultantVerifyUser() {

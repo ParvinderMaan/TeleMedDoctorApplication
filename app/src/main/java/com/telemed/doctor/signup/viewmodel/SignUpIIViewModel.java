@@ -13,7 +13,6 @@ import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
 import com.telemed.doctor.signup.model.SignUpIIResponse;
-import com.telemed.doctor.signup.model.SignUpIResponse;
 
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class SignUpIIViewModel extends AndroidViewModel {
     private final WebService mWebService;
     private MutableLiveData<ApiResponse<SignUpIIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isViewClickable;
+    private MutableLiveData<Boolean> isViewEnabled;
 
 
 
@@ -39,17 +38,17 @@ public class SignUpIIViewModel extends AndroidViewModel {
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isViewClickable=new MutableLiveData<>();
+        isViewEnabled =new MutableLiveData<>();
     }
     public void attemptSignUp(SignUpIIRequest in,  Map<String, String> map) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         Log.e(TAG,in.toString());
         mWebService.attemptSignUpTwo(map,in).enqueue(new Callback<SignUpIIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIIResponse> call, @NonNull Response<SignUpIIResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     SignUpIIResponse result = response.body();
@@ -70,7 +69,7 @@ public class SignUpIIViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<SignUpIIResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -92,7 +91,7 @@ public class SignUpIIViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<Boolean> getViewClickable() {
-        return isViewClickable;
+    public MutableLiveData<Boolean> getViewEnabled() {
+        return isViewEnabled;
     }
 }

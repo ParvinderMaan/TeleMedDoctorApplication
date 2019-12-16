@@ -95,77 +95,81 @@ public class SignUpIVFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> llRoot.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, this::resetEnableView);
 
-        mViewModel.getResultant().observe(this, new Observer<ApiResponse<SignUpIVResponse>>() {
-            @Override
-            public void onChanged(ApiResponse<SignUpIVResponse> response) {
-                switch (response.getStatus()) {
-                    case SUCCESS:
-                        if (response.getData() != null) {
-                            if (mFragmentListener != null){
+        mViewModel.getResultant().observe(this, response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        if (mFragmentListener != null){
 //                                SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
-                                tvAlertView.showTopAlert(response.getData().getMessage());
-                                tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                UserInfoWrapper in=new UserInfoWrapper();
-                                in.setAccessToken(mAccessToken);
-                                mFragmentListener.showFragment("SignUpVFragment", in);
-
-                            }
+                            tvAlertView.showTopAlert(response.getData().getMessage());
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setAccessToken(mAccessToken);
+                            mFragmentListener.showFragment("SignUpVFragment", in);
 
                         }
 
-                        break;
+                    }
 
-                    case FAILURE:
-                        if (response.getErrorMsg() != null) {
-                            tvAlertView.showTopAlert(response.getErrorMsg());
-                        }
-                        break;
+                    break;
 
-                }
-
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
 
             }
+
+
         });
+
+    }
+
+    private void resetEnableView(Boolean isView) {
+        btnContinue.setEnabled(isView);
+        tvCancel.setEnabled(isView);
+        edtRoutingNumber.setEnabled(isView);
+        edtAccountNumber.setEnabled(isView);
+        edtCity.setEnabled(isView);
+        edtPostCode.setEnabled(isView);
 
     }
 
     private void initListener(View v) {
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnContinue.setOnClickListener(v1 -> {
 
 
-                if(!isNetAvail()){
-                    tvAlertView.showTopAlert("No Internet");
-                    return;
-                }
+//                if(!isNetAvail()){
+//                    tvAlertView.showTopAlert("No Internet");
+//                    return;
+//                }
 
-                if(isFormValid()){
+            if(isFormValid()){
 
-                    SignUpIVRequest in=new SignUpIVRequest.Builder()
-                            .setRoutingNumber(mRoutingNumber)
-                            .setAccountNumber(Integer.parseInt(mAccountNumber))
-                            .setCity(mCity)
-                            .setAddress("no_need_yet")  // replace it !!!
-                            .setPostCode(mPostCode)
-                            .build();
+                SignUpIVRequest in=new SignUpIVRequest.Builder()
+                        .setRoutingNumber(mRoutingNumber)
+                        .setAccountNumber(Integer.parseInt(mAccountNumber))
+                        .setCity(mCity)
+                        .setAddress("no_need_yet")  // replace it !!!
+                        .setPostCode(mPostCode)
+                        .build();
 
-                    Map<String, String> map = new HashMap<>();
-                    map.put("content-type", "application/json");
-                    map.put("Authorization","Bearer "+mAccessToken);
+                Map<String, String> map = new HashMap<>();
+                map.put("content-type", "application/json");
+                map.put("Authorization","Bearer "+mAccessToken);
 
-                    mViewModel.attemptSignUp(in,map);
+                mViewModel.attemptSignUp(in,map);
 
-                }
+            }
 
 //                if (mFragmentListener != null)
 //                    mFragmentListener.showFragment("SignUpVFragment", null);
 
-            }
         });
 
 

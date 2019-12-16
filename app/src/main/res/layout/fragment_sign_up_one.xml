@@ -99,7 +99,7 @@
                 android:longClickable="false"
                 android:maxLines="1"
                 android:padding="@dimen/_10sdp"
-                android:text="parvymaan@gmail.com"
+                android:text=""
                 android:textColor="@color/colorBlue"
                 android:textColorHint="@color/colorLightBlue"
 
@@ -130,7 +130,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="@string/hint_confirm_password"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionGo"
                 android:inputType="textPassword"
                 android:longClickable="false"
                 android:maxLines="1"

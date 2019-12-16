@@ -68,7 +68,6 @@ public class SignUpIIIFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // collect our intent
         //collect our intent
         if(getArguments()!=null){
             UserInfoWrapper objInfo = getArguments().getParcelable("KEY_ACCESS_TOKEN");
@@ -99,8 +98,8 @@ public class SignUpIIIFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> llRoot.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, this::resetEnableView);
 
 
         mViewModel.getResultant().observe(this, response -> {
@@ -113,7 +112,9 @@ public class SignUpIIIFragment extends BaseFragment {
                            //  data.setEmail(mUserEmail);
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            mFragmentListener.showFragment("SignUpIVFragment", mAccessToken);
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setAccessToken(mAccessToken);
+                            mFragmentListener.showFragment("SignUpIVFragment", in);
 
                         }
 
@@ -133,6 +134,18 @@ public class SignUpIIIFragment extends BaseFragment {
 
     }
 
+    private void resetEnableView(Boolean isView) {
+        btnContinue.setEnabled(isView);
+        edtMedicalDegree.setEnabled(isView);
+        edtMdWhere.setEnabled(isView);
+        edtOtherDegree.setEnabled(isView);
+        edtMdOtrWhere.setEnabled(isView);
+        edtDea.setEnabled(isView);
+        edtNpiNo.setEnabled(isView);
+        cboxReadAndAccept.setEnabled(isView);
+
+    }
+
     private void initListener(View v) {
         tvCancel.setOnClickListener(v1 -> {
 
@@ -144,10 +157,10 @@ public class SignUpIIIFragment extends BaseFragment {
 
         btnContinue.setOnClickListener(v12 -> {
 
-            if(!isNetAvail()){
-                tvAlertView.showTopAlert("No Internet");
-                return;
-            }
+//            if(!isNetAvail()){
+//                tvAlertView.showTopAlert("No Internet");
+//                return;
+//            }
 
             if(isFormValid()){
 

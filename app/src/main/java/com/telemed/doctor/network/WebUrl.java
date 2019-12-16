@@ -22,7 +22,8 @@ public interface WebUrl {
     String SIGN_UP_V ="Auth/DoctorFinalRegistration";
     String SIGN_UP_VI ="Auth/RegisterDoctor";
 
-
+    String FORGOT_PASSWORD="Auth/ForgotPassword";
+    String SIGN_OUT ="Auth/Logout";
 
 
 //    String THOUGHT_OF_DAY="GetInsThought";
@@ -38,8 +39,11 @@ public interface WebUrl {
     String DELETE_FILE = "Auth/DeleteDoctorDocument";
 
 
+
     // profile
-    String BASIC_PROFILE_INFO = "";
-    String PROFESSIONAL_PROFILE_INFO = "";
-    String BANK_PROFILE_INFO = "";
+    String BASIC_PROFILE_INFO = "Doctor/GetDoctorPersonalInfo";
+    String PROFESSIONAL_PROFILE_INFO = "Doctor/GetDoctorProfessionalInfo";
+    String BANK_PROFILE_INFO = "Doctor/GetDoctorBankInfo";
+    String ALTER_PROFILE_PIC = "";
+
 }

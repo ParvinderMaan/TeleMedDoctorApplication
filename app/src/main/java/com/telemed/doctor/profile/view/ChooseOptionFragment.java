@@ -100,10 +100,10 @@ public class ChooseOptionFragment extends BaseFragment {
 
 
 
-        if(!isNetAvail()){
-            tvAlertView.showTopAlert("No Internet");
-            return ;
-        }
+//        if(!isNetAvail()){
+//            tvAlertView.showTopAlert("No Internet");
+//            return ;
+//        }
 
         mViewModel.fetchDoctorDrills();
 

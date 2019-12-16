@@ -29,7 +29,7 @@ public class SignUpIVViewModel extends AndroidViewModel {
     private final WebService mWebService;
     private MutableLiveData<ApiResponse<SignUpIVResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isViewClickable;
+    private MutableLiveData<Boolean> isViewEnabled;
 
 
     public SignUpIVViewModel(@NonNull Application application) {
@@ -37,19 +37,19 @@ public class SignUpIVViewModel extends AndroidViewModel {
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isViewClickable=new MutableLiveData<>();
+        isViewEnabled =new MutableLiveData<>();
     }
 
 
     public void attemptSignUp(SignUpIVRequest in, Map<String, String> map) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         Log.e(TAG,in.toString());
         mWebService.attemptSignUpFour(map,in).enqueue(new Callback<SignUpIVResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIVResponse> call, @NonNull Response<SignUpIVResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     SignUpIVResponse result = response.body();
@@ -70,7 +70,7 @@ public class SignUpIVViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<SignUpIVResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -92,7 +92,7 @@ public class SignUpIVViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<Boolean> getViewClickable() {
-        return isViewClickable;
+    public MutableLiveData<Boolean> getViewEnabled() {
+        return isViewEnabled;
     }
 }

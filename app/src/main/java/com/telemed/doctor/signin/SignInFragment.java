@@ -1,7 +1,6 @@
 package com.telemed.doctor.signin;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +11,11 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -37,8 +33,8 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
-    private static final String DEVICE_TYPE="android";
-    private static final String DISCRIMINATOR_TYPE="Doctor";
+    private final String DEVICE_TYPE = "android";
+    private final String DISCRIMINATOR_TYPE = "Doctor";
 
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
@@ -53,6 +49,7 @@ public class SignInFragment extends BaseFragment {
     public static SignInFragment newInstance() {
         return new SignInFragment();
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -73,18 +70,19 @@ public class SignInFragment extends BaseFragment {
         initView(v);
         initListener();
 
-
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> rlRoot.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, isView -> {
+                    edtUsrEmail.setEnabled(isView);
+                    edtUsrPassword.setEnabled(isView);
+                    tvSignUp.setEnabled(isView);
+                    tvForgotPassword.setEnabled(isView);
+                    btnSignIn.setEnabled(isView);
 
-//                if (mFragmentListener != null) {
-//                    mFragmentListener.startActivity("HomeActivity", null );
-//                    getActivity().finish();
-
+                });
 
 
         mViewModel.getResultant().observe(this, response -> {
@@ -93,11 +91,11 @@ public class SignInFragment extends BaseFragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         SignInResponse.Data infoObj = response.getData().getData(); // adding Additional Info
-                         infoObj.setEmail(mUserEmail);
-                         tvAlertView.showTopAlert(response.getData().getMessage());
-                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                        infoObj.setEmail(mUserEmail);
+                        tvAlertView.showTopAlert(response.getData().getMessage());
+                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         if (mFragmentListener != null)
-                            traverseFragment(infoObj);
+                            routeNavigationFragment(infoObj);
                     }
 
                     break;
@@ -113,36 +111,36 @@ public class SignInFragment extends BaseFragment {
         });
 
 
-
     }
-
-    private void traverseFragment(SignInResponse.Data infoObj) {
-        UserInfoWrapper infoWrapper=new UserInfoWrapper();
+    private void routeNavigationFragment(SignInResponse.Data infoObj) {
+        UserInfoWrapper infoWrapper = new UserInfoWrapper();
         infoWrapper.setAccessToken(infoObj.getAccessToken());
         infoWrapper.setEmail(infoObj.getEmail());
         infoWrapper.setEmailConfirmed(infoObj.getEmailConfirmed());
         infoWrapper.setLastScreenId(infoObj.getLastScreenId());
+        infoWrapper.setFirstName(infoObj.getFirstName());
+        infoWrapper.setLastName(infoObj.getLastName());
+        infoWrapper.setProfilePic(infoObj.getProfilePic());
 
-        switch (infoObj.getLastScreenId()){
+        switch (infoObj.getLastScreenId()) {
 
             case 1: // ---> 2
-                mFragmentListener.showFragment("OneTimePasswordFragment",infoWrapper);
+                mFragmentListener.showFragment("OneTimePasswordFragment", infoWrapper);
                 break;
             case 2: // ---> 3
-                mFragmentListener.showFragment("SignUpIIFragment",infoWrapper);
+                mFragmentListener.showFragment("SignUpIIFragment", infoWrapper);
                 break;
             case 3:  // ---> 4
-                mFragmentListener.showFragment("SignUpIIIFragment",infoWrapper);
+                mFragmentListener.showFragment("SignUpIIIFragment", infoWrapper);
                 break;
             case 4:  // ---> 5
-                mFragmentListener.showFragment("SignUpIVFragment",infoWrapper);
+                mFragmentListener.showFragment("SignUpIVFragment", infoWrapper);
                 break;
             case 5:  // ---> 6
-                mFragmentListener.showFragment("SignUpVFragment",infoWrapper);
+                mFragmentListener.showFragment("SignUpVFragment", infoWrapper);
                 break;
-                   // ---> default
-             default:
-                 mFragmentListener.startActivity("HomeActivity", infoWrapper );
+            default:  // ---> default
+                mFragmentListener.startActivity("HomeActivity", infoWrapper);
 
         }
 
@@ -157,13 +155,8 @@ public class SignInFragment extends BaseFragment {
         tvSignUp = v.findViewById(R.id.tv_sign_up);
         tvForgotPassword = v.findViewById(R.id.tv_forgot_password);
         btnSignIn = v.findViewById(R.id.btn_sign_in);
-
         progressBar.setVisibility(View.INVISIBLE);
-
-
         tvAlertView = v.findViewById(R.id.tv_alert);
-
-
 
     }
 
@@ -190,43 +183,43 @@ public class SignInFragment extends BaseFragment {
             case R.id.tv_forgot_password:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ForgotPasswordFragment",null );
+                    mFragmentListener.showFragment("ForgotPasswordFragment", null);
                 break;
 
             case R.id.btn_sign_in:
 
-                if(!isNetAvail()){
-                    tvAlertView.showTopAlert("No Internet");
-                    return;
-                }
+//                if (!isNetAvail()) {
+//                    tvAlertView.showTopAlert("No Internet");
+//                    return;
+//                }
+                attemptSignIn();
 
-                if(isFormValid()){
-                    SignInRequest in=new SignInRequest.Builder()
-                            .setEmail(mUserEmail)
-                            .setPassword(mUserPassword)
-                            .setDeviceType(DEVICE_TYPE)
-                            .setDeviceId("12345")
-                            .setDiscriminator(DISCRIMINATOR_TYPE)
-                            .build();
-                    mViewModel.attemptSignIn(in);
-                }
 
                 break;
         }
     };
 
-//    private void attemptSignIn() {
-//
-//        mViewModel.setProgress(true);
-//        mHandler.sendEmptyMessageDelayed(1, 3000);
-//
-//
-//    }
+    private void attemptSignIn() {
+
+        if (isFormValid()) {
+            SignInRequest in = new SignInRequest.Builder()
+                    .setEmail(mUserEmail)
+                    .setPassword(mUserPassword)
+                    .setDeviceType(DEVICE_TYPE)
+                    .setDeviceId("12345")
+                    .setDiscriminator(DISCRIMINATOR_TYPE)
+                    .build();
+
+            edtUsrEmail.clearFocus();edtUsrPassword.clearFocus();
+            mViewModel.attemptSignIn(in);
+        }
+
+    }
 
     @Override
     public void onDestroyView() {
         mOnClickListener = null;
-        mEditorActionListener=null;
+        mEditorActionListener = null;
         super.onDestroyView();
     }
 
@@ -266,47 +259,27 @@ public class SignInFragment extends BaseFragment {
         return true;
     }
 
-
-//    @SuppressLint("HandlerLeak")
-//    private final Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            mViewModel.setProgress(false);
-//            if (mFragmentListener!= null) {
-//                mFragmentListener.startActivity("HomeActivity",null);
-//                getActivity().finish();
-//            }
-//
-//
-////---------------------------------------------------------------
-//
-////---------------------------------------------------------------
-//
-//        }
-//    };
-
-
-    private EditText.OnEditorActionListener mEditorActionListener=new TextView.OnEditorActionListener() {
+    private EditText.OnEditorActionListener mEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch (v.getId()) {
 
                 case R.id.edt_usr_email:
                     if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        if(edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
+                        if (edtUsrEmail.isFocused()) edtUsrPassword.requestFocus();
                         return true;
                     }
                     break;
 
 
                 case R.id.edt_usr_password:
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if(edtUsrPassword.isFocused()) edtUsrPassword.clearFocus(); hideSoftKeyboard(getActivity());
+                    if (actionId == EditorInfo.IME_ACTION_GO) {
+                        mFragmentListener.hideSoftKeyboard();
+                        attemptSignIn();
                         return true;
                     }
 
                     break;
-
 
 
             }
@@ -317,8 +290,8 @@ public class SignInFragment extends BaseFragment {
     };
 
     private void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null && activity.getCurrentFocus() !=null) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && activity.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
 
@@ -337,8 +310,6 @@ public class SignInFragment extends BaseFragment {
   }
          */
     }
-
-
 
 
 }

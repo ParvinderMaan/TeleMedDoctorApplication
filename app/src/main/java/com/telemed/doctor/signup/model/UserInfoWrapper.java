@@ -11,6 +11,42 @@ public class UserInfoWrapper implements Parcelable {
     private String accessToken;
     private Integer lastScreenId;
     private Boolean emailConfirmed;
+    private String firstName;
+    private String lastName;
+    private String profilePic;
+
+    public Integer getLastScreenId() {
+        return lastScreenId;
+    }
+
+    public Boolean getEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
 
     public void setLastScreenId(Integer lastScreenId) {
         this.lastScreenId = lastScreenId;
@@ -60,16 +96,22 @@ public class UserInfoWrapper implements Parcelable {
         dest.writeString(this.email);
         dest.writeValue(this.otpCode);
         dest.writeString(this.accessToken);
-        dest.writeValue(this.lastScreenId);
         dest.writeValue(this.emailConfirmed);
+        dest.writeValue(this.lastScreenId);
+        dest.writeString(this.lastName);
+        dest.writeString(this.firstName);
+        dest.writeString(this.profilePic);
     }
 
     protected UserInfoWrapper(Parcel in) {
         this.email = in.readString();
         this.otpCode = (Integer) in.readValue(Integer.class.getClassLoader());
         this.accessToken = in.readString();
-        this.lastScreenId = (Integer) in.readValue(Integer.class.getClassLoader());
         this.emailConfirmed = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.lastScreenId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.lastName = in.readString();
+        this.firstName = in.readString();
+        this.profilePic = in.readString();
     }
 
     public static final Parcelable.Creator<UserInfoWrapper> CREATOR = new Parcelable.Creator<UserInfoWrapper>() {

@@ -1,9 +1,12 @@
 package com.telemed.doctor.network;
 
 import com.google.gson.JsonObject;
+import com.telemed.doctor.miscellaneous.model.SignOutResponse;
+import com.telemed.doctor.password.model.ForgotPasswordResponse;
 import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.model.VerificationResponse;
 import com.telemed.doctor.password.model.ResendOtpResponse;
+import com.telemed.doctor.profile.model.AlterProfilePicResponse;
 import com.telemed.doctor.profile.model.BankInfoResponse;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.model.OptionResponse;
@@ -95,6 +98,10 @@ public interface WebService {
     Call<SignInResponse> attemptSignIn(@Body SignInRequest in);
 
 
+    @POST(WebUrl.SIGN_OUT)
+    Call<SignOutResponse> attemptSignOut(@HeaderMap Map<String, String> token);
+
+
     @Multipart
     @POST(WebUrl.UPLOAD_FILE)
     Call<FileUploadResponse> attemptUploadFile(@HeaderMap Map<String, String> token,
@@ -105,21 +112,26 @@ public interface WebService {
     Call<FileDeleteResponse> attemptDeleteFile(@HeaderMap Map<String, String> token, @Query("DocumentId") Integer id);
 
 
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.FORGOT_PASSWORD)
+    Call<ForgotPasswordResponse> attemptForgotPassword(@Body JsonObject in);
+
 
     // profile
-    @Headers({WebUrl.CONTENT_HEADER})
     @GET(WebUrl.BASIC_PROFILE_INFO)
     Call<BasicInfoResponse> fetchBasicProfileInfo(@HeaderMap Map<String, String> token);
 
-    @Headers({WebUrl.CONTENT_HEADER})
     @GET(WebUrl.PROFESSIONAL_PROFILE_INFO)
     Call<ProfessionalInfoResponse> fetchProfessionalProfileInfo(@HeaderMap Map<String, String> token);
 
-    @Headers({WebUrl.CONTENT_HEADER})
     @GET(WebUrl.BANK_PROFILE_INFO)
     Call<BankInfoResponse> fetchBankProfileInfo(@HeaderMap Map<String, String> token);
 
 
+    @Multipart
+    @POST(WebUrl.ALTER_PROFILE_PIC)
+    Call<AlterProfilePicResponse> alterProfilePic(@HeaderMap Map<String, String> token,
+                                                  @Part MultipartBody.Part imgFile);  // fileData
 
 }
 

@@ -118,40 +118,57 @@ public class SignUpIIFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> flContainer.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, this::resetView);
 
-        mViewModel.getResultant().observe(this, new Observer<ApiResponse<SignUpIIResponse>>() {
-            @Override
-            public void onChanged(ApiResponse<SignUpIIResponse> response) {
-                switch (response.getStatus()) {
-                    case SUCCESS:
-                        if (response.getData() != null) {
-                            if (mFragmentListener != null){
+        mViewModel.getResultant().observe(this, response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        if (mFragmentListener != null){
 //                                SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
-                                tvAlertView.showTopAlert(response.getData().getMessage());
-                                tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                UserInfoWrapper in=new UserInfoWrapper();
-                                in.setAccessToken(mAccessToken);
-                                mFragmentListener.showFragment("SignUpIIIFragment", in);
-
-                            }
+                            tvAlertView.showTopAlert(response.getData().getMessage());
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setAccessToken(mAccessToken);
+                            mFragmentListener.showFragment("SignUpIIIFragment", in);
 
                         }
 
-                        break;
+                    }
 
-                    case FAILURE:
-                        if (response.getErrorMsg() != null) {
-                            tvAlertView.showTopAlert(response.getErrorMsg());
-                        }
-                        break;
+                    break;
 
-                }
-
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
 
             }
+
+
         });
+
+    }
+
+    private void resetView(boolean isView) {
+
+        edtDocName.setEnabled(isView);
+        edtDocSurname.setEnabled(isView);
+        edtDob.setEnabled(isView);
+        edtBirthCity.setEnabled(isView);
+        edtBirthCountry.setEnabled(isView);
+        edtNationality.setEnabled(isView);
+        edtSpeciality.setEnabled(isView);
+        edtLanguageOne.setEnabled(isView);
+        edtLanguageTwo.setEnabled(isView);
+        edtAddr.setEnabled(isView);
+        edtGender.setEnabled(isView);
+        edtCountry.setEnabled(isView);
+        edtState.setEnabled(isView);
+        edtCity.setEnabled(isView);
+        btnContinue.setEnabled(isView);
 
     }
 
@@ -172,7 +189,6 @@ public class SignUpIIFragment extends BaseFragment {
         edtDocName.setOnEditorActionListener(mEditorActionListener);
         edtDocSurname.setOnEditorActionListener(mEditorActionListener);
         edtAddr.setOnEditorActionListener(mEditorActionListener);
-        edtEmail.setOnEditorActionListener(mEditorActionListener);
 
 
     }
@@ -244,10 +260,11 @@ public class SignUpIIFragment extends BaseFragment {
                 break;
 
             case R.id.btn_continue:
-                if (!isNetAvail()) {
-                    tvAlertView.showTopAlert("No Internet");
-                    return;
-                }
+
+//                if (!isNetAvail()) {
+//                    tvAlertView.showTopAlert("No Internet");
+//                    return;
+//                }
 
                 if (isFormValid()) {
                 SignUpIIRequest in = new SignUpIIRequest.Builder()
@@ -534,7 +551,7 @@ public class SignUpIIFragment extends BaseFragment {
         mLanguageOne = edtLanguageOne.getText().toString();
         mLanguageTwo = edtLanguageTwo.getText().toString();
         mAddr = edtAddr.getText().toString();
-        mEmail = edtEmail.getText().toString();
+//        mEmail = edtEmail.getText().toString();
 
         mGender = edtGender.getText().toString();
         mCountry = edtCountry.getText().toString();
@@ -659,25 +676,13 @@ public class SignUpIIFragment extends BaseFragment {
 
                 case R.id.edt_addr:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtAddr.isFocused()) edtEmail.requestFocus();
-                        mFragmentListener.hideSoftKeyboard();
+                        if (edtAddr.isFocused()) edtAddr.clearFocus();
                         return true;
                     }
 
                     break;
-
-                case R.id.edt_email:
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (edtEmail.isFocused()) edtEmail.clearFocus();
-                        mFragmentListener.hideSoftKeyboard();
-                        return true;
-                    }
-
-                    break;
-
 
             }
-
 
             return false;
         }

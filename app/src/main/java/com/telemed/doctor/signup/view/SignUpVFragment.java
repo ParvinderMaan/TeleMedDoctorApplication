@@ -49,11 +49,10 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 public class SignUpVFragment extends BaseFragment {
-    private final String TAG=SignUpVFragment.class.getSimpleName();
     private static final int REQUEST_CODE_STORAGE = 210;
     private static final int REQUEST_CODE_DOCUMENT = 211;
     private static int fileIndex;
-
+    private final String TAG = SignUpVFragment.class.getSimpleName();
     private RecyclerView rvDocument;
     private RouterFragmentSelectedListener mFragmentListener;
     private RelativeLayout rlRoot;
@@ -63,17 +62,71 @@ public class SignUpVFragment extends BaseFragment {
     private TextView tvCancel;
     private CustomAlertTextView tvAlertView;
     private Button btnContinue;
-    private HashMap<String, String> mMap;
-    private DocumentAdapter mAdapter;
+    private HashMap<String, String> mDocMap;
+    private HashMap<String, String> mSignUpMap;
 
+    private DocumentAdapter mAdapter;
+    private View.OnClickListener mEventClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_continue:
+                    if (mAdapter.getItemCount() == 0) {
+                        tvAlertView.showTopAlert(getResources().getString(R.string.alert_upload_file));
+                        return;
+                    }
+                    mViewModel.attemptSignUp(mSignUpMap);
+
+                    break;
+
+                case R.id.tv_cancel:
+                    if (mFragmentListener != null)
+                        mFragmentListener.abortSignUpDialog();
+                    break;
+
+
+            }
+
+
+        }
+    };
+    private DocumentAdapter.OnItemClickListener mItemClickListener = new DocumentAdapter.OnItemClickListener() {
+        @Override
+        public void onItemTextClick(int pos, DocInfo info) {
+            if (!isRuntimePermissionGranted()) {
+                requestRuntimePermission();
+                return;
+            }
+            openDocument(pos);
+
+        }
+
+        @Override
+        public void onItemActionClick(int pos, DocInfo info, String type) {
+
+            if (type.equals("UPLOAD")) {
+
+                MultipartBody.Part filePath;
+                String path = (String) info.getPath();
+                filePath = prepareImgFilePart(path);
+                mViewModel.attemptFileUpload(mDocMap, filePath, pos);
+            }
+
+
+            if (type.equals("DELETE")) {
+                int id = info.getId();
+                mViewModel.attemptDeleteFile(mDocMap, id, pos);
+            }
+        }
+    };
 
     public SignUpVFragment() {
         // Required empty public constructor
     }
 
     public static SignUpVFragment newInstance(Object payload) {
-        SignUpVFragment fragment=new SignUpVFragment();
-        Bundle bundle=new Bundle();
+        SignUpVFragment fragment = new SignUpVFragment();
+        Bundle bundle = new Bundle();
         bundle.putParcelable("KEY_ACCESS_TOKEN", (UserInfoWrapper) payload);
         fragment.setArguments(bundle);
         return fragment;
@@ -89,16 +142,20 @@ public class SignUpVFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // collect our intent
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             UserInfoWrapper objInfo = getArguments().getParcelable("KEY_ACCESS_TOKEN");
-            if (objInfo != null) mAccessToken =objInfo.getAccessToken();
+            if (objInfo != null) mAccessToken = objInfo.getAccessToken();
 
-            Log.e(TAG,mAccessToken);
+            Log.e(TAG, mAccessToken);
         }
 
-        mMap = new HashMap<>();
-//      mMap.put("content-type", "application/json");
-        mMap.put("Authorization","Bearer "+mAccessToken);
+        mDocMap = new HashMap<>();
+        mDocMap.put("Authorization", "Bearer " + mAccessToken);
+
+        mSignUpMap = new HashMap<>();
+        mSignUpMap.put("content-type", "application/json"); //additional
+        mSignUpMap.put("Authorization", "Bearer " + mAccessToken);
+
         mAdapter = new DocumentAdapter();
 
     }
@@ -121,8 +178,8 @@ public class SignUpVFragment extends BaseFragment {
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> rlRoot.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, this::resetEnableView);
 
         mViewModel.getResultantFileUpload()
                 .observe(this, response -> {
@@ -130,11 +187,11 @@ public class SignUpVFragment extends BaseFragment {
                         case SUCCESS:
                             if (response.getData() != null) {
 
-                                   tvAlertView.showTopAlert(response.getData().getMessage());
-                                    tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                    int pos=response.getData().getData().getViewIndex();
-                                    mAdapter.updateSingle(pos,response.getData().getData().getId());
-                                    mAdapter.addView(new DocInfo()); // addView 1 tile manually
+                                tvAlertView.showTopAlert(response.getData().getMessage());
+                                tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                                int pos = response.getData().getData().getViewIndex();
+                                mAdapter.updateSingle(pos, response.getData().getData().getId());
+                                mAdapter.addView(new DocInfo()); // addView 1 tile manually
 
                             }
 
@@ -150,7 +207,6 @@ public class SignUpVFragment extends BaseFragment {
                 });
 
 
-
         mViewModel.getResultantFileDelete()
                 .observe(this, response -> {
                     switch (response.getStatus()) {
@@ -158,9 +214,8 @@ public class SignUpVFragment extends BaseFragment {
                             if (response.getData() != null) {
                                 tvAlertView.showTopAlert(response.getData().getMessage());
                                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                int pos=response.getData().getData().getViewIndex();
+                                int pos = response.getData().getData().getViewIndex();
                                 mAdapter.removeView(pos);
-
 
 
                             }
@@ -181,10 +236,11 @@ public class SignUpVFragment extends BaseFragment {
                 case SUCCESS:
                     if (response.getData() != null) {
 //                         SignUpVResponse.Data data = response.getData().getData(); // adding Additional Info
-                           // tvAlertView.showTopAlert(response.getData().getMessage());
-                           // tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                             String msg=  response.getData().getMessage();
-                            if(mFragmentListener!=null) mFragmentListener.showSignUpSuccessDialog(msg);
+                        // tvAlertView.showTopAlert(response.getData().getMessage());
+                        // tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                        String msg = response.getData().getMessage();
+                        if (mFragmentListener != null)
+                            mFragmentListener.showSignUpSuccessDialog(msg);
 
                     }
                     break;
@@ -202,41 +258,23 @@ public class SignUpVFragment extends BaseFragment {
 
     }
 
+    private void resetEnableView(Boolean isView) {
+        btnContinue.setEnabled(isView);
+        if (isView)
+            mAdapter.setOnItemClickListener(mItemClickListener);
+        else
+            mAdapter.setOnItemClickListener(null);
+
+
+    }
+
     private void initRecyclerView(View v) {
         rvDocument = v.findViewById(R.id.rv_document);
         rvDocument.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvDocument.setHasFixedSize(true);
         rvDocument.setAdapter(mAdapter);
         mAdapter.addView(new DocInfo()); // addView 1 tile manually
-        mAdapter.setOnItemClickListener(new DocumentAdapter.OnItemClickListener() {
-            @Override
-            public void onItemTextClick(int pos, DocInfo info) {
-                if (!isRuntimePermissionGranted()) {
-                    requestRuntimePermission();
-                    return;
-                }
-                openDocument(pos);
-
-            }
-
-            @Override
-            public void onItemActionClick(int pos, DocInfo info,String type) {
-
-                if(type.equals("UPLOAD")){
-
-                    MultipartBody.Part filePath;
-                    String path= (String) info.getPath();
-                    filePath=prepareImgFilePart(path);
-                    mViewModel.attemptFileUpload(mMap,filePath,pos);
-                }
-
-
-                if(type.equals("DELETE")){
-                    int id= info.getId();
-                    mViewModel.attemptDeleteFile(mMap,id,pos);
-                }
-            }
-        });
+        mAdapter.setOnItemClickListener(mItemClickListener);
     }
 
     private void initListener() {
@@ -260,30 +298,11 @@ public class SignUpVFragment extends BaseFragment {
     }
 
     public void openDocument(int index) {
-        fileIndex =index;
+        fileIndex = index;
         Intent in = new Intent(getActivity(), FilePickerActivity.class);
         in.putExtra(Constant.MAX_NUMBER, 1);
         in.putExtra(NormalFilePickActivity.SUFFIX, new String[]{"doc", "docx", "pdf"});
         startActivityForResult(in, REQUEST_CODE_DOCUMENT);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DOCUMENT && data != null) {
-            ArrayList<NormalFile> file= data.getParcelableArrayListExtra(Constant.RESULT_PICK_FILE);
-            setFileInView(file);
-        }
-    }
-
-    private void setFileInView(ArrayList<NormalFile> file) {
-        String path=file.get(0).getPath();
-        Log.e(TAG,path);
-
-                if(path!=null) {
-                    mAdapter.update(fileIndex,new DocInfo( fileIndex,  path,  "File Added",  1));
-                }
-
     }
     /*
 
@@ -292,8 +311,23 @@ public class SignUpVFragment extends BaseFragment {
                     rlDocTwo.setVisibility(View.VISIBLE);
      */
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DOCUMENT && data != null) {
+            ArrayList<NormalFile> file = data.getParcelableArrayListExtra(Constant.RESULT_PICK_FILE);
+            setFileInView(file);
+        }
+    }
 
+    private void setFileInView(ArrayList<NormalFile> file) {
+        String path = file.get(0).getPath();
+        Log.e(TAG, path);
 
+        if (path != null) {
+            mAdapter.update(fileIndex, new DocInfo(fileIndex, path, "File Added", 1));
+        }
+
+    }
 
     private boolean isRuntimePermissionGranted() {
         int reqOne = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
@@ -301,9 +335,24 @@ public class SignUpVFragment extends BaseFragment {
 
         return (reqOne & reqTwo) == PackageManager.PERMISSION_GRANTED;
     }
+    /*
+     String path;
+        MultipartBody.Part filePath;
+         path= (String) tvDocOne.getTag();
+                filePath=prepareImgFilePart(path);
+                mViewModel.attemptFileUpload(mMap,filePath,1);
+     */
+
+/*
+ if (!isRuntimePermissionGranted()) {
+                    requestRuntimePermission();
+                    return;
+                }
+                openDocument(1);
+ */
 
     private void requestRuntimePermission() {
-        requestPermissions(new String[]{READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
     }
 
     @Override
@@ -317,9 +366,9 @@ public class SignUpVFragment extends BaseFragment {
 
 
                     if (permOneAccepted && permTwoAccepted)
-                        openDocument(1);
+                        openDocument(0);
                     else {
-                         tvAlertView.showTopAlert(getResources().getString(R.string.alert_access_denied));
+                        tvAlertView.showTopAlert(getResources().getString(R.string.alert_access_denied));
 
 //                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
@@ -344,56 +393,10 @@ public class SignUpVFragment extends BaseFragment {
                 break;
         }
     }
-    /*
-     String path;
-        MultipartBody.Part filePath;
-         path= (String) tvDocOne.getTag();
-                filePath=prepareImgFilePart(path);
-                mViewModel.attemptFileUpload(mMap,filePath,1);
-     */
-
-/*
- if (!isRuntimePermissionGranted()) {
-                    requestRuntimePermission();
-                    return;
-                }
-                openDocument(1);
- */
-
-
-
-    private View.OnClickListener mEventClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_continue:
-                    if(mAdapter.getItemCount()==0){
-                        tvAlertView.showTopAlert(getResources().getString(R.string.alert_upload_file));
-                        return;
-                    }
-                    mMap.put("content-type", "application/json"); //additional
-                    mViewModel.attemptSignUp(mMap);
-
-                    break;
-
-                case R.id.tv_cancel:
-                    if (mFragmentListener != null)
-                        mFragmentListener.abortSignUpDialog();
-                    break;
-
-
-
-            }
-
-
-
-
-        }
-    };
 
     @Override
     public void onDestroyView() {
-        mEventClickListener=null;
+        mEventClickListener = null;
         super.onDestroyView();
     }
 
@@ -401,7 +404,7 @@ public class SignUpVFragment extends BaseFragment {
     private MultipartBody.Part prepareImgFilePart(String filee) {
         File file = new File(filee);
         // create RequestBody instance from videoFile
-        RequestBody requestFile = RequestBody.create(file,okhttp3.MediaType.parse("image/*"));  // new
+        RequestBody requestFile = RequestBody.create(file, okhttp3.MediaType.parse("image/*"));  // new
         // MultipartBody.Part is used to send also the actual docFile name
         return MultipartBody.Part.createFormData("docFile", file.getName(), requestFile);
     }

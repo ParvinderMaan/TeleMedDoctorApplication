@@ -37,7 +37,6 @@ import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.viewmodel.OneTimePasswordViewModel;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
-import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 
@@ -54,7 +53,6 @@ public class OneTimePasswordFragment extends BaseFragment {
     private ProgressBar progressBar;
     private Integer mOtpClient,mOtpServer;
     private String mEmail,mAccessToken;
-    private SignUpIResponse.Data objInfo;
 
 
     public OneTimePasswordFragment() {
@@ -79,7 +77,7 @@ public class OneTimePasswordFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         //collect our intent
         if(getArguments()!=null){
-            objInfo = getArguments().getParcelable("KEY_");
+            UserInfoWrapper objInfo = getArguments().getParcelable("KEY_");
             if (objInfo != null) mOtpServer =objInfo.getOtpCode();
             if (objInfo != null) mEmail=objInfo.getEmail();
             if (objInfo != null) mAccessToken=objInfo.getAccessToken();
@@ -102,7 +100,7 @@ public class OneTimePasswordFragment extends BaseFragment {
         initListener();
 
         tvUserEmail.setText(mEmail!=null?mEmail:"");
-        mHandler.sendEmptyMessageDelayed(1, 2000);  // fake call
+        if(mOtpServer!=null) mHandler.sendEmptyMessageDelayed(1, 2000);  // fake call
         Log.e(TAG,""+ mOtpServer);
 
 
@@ -116,7 +114,7 @@ public class OneTimePasswordFragment extends BaseFragment {
 //                            objInfo.setEmail(mEmail);
                             UserInfoWrapper in=new UserInfoWrapper();
                             in.setEmail(mEmail);in.setAccessToken(mAccessToken);
-                            mFragmentListener.showFragment("SignUpIIFragment",objInfo);
+                            mFragmentListener.showFragment("SignUpIIFragment",in);
                         }
                     }
                     break;
@@ -136,7 +134,6 @@ public class OneTimePasswordFragment extends BaseFragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         mOtpServer =response.getData().getData().getOtpCode();
-                        makeToast(""+mOtpServer);
                         createNotification(); // fake it
                     }
                     break;
@@ -157,8 +154,16 @@ public class OneTimePasswordFragment extends BaseFragment {
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-        mViewModel.getViewClickable()
-                .observe(this, isView -> llRoot.setClickable(isView));
+        mViewModel.getViewEnabled()
+                .observe(this, isView -> {
+                    edtOtpOne.setEnabled(isView);
+                    edtOtpTwo.setEnabled(isView);
+                    edtOtpThree.setEnabled(isView);
+                    edtOtpFour.setEnabled(isView);
+                    btnContinue.setEnabled(isView);
+                    tvUserEmail.setEnabled(isView);
+                    tvResendCode.setEnabled(isView);
+                });
     }
 
     private void initView(View v) {
@@ -190,6 +195,7 @@ public class OneTimePasswordFragment extends BaseFragment {
             @Override
             public void onTextChanged(int start, int before, int count,CharSequence s) {
                 if(count == 1) edtOtpTwo.requestFocus();
+
             }
         });
 
@@ -218,6 +224,7 @@ public class OneTimePasswordFragment extends BaseFragment {
 
         edtOtpFour.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO){
+                mFragmentListener.hideSoftKeyboard();
                 attemptVerfication();
 
             }
@@ -230,16 +237,17 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     private void attemptVerfication() {
 
-        if(!isNetAvail()){
-            tvAlertView.showTopAlert("No Internet");
-            return ;
-        }
+//        if(!isNetAvail()){
+//            tvAlertView.showTopAlert("No Internet");
+//            return ;
+//        }
 
         if(isFormValid()){
             VerficationRequest in=new VerficationRequest.Builder()
                     .setEmail(mEmail)
                     .setOtp(mOtpClient)
                     .build();
+            edtOtpOne.clearFocus();  edtOtpTwo.clearFocus();  edtOtpThree.clearFocus();   edtOtpFour.clearFocus();
             mViewModel.attemptVerifyUser(in);
         }
     }

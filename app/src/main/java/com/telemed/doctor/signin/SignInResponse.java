@@ -42,7 +42,7 @@ public class SignInResponse {
     }
 
     public static class Data implements Parcelable {
-        @Expose(serialize=false,deserialize = false)
+        @Expose(serialize = false, deserialize = false)
         private String email;
 
         @SerializedName("accessToken")
@@ -54,6 +54,32 @@ public class SignInResponse {
         @SerializedName("emailConfirmed")
         @Expose
         private Boolean emailConfirmed;
+        @SerializedName("firstName")
+        @Expose
+        private String firstName;
+        @SerializedName("lastName")
+        @Expose
+        private String lastName;
+
+        @SerializedName("pic")
+        @Expose
+        private String profilePic;
+
+        public String getProfilePic() {
+            return profilePic;
+        }
+
+        public void setProfilePic(String profilePic) {
+            this.profilePic = profilePic;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
 
         public String getAccessToken() {
             return accessToken;
@@ -79,14 +105,22 @@ public class SignInResponse {
             this.emailConfirmed = emailConfirmed;
         }
 
-
-        public String getEmail() {
-            return email;
+        public String getFirstName() {
+            return firstName;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
         }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
 
         @Override
         public int describeContents() {
@@ -99,6 +133,9 @@ public class SignInResponse {
             dest.writeString(this.accessToken);
             dest.writeValue(this.lastScreenId);
             dest.writeValue(this.emailConfirmed);
+            dest.writeValue(this.firstName);
+            dest.writeValue(this.lastName);
+            dest.writeValue(this.profilePic);
         }
 
         public Data() {
@@ -109,6 +146,9 @@ public class SignInResponse {
             this.accessToken = in.readString();
             this.lastScreenId = (Integer) in.readValue(Integer.class.getClassLoader());
             this.emailConfirmed = (Boolean) in.readValue(Boolean.class.getClassLoader());
+            this.firstName = in.readString();
+            this.lastName =in.readString();
+            this.profilePic = in.readString();
         }
 
         public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {

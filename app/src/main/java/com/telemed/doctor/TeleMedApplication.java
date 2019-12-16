@@ -3,6 +3,7 @@ package com.telemed.doctor;
 import android.app.Application;
 
 import com.telemed.doctor.helper.Common;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
 
@@ -30,11 +31,17 @@ public class TeleMedApplication extends Application {
         return currentApplication.getCacheDir();
     }
 
-
+    // @use DI
     public WebService getRetrofitInstance() {
         return ServiceGenerator.createService(WebService.class);
 
     }
+   // @use DI
+    public  SharedPrefHelper getSharedPrefInstance() {
+        return new SharedPrefHelper(getApplicationContext());
+
+    }
+
     public boolean isNetAvail() {
         return Common.isNetworkAvail(getApplicationContext());
     }

@@ -23,7 +23,7 @@ public class SignUpIViewModel extends AndroidViewModel {
     private final WebService mWebService;
     private MutableLiveData<ApiResponse<SignUpIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isViewClickable;
+    private MutableLiveData<Boolean> isViewEnabled;
 
 
 
@@ -32,17 +32,17 @@ public class SignUpIViewModel extends AndroidViewModel {
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isViewClickable=new MutableLiveData<>();
+        isViewEnabled =new MutableLiveData<>();
     }
 
     public void attemptSignUp(SignUpIRequest in) {
         this.isLoading.setValue(true);
-        this.isViewClickable.setValue(false);
+        this.isViewEnabled.setValue(false);
         mWebService.attemptSignUpOne(in).enqueue(new Callback<SignUpIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIResponse> call, @NonNull Response<SignUpIResponse> response) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
                         SignUpIResponse result = response.body();
@@ -61,7 +61,7 @@ public class SignUpIViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<SignUpIResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
-                isViewClickable.setValue(true);
+                isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -83,7 +83,7 @@ public class SignUpIViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<Boolean> getViewClickable() {
-        return isViewClickable;
+    public MutableLiveData<Boolean> getViewEnabled() {
+        return isViewEnabled;
     }
 }
