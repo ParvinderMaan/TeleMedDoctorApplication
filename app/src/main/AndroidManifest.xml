@@ -20,7 +20,6 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".TestingActivity">
-
         </activity>
         <activity
             android:name=".RouterActivity"
@@ -44,3 +43,5 @@
     </application>
 
 </manifest>
+
+<!--    android:theme="@style/Theme.AppCompat.Dialog"-->

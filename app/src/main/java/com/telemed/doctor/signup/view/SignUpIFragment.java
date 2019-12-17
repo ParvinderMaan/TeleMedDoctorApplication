@@ -1,6 +1,7 @@
 package com.telemed.doctor.signup.view;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -83,8 +85,13 @@ public class SignUpIFragment extends BaseFragment {
                             in.setAccessToken(data.getAccessToken());
                             in.setEmail(mUsrEmail);
                             in.setOtpCode(data.getOtpCode());
-                            mFragmentListener.showFragment("OneTimePasswordFragment", in);
-
+                        //  mFragmentListener.showFragment("OneTimePasswordFragment", in);
+                            tvAlertView.showTopAlert(response.getData().getMessage());
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            Message msg = new Message();
+                            msg.obj = in;
+                            msg.what = 1;
+                            mHandler.sendMessageDelayed(msg,1500);
                         }
 
                     }
@@ -300,13 +307,34 @@ public class SignUpIFragment extends BaseFragment {
     }
 
 
-    public void clearFocus() {
+    private void clearFocus() {
         edtUsrEmail.clearFocus();
         edtUsrPassword.clearFocus();
         edtUsrConfirmPassword.clearFocus();
 
     }
 
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+             if(msg.what==1){
+                 UserInfoWrapper in = (UserInfoWrapper) msg.obj;
+                 if(mFragmentListener!=null){
+                     mFragmentListener.showFragment("OneTimePasswordFragment", in);
+                 }
+             }
+
+
+
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        mHandler.removeMessages(1);
+        super.onDestroy();
+    }
 
     /*
     failure  ---->

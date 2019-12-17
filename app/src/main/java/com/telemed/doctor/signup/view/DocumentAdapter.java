@@ -11,15 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.signup.model.DocInfo;
+import com.telemed.doctor.signup.model.DocumentInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHolder> {
     private  final String TAG = DocumentAdapter.class.getSimpleName();
+    private  final int MAX_COUNT=5;
 
-    private List<DocInfo> list;
+    private List<DocumentInfo> list;
     private OnItemClickListener onItemClickListener;
 
     public DocumentAdapter() {
@@ -32,17 +33,16 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
 
 
-    public void update(int updateIndex, DocInfo newValue) {
+    public void update(int updateIndex, DocumentInfo newValue) {
         list.set(updateIndex, newValue);
         notifyItemChanged(updateIndex);
 
     }
 
     public void updateSingle(int updateIndex, Integer id) {
-        DocInfo info=list.get(updateIndex);
+        DocumentInfo info=list.get(updateIndex);
         info.setId(id);
         info.setStatus(2);
-        info.setName("File Uploaded");
         list.set(updateIndex, info);
         notifyItemChanged(updateIndex);
     }
@@ -52,15 +52,27 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
             notifyItemRemoved(pos);
 
             if(list.size()==0){
-                addView(new DocInfo());
+                addView(new DocumentInfo());
             }
 
     }
-    public void addView(DocInfo info) {
-        if(list.size()<5){
+    public void addView(DocumentInfo info) {
+        if(list.size()< MAX_COUNT){
             list.add(info);
             notifyItemInserted(list.size() - 1);
         }
+    }
+
+    public void addAll(List<DocumentInfo> documentList) {
+        for(int i=0;i<documentList.size();i++){
+           documentList.get(i).setStatus(2);
+        }
+
+
+         for(int i=0;i<documentList.size();i++){
+             addView(documentList.get(i));
+         }
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +85,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
             ibtnAction = itemView.findViewById(R.id.ibtn_action);
         }
 
-        public void bind(final DocInfo model, final OnItemClickListener listener) {
+        public void bind(final DocumentInfo model, final OnItemClickListener listener) {
             tvDocName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,20 +109,21 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
                 case 0:
                     ibtnAction.setVisibility(View.INVISIBLE); // no icon
+                    tvDocName.setText("Add document or pdf");
                     break;
                 case 1:
                     ibtnAction.setVisibility(View.VISIBLE);
                     ibtnAction.setImageResource(R.drawable.ic_upload); // about to upload icon
+                    tvDocName.setText("File added");
                     break;
                 case 2:
                     ibtnAction.setVisibility(View.VISIBLE);
                     ibtnAction.setImageResource(R.drawable.ic_delete); // about to removeView icon
+                    tvDocName.setText("File uploaded");
+                    tvDocName.setEnabled(false);  // to avoid fetching file
                     break;
             }
 
-            if(model.getName()!=null ){
-                tvDocName.setText(model.getName());
-            }
         }
     }
 
@@ -127,7 +140,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DocInfo item = list.get(position);
+        DocumentInfo item = list.get(position);
         holder.bind(item, onItemClickListener);
     }
 
@@ -138,8 +151,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemTextClick(int position,DocInfo info);
-        void onItemActionClick(int position,DocInfo info,String type);
+        void onItemTextClick(int position, DocumentInfo info);
+        void onItemActionClick(int position, DocumentInfo info, String type);
     }
 
 }

@@ -80,7 +80,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
-
                         android:layout_width="0dp"
                         android:layout_weight=".5"
                         android:orientation="vertical"
@@ -96,8 +95,9 @@
                             android:textColorHint="@color/colorLightBlue"
                             android:padding="@dimen/_10sdp"
                             android:textStyle="bold"
+                            android:imeOptions="actionNext"
                             android:textColor="@color/colorWhite"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="text" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -122,14 +122,15 @@
                             android:layout_height="wrap_content"
                             android:hint=""
                             android:text=""
+
                             app:backgroundTint="@color/colorWhite"
                             android:includeFontPadding="false"
-
+                            android:imeOptions="actionNext"
                             android:textColorHint="@color/colorLightBlue"
                             android:padding="@dimen/_10sdp"
                             android:textStyle="bold"
                             android:textColor="@color/colorWhite"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="text" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -156,13 +157,14 @@
                         android:layout_height="wrap_content"
                         android:hint=""
                         android:text=""
+                        android:imeOptions="actionNext"
                         app:backgroundTint="@color/colorWhite"
                         android:includeFontPadding="false"
                         android:textColorHint="@color/colorLightBlue"
                         android:padding="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="text" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -189,13 +191,14 @@
                         android:layout_height="wrap_content"
                         android:hint=""
                         android:text=""
+                        android:imeOptions="actionNext"
                         app:backgroundTint="@color/colorWhite"
                         android:includeFontPadding="false"
                         android:textColorHint="@color/colorLightBlue"
                         android:padding="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="text" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -225,6 +228,7 @@
                         android:includeFontPadding="false"
                         android:textColorHint="@color/colorLightBlue"
                         android:padding="@dimen/_10sdp"
+                        android:imeOptions="actionNext"
                         android:textStyle="bold"
                         android:textColor="@color/colorWhite"
                         android:inputType="text" />
@@ -247,19 +251,21 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_npi_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint=""
-                        android:text=""
-                        app:backgroundTint="@color/colorWhite"
                         android:includeFontPadding="false"
-                        android:textColorHint="@color/colorLightBlue"
+                        android:inputType="text"
                         android:padding="@dimen/_10sdp"
-                        android:textStyle="bold"
+                        android:text=""
+                        android:imeOptions="actionDone"
                         android:textColor="@color/colorWhite"
-                        android:inputType="textEmailAddress" />
+                        android:textColorHint="@color/colorLightBlue"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/colorWhite" />
 
                     <TextView
                         android:layout_width="match_parent"

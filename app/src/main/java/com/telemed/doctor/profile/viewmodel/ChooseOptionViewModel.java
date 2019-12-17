@@ -35,18 +35,26 @@ public class ChooseOptionViewModel extends AndroidViewModel {
     private final String TAG=ChooseOptionViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-    private MutableLiveData<ApiResponse<OptionResponse>> resultantResendOtp;
+    private MutableLiveData<ApiResponse<OptionResponse>> resultant;
     private MutableLiveData<List<Gender>> lstOfGender;
     private MutableLiveData<List<Language>> listOfLanguage;
     private MutableLiveData<List<Speciliaty>> listOfSpeciality;
     private MutableLiveData<List<State>> listOfState;
+    private MutableLiveData<ApiResponse<StateResponse>> resultantState;
 
 
 
     private MutableLiveData<List<Country>> listOfCountry;
     private MutableLiveData<Boolean> isLoading;
-    private Call<OptionResponse> xXx;
 
+
+    public MutableLiveData<ApiResponse<OptionResponse>> getResultant() {
+        return resultant;
+    }
+
+    public MutableLiveData<ApiResponse<StateResponse>> getStateResultant() {
+        return resultantState;
+    }
 
     public ChooseOptionViewModel(@NonNull Application application) {
         super(application);
@@ -57,38 +65,25 @@ public class ChooseOptionViewModel extends AndroidViewModel {
         listOfCountry = new MutableLiveData<>();
         listOfState= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
+        resultant=new MutableLiveData<>();
+        resultantState=new MutableLiveData<>();
     }
 
     public void fetchDoctorDrills(){
-        if(xXx !=null){
-            Log.e(TAG,"no api call");
-            return;
-        }
-
-
-         isLoading.setValue(true);
-         xXx = mWebService.fetchDrillInfo();
-         xXx.enqueue(new Callback<OptionResponse>() {
+        isLoading.setValue(true);
+        mWebService.fetchDrillInfo().enqueue(new Callback<OptionResponse>() {
         @Override
         public void onResponse(@NonNull Call<OptionResponse> call, @NonNull Response<OptionResponse> response) {
             isLoading.setValue(false);
 
             if (response.isSuccessful() && response.body()!=null) {
                 OptionResponse result = response.body();
-                Log.e(TAG,result.toString());
                 if(result.getStatus()){
-                    lstOfGender.setValue(result.getData().getGender());
-                    listOfLanguage.setValue(result.getData().getLanguages());
-                    listOfSpeciality.setValue(result.getData().getSpeciliaties());
-                    listOfCountry.setValue(result.getData().getCountries());
+                    resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
                 }else {
-//                    lstOfGender.setValue(null);
-//                    listOfLanguage.setValue(null);
-//                    listOfSpeciality.setValue(null);
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                 }
             }
-
-
 
         }
 
@@ -96,9 +91,7 @@ public class ChooseOptionViewModel extends AndroidViewModel {
         public void onFailure(@NonNull Call<OptionResponse> call, @NonNull Throwable error) {
             isLoading.setValue(false);
             String errorMsg = ErrorHandler.reportError(error);
-//            lstOfGender.setValue(null);
-//            listOfLanguage.setValue(null);
-//            listOfSpeciality.setValue(null);
+            resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
         }
     });
 
@@ -130,22 +123,18 @@ public class ChooseOptionViewModel extends AndroidViewModel {
 
     }
 
-
     public void fetchStateFromCountry(String countryId){
         mWebService.fetchStateInfo(countryId).enqueue(new Callback<StateResponse>() {
             @Override
-            public void onResponse(Call<StateResponse> call, Response<StateResponse> response) {
+            public void onResponse(@NonNull Call<StateResponse> call, @NonNull Response<StateResponse> response) {
 
                 if (response.isSuccessful() && response.body()!=null) {
                     StateResponse result = response.body();
                     Log.e(TAG,result.toString());
                     if(result.getStatus()){
-                        listOfState.setValue(result.getData().getStates());
-
+                        resultantState.setValue(new ApiResponse<>(SUCCESS, result, null));
                     }else {
-//                    lstOfGender.setValue(null);
-//                    listOfLanguage.setValue(null);
-//                    listOfSpeciality.setValue(null);
+                        resultantState.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
                 }
 
@@ -154,10 +143,32 @@ public class ChooseOptionViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<StateResponse> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<StateResponse> call, @NonNull Throwable error) {
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantState.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
         });
 
+    }
+
+
+    public void setGenderList(List<Gender> lstOfGender) {
+        this.lstOfGender.setValue(lstOfGender);
+    }
+
+    public void setLanguageList(List<Language> listOfLanguage) {
+        this.listOfLanguage.setValue(listOfLanguage);
+    }
+
+    public void setSpecialityList(List<Speciliaty> listOfSpeciality) {
+        this.listOfSpeciality.setValue(listOfSpeciality);
+    }
+
+    public void setStateList(List<State> listOfState) {
+        this.listOfState.setValue(listOfState);
+    }
+
+    public void setCountryList(List<Country> listOfCountry) {
+        this.listOfCountry.setValue(listOfCountry);
     }
 }

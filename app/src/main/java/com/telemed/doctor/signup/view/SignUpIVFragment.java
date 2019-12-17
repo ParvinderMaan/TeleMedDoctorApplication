@@ -1,6 +1,7 @@
 package com.telemed.doctor.signup.view;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -11,11 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -108,8 +113,11 @@ public class SignUpIVFragment extends BaseFragment {
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                             UserInfoWrapper in=new UserInfoWrapper();
                             in.setAccessToken(mAccessToken);
-                            mFragmentListener.showFragment("SignUpVFragment", in);
-
+//                            mFragmentListener.showFragment("SignUpVFragment", in);
+                            Message msg = new Message();
+                            msg.obj = in;
+                            msg.what = 1;
+                            mHandler.sendMessageDelayed(msg,1500);
                         }
 
                     }
@@ -181,6 +189,17 @@ public class SignUpIVFragment extends BaseFragment {
                     mFragmentListener.abortSignUpDialog();
 
             }
+        });
+
+
+        edtPostCode.setOnEditorActionListener((v12, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (edtPostCode.isFocused()) edtPostCode.clearFocus();
+                mFragmentListener.hideSoftKeyboard();
+                return true;
+            }
+            return false;
         });
     }
 
@@ -260,4 +279,27 @@ public class SignUpIVFragment extends BaseFragment {
 
         return true;
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if(msg.what==1){
+                UserInfoWrapper in = (UserInfoWrapper) msg.obj;
+                if(mFragmentListener!=null){
+                    mFragmentListener.showFragment("SignUpVFragment", in);
+                }
+            }
+
+
+
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        mHandler.removeMessages(1);
+        super.onDestroy();
+    }
+
 }

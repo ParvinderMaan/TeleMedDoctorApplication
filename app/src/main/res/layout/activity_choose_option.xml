@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<RelativeLayout
+    android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,7 +25,7 @@
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Country"
+            android:text="Select *******"
             android:layout_centerVertical="true"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
@@ -41,8 +42,31 @@
             />
     </RelativeLayout>
 
+    <include
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_header"
+        layout="@layout/layout_progress_bar" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_optionz"
+        android:overScrollMode="never"
+        android:layout_below="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_alert_view"
+        android:text=""
+        android:visibility="gone"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_below="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"  />
+</RelativeLayout>

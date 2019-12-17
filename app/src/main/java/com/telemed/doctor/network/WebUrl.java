@@ -35,6 +35,7 @@ public interface WebUrl {
     String FETCH_DRILLS="Content/GetDoctorDrillsPI";
     String FETCH_STATE = "Content/GetStatesByCountryId";
 
+    String FETCH_ALL_DOC="Auth/DoctorDocumentList";
     String UPLOAD_FILE = "Auth/AddDoctorDocument";
     String DELETE_FILE = "Auth/DeleteDoctorDocument";
 

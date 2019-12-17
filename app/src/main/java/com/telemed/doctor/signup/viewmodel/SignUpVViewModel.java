@@ -11,10 +11,13 @@ import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
+import com.telemed.doctor.signup.model.AllDocumentResponse;
+import com.telemed.doctor.signup.model.DocumentInfo;
 import com.telemed.doctor.signup.model.FileDeleteResponse;
 import com.telemed.doctor.signup.model.FileUploadResponse;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -29,22 +32,16 @@ public class SignUpVViewModel extends AndroidViewModel {
     private final String TAG=SignUpVViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-
-    public MutableLiveData<ApiResponse<SignUpVResponse>> getResultantSignUp() {
-        return resultantSignUp;
-    }
-
     private MutableLiveData<ApiResponse<SignUpVResponse>> resultantSignUp;
     private MutableLiveData<ApiResponse<FileUploadResponse>> resultantFileUpload;
-
-    public MutableLiveData<ApiResponse<FileDeleteResponse>> getResultantFileDelete() {
-        return resultantFileDelete;
-    }
-
     private MutableLiveData<ApiResponse<FileDeleteResponse>> resultantFileDelete;
 
+
+
+    private MutableLiveData<ApiResponse<AllDocumentResponse>> resultantAllDocument;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+
 
 
 
@@ -56,6 +53,8 @@ public class SignUpVViewModel extends AndroidViewModel {
         resultantFileDelete= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        resultantAllDocument=new MutableLiveData<>();
+
     }
 
 
@@ -76,8 +75,6 @@ public class SignUpVViewModel extends AndroidViewModel {
                     }else {
                         resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
-                }else {
-
                 }
 
 
@@ -96,7 +93,7 @@ public class SignUpVViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<ApiResponse<SignUpVResponse>> getResultant() {
+    public MutableLiveData<ApiResponse<SignUpVResponse>> getResultantSignUp() {
         return resultantSignUp;
     }
 
@@ -183,6 +180,50 @@ public class SignUpVViewModel extends AndroidViewModel {
     public MutableLiveData<ApiResponse<FileUploadResponse>> getResultantFileUpload() {
         return resultantFileUpload;
     }
+
+    public void fetchAllDocuments(Map<String, String> map){
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+        mWebService.fetchAllDocument(map).enqueue(new Callback<AllDocumentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AllDocumentResponse> call, @NonNull Response<AllDocumentResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    AllDocumentResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+                        resultantAllDocument.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AllDocumentResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+
+    }
+
+    public MutableLiveData<ApiResponse<FileDeleteResponse>> getResultantFileDelete() {
+        return resultantFileDelete;
+    }
+
+    public MutableLiveData<ApiResponse<AllDocumentResponse>> getResultantAllDocument() {
+        return resultantAllDocument;
+    }
+
 
 
 }

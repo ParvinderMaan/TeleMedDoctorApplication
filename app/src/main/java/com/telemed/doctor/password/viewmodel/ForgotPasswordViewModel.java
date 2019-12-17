@@ -41,7 +41,6 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewClickable;
 
-
     public ForgotPasswordViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();

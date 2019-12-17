@@ -1,11 +1,14 @@
 package com.telemed.doctor.signup.view;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,6 +42,7 @@ import com.telemed.doctor.profile.model.Gender;
 import com.telemed.doctor.profile.model.Language;
 import com.telemed.doctor.profile.model.Speciliaty;
 import com.telemed.doctor.profile.model.State;
+import com.telemed.doctor.profile.view.ChooseOptionActivity;
 import com.telemed.doctor.profile.view.ChooseOptionFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.model.SignUpIIRequest;
@@ -73,8 +79,8 @@ public class SignUpIIFragment extends BaseFragment {
     }
 
     public static SignUpIIFragment newInstance(Object payload) {
-        SignUpIIFragment fragment=new SignUpIIFragment();
-        Bundle bundle=new Bundle();
+        SignUpIIFragment fragment = new SignUpIIFragment();
+        Bundle bundle = new Bundle();
         bundle.putParcelable("KEY_", (UserInfoWrapper) payload); // SignUpIResponse.Data
         fragment.setArguments(bundle);
         return fragment;
@@ -91,12 +97,12 @@ public class SignUpIIFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         //collect our intent
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             UserInfoWrapper objInfo = getArguments().getParcelable("KEY_");
-            if (objInfo != null) mAccessToken =objInfo.getAccessToken();
-            if (objInfo != null) mEmail =objInfo.getEmail();
+            if (objInfo != null) mAccessToken = objInfo.getAccessToken();
+            if (objInfo != null) mEmail = objInfo.getEmail();
 
-            Log.e(TAG,mAccessToken);
+            Log.e(TAG, mAccessToken);
         }
     }
 
@@ -125,13 +131,17 @@ public class SignUpIIFragment extends BaseFragment {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        if (mFragmentListener != null){
-//                                SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
+                        if (mFragmentListener != null) {
+//                          SignUpIIResponse.Data data = response.getData().getData(); // adding Additional Info
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            UserInfoWrapper in=new UserInfoWrapper();
+                            UserInfoWrapper in = new UserInfoWrapper();
                             in.setAccessToken(mAccessToken);
-                            mFragmentListener.showFragment("SignUpIIIFragment", in);
+//                            mFragmentListener.showFragment("SignUpIIIFragment", in);
+                            Message msg = new Message();
+                            msg.obj = in;
+                            msg.what = 1;
+                            mHandler.sendMessageDelayed(msg, 1500);
 
                         }
 
@@ -241,22 +251,29 @@ public class SignUpIIFragment extends BaseFragment {
                 break;
 
             case R.id.edt_state:
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_STATE");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_STATE")) {
-                            State state = (State) item;
-                            edtState.setText(state.getName());
-                            edtState.setTag(state.getId());
-                            popChooseOptionFragment();
-                        }
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+                String countryId= String.valueOf((Integer) edtCountry.getTag());
+                Intent in = new Intent(getActivity(), ChooseOptionActivity.class);
+                in.putExtra("KEY_", "TAG_STATE");
+                in.putExtra("KEY_COUNTRY_ID",countryId);
+                startActivityForResult(in, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_STATE");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_STATE")) {
+//                            State state = (State) item;
+//                            edtState.setText(state.getName());
+//                            edtState.setTag(state.getId());
+//                            popChooseOptionFragment();
+//                        }
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
             case R.id.btn_continue:
@@ -267,28 +284,28 @@ public class SignUpIIFragment extends BaseFragment {
 //                }
 
                 if (isFormValid()) {
-                SignUpIIRequest in = new SignUpIIRequest.Builder()
-                        .setFirstName(mDocName)
-                        .setLastName(mDocSurname)
-                        .setDateOfBirth(mDob)
-                        .setBirthCity(mBirthCity)
-                        .setBirthCountry(mBirthCountry)
-                        .setNationalityId((Integer) edtNationality.getTag())
-                        .setGenderId((Integer) edtGender.getTag())
-                        .setSpecialityId((Integer) edtSpeciality.getTag())
-                        .setPrimaryLanguageId((Integer) edtLanguageOne.getTag())
-                        .setSecondaryLanguageId((Integer) edtLanguageTwo.getTag())
-                        .setCountryId((Integer) edtCountry.getTag())
-                        .setStateId((Integer) edtState.getTag())
-                        .setCity(mCity)
-                        .setAddress1(mAddr)
-                        .build();
+                    SignUpIIRequest inn = new SignUpIIRequest.Builder()
+                            .setFirstName(mDocName)
+                            .setLastName(mDocSurname)
+                            .setDateOfBirth(mDob)
+                            .setBirthCity(mBirthCity)
+                            .setBirthCountry(mBirthCountry)
+                            .setNationalityId((Integer) edtNationality.getTag())
+                            .setGenderId((Integer) edtGender.getTag())
+                            .setSpecialityId((Integer) edtSpeciality.getTag())
+                            .setPrimaryLanguageId((Integer) edtLanguageOne.getTag())
+                            .setSecondaryLanguageId((Integer) edtLanguageTwo.getTag())
+                            .setCountryId((Integer) edtCountry.getTag())
+                            .setStateId((Integer) edtState.getTag())
+                            .setCity(mCity)
+                            .setAddress1(mAddr)
+                            .build();
 //                    Log.e(TAG,in.toString());
 
-                Map<String, String> map = new HashMap<>();
-                map.put("content-type", "application/json");
-                map.put("Authorization","Bearer "+mAccessToken);
-                mViewModel.attemptSignUp(in,map);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("content-type", "application/json");
+                    map.put("Authorization", "Bearer " + mAccessToken);
+                    mViewModel.attemptSignUp(inn, map);
                 }
 
                 break;
@@ -333,132 +350,156 @@ public class SignUpIIFragment extends BaseFragment {
 
 
             case R.id.edt_nationality:
-//                Intent innn=new Intent(getActivity(), ChooseOptionActivity.class);
-//                innn.putExtra("KEY_",(String)"TAG_NATIONALITY");
-//                startActivityForResult(innn, REQUEST_CODE_SELECT);
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_NATIONALITY");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_NATIONALITY")) {
-                            Country country = (Country) item;
-                            edtNationality.setText(country.getName());
-                            edtNationality.setTag(country.getId());
-                            popChooseOptionFragment();
+                Intent inz = new Intent(getActivity(), ChooseOptionActivity.class);
+                inz.putExtra("KEY_", "TAG_NATIONALITY");
+                startActivityForResult(inz, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
-
-                        }
-
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_NATIONALITY");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_NATIONALITY")) {
+//                            Country country = (Country) item;
+//                            edtNationality.setText(country.getName());
+//                            edtNationality.setTag(country.getId());
+//                            popChooseOptionFragment();
+//
+//
+//                        }
+//
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
             case R.id.edt_speciality:
-//                Intent iz=new Intent(getActivity(), ChooseOptionActivity.class);
-//                iz.putExtra("KEY_",(String)"TAG_SPECIALITY");
-//                startActivityForResult(iz, REQUEST_CODE_SELECT);
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_SPECIALITY");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_SPECIALITY")) {
-                            Speciliaty speciliaty = (Speciliaty) item;
-                            edtSpeciality.setText(speciliaty.getName());
-                            edtSpeciality.setTag(speciliaty.getId());
-                            popChooseOptionFragment();
-                        }
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+                Intent iz = new Intent(getActivity(), ChooseOptionActivity.class);
+                iz.putExtra("KEY_", (String) "TAG_SPECIALITY");
+                startActivityForResult(iz, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_SPECIALITY");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_SPECIALITY")) {
+//                            Speciliaty speciliaty = (Speciliaty) item;
+//                            edtSpeciality.setText(speciliaty.getName());
+//                            edtSpeciality.setTag(speciliaty.getId());
+//                            popChooseOptionFragment();
+//                        }
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
             case R.id.edt_language_one:
+                Intent ii = new Intent(getActivity(), ChooseOptionActivity.class);
+                ii.putExtra("KEY_", "TAG_LANGUAGE_ONE");
+                startActivityForResult(ii, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
                 //  showLanguageDialog(edtLanguageOne);
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_ONE");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_LANGUAGE_ONE")) {
-                            Language language = (Language) item;
-                            edtLanguageOne.setText(language.getName());
-                            edtLanguageOne.setTag(language.getId());
-                            popChooseOptionFragment();
-                        }
-
-
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_ONE");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_LANGUAGE_ONE")) {
+//                            Language language = (Language) item;
+//                            edtLanguageOne.setText(language.getName());
+//                            edtLanguageOne.setTag(language.getId());
+//                            popChooseOptionFragment();
+//                        }
+//
+//
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
             case R.id.edt_language_two:
                 //   showLanguageDialog(edtLanguageTwo);
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_TWO");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_LANGUAGE_TWO")) {
-                            Language language = (Language) item;
-                            edtLanguageTwo.setText(language.getName());
-                            edtLanguageTwo.setTag(language.getId());
-                            popChooseOptionFragment();
-                        }
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+                Intent iii = new Intent(getActivity(), ChooseOptionActivity.class);
+                iii.putExtra("KEY_", "TAG_LANGUAGE_TWO");
+                startActivityForResult(iii, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_LANGUAGE_TWO");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_LANGUAGE_TWO")) {
+//                            Language language = (Language) item;
+//                            edtLanguageTwo.setText(language.getName());
+//                            edtLanguageTwo.setTag(language.getId());
+//                            popChooseOptionFragment();
+//                        }
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
             case R.id.edt_gender:
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_GENDER");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_GENDER")) {
-                            Gender gender = (Gender) item;
-                            edtGender.setText(gender.getName());
-                            edtGender.setTag(gender.getId());
-                            popChooseOptionFragment();
-                        }
+                Intent iv = new Intent(getActivity(), ChooseOptionActivity.class);
+                iv.putExtra("KEY_", "TAG_GENDER");
+                startActivityForResult(iv, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_GENDER");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_GENDER")) {
+//                            Gender gender = (Gender) item;
+//                            edtGender.setText(gender.getName());
+//                            edtGender.setTag(gender.getId());
+//                            popChooseOptionFragment();
+//                        }
+//
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
 
             case R.id.edt_country:
-                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_COUNTRY");
-                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
-                    @Override
-                    public void onItemSelected(Object item, String type) {
-                        if (type.equals("TAG_COUNTRY")) {
-                            Country country = (Country) item;
-                            edtCountry.setText(country.getName());
-                            edtCountry.setTag(country.getId());
-                            popChooseOptionFragment();
-                        }
-                    }
-                });
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, mChooseOptionFragmnet)
-                        .addToBackStack(null)
-                        .commit();
+                Intent v1 = new Intent(getActivity(), ChooseOptionActivity.class);
+                v1.putExtra("KEY_", "TAG_COUNTRY");
+                startActivityForResult(v1, REQUEST_CODE_SELECT);
+                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
+//                mChooseOptionFragmnet = ChooseOptionFragment.newInstance("TAG_COUNTRY");
+//                mChooseOptionFragmnet.setOnChooseOptionSelectedListener(new ChooseOptionFragment.ChooseOptionFragmentSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(Object item, String type) {
+//                        if (type.equals("TAG_COUNTRY")) {
+//                            Country country = (Country) item;
+//                            edtCountry.setText(country.getName());
+//                            edtCountry.setTag(country.getId());
+//                            popChooseOptionFragment();
+//                        }
+//                    }
+//                });
+//                getChildFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, mChooseOptionFragmnet)
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
 
         }
@@ -514,7 +555,8 @@ public class SignUpIIFragment extends BaseFragment {
         dialog.show();
 
     }
-           /*     MM/dd/yyyy     */
+
+    /*     MM/dd/yyyy     */
     private void showDatePicker() {
 
         final Calendar c = Calendar.getInstance();
@@ -677,6 +719,7 @@ public class SignUpIIFragment extends BaseFragment {
                 case R.id.edt_addr:
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         if (edtAddr.isFocused()) edtAddr.clearFocus();
+                        if(mFragmentListener!=null) mFragmentListener.hideSoftKeyboard();
                         return true;
                     }
 
@@ -725,38 +768,71 @@ public class SignUpIIFragment extends BaseFragment {
         dialog.show();
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (requestCode == REQUEST_CODE_SELECT && resultCode == Activity.RESULT_OK && data != null) {
-//            String type = data.getStringExtra("KEY_");
-//            String item;
-//            switch (type) {
-//                case "TAG_NATIONALITY":
-//                     item = data.getStringExtra( "TAG_NATIONALITY");
-//                    edtNationality.setText(item);
-//
-//                    break;
-//                case "TAG_BIRTH_COUNTRY":
-//                     item = data.getStringExtra( "TAG_BIRTH_COUNTRY");
-//                    edtBirthCountry.setText(item);
-//                    break;
-//
-//                case "TAG_BIRTH_CITY":
-//                    item = data.getStringExtra( "TAG_BIRTH_CITY");
-//                    edtBirthCity.setText(item);
-//                    break;
-//
-//                case "TAG_SPECIALITY":
-//                    item = data.getStringExtra( "TAG_SPECIALITY");
-//                    edtSpeciality.setText(item);
-//                    break;
-//
-//
-//            }
-//
-//
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_SELECT && resultCode == Activity.RESULT_OK && data != null) {
+            String type = data.getStringExtra("KEY_");
+            String item;Integer itemId;
+
+            switch (type) {
+                case "TAG_NATIONALITY":
+                     item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtNationality.setText(item);
+                    edtNationality.setTag(itemId);
+                    break;
+                case "TAG_LANGUAGE_ONE":
+                     item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+
+                    edtLanguageOne.setText(item);
+                    edtLanguageOne.setTag(itemId);
+                    break;
+
+                case "TAG_LANGUAGE_TWO":
+                    item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtLanguageTwo.setText(item);
+                    edtLanguageTwo.setTag(itemId);
+                    break;
+
+                case "TAG_SPECIALITY":
+                    item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtSpeciality.setText(item);
+                    edtSpeciality.setTag(itemId);
+                    break;
+
+                case "TAG_GENDER":
+                    item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtGender.setText(item);
+                    edtGender.setTag(itemId);
+                    break;
+
+
+                case "TAG_COUNTRY":
+                    item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtCountry.setText(item);
+                    edtCountry.setTag(itemId); // for fetching country id
+                    break;
+
+
+
+                case "TAG_STATE":
+                    item = data.getStringExtra( "KEY_NAME");
+                    itemId= data.getIntExtra("KEY_ID",0);
+                    edtState.setText(item);
+                    edtState.setTag(itemId);
+                    break;
+
+
+            }
+
+
+        }
+    }
 
     public void popChooseOptionFragment() {
         if (getChildFragmentManager().getBackStackEntryCount() > 0) {
@@ -770,6 +846,27 @@ public class SignUpIIFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+    @Override
+    public void onDestroy() {
+        mHandler.removeMessages(1);
+        super.onDestroy();
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == 1) {
+                UserInfoWrapper in = (UserInfoWrapper) msg.obj;
+                if (mFragmentListener != null) {
+                    mFragmentListener.showFragment("SignUpIIIFragment", in);
+                }
+            }
+
+
+        }
+    };
 }
 
 

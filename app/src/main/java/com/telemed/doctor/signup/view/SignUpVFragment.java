@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +28,9 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.filepicker.FilePickerActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-import com.telemed.doctor.signup.model.DocInfo;
+import com.telemed.doctor.network.ApiResponse;
+import com.telemed.doctor.signup.model.AllDocumentResponse;
+import com.telemed.doctor.signup.model.DocumentInfo;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.viewmodel.SignUpVViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -92,7 +95,7 @@ public class SignUpVFragment extends BaseFragment {
     };
     private DocumentAdapter.OnItemClickListener mItemClickListener = new DocumentAdapter.OnItemClickListener() {
         @Override
-        public void onItemTextClick(int pos, DocInfo info) {
+        public void onItemTextClick(int pos, DocumentInfo info) {
             if (!isRuntimePermissionGranted()) {
                 requestRuntimePermission();
                 return;
@@ -102,7 +105,7 @@ public class SignUpVFragment extends BaseFragment {
         }
 
         @Override
-        public void onItemActionClick(int pos, DocInfo info, String type) {
+        public void onItemActionClick(int pos, DocumentInfo info, String type) {
 
             if (type.equals("UPLOAD")) {
 
@@ -191,7 +194,7 @@ public class SignUpVFragment extends BaseFragment {
                                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                                 int pos = response.getData().getData().getViewIndex();
                                 mAdapter.updateSingle(pos, response.getData().getData().getId());
-                                mAdapter.addView(new DocInfo()); // addView 1 tile manually
+                                mAdapter.addView(new DocumentInfo()); // addView 1 tile manually
 
                             }
 
@@ -231,7 +234,7 @@ public class SignUpVFragment extends BaseFragment {
                     }
                 });
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultantSignUp().observe(this, response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -256,6 +259,35 @@ public class SignUpVFragment extends BaseFragment {
 
         });
 
+        mViewModel.getResultantAllDocument().observe(this, response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        AllDocumentResponse.Data data = response.getData().getData(); // adding Additional Info
+                        if(!data.getDocumentList().isEmpty()){
+                            mAdapter.addAll(data.getDocumentList());
+                            mAdapter.addView(new DocumentInfo()); // addView 1 tile manually
+                        }else {
+                            mAdapter.addView(new DocumentInfo()); // addView 1 tile manually
+                        }
+                    }
+                    break;
+
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                        mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
+                    }
+                    break;
+
+            }
+
+
+        });
+
+        mViewModel.fetchAllDocuments(mSignUpMap);
+
+
     }
 
     private void resetEnableView(Boolean isView) {
@@ -273,7 +305,7 @@ public class SignUpVFragment extends BaseFragment {
         rvDocument.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvDocument.setHasFixedSize(true);
         rvDocument.setAdapter(mAdapter);
-        mAdapter.addView(new DocInfo()); // addView 1 tile manually
+
         mAdapter.setOnItemClickListener(mItemClickListener);
     }
 
@@ -324,7 +356,7 @@ public class SignUpVFragment extends BaseFragment {
         Log.e(TAG, path);
 
         if (path != null) {
-            mAdapter.update(fileIndex, new DocInfo(fileIndex, path, "File Added", 1));
+            mAdapter.update(fileIndex, new DocumentInfo(fileIndex, path, 1));
         }
 
     }
@@ -414,4 +446,10 @@ public class SignUpVFragment extends BaseFragment {
 content://com.google.android.apps.docs.storage/document/acc%3D1%3Bdoc%3Dencoded%3DV1SSAZlixDW44x4WEOolAzFUXoGJBhg5Up0I8Uyn6gKP5n9C%2BWCyrQs%3D
 
 content://com.android.providers.downloads.documents/document/1961
+ */
+
+
+/*
+
+ {"status":true,"message":"Doctor Document List Succeeded","data":{"documentList":[{"id":71,"documentName":"12017020190121391160PM596Sampark0Chandigarh.pdf","userId":"14e9f5b3-c331-4b58-94d8-d99923377333"},{"id":73,"documentName":"12017020190121391460PM623CTET_AdmitCard.pdf","userId":"14e9f5b3-c331-4b58-94d8-d99923377333"}]}}
  */

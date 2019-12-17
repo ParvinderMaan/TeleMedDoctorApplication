@@ -94,6 +94,7 @@ public class SignInFragment extends BaseFragment {
                         infoObj.setEmail(mUserEmail);
                         tvAlertView.showTopAlert(response.getData().getMessage());
                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                        edtUsrEmail.setText("");edtUsrPassword.setText("");
                         if (mFragmentListener != null)
                             routeNavigationFragment(infoObj);
                     }

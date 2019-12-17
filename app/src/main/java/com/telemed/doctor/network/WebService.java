@@ -14,6 +14,7 @@ import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
 import com.telemed.doctor.profile.model.StateResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
+import com.telemed.doctor.signup.model.AllDocumentResponse;
 import com.telemed.doctor.signup.model.FileDeleteResponse;
 import com.telemed.doctor.signup.model.FileUploadResponse;
 import com.telemed.doctor.signup.model.SignUpIIIRequest;
@@ -101,6 +102,11 @@ public interface WebService {
     @POST(WebUrl.SIGN_OUT)
     Call<SignOutResponse> attemptSignOut(@HeaderMap Map<String, String> token);
 
+    @GET(WebUrl.FETCH_ALL_DOC)
+    Call<AllDocumentResponse> fetchAllDocument(@HeaderMap Map<String, String> token);
+
+
+
 
     @Multipart
     @POST(WebUrl.UPLOAD_FILE)
@@ -132,6 +138,10 @@ public interface WebService {
     @POST(WebUrl.ALTER_PROFILE_PIC)
     Call<AlterProfilePicResponse> alterProfilePic(@HeaderMap Map<String, String> token,
                                                   @Part MultipartBody.Part imgFile);  // fileData
+
+
+
+
 
 }
 
