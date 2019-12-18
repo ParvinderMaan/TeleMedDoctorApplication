@@ -25,6 +25,7 @@ import com.telemed.doctor.notification.NotificationFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.MyScheduleDemoFragment;
+import com.telemed.doctor.schedule.MyScheduleFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
@@ -151,14 +152,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
 
             case "MyScheduleFragment":
-//                getSupportFragmentManager().beginTransaction()
-//                        .addView(R.id.fl_container, MyScheduleFragment.newInstance())
-//                        .addToBackStack("MyScheduleFragment")
-//                        .commit();
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, MyScheduleDemoFragment.newInstance())
-                        .addToBackStack("MyScheduleDemoFragment")
+                        .add(R.id.fl_container, MyScheduleFragment.newInstance())
+                        .addToBackStack("MyScheduleFragment")
                         .commit();
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.fl_container, MyScheduleDemoFragment.newInstance())
+//                        .addToBackStack("MyScheduleDemoFragment")
+//                        .commit();
                 break;
 
             case "VideoCallTriggerFragment":

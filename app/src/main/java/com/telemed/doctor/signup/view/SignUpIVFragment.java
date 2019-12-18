@@ -2,12 +2,18 @@ package com.telemed.doctor.signup.view;
 
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -49,8 +55,8 @@ public class SignUpIVFragment extends BaseFragment {
     private RouterFragmentSelectedListener mFragmentListener;
     private Button btnContinue;
     private TextView tvCancel;
-    private AppCompatEditText edtRoutingNumber, edtAccountNumber, edtCity, edtPostCode;
-    private String mRoutingNumber,mAccountNumber,mCity,mPostCode;
+    private AppCompatEditText edtRoutingNumber, edtAccountNumber, edtCity, edtPostCode,edtAddr;
+    private String mRoutingNumber,mAccountNumber,mCity,mPostCode,mAddress;
     private SignUpIVViewModel mViewModel;
     private LinearLayout llRoot;
     private String mAccessToken;
@@ -96,44 +102,46 @@ public class SignUpIVFragment extends BaseFragment {
         initView(v);
         initListener(v);
 
-        mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+    mViewModel.getProgress()
+            .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewEnabled()
-                .observe(this, this::resetEnableView);
+    mViewModel.getViewEnabled()
+            .observe(this, this::resetEnableView);
 
-        mViewModel.getResultant().observe(this, response -> {
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        if (mFragmentListener != null){
+    mViewModel.getResultant().observe(this, response -> {
+        switch (response.getStatus()) {
+            case SUCCESS:
+                if (response.getData() != null) {
+                    if (mFragmentListener != null) {
 //                                SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
-                            tvAlertView.showTopAlert(response.getData().getMessage());
-                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            UserInfoWrapper in=new UserInfoWrapper();
-                            in.setAccessToken(mAccessToken);
+                        tvAlertView.showTopAlert(response.getData().getMessage());
+                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                        UserInfoWrapper in = new UserInfoWrapper();
+                        in.setAccessToken(mAccessToken);
 //                            mFragmentListener.showFragment("SignUpVFragment", in);
-                            Message msg = new Message();
-                            msg.obj = in;
-                            msg.what = 1;
-                            mHandler.sendMessageDelayed(msg,1500);
-                        }
-
+                        Message msg = new Message();
+                        msg.obj = in;
+                        msg.what = 1;
+                        mHandler.sendMessageDelayed(msg, 1500);
                     }
 
-                    break;
+                }
 
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
-                    }
-                    break;
+                break;
 
-            }
+            case FAILURE:
+                if (response.getErrorMsg() != null) {
+                    tvAlertView.showTopAlert(response.getErrorMsg());
+                }
+                break;
+
+        }
 
 
-        });
+    });
+
+
 
     }
 
@@ -163,7 +171,7 @@ public class SignUpIVFragment extends BaseFragment {
                         .setRoutingNumber(mRoutingNumber)
                         .setAccountNumber(Integer.parseInt(mAccountNumber))
                         .setCity(mCity)
-                        .setAddress("no_need_yet")  // replace it !!!
+                        .setAddress(mAddress)  // replace it !!!
                         .setPostCode(mPostCode)
                         .build();
 
@@ -212,6 +220,9 @@ public class SignUpIVFragment extends BaseFragment {
         edtAccountNumber= v.findViewById(R.id.edt_account_number);
         edtCity = v.findViewById(R.id.edt_city);
         edtPostCode = v.findViewById(R.id.edt_post_code);
+        edtAddr = v.findViewById(R.id.edt_addr);
+
+
 
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
@@ -228,6 +239,7 @@ public class SignUpIVFragment extends BaseFragment {
         mAccountNumber=edtAccountNumber.getText().toString();
         mCity=edtCity.getText().toString();
         mPostCode=edtPostCode.getText().toString();
+        mAddress=edtAddr.getText().toString();
 
 
 
@@ -251,7 +263,10 @@ public class SignUpIVFragment extends BaseFragment {
             return false;
         }
 
-
+        if (TextUtils.isEmpty(mAddress)) {
+            edtAddr.setError("Enter address ");
+            return false;
+        }
 
 
         if (TextUtils.isEmpty(mCity)) {
@@ -259,10 +274,10 @@ public class SignUpIVFragment extends BaseFragment {
             return false;
         }
 
-        if (mCity.contains(" ")) {
-            edtCity.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mCity.contains(" ")) {
+//            edtCity.setError("No Spaces Allowed");
+//            return false;
+//        }
 
 
         if (TextUtils.isEmpty(mPostCode)) {
@@ -301,5 +316,35 @@ public class SignUpIVFragment extends BaseFragment {
         mHandler.removeMessages(1);
         super.onDestroy();
     }
+
+    void createNotification(String message) {
+
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "tutorialspoint_01";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
+            // Configure the notification channel.
+            notificationChannel.setDescription("Sample Channel description:"+"  "+ message);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_notification)
+                .setTicker("TeleMedDoctor")
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentTitle("Verification notification")
+                .setContentText("Your error "+ message)
+                .setContentInfo("Information");
+
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
 
 }

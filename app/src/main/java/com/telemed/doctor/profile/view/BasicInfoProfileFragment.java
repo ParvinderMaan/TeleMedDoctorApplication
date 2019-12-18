@@ -105,6 +105,9 @@ public class BasicInfoProfileFragment extends Fragment {
         edtAddr.setText(info.getAddress1() != null ? info.getCity() : "");
         edtEmail.setText(info.getEmail()!=null?info.getEmail():"");
 
+        //----------
+        ((ProfileFragment)getParentFragment()).updateUi(info.getSpeciality());
+
     }
 
     private void initView(View v) {

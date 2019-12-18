@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlue"
     android:fillViewport="true"
+    android:overScrollMode="never"
     tools:context=".profile.view.BasicInfoProfileFragment">
     <!--parent -->
     <LinearLayout

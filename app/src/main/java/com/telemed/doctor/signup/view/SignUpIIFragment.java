@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.profile.model.Country;
@@ -606,18 +607,31 @@ public class SignUpIIFragment extends BaseFragment {
             return false;
         }
 
-        if (mDocName.contains(" ")) {
-            edtDocName.setError("No Spaces Allowed");
+//        if (mDocName.contains(" ")) {
+//            edtDocName.setError("No Spaces Allowed");
+//            return false;
+//        }
+
+        if (!Validator.isOnlyString(mDocName)) {
+            edtDocName.setError("Only Alphabets Allowed");
             return false;
         }
+
+
 
         if (TextUtils.isEmpty(mDocSurname)) {
             edtDocSurname.setError("Enter doctor surname");
             return false;
         }
 
-        if (mDocSurname.contains(" ")) {
-            edtDocSurname.setError("No Spaces Allowed");
+//        if (mDocSurname.contains(" ")) {
+//            edtDocSurname.setError("No Spaces Allowed");
+//            return false;
+//        }
+
+
+        if (!Validator.isOnlyString(mDocSurname)) {
+            edtDocSurname.setError("Only Alphabets Allowed");
             return false;
         }
 
@@ -683,10 +697,10 @@ public class SignUpIIFragment extends BaseFragment {
             return false;
         }
 
-        if (mAddr.contains(" ")) {
-            edtAddr.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mAddr.contains(" ")) {
+//            edtAddr.setError("No Spaces Allowed");
+//            return false;
+//        }
 
 
         return true;

@@ -45,10 +45,13 @@ dependencies {
     // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-4'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-4'
     // filepicker
     implementation 'com.vincent.filepicker:MultiTypeFilePicker:1.0.8'
-
+    // photo cropper
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8+'
+    //image loader
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'

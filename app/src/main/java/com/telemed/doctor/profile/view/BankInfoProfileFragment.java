@@ -23,7 +23,7 @@ import com.telemed.doctor.profile.viewmodel.ProfessionalInfoProfileViewModel;
 
 
 public class BankInfoProfileFragment extends Fragment {
-    private AppCompatEditText edtRoutingNumber, edtAccountNumber, edtCity, edtPostCode;
+    private AppCompatEditText edtRoutingNumber, edtAccountNumber, edtCity, edtPostCode,edtAddr;
     private String mRoutingNumber,mAccountNumber,mCity,mPostCode;
     private BankInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
@@ -81,6 +81,8 @@ public class BankInfoProfileFragment extends Fragment {
     private void initView(View v) {
         edtRoutingNumber= v.findViewById(R.id.edt_routing_number);
         edtAccountNumber= v.findViewById(R.id.edt_account_number);
+        edtAddr= v.findViewById(R.id.edt_addr);
+
         edtCity = v.findViewById(R.id.edt_city);
         edtPostCode = v.findViewById(R.id.edt_post_code);
 
@@ -95,5 +97,6 @@ public class BankInfoProfileFragment extends Fragment {
         edtPostCode.setText(info.getPostCode()!=null?info.getPostCode():"");
         String accNo = Integer.toString(info.getAccountNumber());
         edtAccountNumber.setText(accNo);
+        edtAddr.setText(info.getAddress()!=null?info.getAddress():"");
     }
 }

@@ -241,20 +241,20 @@ public class SignUpIIIFragment extends BaseFragment {
             return false;
         }
 
-        if (mMedicalDegree.contains(" ")) {
-            edtMedicalDegree.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mMedicalDegree.contains(" ")) {
+//            edtMedicalDegree.setError("No Spaces Allowed");
+//            return false;
+//        }
 
         if (TextUtils.isEmpty(mMdWhere)) {
             edtMdWhere.setError("Enter medical degree place");
             return false;
         }
 
-        if (mMdWhere.contains(" ")) {
-            edtMdWhere.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mMdWhere.contains(" ")) {
+//            edtMdWhere.setError("No Spaces Allowed");
+//            return false;
+//        }
 
 
         if (TextUtils.isEmpty(mDea)) {
@@ -262,10 +262,10 @@ public class SignUpIIIFragment extends BaseFragment {
             return false;
         }
 
-        if (mDea.contains(" ")) {
-            edtDea.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mDea.contains(" ")) {
+//            edtDea.setError("No Spaces Allowed");
+//            return false;
+//        }
 
 
         if (TextUtils.isEmpty(mNpiNo)) {
@@ -273,10 +273,10 @@ public class SignUpIIIFragment extends BaseFragment {
             return false;
         }
 
-        if (mNpiNo.contains(" ")) {
-            edtNpiNo.setError("No Spaces Allowed");
-            return false;
-        }
+//        if (mNpiNo.contains(" ")) {
+//            edtNpiNo.setError("No Spaces Allowed");
+//            return false;
+//        }
 
         if (!isReadAndAccept) {
 //            makeToast("Please read the terms and conditions");

@@ -21,4 +21,9 @@ public class Validator  {
         Matcher matcher = pattern.matcher(password);
         return !matcher.matches();
     }
+    // check OnlyStrings
+    public static boolean isOnlyString(String str) {
+        return ((str != null)) && (!str.equals("")
+                && (str.matches("^[a-zA-Z]*$")));
+    }
 }

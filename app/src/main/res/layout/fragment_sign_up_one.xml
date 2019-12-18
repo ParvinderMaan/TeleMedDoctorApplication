@@ -117,7 +117,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:padding="@dimen/_10sdp"
-                android:text="PARVI@1e#"
+                android:text=""
                 android:textColor="@color/colorBlue"
                 android:textColorHint="@color/colorLightBlue"
                 app:backgroundTint="@color/colorBlue" />
@@ -135,7 +135,7 @@
                 android:longClickable="false"
                 android:maxLines="1"
                 android:padding="@dimen/_10sdp"
-                android:text="PARVI@1e#"
+                android:text=""
                 android:textColor="@color/colorBlue"
                 android:textColorHint="@color/colorLightBlue"
                 app:backgroundTint="@color/colorBlue" />

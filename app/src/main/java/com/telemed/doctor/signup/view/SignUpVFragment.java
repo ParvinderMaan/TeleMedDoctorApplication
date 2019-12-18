@@ -276,7 +276,7 @@ public class SignUpVFragment extends BaseFragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-                        mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
+                      //  mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
                     }
                     break;
 

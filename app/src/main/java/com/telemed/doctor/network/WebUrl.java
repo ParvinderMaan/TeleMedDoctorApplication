@@ -6,6 +6,7 @@ package com.telemed.doctor.network;
 
 public interface WebUrl {
     // base urls
+    String IMAGE_URL="https://telemedwebapi.azurewebsites.net/";
     String BASE_URL ="https://telemedwebapi.azurewebsites.net/api/"; //
 
 
@@ -26,10 +27,6 @@ public interface WebUrl {
     String SIGN_OUT ="Auth/Logout";
 
 
-//    String THOUGHT_OF_DAY="GetInsThought";
-//    String FETCH_CHAT_ROOM="GetChatRoomList";
-
-
     String VERIFY_USER = "Auth/VerifyUser";
     String RESEND_OTP = "Auth/ResendCode";
     String FETCH_DRILLS="Content/GetDoctorDrillsPI";
@@ -45,6 +42,6 @@ public interface WebUrl {
     String BASIC_PROFILE_INFO = "Doctor/GetDoctorPersonalInfo";
     String PROFESSIONAL_PROFILE_INFO = "Doctor/GetDoctorProfessionalInfo";
     String BANK_PROFILE_INFO = "Doctor/GetDoctorBankInfo";
-    String ALTER_PROFILE_PIC = "";
+    String ALTER_PROFILE_PIC = "Auth/UpdateProfilePic";
 
 }

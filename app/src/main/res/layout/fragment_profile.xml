@@ -27,15 +27,29 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:id="@+id/rl_profile_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_profile_pic"
+                android:layout_gravity="center"
+                android:src="@color/colorRed"
+                app:civ_border_color="@color/colorWhite"
+                app:civ_border_width="@dimen/_2sdp"
+                android:layout_width="@dimen/_76sdp"
+                android:layout_height="@dimen/_76sdp"/>
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                style="?android:attr/progressBarStyleSmall" />
+        </RelativeLayout>
 
-       <de.hdodenhof.circleimageview.CircleImageView
-           android:id="@+id/civ_profile_pic"
-           android:layout_gravity="center"
-           app:civ_border_color="@color/colorWhite"
-           app:civ_border_width="@dimen/_2sdp"
-           android:src="@drawable/img_patient"
-           android:layout_width="@dimen/_76sdp"
-           android:layout_height="@dimen/_76sdp"/>
+
+
 
         <ImageButton
             android:id="@+id/ibtn_edit_profile_pic"
@@ -50,19 +64,20 @@
            android:gravity="center"
            android:layout_centerVertical="true"
            android:id="@+id/ll_asd"
-           android:layout_toRightOf="@+id/civ_profile_pic"
+           android:layout_toEndOf="@+id/rl_profile_pic"
            android:orientation="vertical"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <TextView
-               android:id="@+id/edt_doc_name"
+               android:id="@+id/tv_doc_name"
                android:text="Jordon G"
                android:ellipsize="end"
+               android:maxLength="10"
                android:textColor="@color/colorWhite"
                android:textStyle="bold"
                android:includeFontPadding="false"
                android:textSize="@dimen/_20sdp"
-               android:layout_toRightOf="@+id/civ_profile_pic"
+               android:layout_toEndOf="@+id/rl_profile_pic"
                android:paddingStart="@dimen/_10sdp"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"/>
@@ -70,15 +85,16 @@
 
 
            <TextView
-               android:id="@+id/tv_doc_addr"
+               android:id="@+id/tv_doc_speciality"
                android:includeFontPadding="false"
-               android:text="Miami"
+               android:text="Primary care"
                android:ellipsize="end"
+               android:maxLength="20"
                android:paddingStart="@dimen/_10sdp"
                android:textColor="@color/colorWhite"
-               android:layout_below="@+id/edt_doc_name"
+               android:layout_below="@+id/tv_doc_name"
                android:textSize="@dimen/_14sdp"
-               android:layout_toRightOf="@+id/civ_profile_pic"
+               android:layout_toEndOf="@+id/rl_profile_pic"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"/>
 
@@ -112,7 +128,6 @@
             android:textStyle="bold"
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -127,7 +142,6 @@
             android:textStyle="bold"
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -143,7 +157,6 @@
 
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -168,7 +181,6 @@
             android:textStyle="bold"
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -185,7 +197,6 @@
             android:textStyle="bold"
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -199,10 +210,8 @@
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
             android:background="@drawable/selector_profile"
-
             android:includeFontPadding="false"
             android:textSize="@dimen/_16sdp"
-            android:layout_toRightOf="@+id/civ_profile_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
