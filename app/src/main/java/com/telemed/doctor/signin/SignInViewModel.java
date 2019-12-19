@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
+import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
 
 import retrofit2.Call;
@@ -23,7 +25,7 @@ import static com.telemed.doctor.network.Status.SUCCESS;
 public class SignInViewModel extends AndroidViewModel {
     private final String TAG=SignInViewModel.class.getSimpleName();
     //@use Dagger instead
-    private final WebService mWebService;
+    private  WebService mWebService;
     private MutableLiveData<ApiResponse<SignInResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;

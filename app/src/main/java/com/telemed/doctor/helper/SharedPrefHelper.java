@@ -15,6 +15,7 @@ public class SharedPrefHelper {
     public final static String KEY_FIRST_NAME = "first_name";
     public final static String KEY_LAST_NAME = "last_name";
     public final static String KEY_PROFILE_PIC = "pro_pic";
+    public final static String KEY_SIGN_IN = "is_sign_in";
 
     private SharedPreferences mSharedPref;
 
@@ -40,15 +41,15 @@ public class SharedPrefHelper {
         prefsEditor.apply();
     }
 
-//    public  boolean read(String key, boolean defValue) {
-//        return mSharedPref.getBoolean(key, defValue);
-//    }
+    public  boolean read(String key, boolean defValue) {
+        return mSharedPref.getBoolean(key, defValue);
+    }
 //
-//    public  void write(String key, boolean value) {
-//        SharedPreferences.Editor prefsEditor = mSharedPref.edit();
-//        prefsEditor.putBoolean(key, value);
-//        prefsEditor.apply();
-//    }
+    public  void write(String key, boolean value) {
+        SharedPreferences.Editor prefsEditor = mSharedPref.edit();
+        prefsEditor.putBoolean(key, value);
+        prefsEditor.apply();
+    }
 //
 //    public  Integer read(String key, int defValue) {
 //        return mSharedPref.getInt(key, defValue);
@@ -60,8 +61,7 @@ public class SharedPrefHelper {
 //    }
 //
 //
-//    public  void clear(Context context) {
-//        mSharedPref = context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE);
-//        mSharedPref.edit().clear().apply();
-//    }
+    public  void clear() {
+        mSharedPref.edit().clear().apply();
+    }
 }

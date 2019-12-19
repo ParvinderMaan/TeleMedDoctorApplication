@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:hint=""
             android:includeFontPadding="false"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:padding="@dimen/_10sdp"
             android:text="@string/title_bank_info"
             android:textColor="@color/colorWhite"
@@ -61,12 +61,11 @@
                     android:layout_height="wrap_content"
                     android:hint=""
                     android:enabled="false"
-
                     android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:padding="@dimen/_10sdp"
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -90,17 +89,15 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edt_account_number"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint=""
                     android:enabled="false"
-
                     android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:padding="@dimen/_10sdp"
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -129,13 +126,14 @@
                 android:layout_height="wrap_content"
                 android:hint=""
                 android:text=""
+                android:enabled="false"
                 android:imeOptions="actionNext"
                 app:backgroundTint="@color/colorWhite"
                 android:includeFontPadding="false"
                 android:textColorHint="@color/colorLightBlue"
                 android:padding="@dimen/_10sdp"
                 android:textStyle="bold"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorLightWhite"
                 android:inputType="text" />
 
             <TextView
@@ -173,11 +171,12 @@
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:hint=""
+
                     android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:padding="@dimen/_10sdp"
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -206,10 +205,10 @@
                     android:enabled="false"
                     android:id="@+id/edt_post_code"
                     android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:padding="@dimen/_10sdp"
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -247,6 +246,7 @@
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
                 android:text="@string/title_edit"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_white"
                 android:textSize="@dimen/_14sdp"

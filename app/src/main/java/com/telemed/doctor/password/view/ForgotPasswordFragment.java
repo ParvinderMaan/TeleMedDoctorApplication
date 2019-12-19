@@ -56,7 +56,6 @@ public class ForgotPasswordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel.class);
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeTwo);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_forgot_password, container, false);
@@ -65,10 +64,12 @@ public class ForgotPasswordFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel.class);
+
         initView(v);
         initListener();
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -95,10 +96,10 @@ public class ForgotPasswordFragment extends BaseFragment {
 
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.getViewClickable()
-                .observe(this, isView -> rlRoot.setClickable(isView));
+                .observe(getViewLifecycleOwner(), isView -> rlRoot.setClickable(isView));
 
 
     }

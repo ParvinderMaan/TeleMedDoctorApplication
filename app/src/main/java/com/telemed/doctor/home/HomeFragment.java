@@ -169,6 +169,7 @@ public class HomeFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
+
                             mFragmentListener.startActivity("RouterActivity");
                         }
                     }

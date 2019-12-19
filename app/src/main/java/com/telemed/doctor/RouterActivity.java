@@ -1,5 +1,7 @@
 package com.telemed.doctor;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 
@@ -19,6 +21,8 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.dialog.AbortDialogFragment;
+import com.telemed.doctor.network.ServiceGenerator;
+import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.signin.SignInFragment;
@@ -45,6 +49,8 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_router);
+        Log.e(TAG,"onCreate");
+
         // case 0  -----> fresh launch
         // case 1  ----------> sign out
         int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
@@ -286,4 +292,24 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG,"onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG,"onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG,"onDestroy");
+    }
+
+
+  
 }

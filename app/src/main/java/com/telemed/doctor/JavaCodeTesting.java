@@ -18,13 +18,16 @@ public class JavaCodeTesting {
 
     public static void main(String[] args) {
 
-//        boolean a=Validator.isStringOnly("ABCDEF");
-//        boolean b=Validator.isStringOnly("ADD@!");
-//        boolean c=Validator.isStringOnly("ADD1");
-//        System.out.println(a);
-//        System.out.println(b);
-//        System.out.println(c);
+//        Animal animal= new Animal() {
+//            @Override
+//            void eat() {
+//
+//            }
+//        };
+
 
     }
+
+
 
 }

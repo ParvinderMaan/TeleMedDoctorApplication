@@ -1,6 +1,8 @@
 package com.telemed.doctor.profile.view;
 
 
+import android.graphics.BlendModeColorFilter;
+import android.graphics.ColorFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,17 +51,18 @@ public class BasicInfoProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(BasicInfoProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_basic_info_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(BasicInfoProfileViewModel.class);
+
         initView(v);
 
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -81,8 +84,7 @@ public class BasicInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
-
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.fetchBasicInfo();
 
@@ -105,8 +107,11 @@ public class BasicInfoProfileFragment extends Fragment {
         edtAddr.setText(info.getAddress1() != null ? info.getCity() : "");
         edtEmail.setText(info.getEmail()!=null?info.getEmail():"");
 
+
         //----------
-        ((ProfileFragment)getParentFragment()).updateUi(info.getSpeciality());
+        if (getParentFragment() != null) {
+            ((ProfileFragment)getParentFragment()).updateUi(info.getSpeciality());
+        }
 
     }
 

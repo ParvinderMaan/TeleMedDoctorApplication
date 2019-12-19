@@ -81,20 +81,18 @@ public class ProfileFragment extends Fragment {
         mProfessionalInfoFragment = ProfessionalInfoProfileFragment.newInstance();
         mBankInfoFragment = BankInfoProfileFragment.newInstance();
 
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+
         initView(v);
         initObserver();
         // @init
@@ -104,16 +102,16 @@ public class ProfileFragment extends Fragment {
 
     private void initObserver() {
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
         mViewModel.getViewEnabled()
-                .observe(this, isView -> {
+                .observe(getViewLifecycleOwner(), isView -> {
                     ibtnEditProfilePic.setEnabled(isView);
                 });
 
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
 
             switch (response.getStatus()) {
                 case SUCCESS:
@@ -122,7 +120,7 @@ public class ProfileFragment extends Fragment {
 //                        tvAlertView.showTopAlert(response.getData().getMessage());
 //                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                           if(infoObj.getProfilePicUrl()!=null && (!infoObj.getProfilePicUrl().isEmpty())){
-                              Picasso.get().load(WebUrl.IMAGE_URL+infoObj.getProfilePicUrl()).fit().centerCrop().into(civProfilePic);
+//                            Picasso.get().load(WebUrl.IMAGE_URL+infoObj.getProfilePicUrl()).fit().centerCrop().into(civProfilePic);
                               mHelper.write(SharedPrefHelper.KEY_PROFILE_PIC, infoObj.getProfilePicUrl());
                           }
                     }
@@ -168,7 +166,12 @@ public class ProfileFragment extends Fragment {
         tvDocSpeciality.setText("");
         if(mProfilePicUrl!=null && !mProfilePicUrl.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
-            Picasso.get().load(WebUrl.IMAGE_URL+mProfilePicUrl).fit().centerCrop().into(civProfilePic, new Callback() {
+            Picasso.get().load(WebUrl.IMAGE_URL+mProfilePicUrl)
+                    .placeholder(R.color.colorRed)
+                    .error(R.color.colorRed)
+                    .fit()
+                    .centerCrop()
+                    .into(civProfilePic, new Callback() {
                 @Override
                 public void onSuccess() {
                     progressBar.setVisibility(View.INVISIBLE);
@@ -179,6 +182,11 @@ public class ProfileFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });
+        }else {
+            Picasso.get().load(R.color.colorRed)
+                    .fit()
+                    .centerCrop()
+                    .into(civProfilePic);
         }
 
         civProfilePic.setOnClickListener(v1 -> {

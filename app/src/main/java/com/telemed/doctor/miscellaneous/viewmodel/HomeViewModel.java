@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
@@ -25,12 +26,15 @@ import static com.telemed.doctor.network.Status.SUCCESS;
 public class HomeViewModel extends AndroidViewModel {
     //@use Dagger instead
     private final WebService mWebService;
+    private final SharedPrefHelper mHelper;
     private MutableLiveData<ApiResponse<SignOutResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
     public HomeViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
+         mHelper = ((TeleMedApplication)application).getSharedPrefInstance();
+
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
@@ -47,6 +51,7 @@ public class HomeViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body()!=null) {
                     SignOutResponse result = response.body();
                     if(result.getStatus()){
+                        mHelper.clear(); // clearing sharedPref
                         resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));

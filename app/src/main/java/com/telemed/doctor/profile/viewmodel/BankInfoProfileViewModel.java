@@ -36,6 +36,7 @@ public class BankInfoProfileViewModel extends AndroidViewModel {
     public BankInfoProfileViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
+
         String accessToken = ((TeleMedApplication) application).getSharedPrefInstance()
                 .read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
         isLoading=new MutableLiveData<>();

@@ -70,7 +70,7 @@
            android:layout_height="wrap_content">
            <TextView
                android:id="@+id/tv_doc_name"
-               android:text="Jordon G"
+               android:text="************"
                android:ellipsize="end"
                android:maxLength="10"
                android:textColor="@color/colorWhite"
@@ -87,13 +87,13 @@
            <TextView
                android:id="@+id/tv_doc_speciality"
                android:includeFontPadding="false"
-               android:text="Primary care"
+               android:text="*******"
                android:ellipsize="end"
                android:maxLength="20"
                android:paddingStart="@dimen/_10sdp"
                android:textColor="@color/colorWhite"
                android:layout_below="@+id/tv_doc_name"
-               android:textSize="@dimen/_14sdp"
+               android:textSize="@dimen/_10sdp"
                android:layout_toEndOf="@+id/rl_profile_pic"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"/>

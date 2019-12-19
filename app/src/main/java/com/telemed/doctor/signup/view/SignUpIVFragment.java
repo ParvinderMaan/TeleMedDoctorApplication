@@ -92,24 +92,24 @@ public class SignUpIVFragment extends BaseFragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(SignUpIVViewModel.class);
         return inflater.inflate(R.layout.fragment_sign_up_iv, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(SignUpIVViewModel.class);
         initView(v);
         initListener(v);
 
     mViewModel.getProgress()
-            .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+            .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
     mViewModel.getViewEnabled()
-            .observe(this, this::resetEnableView);
+            .observe(getViewLifecycleOwner(), this::resetEnableView);
 
-    mViewModel.getResultant().observe(this, response -> {
+    mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
         switch (response.getStatus()) {
             case SUCCESS:
                 if (response.getData() != null) {

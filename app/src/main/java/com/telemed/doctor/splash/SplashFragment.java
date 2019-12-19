@@ -1,7 +1,9 @@
 package com.telemed.doctor.splash;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -12,15 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+
+import static com.telemed.doctor.helper.SharedPrefHelper.KEY_SIGN_IN;
 
 
 public class SplashFragment extends BaseFragment {
     private static final int SPLASH_TIME_OUT = 5000;
     private RouterFragmentSelectedListener mFragmentListener;
+    private SharedPrefHelper mSharedPrefHelper;
+    private boolean isUserSignIn;
 
-    public static SplashFragment  newInstance() {
+    public static SplashFragment newInstance() {
         return new SplashFragment();
     }
 
@@ -28,6 +36,14 @@ public class SplashFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (RouterFragmentSelectedListener) context;
+        mSharedPrefHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isUserSignIn = mSharedPrefHelper.read(KEY_SIGN_IN, false);
     }
 
     @Override
@@ -44,7 +60,6 @@ public class SplashFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mHandler.removeMessages(1);
         super.onDestroyView();
     }
 
@@ -53,12 +68,26 @@ public class SplashFragment extends BaseFragment {
         @Override
         public void handleMessage(@NonNull Message msg) {
 
-            if(mFragmentListener!=null)
-                mFragmentListener.showFragment("SignInFragment",null);
+
+            if (mFragmentListener != null) {
+
+                if (!isUserSignIn) {
+                    mFragmentListener.showFragment("SignInFragment", null);
+                } else {
+                    mFragmentListener.startActivity("HomeActivity", null);
+                }
+
+            }
 
 
         }
     };
 
 
+
+    @Override
+    public void onDestroy() {
+        mHandler.removeMessages(1);
+        super.onDestroy();
+    }
 }

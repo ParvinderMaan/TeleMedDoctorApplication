@@ -36,19 +36,19 @@ public class ProfessionalInfoProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(ProfessionalInfoProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_professional_info_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ProfessionalInfoProfileViewModel.class);
         initView(v);
 
         mViewModel.fetchProfessionalInfo();
 
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -70,7 +70,7 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
     }
 

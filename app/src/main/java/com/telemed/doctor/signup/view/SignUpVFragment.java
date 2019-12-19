@@ -165,27 +165,28 @@ public class SignUpVFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(SignUpVViewModel.class);
         return inflater.inflate(R.layout.fragment_sign_up_v, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(SignUpVViewModel.class);
+
         initView(v);
         initListener();
         initRecyclerView(v);
 
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
         mViewModel.getViewEnabled()
-                .observe(this, this::resetEnableView);
+                .observe(getViewLifecycleOwner(), this::resetEnableView);
 
         mViewModel.getResultantFileUpload()
-                .observe(this, response -> {
+                .observe(getViewLifecycleOwner(), response -> {
                     switch (response.getStatus()) {
                         case SUCCESS:
                             if (response.getData() != null) {
@@ -211,7 +212,7 @@ public class SignUpVFragment extends BaseFragment {
 
 
         mViewModel.getResultantFileDelete()
-                .observe(this, response -> {
+                .observe(getViewLifecycleOwner(), response -> {
                     switch (response.getStatus()) {
                         case SUCCESS:
                             if (response.getData() != null) {
@@ -234,7 +235,7 @@ public class SignUpVFragment extends BaseFragment {
                     }
                 });
 
-        mViewModel.getResultantSignUp().observe(this, response -> {
+        mViewModel.getResultantSignUp().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -259,7 +260,7 @@ public class SignUpVFragment extends BaseFragment {
 
         });
 
-        mViewModel.getResultantAllDocument().observe(this, response -> {
+        mViewModel.getResultantAllDocument().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {

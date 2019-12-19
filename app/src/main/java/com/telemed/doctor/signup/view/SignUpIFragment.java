@@ -61,7 +61,6 @@ public class SignUpIFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(SignUpIViewModel.class);
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_sign_up_one, container, false);
@@ -70,10 +69,12 @@ public class SignUpIFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(SignUpIViewModel.class);
+
         initView(v);
         initListener();
 
-        mViewModel.getResultant().observe(this, response -> {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
 
             switch (response.getStatus()) {
                 case SUCCESS:
@@ -110,10 +111,10 @@ public class SignUpIFragment extends BaseFragment {
         });
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.getViewEnabled()
-                .observe(this, isView -> {
+                .observe(getViewLifecycleOwner(), isView -> {
                     edtUsrEmail.setEnabled(isView);
                     edtUsrPassword.setEnabled(isView);
                     edtUsrConfirmPassword.setEnabled(isView);

@@ -87,7 +87,6 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(OneTimePasswordViewModel.class);
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeTwo);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_one_time_password, container, false);
@@ -96,6 +95,8 @@ public class OneTimePasswordFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(OneTimePasswordViewModel.class);
+
         initView(v);
         initListener();
 
@@ -104,7 +105,7 @@ public class OneTimePasswordFragment extends BaseFragment {
         Log.e(TAG,""+ mOtpServer);
 
 
-        mViewModel.getResultantVerifyUser().observe(this, response -> {
+        mViewModel.getResultantVerifyUser().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -129,7 +130,7 @@ public class OneTimePasswordFragment extends BaseFragment {
 
         });
 
-        mViewModel.getResultantResendOtp().observe(this, response -> {
+        mViewModel.getResultantResendOtp().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -152,10 +153,10 @@ public class OneTimePasswordFragment extends BaseFragment {
 
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.getViewEnabled()
-                .observe(this, isView -> {
+                .observe(getViewLifecycleOwner(), isView -> {
                     edtOtpOne.setEnabled(isView);
                     edtOtpTwo.setEnabled(isView);
                     edtOtpThree.setEnabled(isView);

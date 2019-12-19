@@ -38,7 +38,6 @@ public class BankInfoProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(BankInfoProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_bank_info_profile, container, false);
 
     }
@@ -46,10 +45,11 @@ public class BankInfoProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(BankInfoProfileViewModel.class);
         initView(v);
         mViewModel.fetchBankInfo();
 
-        mViewModel.getResultant().observe(this, new Observer<ApiResponse<BankInfoResponse>>() {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), new Observer<ApiResponse<BankInfoResponse>>() {
             @Override
             public void onChanged(ApiResponse<BankInfoResponse> response) {
                 switch (response.getStatus()) {
@@ -58,7 +58,6 @@ public class BankInfoProfileFragment extends Fragment {
                             BankInfoResponse.Data infoObj = response.getData().getData();
                             setView(infoObj);
                         }
-
                         break;
 
                     case FAILURE:
@@ -72,7 +71,7 @@ public class BankInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getProgress()
-                .observe(this, isLoading ->
+                .observe(getViewLifecycleOwner(), isLoading ->
                         progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 

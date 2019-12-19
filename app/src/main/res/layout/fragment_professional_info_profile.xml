@@ -63,12 +63,11 @@
                     android:layout_height="wrap_content"
                     android:hint=""
                     android:enabled="false"
-
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -100,9 +99,8 @@
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp"
                     android:enabled="false"
-
                     android:text=""
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"
                     app:backgroundTint="@color/colorWhite" />
@@ -132,12 +130,11 @@
                 android:layout_height="wrap_content"
                 android:hint=""
                 android:enabled="false"
-
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_10sdp"
                 android:text=""
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
                 app:backgroundTint="@color/colorWhite" />
@@ -173,7 +170,7 @@
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_10sdp"
                 android:text=""
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
                 app:backgroundTint="@color/colorWhite" />
@@ -208,8 +205,7 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
-
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
                 app:backgroundTint="@color/colorWhite" />
@@ -246,7 +242,7 @@
                 android:textColorHint="@color/colorLightBlue"
                 android:padding="@dimen/_10sdp"
                 android:textStyle="bold"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorLightWhite"
                 android:inputType="textEmailAddress" />
 
             <TextView
@@ -318,6 +314,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/rounded_background_ii"
                 android:gravity="center"
+                android:visibility="gone"
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
                 android:text="@string/title_edit"
