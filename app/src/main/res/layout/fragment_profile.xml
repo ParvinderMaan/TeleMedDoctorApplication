@@ -34,7 +34,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civ_profile_pic"
                 android:layout_gravity="center"
-                android:src="@color/colorRed"
+                android:src="@drawable/img_avatar"
                 app:civ_border_color="@color/colorWhite"
                 app:civ_border_width="@dimen/_2sdp"
                 android:layout_width="@dimen/_76sdp"

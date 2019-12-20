@@ -34,6 +34,7 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.network.WebUrl;
 import com.telemed.doctor.profile.model.AlterProfilePicResponse;
+import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.viewmodel.ProfileViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -167,8 +168,8 @@ public class ProfileFragment extends Fragment {
         if(mProfilePicUrl!=null && !mProfilePicUrl.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
             Picasso.get().load(WebUrl.IMAGE_URL+mProfilePicUrl)
-                    .placeholder(R.color.colorRed)
-                    .error(R.color.colorRed)
+                    .placeholder(R.drawable.img_avatar)
+                    .error(R.drawable.img_avatar)
                     .fit()
                     .centerCrop()
                     .into(civProfilePic, new Callback() {
@@ -182,8 +183,10 @@ public class ProfileFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });
-        }else {
-            Picasso.get().load(R.color.colorRed)
+        }else{
+            Picasso.get().load("abcdef")
+                    .placeholder(R.drawable.img_avatar)
+                    .error(R.drawable.img_avatar)
                     .fit()
                     .centerCrop()
                     .into(civProfilePic);
@@ -366,8 +369,7 @@ public class ProfileFragment extends Fragment {
         return MultipartBody.Part.createFormData(name, file.getName(), requestFile);
     }
 
-    public void updateUi(String speciality) {
-        tvDocSpeciality.setText(speciality);
-
+    public void updateUi(BasicInfoResponse.Data info) {
+        tvDocSpeciality.setText(info.getSpeciality()); // 1-->MALE 2 --> FEMALE 3-->OTHER
     }
 }

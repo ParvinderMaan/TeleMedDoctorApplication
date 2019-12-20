@@ -219,8 +219,8 @@ public class SignInFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mOnClickListener = null;
-        mEditorActionListener = null;
+//        mOnClickListener = null;
+//        mEditorActionListener = null;
         super.onDestroyView();
     }
 

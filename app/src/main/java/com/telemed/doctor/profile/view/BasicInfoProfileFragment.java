@@ -110,7 +110,7 @@ public class BasicInfoProfileFragment extends Fragment {
 
         //----------
         if (getParentFragment() != null) {
-            ((ProfileFragment)getParentFragment()).updateUi(info.getSpeciality());
+            ((ProfileFragment)getParentFragment()).updateUi(info);
         }
 
     }

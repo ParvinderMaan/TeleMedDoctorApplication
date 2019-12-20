@@ -37,6 +37,7 @@ public interface WebUrl {
     String DELETE_FILE = "Auth/DeleteDoctorDocument";
 
 
+    String RESET_PASSWORD = "Auth/ResetPassword";
 
     // profile
     String BASIC_PROFILE_INFO = "Doctor/GetDoctorPersonalInfo";

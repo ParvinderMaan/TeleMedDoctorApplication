@@ -12,9 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -25,6 +27,7 @@ import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.password.viewmodel.ForgotPasswordViewModel;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 
@@ -56,7 +59,7 @@ public class ForgotPasswordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeTwo);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_forgot_password, container, false);
     }
@@ -76,10 +79,10 @@ public class ForgotPasswordFragment extends BaseFragment {
                         if (mFragmentListener != null) {
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-//                            objInfo.setEmail(mEmail);
-//                            UserInfoWrapper in=new UserInfoWrapper();
-//                            in.setEmail(mEmail);in.setAccessToken(mAccessToken);
-//                            mFragmentListener.showFragment("SignUpIIFragment",in);
+                            UserInfoWrapper in=new UserInfoWrapper();
+                            in.setEmail(mUsrEmail);
+                            in.setOtpCode(response.getData().getData().getOtpCode());
+                            mFragmentListener.showFragment("ResetPasswordFragment",in);
                         }
                     }
                     break;
@@ -108,6 +111,7 @@ public class ForgotPasswordFragment extends BaseFragment {
         btnSend.setOnClickListener(v1 -> {
 
             if (isFormValid()) {
+                edtUsrEmail.clearFocus();
                 mViewModel.attemptForgotPassword(mUsrEmail);
             }
 
@@ -119,6 +123,17 @@ public class ForgotPasswordFragment extends BaseFragment {
                 mFragmentListener.popTopMostFragment();
         });
 
+        edtUsrEmail.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO){
+                if (isFormValid()) {
+                    mFragmentListener.hideSoftKeyboard();
+                    edtUsrEmail.clearFocus();
+                    mViewModel.attemptForgotPassword(mUsrEmail);
+
+                }
+            }
+            return false;
+        });
     }
 
     private void initView(View v) {

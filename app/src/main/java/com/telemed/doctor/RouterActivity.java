@@ -25,6 +25,7 @@ import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
+import com.telemed.doctor.password.view.ResetPasswordFragment;
 import com.telemed.doctor.signin.SignInFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.view.SignUpIFragment;
@@ -96,7 +97,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, SignUpIIFragment.newInstance((Object) payload), "SignUpIIFragment")
+                        .replace(R.id.fl_container, SignUpIIFragment.newInstance((Object) payload), "SignUpIIFragment")
                         .addToBackStack("SignUpIIFragment")
                         .commit();
                 break;
@@ -104,7 +105,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIIIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, SignUpIIIFragment.newInstance((Object) payload), "SignUpIIIFragment")
+                        .replace(R.id.fl_container, SignUpIIIFragment.newInstance((Object) payload), "SignUpIIIFragment")
                         .addToBackStack("SignUpIIIFragment")
                         .commit();
                 break;
@@ -113,7 +114,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIVFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, SignUpIVFragment.newInstance((Object) payload), "SignUpIVFragment")
+                        .replace(R.id.fl_container, SignUpIVFragment.newInstance((Object) payload), "SignUpIVFragment")
                         .addToBackStack("SignUpIVFragment")
                         .commit();
                 break;
@@ -121,7 +122,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpVFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, SignUpVFragment.newInstance((Object) payload), "SignUpVFragment")
+                        .replace(R.id.fl_container, SignUpVFragment.newInstance((Object) payload), "SignUpVFragment")
                         .addToBackStack("SignUpVFragment")
                         .commit();
                 break;
@@ -140,6 +141,14 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
                         .add(R.id.fl_container, OneTimePasswordFragment.newInstance((Object) payload), "OneTimePasswordFragment")
                         .addToBackStack("OneTimePasswordFragment")
+                        .commit();
+                break;
+
+            case "ResetPasswordFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, ResetPasswordFragment.newInstance((Object) payload), "ResetPasswordFragment")
+                        .addToBackStack("ResetPasswordFragment")
                         .commit();
                 break;
 
@@ -292,24 +301,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         return super.dispatchTouchEvent(ev);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e(TAG,"onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG,"onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e(TAG,"onDestroy");
-    }
 
 
-  
+
 }

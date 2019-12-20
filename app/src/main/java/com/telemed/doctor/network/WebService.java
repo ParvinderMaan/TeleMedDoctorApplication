@@ -3,6 +3,8 @@ package com.telemed.doctor.network;
 import com.google.gson.JsonObject;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
+import com.telemed.doctor.password.model.ResetPasswordRequest;
+import com.telemed.doctor.password.model.ResetPasswordResponse;
 import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.model.VerificationResponse;
 import com.telemed.doctor.password.model.ResendOtpResponse;
@@ -141,7 +143,9 @@ public interface WebService {
 
 
 
-
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.RESET_PASSWORD)
+    Call<ResetPasswordResponse> attemptResetPassword(@Body ResetPasswordRequest in);
 
 }
 
