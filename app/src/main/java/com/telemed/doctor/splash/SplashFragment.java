@@ -79,10 +79,8 @@ public class SplashFragment extends BaseFragment {
 
             }
 
-
         }
     };
-
 
 
     @Override

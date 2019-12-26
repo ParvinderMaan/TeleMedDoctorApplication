@@ -195,4 +195,5 @@ public class HomeFragment extends Fragment {
         tvSignOut.setEnabled(isView);
     }
 
+
 }

@@ -52,6 +52,14 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8+'
     //image loader
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //custom calendar
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    // full replacement for the ailing Date and Calendar APIs
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    // tokbox
+    implementation 'com.opentok.android:opentok-android-sdk:2.16.3'
+    // runtime permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'

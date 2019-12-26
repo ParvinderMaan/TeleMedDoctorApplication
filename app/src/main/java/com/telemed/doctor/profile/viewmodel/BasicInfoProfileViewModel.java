@@ -65,8 +65,6 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
                     }
                 }
 
-
-
             }
 
             @Override

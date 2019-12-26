@@ -50,7 +50,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_router);
-        Log.e(TAG,"onCreate");
+
 
         // case 0  -----> fresh launch
         // case 1  ----------> sign out

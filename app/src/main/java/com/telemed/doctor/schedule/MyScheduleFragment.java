@@ -1,6 +1,7 @@
 package com.telemed.doctor.schedule;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -22,29 +23,58 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
+import com.telemed.doctor.helper.Common;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.util.NonSwipeViewPager;
 
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.TextStyle;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 
 public class MyScheduleFragment extends Fragment {
 
-    private NonSwipeViewPager mViewPager;
-    private ImageButton ibtnBackward,ibtnForward;
-    private MyScheduleViewPagerAdapter mViewPagerAdapter;
-    private RecyclerView rvWeeklySchedule;
     private WeeklyScheduleAdapter mAdapter;
-    private static int currentVisibleItem=0;
     private Button btnSynchronizeSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
+    private ImageButton ibtnClose;
+    private MaterialCalendarView calViewSchedule;
+    private HashMap<String, Boolean> calDatesMap;
+    private List<Integer> listOfDays;
+
+
+
+
 
     public static MyScheduleFragment newInstance() {
-        return new MyScheduleFragment() ;
+        return new MyScheduleFragment();
     }
+
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        listOfDays = new ArrayList<>();
+        calDatesMap = new HashMap<>();
     }
 
     @Override
@@ -56,99 +86,138 @@ public class MyScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
+        initView(v);
+        initListener();
+        initCalendarView(v);
 
 
-        ibtnBackward = v.findViewById(R.id.ibtn_backward);
-        ibtnForward = v.findViewById(R.id.ibtn_forward);
-        ibtnBackward.setOnClickListener(v1 -> {
-//                int index = mViewPager.getCurrentItem();
-//                mViewPager.setCurrentItem(--index);
-            rvWeeklySchedule.smoothScrollToPosition(--currentVisibleItem);
+
+    }
+    private void initCalendarView(View v) {
+        calViewSchedule = v.findViewById(R.id.calendar_view_schedule);
+        calViewSchedule.addDecorator(new PrimeDayDisableDecorator());
+
+
+         LocalDate calendar = LocalDate.now();
+         calViewSchedule.setSelectedDate(calendar);
+
+         final LocalDate minDate = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
+         final LocalDate maxDate = minDate.plusMonths(3).minusDays(1);
+
+
+        CalendarDay mAbc = CalendarDay.from(maxDate);
+
+
+        // Add dates on calendars
+        Calendar minDateSelect = Calendar.getInstance();
+        minDateSelect.set(Calendar.DAY_OF_MONTH, 1);
+
+        Calendar maxDateSelect = Calendar.getInstance();
+        maxDateSelect.set(maxDate.getYear(), maxDate.getMonthValue(),maxDate.getDayOfMonth());
+
+        Calendar calendar1 = Calendar.getInstance();
+        String curr = calendar1.get(Calendar.DAY_OF_MONTH) + "/" + (calendar1.get(Calendar.MONTH) + 1) + "/" + calendar1.get(Calendar.YEAR);
+
+        // Add current date in hash map and disable current date
+        calDatesMap.put(curr,true);
+
+        // Add dates in hash map to disable unavailable dates
+        for (Calendar loopdate = minDateSelect; minDateSelect.before(maxDateSelect); minDateSelect.add(Calendar.DATE, 1), loopdate = minDateSelect) {
+            String date = loopdate.get(Calendar.DAY_OF_MONTH) + "/" + (loopdate.get(Calendar.MONTH) + 1) + "/" + loopdate.get(Calendar.YEAR);
+
+
+             if(loopdate.before(curr)){
+
+
+             }
+
+
+
+        }
+calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+    }
+});
+        // Commit calendar
+//        calViewSchedule.setWeekDayLabels(new CharSequence[]{"S","M","T","W","T","F","S"});
+        calViewSchedule.setWeekDayFormatter(new WeekDayFormatter() {
+            @Override
+            public CharSequence format(DayOfWeek dayOfWeek) {
+                return dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault());
+            }
         });
 
-        ibtnForward.setOnClickListener(v12 -> {
-//                int index = mViewPager.getCurrentItem();
-//                mViewPager.setCurrentItem(++index);
+        calViewSchedule.state().edit()
+                .setFirstDayOfWeek(DayOfWeek.SUNDAY)
+                .setMinimumDate(minDate)
+                .setShowWeekDays(true)
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .setMaximumDate(maxDate)
 
-            rvWeeklySchedule.smoothScrollToPosition(++currentVisibleItem);
-        });
+                .commit();
 
-        //
-        ImageButton ibtnClose = v.findViewById(R.id.ibtn_close);
-        ibtnClose.setOnClickListener(v13 -> {
-            if(mFragmentListener!=null){
+
+
+
+
+    }
+
+    private void initView(View v) {
+         ibtnClose = v.findViewById(R.id.ibtn_close);
+         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
+
+    }
+
+    private void initListener() {
+        ibtnClose.setOnClickListener(v -> {
+            if (mFragmentListener != null) {
                 mFragmentListener.popTopMostFragment();
             }
 
         });
-        initRecyclerView(v);
+        btnSynchronizeSchedule.setOnClickListener(v -> {
 
-
-        btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
-        btnSynchronizeSchedule.setOnClickListener(v14 -> {
-
-            if(mFragmentListener!=null){
+            if (mFragmentListener != null) {
                 mFragmentListener.showFragment("ScheduleSychronizeFragment");
             }
         });
+
     }
 
 
 
 
-    private void initRecyclerView(View v) {
-        rvWeeklySchedule =v.findViewById(R.id.rv_weekly_schedule);
-        rvWeeklySchedule.setHasFixedSize(true);
-        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
-//      mLinearLayoutManager.setScrolllEnabled(true); no call
-//      mLinearLayoutManager.getClass().getMethod("setScrollEnabled").invoke(mLinearLayoutManager);
+    //  Disable dates decorator
+    private class PrimeDayDisableDecorator implements DayViewDecorator {
 
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            final Calendar calendar = Calendar.getInstance();
+//            day.getDay();
+//            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+//            calendar.set(Calendar.MONTH, day.getMonth());
+            // calendar.set(day.getYear(), day.getMonth(), day.getDay());
+//            String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
+            String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
 
-        mLinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rvWeeklySchedule.setLayoutManager(mLinearLayoutManager);
-
-         mAdapter=new WeeklyScheduleAdapter();
-        rvWeeklySchedule.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(position -> {
-//                Toast.makeText(getActivity(), "hii", Toast.LENGTH_SHORT).show();
-//            if(getActivity() !=null){
-//                ((HomeActivity)getActivity()).showMedicalRecordFragment();
-//
-//            }
-        });
-
-         PagerSnapHelper snapHelper = new PagerSnapHelper();
-         snapHelper.attachToRecyclerView(rvWeeklySchedule);
-
-
-
-        //... initialization
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
+            if (calDatesMap.get(date) != null)
+                if (calDatesMap.get(date)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            else
                 return false;
-            }
+        }
 
-            @Override
-            public float getSwipeThreshold(RecyclerView.ViewHolder viewHolder) {
-                return super.getSwipeThreshold(viewHolder);
-            }
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setDaysDisabled(true);
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_ii));
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Toast.makeText(getActivity(), ""+swipeDir, Toast.LENGTH_SHORT).show();
+        }
 
-            }
-
-
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(rvWeeklySchedule);
     }
-
 
 }

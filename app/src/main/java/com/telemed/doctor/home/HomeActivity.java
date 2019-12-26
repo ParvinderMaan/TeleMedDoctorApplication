@@ -1,13 +1,13 @@
 package com.telemed.doctor.home;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleObserver;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
@@ -15,17 +15,16 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.base.BaseActivity;
+import com.telemed.doctor.broadcastreceiver.InternetBroadcastReceiver;
 import com.telemed.doctor.chat.ChatFragment;
 import com.telemed.doctor.consult.MyConsultFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.dialog.SignOutDialogFragment;
-import com.telemed.doctor.miscellaneous.viewmodel.HomeViewModel;
 import com.telemed.doctor.notification.NotificationFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
-import com.telemed.doctor.schedule.MyScheduleDemoFragment;
 import com.telemed.doctor.schedule.MyScheduleFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
@@ -34,21 +33,19 @@ import com.telemed.doctor.password.view.ChangePasswordFragment;
 import com.telemed.doctor.schedule.ScheduleSychronizeFragment;
 import com.telemed.doctor.setting.SettingFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
+import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.videocall.AppointmentSummaryFragment;
 import com.telemed.doctor.videocall.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
-import java.util.HashMap;
 
-
-public class HomeActivity extends BaseActivity implements HomeFragmentSelectedListener {
+public class HomeActivity extends BaseActivity implements HomeFragmentSelectedListener  {
 
     // to support vector icon for lower versions
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
-    private HomeViewModel mViewModel;
+    private CustomAlertTextView tvAlertView;
     private String mAccessToken;
 
     @Override
@@ -56,11 +53,9 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_home);
+        tvAlertView = findViewById(R.id.tv_alert_view);
 
-
-     //   mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-
-          if(getIntent()!=null) { // fresh --->
+        if(getIntent()!=null) { // fresh --->
               UserInfoWrapper infoWrap = getIntent().getParcelableExtra("KEY_");
               if (infoWrap != null) {
                   mAccessToken = infoWrap.getAccessToken();
@@ -83,17 +78,16 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
           }
 
 
+          registerReceiver(mBroadcastReceiver, intentFilter);
+
           showFragment("HomeFragment");
 
-//        mViewModel.getSignOutResultant().observe(this,response->{
-//            switch (response.getStatus()) {
-//                case SUCCESS:
-//                    startActivity("RouterActivity");
-//                    break;
-//            }
-//        });
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mBroadcastReceiver);
+        super.onDestroy();
     }
 
     // Note : take care of Toolbar presence
@@ -313,16 +307,38 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
     @Override
     public void signOut() {
-//        HashMap<String, String> headerMap = new HashMap<>();
-//        headerMap.put("content-type", "application/json");     //  additional
-//        headerMap.put("Authorization","Bearer "+mAccessToken);
-//        mViewModel.signOut(headerMap);
-//        Toast.makeText(this, mAccessToken, Toast.LENGTH_SHORT).show();
+
         HomeFragment fragment= (HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment");
         if(fragment!=null && fragment.isVisible()){
             fragment.attemptSignOut(mAccessToken);
         }
     }
 
+ // broadcaster reciever to detect internet throughout the activity
+    private final IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+    private InternetBroadcastReceiver mBroadcastReceiver=new InternetBroadcastReceiver(){
+        @Override
+        public void onConnectionChanged() {
+            if(isNetAvail()){
+             tvAlertView.showTopAlert("Internet Available");
+             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+         }else {
+             tvAlertView.showTopAlert("No Internet");
+             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorRed));
+         }
 
+        }
+    };
 }
+/*
+
+   public void onNetworkChange(boolean isNet) {
+        if(isNet){
+            tvAlertView.showTopAlert("Internet Available");
+            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+        }else {
+            tvAlertView.showTopAlert("No Internet");
+            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorRed));
+        }
+    }
+ */

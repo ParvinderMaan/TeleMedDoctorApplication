@@ -25,16 +25,11 @@ import com.telemed.doctor.util.NonSwipeViewPager;
 
 
 public class ScheduleSychronizeFragment extends Fragment {
-
-
-    private NonSwipeViewPager mViewPager;
-    private ImageButton ibtnBackward,ibtnForward;
-    private MyScheduleViewPagerAdapter mViewPagerAdapter;
-    private RecyclerView rvWeeklySchedule;
     private WeeklyScheduleAdapter mAdapter;
-    private static int currentVisibleItem=0;
     private Button btnSynchronizeSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
+    private ImageButton ibtnClose;
+
 
     public static ScheduleSychronizeFragment newInstance() {
         return new ScheduleSychronizeFragment() ;
@@ -53,65 +48,30 @@ public class ScheduleSychronizeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        initView(v);
+        initListener();
+
+    }
+
+    private void initView(View v) {
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
+        //@ hide for this screen
         btnSynchronizeSchedule.setVisibility(View.GONE);
+        ibtnClose = v.findViewById(R.id.ibtn_close);
 
-        ibtnBackward = v.findViewById(R.id.ibtn_backward);
-        ibtnForward = v.findViewById(R.id.ibtn_forward);
 
-        ibtnBackward.setOnClickListener(v1 -> {
-//                int index = mViewPager.getCurrentItem();
-//                mViewPager.setCurrentItem(--index);
-            rvWeeklySchedule.smoothScrollToPosition(--currentVisibleItem);
-        });
+    }
 
-        ibtnForward.setOnClickListener(v12 -> {
-//                int index = mViewPager.getCurrentItem();
-//                mViewPager.setCurrentItem(++index);
-
-            rvWeeklySchedule.smoothScrollToPosition(++currentVisibleItem);
-        });
-
-        //
-        ImageButton ibtnClose = v.findViewById(R.id.ibtn_close);
+    private void initListener() {
         ibtnClose.setOnClickListener(v13 -> {
             if(mFragmentListener!=null){
                 mFragmentListener.popTopMostFragment();
             }
 
         });
-        initRecyclerView(v);
-
-        // hide for this screen
-
-    }
-
-
-
-
-    private void initRecyclerView(View v) {
-        rvWeeklySchedule =v.findViewById(R.id.rv_weekly_schedule);
-        rvWeeklySchedule.setHasFixedSize(true);
-        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
-//      mLinearLayoutManager.setScrolllEnabled(true); no call
-//      mLinearLayoutManager.getClass().getMethod("setScrollEnabled").invoke(mLinearLayoutManager);
-
-
-        mLinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rvWeeklySchedule.setLayoutManager(mLinearLayoutManager);
-
-        mAdapter=new WeeklyScheduleAdapter();
-        rvWeeklySchedule.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(position -> {
-            if(mFragmentListener !=null){
-                mFragmentListener.showFragment("AppointmentConfirmIFragment");
-
-            }
-        });
-
-        PagerSnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(rvWeeklySchedule);
 
 
     }
+
+
 }
