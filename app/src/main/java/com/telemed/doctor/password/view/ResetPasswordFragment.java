@@ -342,10 +342,12 @@ public class ResetPasswordFragment extends Fragment {
     };
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         mHandler.removeMessages(1);
         mHandler.removeMessages(2);
-        super.onDestroy();
-
+        edtOtp.setOnEditorActionListener(null);
+        edtPassword.setOnEditorActionListener(null);
+        edtConfirmPassword.setOnEditorActionListener(null);
+        super.onDestroyView();
     }
 }

@@ -99,11 +99,16 @@ public class OneTimePasswordFragment extends BaseFragment {
 
         initView(v);
         initListener();
+        initObserver();
 
         tvUserEmail.setText(mEmail!=null?mEmail:"");
         if(mOtpServer!=null) mHandler.sendEmptyMessageDelayed(1, 2000);  // fake call
         Log.e(TAG,""+ mOtpServer);
 
+
+    }
+
+    private void initObserver() {
 
         mViewModel.getResultantVerifyUser().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
@@ -165,6 +170,7 @@ public class OneTimePasswordFragment extends BaseFragment {
                     tvUserEmail.setEnabled(isView);
                     tvResendCode.setEnabled(isView);
                 });
+
     }
 
     private void initView(View v) {
@@ -238,16 +244,13 @@ public class OneTimePasswordFragment extends BaseFragment {
 
     private void attemptVerfication() {
 
-//        if(!isNetAvail()){
-//            tvAlertView.showTopAlert("No Internet");
-//            return ;
-//        }
 
         if(isFormValid()){
             VerficationRequest in=new VerficationRequest.Builder()
                     .setEmail(mEmail)
                     .setOtp(mOtpClient)
                     .build();
+
             edtOtpOne.clearFocus();  edtOtpTwo.clearFocus();  edtOtpThree.clearFocus();   edtOtpFour.clearFocus();
             mViewModel.attemptVerifyUser(in);
         }
@@ -263,7 +266,6 @@ public class OneTimePasswordFragment extends BaseFragment {
 
 
         if(TextUtils.isEmpty(a) && TextUtils.isEmpty(b) && TextUtils.isEmpty(c) && TextUtils.isEmpty(d) ){
-            //Toast.makeText(getActivity(), "Enter the OTP", Toast.LENGTH_SHORT).show();
             tvAlertView.showTopAlert("Enter the OTP");
             return false;
         }
@@ -273,23 +275,6 @@ public class OneTimePasswordFragment extends BaseFragment {
 
 
 
-//        if(!(DUMMY_OTP==Integer.parseInt(result))){
-//
-//            Toast.makeText(getActivity(), "OTP mismatch", Toast.LENGTH_SHORT).show();
-//            return;
-//
-////            edtOtpOne.setText("");
-////            edtOtpTwo.setText("");
-////            edtOtpThree.setText("");
-////            edtOtpFour.setText("");
-//        }
-//
-//        Intent in=new Intent(getActivity(), HomeActivity.class);
-//        startActivity(in);
-//        if(getActivity()!=null){
-//            getActivity().finish();
-//        }
-//
 
     }
 
@@ -312,6 +297,7 @@ public class OneTimePasswordFragment extends BaseFragment {
 
                case R.id.tv_resend_code:
                    clearFocus();
+                   edtOtpOne.setText("");edtOtpTwo.setText("");edtOtpThree.setText("");edtOtpFour.setText("");
                    mViewModel.attemptResendOtp(mEmail);
                    break;
 
@@ -343,7 +329,6 @@ public class OneTimePasswordFragment extends BaseFragment {
         edtOtpThree.addTextChangedListener(null);
         edtOtpFour.addTextChangedListener(null);
         edtOtpFour.setOnEditorActionListener(null);
-        mClickListener=null;
         mHandler.removeMessages(1);
 
     }
@@ -356,7 +341,7 @@ public class OneTimePasswordFragment extends BaseFragment {
         }
     };
 
-     void createNotification() {
+     private void createNotification() {
 
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "tutorialspoint_01";

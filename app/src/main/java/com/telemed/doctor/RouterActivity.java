@@ -75,8 +75,8 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
-                         .commit(); //commitAllowingStateLoss
-//                      .addToBackStack("SplashFragment")
+                         .commit(); // commitAllowingStateLoss
+//                       .addToBackStack("SplashFragment")
 
                 break;
             case "SignInFragment":
@@ -97,7 +97,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .replace(R.id.fl_container, SignUpIIFragment.newInstance((Object) payload), "SignUpIIFragment")
+                        .add(R.id.fl_container, SignUpIIFragment.newInstance((Object) payload), "SignUpIIFragment")
                         .addToBackStack("SignUpIIFragment")
                         .commit();
                 break;
@@ -105,7 +105,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIIIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .replace(R.id.fl_container, SignUpIIIFragment.newInstance((Object) payload), "SignUpIIIFragment")
+                        .add(R.id.fl_container, SignUpIIIFragment.newInstance((Object) payload), "SignUpIIIFragment")
                         .addToBackStack("SignUpIIIFragment")
                         .commit();
                 break;
@@ -114,7 +114,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpIVFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .replace(R.id.fl_container, SignUpIVFragment.newInstance((Object) payload), "SignUpIVFragment")
+                        .add(R.id.fl_container, SignUpIVFragment.newInstance((Object) payload), "SignUpIVFragment")
                         .addToBackStack("SignUpIVFragment")
                         .commit();
                 break;
@@ -122,7 +122,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SignUpVFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .replace(R.id.fl_container, SignUpVFragment.newInstance((Object) payload), "SignUpVFragment")
+                        .add(R.id.fl_container, SignUpVFragment.newInstance((Object) payload), "SignUpVFragment")
                         .addToBackStack("SignUpVFragment")
                         .commit();
                 break;

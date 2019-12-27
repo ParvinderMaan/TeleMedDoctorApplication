@@ -58,10 +58,7 @@ public class SplashFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
+
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -84,8 +81,10 @@ public class SplashFragment extends BaseFragment {
 
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         mHandler.removeMessages(1);
-        super.onDestroy();
+        super.onDestroyView();
     }
+
+
 }

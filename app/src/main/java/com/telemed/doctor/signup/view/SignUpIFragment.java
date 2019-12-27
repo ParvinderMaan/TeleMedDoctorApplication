@@ -73,6 +73,13 @@ public class SignUpIFragment extends BaseFragment {
 
         initView(v);
         initListener();
+        initObserver();
+
+
+
+    }
+
+    private void initObserver() {
 
         mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
 
@@ -86,7 +93,7 @@ public class SignUpIFragment extends BaseFragment {
                             in.setAccessToken(data.getAccessToken());
                             in.setEmail(mUsrEmail);
                             in.setOtpCode(data.getOtpCode());
-                        //  mFragmentListener.showFragment("OneTimePasswordFragment", in);
+                            //  mFragmentListener.showFragment("OneTimePasswordFragment", in);
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                             Message msg = new Message();
@@ -246,10 +253,11 @@ public class SignUpIFragment extends BaseFragment {
                     .setPassword(mUsrPassword)
                     .setConfirmPassword(mUsrConfirmPassword)
                     .build();
-
+            mViewModel.setSignUpIInfo(in);
             Log.e(TAG, in.toString());
             clearFocus();
-            mViewModel.attemptSignUp(in);
+
+            mViewModel.attemptSignUp();
         }
     }
 
@@ -303,8 +311,7 @@ public class SignUpIFragment extends BaseFragment {
         edtUsrEmail.setOnEditorActionListener(null);
         edtUsrPassword.setOnEditorActionListener(null);
         edtUsrConfirmPassword.setOnEditorActionListener(null);
-        mClickListener = null;
-        mEditorActionListener = null;
+        mHandler.removeMessages(1);
     }
 
 
@@ -331,11 +338,11 @@ public class SignUpIFragment extends BaseFragment {
         }
     };
 
-    @Override
-    public void onDestroy() {
-        mHandler.removeMessages(1);
-        super.onDestroy();
-    }
+//      @Override
+//    public void onDestroy() {
+//        mHandler.removeMessages(1);
+//        super.onDestroy();
+//    }
 
     /*
     failure  ---->

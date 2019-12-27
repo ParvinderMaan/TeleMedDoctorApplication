@@ -32,21 +32,27 @@ public class SignInViewModel extends AndroidViewModel {
 
 
 
+    private MutableLiveData<SignInRequest> mSignInRequest;
+
+
+
+
     public SignInViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        mSignInRequest =new MutableLiveData<>();
     }
 
 
 
-    void attemptSignIn(SignInRequest in) {
+    void attemptSignIn() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        Log.e(TAG,in.toString());
-        mWebService.attemptSignIn(in).enqueue(new Callback<SignInResponse>() {
+//        Log.e(TAG,in.toString());
+        mWebService.attemptSignIn(mSignInRequest.getValue()).enqueue(new Callback<SignInResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
                 isLoading.setValue(false);
@@ -86,9 +92,7 @@ public class SignInViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    void cancelRequest(){
 
-    }
 
     MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
@@ -97,7 +101,9 @@ public class SignInViewModel extends AndroidViewModel {
 
 
 
-
+    public void setSignInInfo(SignInRequest signInRequest) {
+        this.mSignInRequest.setValue(signInRequest);
+    }
 
 
 }

@@ -39,24 +39,25 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 
 
-
-
 public class VideoCallFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
     private final String LOG_TAG = VideoCallFragment.class.getSimpleName();
+//--------------------------------------------------------------------------------------------------
     private static String API_KEY = "46482822";
     private static String SESSION_ID = "2_MX40NjQ4MjgyMn5-MTU3NzI3OTgwNDc3MX5kclhUYmIzUXhPTUpycnNTNkhaSjZaT0R-fg";   // generate manually for now..
     private static String TOKEN = "T1==cGFydG5lcl9pZD00NjQ4MjgyMiZzaWc9Mzc1NjEyNjlhYTJmOTMzZTE4MGZiMWE2NTUyNzI4Yzk5MWYwNjUxZTpzZXNzaW9uX2lkPTJfTVg0ME5qUTRNamd5TW41LU1UVTNOekkzT1Rnd05EYzNNWDVrY2xoVVltSXpVWGhQVFVweWNuTlROa2hhU2paYVQwUi1mZyZjcmVhdGVfdGltZT0xNTc3Mjc5ODUwJm5vbmNlPTAuOTg3MzAwMDcxMjk2MTcwMSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTc3ODg0NjUwJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9";         // generate manually for now..
     private static final int RC_SETTINGS_SCREEN_PERM = 123;
     private static final int RC_VIDEO_APP_PERM = 124;
+//--------------------------------------------------------------------------------------------------
     private ImageButton ibtnGallery, ibtnDocument, ibtnCallEnd, ibtnMuteControl;
     private CustomAlertTextView tvAlertView;
     private HomeFragmentSelectedListener mFragmentListener;
+//--------------------------------------------------------------------------------------------------
     private Session mSession;
     private FrameLayout mPublisherViewContainer;
     private FrameLayout mSubscriberViewContainer;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
-
+//--------------------------------------------------------------------------------------------------
     public static VideoCallFragment newInstance() {
         return new VideoCallFragment();
     }
@@ -107,15 +108,16 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
     }
 
     private void initView(View v) {
-
+//--------------------------------------------------------------------------------------------------
         mPublisherViewContainer = v.findViewById(R.id.publisher_container);
         mSubscriberViewContainer = v.findViewById(R.id.subscriber_container);
-
+//--------------------------------------------------------------------------------------------------
         ibtnGallery=v.findViewById(R.id.ibtn_gallery);
         ibtnDocument=v.findViewById(R.id.ibtn_document);
         ibtnCallEnd=v.findViewById(R.id.ibtn_call_end);
         ibtnMuteControl=v.findViewById(R.id.ibtn_mute_control);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
+//--------------------------------------------------------------------------------------------------
 
 
     }
@@ -136,7 +138,6 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
         super.onDestroyView();
 
     }
-
 
 
 
@@ -185,7 +186,7 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
     }
 
 
-
+//--------------------------------------------------------------------------------------------------
     private View.OnClickListener mOnClickListener =new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -214,6 +215,7 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
             }
         }
     };
+//--------------------------------------------------------------------------------------------------
     private Session.SessionListener mSessionListener=new Session.SessionListener() {
         @Override
         public void onConnected(Session session) {
@@ -221,7 +223,6 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
 
             mPublisher = new Publisher.Builder(getActivity()).build();
             mPublisher.setPublisherListener(mPublisherListener);
-
             mPublisherViewContainer.addView(mPublisher.getView());
 
             if (mPublisher.getView() instanceof GLSurfaceView){
@@ -245,6 +246,10 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
                 mSubscriber = new Subscriber.Builder(getActivity(), stream).build();
                 mSession.subscribe(mSubscriber);
                 mSubscriberViewContainer.addView(mSubscriber.getView());
+
+
+
+
             }
         }
 
@@ -264,6 +269,7 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
 
         }
     };
+//--------------------------------------------------------------------------------------------------
     private PublisherKit.PublisherListener mPublisherListener=new PublisherKit.PublisherListener() {
         @Override
         public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
@@ -280,7 +286,7 @@ public class VideoCallFragment extends Fragment implements EasyPermissions.Permi
             Log.e(LOG_TAG, "Publisher error: " + opentokError.getMessage());
         }
     };
-
+//--------------------------------------------------------------------------------------------------
 
 
 

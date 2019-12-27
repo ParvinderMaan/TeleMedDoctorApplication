@@ -100,47 +100,51 @@ public class SignUpIVFragment extends BaseFragment {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SignUpIVViewModel.class);
         initView(v);
-        initListener(v);
-
-    mViewModel.getProgress()
-            .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+        initListener();
+        initObserver();
 
 
-    mViewModel.getViewEnabled()
-            .observe(getViewLifecycleOwner(), this::resetEnableView);
+    }
 
-    mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
-        switch (response.getStatus()) {
-            case SUCCESS:
-                if (response.getData() != null) {
-                    if (mFragmentListener != null) {
-//                                SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
-                        tvAlertView.showTopAlert(response.getData().getMessage());
-                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                        UserInfoWrapper in = new UserInfoWrapper();
-                        in.setAccessToken(mAccessToken);
+    private void initObserver() {
+        mViewModel.getProgress()
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+
+
+        mViewModel.getViewEnabled()
+                .observe(getViewLifecycleOwner(), this::resetEnableView);
+
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        if (mFragmentListener != null) {
+//                      SignUpIVResponse.Data data = response.getData().getData(); // adding Additional Info
+                            tvAlertView.showTopAlert(response.getData().getMessage());
+                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            UserInfoWrapper in = new UserInfoWrapper();
+                            in.setAccessToken(mAccessToken);
 //                            mFragmentListener.showFragment("SignUpVFragment", in);
-                        Message msg = new Message();
-                        msg.obj = in;
-                        msg.what = 1;
-                        mHandler.sendMessageDelayed(msg, 1500);
+                            Message msg = new Message();
+                            msg.obj = in;
+                            msg.what = 1;
+                            mHandler.sendMessageDelayed(msg, 1500);
+                        }
+
                     }
 
-                }
+                    break;
 
-                break;
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
 
-            case FAILURE:
-                if (response.getErrorMsg() != null) {
-                    tvAlertView.showTopAlert(response.getErrorMsg());
-                }
-                break;
-
-        }
+            }
 
 
-    });
-
+        });
 
 
     }
@@ -155,48 +159,37 @@ public class SignUpIVFragment extends BaseFragment {
 
     }
 
-    private void initListener(View v) {
+    private void initListener() {
 
         btnContinue.setOnClickListener(v1 -> {
 
-
-//                if(!isNetAvail()){
-//                    tvAlertView.showTopAlert("No Internet");
-//                    return;
-//                }
-
             if(isFormValid()){
-
                 SignUpIVRequest in=new SignUpIVRequest.Builder()
                         .setRoutingNumber(mRoutingNumber)
                         .setAccountNumber(Integer.parseInt(mAccountNumber))
                         .setCity(mCity)
-                        .setAddress(mAddress)  // replace it !!!
+                        .setAddress(mAddress)
                         .setPostCode(mPostCode)
                         .build();
 
+                Log.e(TAG,in.toString());
                 Map<String, String> map = new HashMap<>();
                 map.put("content-type", "application/json");
                 map.put("Authorization","Bearer "+mAccessToken);
-
-                mViewModel.attemptSignUp(in,map);
+                mViewModel.setHeaderMap(map);
+                mViewModel.setSignUpIVInfo(in);
+                mViewModel.attemptSignUp();
 
             }
-
-//                if (mFragmentListener != null)
-//                    mFragmentListener.showFragment("SignUpVFragment", null);
 
         });
 
 
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tvCancel.setOnClickListener(v -> {
 
-                if (mFragmentListener != null)
-                    mFragmentListener.abortSignUpDialog();
+            if (mFragmentListener != null)
+                mFragmentListener.abortSignUpDialog();
 
-            }
         });
 
 
@@ -311,40 +304,16 @@ public class SignUpIVFragment extends BaseFragment {
         }
     };
 
+//    @Override
+//    public void onDestroy() {
+//        mHandler.removeMessages(1);
+//        super.onDestroy();
+//    }
+
+
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         mHandler.removeMessages(1);
-        super.onDestroy();
+        super.onDestroyView();
     }
-
-    void createNotification(String message) {
-
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        String NOTIFICATION_CHANNEL_ID = "tutorialspoint_01";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
-            // Configure the notification channel.
-            notificationChannel.setDescription("Sample Channel description:"+"  "+ message);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-
-            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
-        notificationBuilder.setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_notification)
-                .setTicker("TeleMedDoctor")
-                .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("Verification notification")
-                .setContentText("Your error "+ message)
-                .setContentInfo("Information");
-
-        notificationManager.notify(1, notificationBuilder.build());
-    }
-
-
 }

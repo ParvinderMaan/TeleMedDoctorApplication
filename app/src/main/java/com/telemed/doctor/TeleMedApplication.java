@@ -18,14 +18,14 @@ import java.io.File;
 
 
 
-public class TeleMedApplication extends Application  implements LifecycleObserver {
+public class TeleMedApplication extends Application  {     //implements LifecycleObserver
     private static TeleMedApplication currentApplication = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
         currentApplication = this;
-       ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+     //  ProcessLifecycleOwner.get().getLifecycle().addObserver(this); // no need
 
     }
 
@@ -53,17 +53,21 @@ public class TeleMedApplication extends Application  implements LifecycleObserve
         return Common.isNetworkAvail(getApplicationContext());
     }
 
+          /*
+             no need right now !!
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void appInResumeState() {
-        Toast.makeText(getApplicationContext(),"In Foreground",Toast.LENGTH_LONG).show();
+           */
 
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void appInPauseState() {
-        Toast.makeText(getApplicationContext(),"In Background",Toast.LENGTH_LONG).show();
-    }
+//    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+//    public void appInResumeState() {
+//        Toast.makeText(getApplicationContext(),"In Foreground",Toast.LENGTH_LONG).show();
+//
+//    }
+//
+//    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+//    public void appInPauseState() {
+//        Toast.makeText(getApplicationContext(),"In Background",Toast.LENGTH_LONG).show();
+//    }
 
 //    @OnLifecycleEvent(Lifecycle.Event.ON_START)
 //    fun onAppStart() {

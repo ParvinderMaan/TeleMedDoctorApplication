@@ -30,6 +30,8 @@ public class SignUpIVViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignUpIVResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+    private MutableLiveData<Map<String, String>> headerMap;
+    private MutableLiveData<SignUpIVRequest> signUpIVInfo;
 
 
     public SignUpIVViewModel(@NonNull Application application) {
@@ -38,14 +40,17 @@ public class SignUpIVViewModel extends AndroidViewModel {
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        headerMap =new MutableLiveData<>();
+        signUpIVInfo=new MutableLiveData<>();
+
     }
 
 
-    public void attemptSignUp(SignUpIVRequest in, Map<String, String> map) {
+    public void attemptSignUp() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        Log.e(TAG,in.toString());
-        mWebService.attemptSignUpFour(map,in).enqueue(new Callback<SignUpIVResponse>() {
+
+        mWebService.attemptSignUpFour(headerMap.getValue(),signUpIVInfo.getValue()).enqueue(new Callback<SignUpIVResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIVResponse> call, @NonNull Response<SignUpIVResponse> response) {
                 isLoading.setValue(false);
@@ -87,9 +92,12 @@ public class SignUpIVViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    void cancelRequest(){
+    public void setHeaderMap(Map<String, String> headerMap) {
+        this.headerMap.setValue(headerMap);
+    }
 
-
+    public void setSignUpIVInfo(SignUpIVRequest signUpIVInfo) {
+        this.signUpIVInfo.setValue(signUpIVInfo);
     }
 
     public MutableLiveData<Boolean> getViewEnabled() {

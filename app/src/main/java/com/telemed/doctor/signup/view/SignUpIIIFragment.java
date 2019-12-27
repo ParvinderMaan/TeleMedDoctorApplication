@@ -93,13 +93,18 @@ public class SignUpIIIFragment extends BaseFragment {
         mViewModel = ViewModelProviders.of(this).get(SignUpIIIViewModel.class);
 
         initView(v);
-        initListener(v);
+        initListener();
+        initObserver();
 
-        // @initialization
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.getIndeterminateDrawable()
-                .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
 
+
+
+
+
+
+    }
+
+    private void initObserver() {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
@@ -115,7 +120,7 @@ public class SignUpIIIFragment extends BaseFragment {
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
                             //data = response.getData().getData(); // adding Additional Info
-                           //  data.setEmail(mUserEmail);
+                            //  data.setEmail(mUserEmail);
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                             UserInfoWrapper in=new UserInfoWrapper();
@@ -141,15 +146,6 @@ public class SignUpIIIFragment extends BaseFragment {
 
         });
 
-        edtNpiNo.setOnEditorActionListener((v1, actionId, event) -> {
-
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (edtNpiNo.isFocused()) edtNpiNo.clearFocus();
-                mFragmentListener.hideSoftKeyboard();
-                return true;
-            }
-            return false;
-        });
 
     }
 
@@ -165,21 +161,14 @@ public class SignUpIIIFragment extends BaseFragment {
 
     }
 
-    private void initListener(View v) {
+    private void initListener() {
         tvCancel.setOnClickListener(v1 -> {
-
             if(mFragmentListener!=null)
                 mFragmentListener.abortSignUpDialog();
 
-
         });
 
-        btnContinue.setOnClickListener(v12 -> {
-
-//            if(!isNetAvail()){
-//                tvAlertView.showTopAlert("No Internet");
-//                return;
-//            }
+        btnContinue.setOnClickListener(v2 -> {
 
             if(isFormValid()){
 
@@ -191,15 +180,27 @@ public class SignUpIIIFragment extends BaseFragment {
                         .setDeaNumber(mDea)
                         .setNpiNumber(mNpiNo)
                         .build();
+                Log.e(TAG,in.toString());
 
                 Map<String, String> map = new HashMap<>();
                 map.put("content-type", "application/json");
                 map.put("Authorization","Bearer "+mAccessToken);
-
-                mViewModel.attemptSignUp(in,map);
+                mViewModel.setHeaderMap(map);
+                mViewModel.setSignUpIIIInfo(in);
+                mViewModel.attemptSignUp();
             }
 
 
+        });
+
+        edtNpiNo.setOnEditorActionListener((v1, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (edtNpiNo.isFocused()) edtNpiNo.clearFocus();
+                mFragmentListener.hideSoftKeyboard();
+                return true;
+            }
+            return false;
         });
 
     }
@@ -219,6 +220,11 @@ public class SignUpIIIFragment extends BaseFragment {
 
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
+
+        // @initialization
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
 
 
 //----------------------------------------------------------------
@@ -304,9 +310,16 @@ public class SignUpIIIFragment extends BaseFragment {
         }
     };
 
+//    @Override
+//    public void onDestroy() {
+//        mHandler.removeMessages(1);
+//        super.onDestroy();
+//    }
+
+
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         mHandler.removeMessages(1);
-        super.onDestroy();
+        super.onDestroyView();
     }
 }

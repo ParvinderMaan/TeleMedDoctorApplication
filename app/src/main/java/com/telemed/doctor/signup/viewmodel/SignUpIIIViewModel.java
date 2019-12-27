@@ -30,6 +30,8 @@ public class SignUpIIIViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignUpIIIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+    private MutableLiveData<SignUpIIIRequest> signUpIIIInfo;
+    private MutableLiveData<Map<String, String>> headerMap;
 
     public SignUpIIIViewModel(@NonNull Application application) {
         super(application);
@@ -37,13 +39,15 @@ public class SignUpIIIViewModel extends AndroidViewModel {
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        signUpIIIInfo=new MutableLiveData<>();
+        headerMap=new MutableLiveData<>();
     }
 
-    public void attemptSignUp(SignUpIIIRequest in, Map<String, String> map) {
+    public void attemptSignUp() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        Log.e(TAG,in.toString());
-        mWebService.attemptSignUpThree(map,in).enqueue(new Callback<SignUpIIIResponse>() {
+
+        mWebService.attemptSignUpThree(headerMap.getValue(),signUpIIIInfo.getValue()).enqueue(new Callback<SignUpIIIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIIIResponse> call, @NonNull Response<SignUpIIIResponse> response) {
                 isLoading.setValue(false);
@@ -57,8 +61,6 @@ public class SignUpIIIViewModel extends AndroidViewModel {
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
-                }else {
-
                 }
 
 
@@ -85,10 +87,14 @@ public class SignUpIIIViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    void cancelRequest(){
-
-
+    public void setSignUpIIIInfo(SignUpIIIRequest signUpIIIInfo) {
+        this.signUpIIIInfo.setValue(signUpIIIInfo);
     }
+
+    public void setHeaderMap(Map<String, String> headerMap) {
+        this.headerMap.setValue(headerMap);
+    }
+
 
     public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;

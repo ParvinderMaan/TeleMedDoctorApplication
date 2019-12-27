@@ -30,6 +30,11 @@ public class SignUpIIViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignUpIIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+    private MutableLiveData<SignUpIIRequest> signUpIIInfo;
+
+
+
+    private MutableLiveData<Map<String, String>> headerMap;
 
 
 
@@ -39,12 +44,13 @@ public class SignUpIIViewModel extends AndroidViewModel {
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        signUpIIInfo =new MutableLiveData<>();
+        headerMap =new MutableLiveData<>();
     }
-    public void attemptSignUp(SignUpIIRequest in,  Map<String, String> map) {
+    public void attemptSignUp() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        Log.e(TAG,in.toString());
-        mWebService.attemptSignUpTwo(map,in).enqueue(new Callback<SignUpIIResponse>() {
+        mWebService.attemptSignUpTwo(headerMap.getValue(),signUpIIInfo.getValue()).enqueue(new Callback<SignUpIIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIIResponse> call, @NonNull Response<SignUpIIResponse> response) {
                 isLoading.setValue(false);
@@ -86,12 +92,16 @@ public class SignUpIIViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    void cancelRequest(){
-
-
+    public void setSignUpIIInfo(SignUpIIRequest signUpIIInfo) {
+        this.signUpIIInfo.setValue(signUpIIInfo);
     }
 
     public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
+    }
+
+
+    public void setHeaderMap(Map<String, String> headerMap) {
+        this.headerMap.setValue(headerMap);
     }
 }

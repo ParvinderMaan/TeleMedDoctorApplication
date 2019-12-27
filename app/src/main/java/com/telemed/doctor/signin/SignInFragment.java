@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
@@ -69,7 +70,10 @@ public class SignInFragment extends BaseFragment {
         mViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
         initView(v);
         initListener();
+        initObserver();
+    }
 
+    private void initObserver() {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
@@ -81,7 +85,6 @@ public class SignInFragment extends BaseFragment {
                     tvSignUp.setEnabled(isView);
                     tvForgotPassword.setEnabled(isView);
                     btnSignIn.setEnabled(isView);
-
                 });
 
 
@@ -111,8 +114,8 @@ public class SignInFragment extends BaseFragment {
 
         });
 
-
     }
+
     private void routeNavigationFragment(SignInResponse.Data infoObj) {
         UserInfoWrapper infoWrapper = new UserInfoWrapper();
         infoWrapper.setAccessToken(infoObj.getAccessToken());
@@ -188,14 +191,7 @@ public class SignInFragment extends BaseFragment {
                 break;
 
             case R.id.btn_sign_in:
-
-//                if (!isNetAvail()) {
-//                    tvAlertView.showTopAlert("No Internet");
-//                    return;
-//                }
                 attemptSignIn();
-
-
                 break;
         }
     };
@@ -210,19 +206,14 @@ public class SignInFragment extends BaseFragment {
                     .setDeviceId("12345")
                     .setDiscriminator(DISCRIMINATOR_TYPE)
                     .build();
-
+            mViewModel.setSignInInfo(in);
             edtUsrEmail.clearFocus();edtUsrPassword.clearFocus();
-            mViewModel.attemptSignIn(in);
+            mViewModel.attemptSignIn();
         }
 
     }
 
-    @Override
-    public void onDestroyView() {
-//        mOnClickListener = null;
-//        mEditorActionListener = null;
-        super.onDestroyView();
-    }
+
 
     private boolean isFormValid() {
 
@@ -312,5 +303,17 @@ public class SignInFragment extends BaseFragment {
          */
     }
 
+    @Override
+    public void onDestroyView() {
+        releaseResources();
+        super.onDestroyView();
+    }
 
+    private void releaseResources() {
+        tvSignUp.setOnClickListener(null);
+        tvForgotPassword.setOnClickListener(null);
+        btnSignIn.setOnClickListener(null);
+        edtUsrEmail.setOnEditorActionListener(null);
+        edtUsrPassword.setOnEditorActionListener(null);
+    }
 }

@@ -13,6 +13,7 @@ import static com.telemed.doctor.enumeration.FragmentType.SPLASH_FRAGMENT;
 @Retention(RetentionPolicy.SOURCE)
 @StringDef({SPLASH_FRAGMENT})
 public @interface FragmentType {
+
     String SPLASH_FRAGMENT = "SplashFragment";
     String SIGN_IN_FRAGMENT= "SignInFragment";
     String SIGN_UP_I_FRAGMENT = "SignUpIFragment";

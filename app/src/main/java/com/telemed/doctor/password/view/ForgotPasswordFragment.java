@@ -71,6 +71,13 @@ public class ForgotPasswordFragment extends BaseFragment {
 
         initView(v);
         initListener();
+        initObserver();
+
+
+
+    }
+
+    private void initObserver() {
 
         mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
@@ -103,7 +110,6 @@ public class ForgotPasswordFragment extends BaseFragment {
 
         mViewModel.getViewClickable()
                 .observe(getViewLifecycleOwner(), isView -> rlRoot.setClickable(isView));
-
 
     }
 
@@ -142,15 +148,13 @@ public class ForgotPasswordFragment extends BaseFragment {
         tvCancel = v.findViewById(R.id.tv_cancel);
         btnSend = v.findViewById(R.id.btn_send);
         edtUsrEmail = v.findViewById(R.id.edt_user_email);
-
-
-
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
         progressBar = v.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorBlue), android.graphics.PorterDuff.Mode.SRC_IN);
 
-        tvAlertView = v.findViewById(R.id.tv_alert_view);
+
 
 
     }

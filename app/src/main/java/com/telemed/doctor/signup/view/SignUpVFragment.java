@@ -176,8 +176,14 @@ public class SignUpVFragment extends BaseFragment {
         initView(v);
         initListener();
         initRecyclerView(v);
+        initObserver();
+
+        mViewModel.fetchAllDocuments(mSignUpMap);
 
 
+    }
+
+    private void initObserver() {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
@@ -277,7 +283,7 @@ public class SignUpVFragment extends BaseFragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-                      //  mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
+                        //  mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
                     }
                     break;
 
@@ -285,8 +291,6 @@ public class SignUpVFragment extends BaseFragment {
 
 
         });
-
-        mViewModel.fetchAllDocuments(mSignUpMap);
 
 
     }
@@ -337,12 +341,7 @@ public class SignUpVFragment extends BaseFragment {
         in.putExtra(NormalFilePickActivity.SUFFIX, new String[]{"doc", "docx", "pdf"});
         startActivityForResult(in, REQUEST_CODE_DOCUMENT);
     }
-    /*
 
-                    pbBar.setVisibility(View.INVISIBLE);
-                    ibtnUploadOne.setImageResource(R.drawable.ic_success);
-                    rlDocTwo.setVisibility(View.VISIBLE);
-     */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -429,7 +428,8 @@ public class SignUpVFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mEventClickListener = null;
+        btnContinue.setOnClickListener(null);
+        tvCancel.setOnClickListener(null);
         super.onDestroyView();
     }
 

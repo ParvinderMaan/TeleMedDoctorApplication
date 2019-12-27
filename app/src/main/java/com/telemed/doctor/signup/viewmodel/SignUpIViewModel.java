@@ -24,6 +24,7 @@ public class SignUpIViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignUpIResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+    private MutableLiveData<SignUpIRequest> mSignUpIInfo;
 
 
 
@@ -33,12 +34,13 @@ public class SignUpIViewModel extends AndroidViewModel {
         resultant = new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
+        mSignUpIInfo =new MutableLiveData<>();
     }
 
-    public void attemptSignUp(SignUpIRequest in) {
+    public void attemptSignUp() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        mWebService.attemptSignUpOne(in).enqueue(new Callback<SignUpIResponse>() {
+        mWebService.attemptSignUpOne(mSignUpIInfo.getValue()).enqueue(new Callback<SignUpIResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignUpIResponse> call, @NonNull Response<SignUpIResponse> response) {
                 isLoading.setValue(false);
@@ -85,5 +87,9 @@ public class SignUpIViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
+    }
+
+    public void setSignUpIInfo(SignUpIRequest signUpIInfo) {
+        this.mSignUpIInfo.setValue(signUpIInfo);
     }
 }
