@@ -24,10 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
         <activity
-            android:name=".TestingActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".SecondaryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTheme"/>
+        <!-- <activity -->
+        <!-- android:name=".TestingActivity" -->
+        <!-- android:screenOrientation="portrait"> -->
+        <!-- </activity> -->
         <activity
             android:name=".RouterActivity"
             android:screenOrientation="portrait"
@@ -43,7 +47,7 @@
             android:theme="@style/ActivityTheme" />
         <activity
             android:name=".filepicker.FilePickerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" /> <!-- FileChooser Activity -->
         <activity
             android:name=".profile.view.ChooseOptionActivity"
             android:screenOrientation="portrait" /> <!-- Crop Activity -->
@@ -63,7 +67,6 @@
                 android:resource="@xml/provider_path"
                 tools:replace="android:resource" />
         </provider>
-
     </application>
 
 </manifest>

@@ -63,50 +63,38 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
+        initListener();
         initObserver();
         String welcomeTxt = getResources().getString(R.string.title_one) + " " + mFirstName + ".";
         tvDocWelcome.setText(welcomeTxt);
     }
 
-
     private void initView(View v) {
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
+        tvDocWelcome = v.findViewById(R.id.tv_doc_welcome);
+        btnMySchedule = v.findViewById(R.id.btn_my_schedule);
+        tvMyProfile = v.findViewById(R.id.tv_my_profile);
+        tvMyConsults = v.findViewById(R.id.tv_my_consults);
+        tvMyDashboard = v.findViewById(R.id.tv_my_dashboard);
+        tvNotification = v.findViewById(R.id.tv_notification);
+        tvSetting = v.findViewById(R.id.tv_setting);
+        tvSignOut = v.findViewById(R.id.tv_sign_out);
+
         progressBar=v.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorBlue), android.graphics.PorterDuff.Mode.SRC_IN);
 
-        tvAlertView = v.findViewById(R.id.tv_alert_view);
-
-        tvDocWelcome = v.findViewById(R.id.tv_doc_welcome);
-
-
-
-        btnMySchedule = v.findViewById(R.id.btn_my_schedule);
+    }
+    private void initListener() {
         btnMySchedule.setOnClickListener(mOnClickListener);
-
-        tvMyProfile = v.findViewById(R.id.tv_my_profile);
         tvMyProfile.setOnClickListener(mOnClickListener);
-
-
-        tvMyConsults = v.findViewById(R.id.tv_my_consults);
         tvMyConsults.setOnClickListener(mOnClickListener);
-
-
-        tvMyDashboard = v.findViewById(R.id.tv_my_dashboard);
         tvMyDashboard.setOnClickListener(mOnClickListener);
-
-        tvNotification = v.findViewById(R.id.tv_notification);
         tvNotification.setOnClickListener(mOnClickListener);
-
-
-        tvSetting = v.findViewById(R.id.tv_setting);
         tvSetting.setOnClickListener(mOnClickListener);
-
-
-        tvSignOut = v.findViewById(R.id.tv_sign_out);
         tvSignOut.setOnClickListener(mOnClickListener);
     }
-
 
     private View.OnClickListener mOnClickListener = v -> {
         switch (v.getId()) {
@@ -169,8 +157,7 @@ public class HomeFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
-
-                            mFragmentListener.startActivity("RouterActivity");
+                            mFragmentListener.startActivity("RouterActivity", null);
                         }
                     }
                     break;
@@ -195,5 +182,15 @@ public class HomeFragment extends Fragment {
         tvSignOut.setEnabled(isView);
     }
 
-
+    @Override
+    public void onDestroyView() {
+        btnMySchedule.setOnClickListener(null);
+        tvMyProfile.setOnClickListener(null);
+        tvMyConsults.setOnClickListener(null);
+        tvMyDashboard.setOnClickListener(null);
+        tvNotification.setOnClickListener(null);
+        tvSetting.setOnClickListener(null);
+        tvSignOut.setOnClickListener(null);
+        super.onDestroyView();
+    }
 }

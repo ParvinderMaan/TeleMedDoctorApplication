@@ -95,6 +95,11 @@
     <string name="sign_up">Not a user ? <b>Sign Up</b></string>
 
 
+    <!--    VideoCallFragment-->
+    <string name="rationale_camera_and_mic">"This app needs access to your camera and mic to make video calls "</string>
+    <string name="action_ok">"OK"</string>
+
+
     <!--    SettingFragment-->
     <!--    DUMMY LIST -->
     <string-array name="array_language">

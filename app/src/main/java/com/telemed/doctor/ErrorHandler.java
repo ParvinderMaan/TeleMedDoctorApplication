@@ -3,6 +3,8 @@ package com.telemed.doctor;
 import com.google.gson.JsonSyntaxException;
 import com.telemed.doctor.network.WrapperError;
 
+import java.net.UnknownHostException;
+
 import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.HttpException;
@@ -35,6 +37,8 @@ public class ErrorHandler {
             errorMessage=error.getMessage();
         } else if (error instanceof JsonSyntaxException) {
             errorMessage="Something Went Wrong API is not responding properly!";
+        }else if (error instanceof UnknownHostException){
+            errorMessage="Sorry cannot connect to the server!";
         } else {
             errorMessage=error.getMessage();
         }

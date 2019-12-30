@@ -2,60 +2,101 @@ package com.telemed.doctor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.signup.view.SignUpVFragment;
 
-public class TestingActivity extends AppCompatActivity implements RouterFragmentSelectedListener {
-    String a="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDViMjIwMS00M2QzLTQwMTItOGMwOS1kNTIwYzQ3NTRhZGEiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc2MDQxMjE4LCJleHAiOjE1NzYxMjc2MTgsImlhdCI6MTU3NjA0MTIxOH0.TyRcbm9neFAhJAj5badtnaLwrREQz3NnF3-KtbABeFA";
+public class TestingActivity extends AppCompatActivity {
+    private Animation animFadeIn,animFadeOut;
+    private LinearLayout llPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.fl_container, SignUpVFragment.newInstance(a))
-//                .commit();
+        //loading Animation
+//        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+//        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+         llPermission = findViewById(R.id.ll_permission);
+        llPermission.setVisibility(View.GONE);
+       Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,0.0f,1.0f);
+                objectAnimator.setDuration(3000);
+                objectAnimator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        llPermission.setVisibility(View.VISIBLE);
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+
+                objectAnimator.start();
+            }
+        });
+
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,1.0f,0.0f);
+                objectAnimator.setDuration(3000);
+                objectAnimator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        llPermission.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+
+                objectAnimator.start();
+            }
+        });
+
     }
 
-    @Override
-    public void showFragment(String tag, Object payload) {
 
-    }
-
-    @Override
-    public void popTopMostFragment() {
-
-    }
-
-    @Override
-    public void popTillFragment(String tag, int flag) {
-
-    }
-
-    @Override
-    public void abortSignUpDialog() {
-
-    }
-
-    @Override
-    public void showSignUpSuccessDialog(String msg) {
-
-    }
-
-
-
-    @Override
-    public void startActivity(String tag, Object payload) {
-
-    }
-
-    @Override
-    public void hideSoftKeyboard() {
-
-    }
 
 
 }

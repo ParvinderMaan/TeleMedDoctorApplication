@@ -362,8 +362,8 @@ public class SignUpVFragment extends BaseFragment {
     }
 
     private boolean isRuntimePermissionGranted() {
-        int reqOne = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
-        int reqTwo = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+        int reqOne = ContextCompat.checkSelfPermission(requireActivity(), READ_EXTERNAL_STORAGE);
+        int reqTwo = ContextCompat.checkSelfPermission(requireActivity(), WRITE_EXTERNAL_STORAGE);
 
         return (reqOne & reqTwo) == PackageManager.PERMISSION_GRANTED;
     }
@@ -402,21 +402,6 @@ public class SignUpVFragment extends BaseFragment {
                     else {
                         tvAlertView.showTopAlert(getResources().getString(R.string.alert_access_denied));
 
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-//                                showMessageOKCancel("You need to allow access to both the permissions",
-//                                        new DialogInterface.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION, CAMERA},
-//                                                            PERMISSION_REQUEST_CODE);
-//                                                }
-//                                            }
-//                                        });
-//                                return;
-//                            }
-//                        }
 
                     }
                 }

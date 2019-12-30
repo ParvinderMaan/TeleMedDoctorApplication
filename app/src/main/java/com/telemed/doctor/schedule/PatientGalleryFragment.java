@@ -52,10 +52,12 @@ public class PatientGalleryFragment extends Fragment {
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
 
-            if(getActivity()!=null){
+//            if(getActivity()!=null){
+//                mFragmentListener.popTopMostFragment();
+//            }
+            if(mFragmentListener!=null){
                 mFragmentListener.popTopMostFragment();
             }
-
 
         });
     }

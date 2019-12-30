@@ -1,15 +1,14 @@
 package com.telemed.doctor.home;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -17,6 +16,7 @@ import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
+import com.telemed.doctor.SecondaryActivity;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.broadcastreceiver.InternetBroadcastReceiver;
@@ -276,10 +276,11 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .addToBackStack("MedicalRecordFragment")
                         .commit();
                 break;
-            default:
-                // code block
+
 
         }
+
+
 
     }
 
@@ -305,16 +306,34 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     }
 
     @Override
-    public void startActivity(String tag) {
+    public void startActivity(String tag, Object object) {
+//    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         if (tag.equals("RouterActivity")) {
             Intent intent = new Intent(this, RouterActivity.class);
-//          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
             Bundle b = new Bundle();
             b.putInt("KEY_SIGN_OUT", 1);
             intent.putExtras(b);
             startActivity(intent);
             finish();
-        }
+
+        }else if(tag.equals("DeviceSettingActivity")){
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+
+        }else if(tag.equals("SecondaryActivity")){
+            String whichFragment= (String) object;
+            Intent intent = new Intent(this, SecondaryActivity.class);
+            Bundle b = new Bundle();
+            b.putString("TAG_FRAGMENT", whichFragment);
+            intent.putExtras(b);
+            startActivity(intent);
+            overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+        }else {}
+
     }
 
     @Override

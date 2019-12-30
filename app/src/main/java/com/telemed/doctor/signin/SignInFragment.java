@@ -34,8 +34,8 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
-    private final String DEVICE_TYPE = "android";
-    private final String DISCRIMINATOR_TYPE = "Doctor";
+    private final String DEVICE_TYPE = "android"; // ios
+    private final String DISCRIMINATOR_TYPE = "Doctor"; // Patient
 
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
