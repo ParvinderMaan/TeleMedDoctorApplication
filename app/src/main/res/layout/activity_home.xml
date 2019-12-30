@@ -8,9 +8,7 @@
 <FrameLayout
     android:id="@+id/fl_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".home.HomeActivity">
-</FrameLayout>
+    android:layout_height="match_parent"/>
 
     <include
         android:id="@+id/tv_alert_view"

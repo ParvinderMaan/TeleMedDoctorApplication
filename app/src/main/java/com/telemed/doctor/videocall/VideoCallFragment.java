@@ -2,6 +2,8 @@ package com.telemed.doctor.videocall;
 
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -21,11 +23,13 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -61,7 +65,7 @@ public class VideoCallFragment extends Fragment {
     private AppCompatButton btnDeviceSetting;
     private CustomAlertTextView tvAlertView;
     private ProgressBar progressBar;
-    private LinearLayout llPermission,llBottom;
+    private LinearLayout llPermission, llBottom;
     private RelativeLayout rlHeader;
     private VideoCallViewModel mViewModel;
     private HomeFragmentSelectedListener mFragmentListener;
@@ -72,6 +76,7 @@ public class VideoCallFragment extends Fragment {
     private FrameLayout mSubscriberViewContainer;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
+
     //--------------------------------------------------------------------------------------------------
     public static VideoCallFragment newInstance() {
         return new VideoCallFragment();
@@ -104,14 +109,9 @@ public class VideoCallFragment extends Fragment {
         initListener(v);
         initObserver();
         initTokbox();
-       //-------------------------------------------------------------------------------------------
-        mViewModel.setProgress(false); // default
-        mViewModel.setDeviceSettingVisited(false);// default
-        mViewModel.setPermissionLayoutVisibility(false); // default
-        mViewModel.setMainLayoutVisible(false); // default
-        mViewModel.setTopBottomLayoutVisible(true); // default
-        ibtnCallControl.setTag(0);
-        //------------------------------------------------------------------------------------------
+        initDefaultAttribute();
+        //-------------------------------------------------------------------------------------------
+
         if (!isRuntimePermGranted()) {
             mViewModel.setAllPermGranted(false);
             requestPermissions(new String[]{CAMERA, RECORD_AUDIO}, REQUEST_CODE_VIDEO_PERM);
@@ -120,9 +120,19 @@ public class VideoCallFragment extends Fragment {
             mViewModel.setMainLayoutVisible(true);
         }
         //------------------------------------------------------------------------------------------
-     // getViewLifecycleOwner().getLifecycle().addObserver(new MyObserver());
+        // getViewLifecycleOwner().getLifecycle().addObserver(new MyObserver());
 
 
+    }
+
+    private void initDefaultAttribute() {
+        mViewModel.setProgress(false); // default
+        mViewModel.setDeviceSettingVisited(false);// default
+        mViewModel.setPermissionLayoutVisibility(false); // default
+        mViewModel.setMainLayoutVisible(false); // default
+        mViewModel.setTopBottomLayoutVisible(true); // default
+        ibtnCallControl.setTag(0); // by default
+        //------------------------------------------------------------------------------------------
     }
 
     private boolean isRuntimePermGranted() {
@@ -139,11 +149,11 @@ public class VideoCallFragment extends Fragment {
         super.onResume();
 
         if (mViewModel.getDeviceSettingVisitedStatusValue() && !mViewModel.getPermGrantedStatusValue()) {   // check perm
-            if(isRuntimePermGranted()){
+            if (isRuntimePermGranted()) {
                 mViewModel.setPermissionLayoutVisibility(false);
                 mViewModel.setMainLayoutVisible(true);
                 mViewModel.setAllPermGranted(true);
-            }else {
+            } else {
                 mViewModel.setPermissionLayoutVisibility(true);
                 mViewModel.setMainLayoutVisible(false);
                 mViewModel.setAllPermGranted(false);
@@ -176,13 +186,15 @@ public class VideoCallFragment extends Fragment {
         ibtnDocument = v.findViewById(R.id.ibtn_document);
         ibtnCallControl = v.findViewById(R.id.ibtn_call_control);
         ibtnMuteControl = v.findViewById(R.id.ibtn_mute_control);
-        rlHeader= v.findViewById(R.id.rl_header);
+        rlHeader = v.findViewById(R.id.rl_header);
         llBottom = v.findViewById(R.id.ll_bottom);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         llPermission = v.findViewById(R.id.ll_permission);
         btnDeviceSetting = v.findViewById(R.id.btn_device_setting);
         progressBar = v.findViewById(R.id.progress_bar);
 //--------------------------------------------------------------------------------------------------
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -195,8 +207,20 @@ public class VideoCallFragment extends Fragment {
 
         v.setOnTouchListener((v1, event) -> mGestureDetector.onTouchEvent(event));
 
-        mGestureDetector = new GestureDetector(requireActivity().getApplicationContext(), new VideoCallGestureDetector());
-
+        mGestureDetector = new GestureDetector(requireActivity().getApplicationContext(), new VideoCallGestureDetector() {
+            @Override
+            boolean onSingleTap(MotionEvent e) {
+                if (mViewModel.getMainLayoutVisibilityValue()) {
+                    if (mViewModel.getTopBottomLayoutVisibilityVal()) {
+                        mViewModel.setTopBottomLayoutVisible(false);
+                    } else {
+                        mViewModel.setTopBottomLayoutVisible(true);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -206,6 +230,7 @@ public class VideoCallFragment extends Fragment {
         ibtnGallery.setOnClickListener(null);
         ibtnMuteControl.setOnClickListener(null);
         btnDeviceSetting.setOnClickListener(null);
+        mGestureDetector = null;
         super.onDestroyView();
     }
 
@@ -219,28 +244,123 @@ public class VideoCallFragment extends Fragment {
                 case R.id.ibtn_gallery:
 //                    if (mFragmentListener != null)
 //                        mFragmentListener.showFragment("PatientGalleryFragment");
-                      if(mFragmentListener!=null)
-                          mFragmentListener.startActivity("SecondaryActivity", "PatientGalleryFragment");
+                    ObjectAnimator scaleAnimX = ObjectAnimator.ofFloat(ibtnGallery, "scaleX", 0.2f, 1f);
+                    scaleAnimX.setDuration(300);
+                    scaleAnimX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+                    scaleAnimX.start();
+                    ObjectAnimator scaleAnimY = ObjectAnimator.ofFloat(ibtnGallery, "scaleY", 0.2f, 1f);
+                    scaleAnimY.setDuration(300);
+                    scaleAnimY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(scaleAnimX).with(scaleAnimY);
+                    animatorSet.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (mFragmentListener != null)
+                                mFragmentListener.startActivity("SecondaryActivity", "PatientGalleryFragment");
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    animatorSet.start();
+
                     break;
                 case R.id.ibtn_document:
 //                    if (mFragmentListener != null)
 //                        mFragmentListener.showFragment("DoctorDocumentFragment");
-                    if(mFragmentListener!=null)
-                        mFragmentListener.startActivity("SecondaryActivity", "DoctorDocumentFragment");
+
+                    ObjectAnimator scaleAnimXXX = ObjectAnimator.ofFloat(ibtnDocument, "scaleX", 0.2f, 1f);
+                    scaleAnimXXX.setDuration(300);
+                    scaleAnimXXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+                    scaleAnimXXX.start();
+                    ObjectAnimator scaleAnimYYY = ObjectAnimator.ofFloat(ibtnDocument, "scaleY", 0.2f, 1f);
+                    scaleAnimYYY.setDuration(300);
+                    scaleAnimYYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+                    AnimatorSet animatorSettt = new AnimatorSet();
+                    animatorSettt.play(scaleAnimXXX).with(scaleAnimYYY);
+                    animatorSettt.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (mFragmentListener != null)
+                                mFragmentListener.startActivity("SecondaryActivity", "DoctorDocumentFragment");
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+                        }
+                    });
+                    animatorSettt.start();
+
                     break;
                 case R.id.ibtn_call_control:
                     if (mSession == null) return;
 
-                    // by default NO_CALL
-                    if (((Integer) ibtnCallControl.getTag()) == 0 && mViewModel.getPermGrantedStatusValue()) {
-                        mSession.connect(TOKEN);
-                        ibtnCallControl.setTag(1);
-                        ibtnCallControl.setBackgroundResource(R.drawable.ic_end_call);
-                    } else {
-                        mSession.disconnect();
-                        ibtnCallControl.setTag(0);
-                        ibtnCallControl.setBackgroundResource(R.drawable.ic_start_call);
-                    }
+                    ObjectAnimator scaleAnimO = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleX", 0.2f, 1f);
+                    scaleAnimO.setDuration(300);
+                    scaleAnimO.setInterpolator(OVERSHOOT_INTERPOLATOR);
+                    scaleAnimO.start();
+                    ObjectAnimator scaleAnimOO = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleY", 0.2f, 1f);
+                    scaleAnimOO.setDuration(300);
+                    scaleAnimOO.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+                    AnimatorSet animatorSetO = new AnimatorSet();
+                    animatorSetO.play(scaleAnimO).with(scaleAnimOO);
+                    animatorSetO.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            // by default NO_CALL
+                            if (((Integer) ibtnCallControl.getTag()) == 0 && mViewModel.getPermGrantedStatusValue()) {
+                                mSession.connect(TOKEN);
+                                ibtnCallControl.setTag(1);
+                                ibtnCallControl.setImageResource(R.drawable.ic_end_call);
+                            } else {
+                                mSession.disconnect();
+                                ibtnCallControl.setTag(0);
+                                ibtnCallControl.setImageResource(R.drawable.ic_start_call);
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    animatorSetO.start();
+
 
 
 //                    if(mFragmentListener !=null)
@@ -248,17 +368,47 @@ public class VideoCallFragment extends Fragment {
 
                     break;
                 case R.id.ibtn_mute_control:
-
                     if (mPublisher == null) return;
+                    ObjectAnimator scaleAnimXX = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleX", 0.2f, 1f);
+                    scaleAnimXX.setDuration(300);
+                    scaleAnimXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+                    scaleAnimXX.start();
+                    ObjectAnimator scaleAnimYY = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleY", 0.2f, 1f);
+                    scaleAnimYY.setDuration(300);
+                    scaleAnimYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
 
-                    // by default UN_MUTE
-                    if (mPublisher.getPublishAudio()) {
-                        mPublisher.setPublishAudio(false);
-                        ibtnMuteControl.setBackgroundResource(R.drawable.ic_mute);
-                    } else {
-                        mPublisher.setPublishAudio(true);
-                        ibtnMuteControl.setBackgroundResource(R.drawable.ic_unmute);
-                    }
+                    AnimatorSet animatorSett = new AnimatorSet();
+                    animatorSett.play(scaleAnimXX).with(scaleAnimYY);
+                    animatorSett.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            // by default UN_MUTE
+                            if (mPublisher.getPublishAudio()) {
+                                mPublisher.setPublishAudio(false);
+                                ibtnMuteControl.setImageResource(R.drawable.ic_mute);
+                            } else {
+                                mPublisher.setPublishAudio(true);
+                                ibtnMuteControl.setImageResource(R.drawable.ic_unmute);
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    animatorSett.start();
 
                     break;
 
@@ -277,13 +427,13 @@ public class VideoCallFragment extends Fragment {
         public void onConnected(Session session) {
             Log.i(LOG_TAG, "Session Connected");
 
-            mPublisher = new Publisher.Builder(getActivity()).build();
-            mPublisher.setPublisherListener(mPublisherListener);
-            mPublisherViewContainer.addView(mPublisher.getView());
-
-            if (mPublisher.getView() instanceof GLSurfaceView) {
-                ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
-            }
+//          mPublisher = new Publisher.Builder(getActivity()).build(); changed by PM.
+//            mPublisher.setPublisherListener(mPublisherListener);
+//            mPublisherViewContainer.addView(mPublisher.getView());
+//
+//            if (mPublisher.getView() instanceof GLSurfaceView) {
+//                ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
+//            }
 
             mSession.publish(mPublisher);
         }
@@ -420,46 +570,43 @@ public class VideoCallFragment extends Fragment {
         mSession.setConnectionListener(mConnectionListener);
         mSession.setReconnectionListener(mReconnectionListener);
         mSession.setStreamPropertiesListener(mStreamPropertiesListener);
-        //            mSession.connect(TOKEN);
+        //    mSession.connect(TOKEN);
+
+        mPublisher = new Publisher.Builder(getActivity()).build();
+        mPublisher.setPublisherListener(mPublisherListener);
+        mPublisherViewContainer.addView(mPublisher.getView());
+
+        if (mPublisher.getView() instanceof GLSurfaceView) {
+            ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
+        }
+
+        mPublisher.startPreview();
 
     }
 
 
     private void initObserver() {
 
-        mViewModel.getPermGrantedStatus()
-                .observe(getViewLifecycleOwner(), status -> {
-                      if(status){ }
-                });
-    //----------------------------------------------------------------------------------------------
-        mViewModel.getPermissionLayoutVisible().observe(getViewLifecycleOwner(),status -> {
+//        mViewModel.getPermGrantedStatus()
+//                .observe(getViewLifecycleOwner(), status -> {
+//                    if (status) {}
+//                });
+        //----------------------------------------------------------------------------------------------
+        mViewModel.getPermissionLayoutVisible().observe(getViewLifecycleOwner(), status -> {
             llPermission.setVisibility(status ? View.VISIBLE : View.GONE);
-//            if(status){
-//                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,0.0f,1.0f);
-//                objectAnimator.setDuration(3000);
-//                objectAnimator.addListener(mShowAnimatorListener);
-//                objectAnimator.start();
-//            }else {
-//                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,1.0f,0.0f);
-//                objectAnimator.setDuration(3000);
-//                objectAnimator.addListener(mHideAnimatorListener);
-//                objectAnimator.start();
-//
-//            }
-
         });
-    //----------------------------------------------------------------------------------------------
-        mViewModel.getMainLayoutVisibility().observe(getViewLifecycleOwner(),status ->{
+        //----------------------------------------------------------------------------------------------
+        mViewModel.getMainLayoutVisibility().observe(getViewLifecycleOwner(), status -> {
             rlHeader.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
             llBottom.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
             mPublisherViewContainer.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
             mSubscriberViewContainer.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
         });
-    //----------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------
 
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
-    //----------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------
 
         mViewModel.getTopBottomLayoutVisibility().observe(getViewLifecycleOwner(), status -> {
             rlHeader.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
@@ -485,120 +632,29 @@ public class VideoCallFragment extends Fragment {
     }
 
 
-    private Animator.AnimatorListener mShowAnimatorListener=new Animator.AnimatorListener() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-            llPermission.setVisibility(View.VISIBLE); }
-        @Override
-        public void onAnimationEnd(Animator animation) { }
-        @Override
-        public void onAnimationCancel(Animator animation) { }
-        @Override
-        public void onAnimationRepeat(Animator animation) { }
-    };
+ /*
 
-    private Animator.AnimatorListener mHideAnimatorListener=new Animator.AnimatorListener() {
-        @Override
-        public void onAnimationStart(Animator animation) { }
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            llPermission.setVisibility(View.GONE); }
-        @Override
-        public void onAnimationCancel(Animator animation) { }
-        @Override
-        public void onAnimationRepeat(Animator animation) { }
-    };
+//            if(status){
+//                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,0.0f,1.0f);
+//                objectAnimator.setDuration(3000);
+//                objectAnimator.addListener(mShowAnimatorListener);
+//                objectAnimator.start();
+//            }else {
+//                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,1.0f,0.0f);
+//                objectAnimator.setDuration(3000);
+//                objectAnimator.addListener(mHideAnimatorListener);
+//                objectAnimator.start();
+//
+//            }
+     */
+
+    private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
 
 
- // make it weak reference !!!
-    private class VideoCallGestureDetector implements GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            Log.d("Gesture ", " onDown");
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            if(mViewModel.getMainLayoutVisibilityValue()) {
-                if(mViewModel.getTopBottomLayoutVisibilityVal()){
-                    mViewModel.setTopBottomLayoutVisible(false);
-                }else {
-                    mViewModel.setTopBottomLayoutVisible(true);
-                }
-
-                return true;
-            }
-
-            return false;
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            Log.d("Gesture ", " onSingleTapUp");
-            return true;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-            Log.d("Gesture ", " onShowPress");
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            Log.d("Gesture ", " onDoubleTap");
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-          //  Log.d("Gesture ", " onDoubleTapEvent");
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-           // Log.d("Gesture ", " onLongPress");
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-
-            Log.d("Gesture ", " onScroll");
-            if (e1.getY() < e2.getY()) {
-                Log.d("Gesture ", " Scroll Down");
-            }
-            if (e1.getY() > e2.getY()) {
-                Log.d("Gesture ", " Scroll Up");
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (e1.getX() < e2.getX()) {
-                Log.d("Gesture ", "Left to Right swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
-            }
-            if (e1.getX() > e2.getX()) {
-                Log.d("Gesture ", "Right to Left swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
-            }
-            if (e1.getY() < e2.getY()) {
-                Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
-            }
-            if (e1.getY() > e2.getY()) {
-                Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
-            }
-            return false;
-
-
-        }
+    public void setWidthAndHeight(FrameLayout view,int width, int height) {
+        width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, width, getResources().getDisplayMetrics());//used to convert you width integer value same as dp
+        height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, getResources().getDisplayMetrics());
+        //note : if your layout is LinearLayout then use LinearLayout.LayoutParam
+        view.setLayoutParams(new FrameLayout.LayoutParams(width, height));
     }
-
-
 }

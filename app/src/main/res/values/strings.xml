@@ -43,7 +43,7 @@
     <string name="title_bank_info">Bank info  ( PayPal )</string>
     <string name="title_routing_no">Routing Number</string>
     <string name="title_account_no">Account Number</string>
-    <string name="title_post_code">Post Code</string>
+    <string name="title_post_code">Postal Code</string>
 
     <!--    SignUpVFragment-->
     <string name="title_attached_document">Attached document</string>
@@ -61,7 +61,7 @@
 
     <!--      HomeFragment -->
     <string name="title_logout">Logout</string>
-    <string name="title_setting">Setting</string>
+    <string name="title_setting">Settings</string>
     <string name="title_notification">Notification</string>
     <string name="title_view_profile">View Profile</string>
     <string name="title_my_dashboard">My Dashboard</string>
