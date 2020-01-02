@@ -20,12 +20,11 @@
         android:paddingTop="@dimen/_20sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp">
-
         <TextView
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The appointment will start soon"
+            android:text="Appointment will start soon"
             android:layout_centerVertical="true"
             android:textColor="@color/colorBlue"
             android:textSize="20sp"
@@ -62,7 +61,6 @@
                 app:civ_border_color="@color/colorBlue"
                 app:civ_border_width="2dp" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -72,7 +70,6 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_weight=".6">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +91,6 @@
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:text="Age: 24" />
-
         </LinearLayout>
 
 

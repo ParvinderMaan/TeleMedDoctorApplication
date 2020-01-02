@@ -9,6 +9,8 @@ import android.view.MotionEvent;
  */
 public abstract class VideoCallGestureDetector implements GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
 
+    private boolean isGestureEnable=true; // by default
+
     @Override
     public boolean onDown(MotionEvent e) {
        // Log.d("Gesture ", " onDown");
@@ -17,7 +19,10 @@ public abstract class VideoCallGestureDetector implements GestureDetector.OnGest
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        return onSingleTap(e);
+        if(isGestureEnable){
+            return onSingleTap(e);
+        }
+        return false;
     }
 
     @Override
@@ -28,7 +33,7 @@ public abstract class VideoCallGestureDetector implements GestureDetector.OnGest
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Log.d("Gesture ", " onShowPress");
+//        Log.d("Gesture ", " onShowPress");
     }
 
     @Override
@@ -86,4 +91,8 @@ public abstract class VideoCallGestureDetector implements GestureDetector.OnGest
 
          */
     abstract boolean onSingleTap(MotionEvent e);
+
+    void setGestureEnable(boolean isGestureEnable){
+        this.isGestureEnable=isGestureEnable;
+    }
 }

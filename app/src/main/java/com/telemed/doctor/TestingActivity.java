@@ -3,95 +3,51 @@ package com.telemed.doctor;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
-import com.telemed.doctor.signup.view.SignUpVFragment;
-
 public class TestingActivity extends AppCompatActivity {
-    private Animation animFadeIn,animFadeOut;
-    private LinearLayout llPermission;
+    private LinearLayout llTop,llBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
-        //loading Animation
-//        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-//        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
-         llPermission = findViewById(R.id.ll_permission);
-        llPermission.setVisibility(View.GONE);
-       Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,0.0f,1.0f);
-                objectAnimator.setDuration(3000);
-                objectAnimator.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        llPermission.setVisibility(View.VISIBLE);
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
-                objectAnimator.start();
-            }
-        });
-
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(llPermission,View.ALPHA,1.0f,0.0f);
-                objectAnimator.setDuration(3000);
-                objectAnimator.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
+         llTop = findViewById(R.id.ll_top);
+         llBottom = findViewById(R.id.ll_bottom);
 
 
-                    }
+         Button btnShow = findViewById(R.id.button);
+         btnShow.setOnClickListener(v -> {
+             ObjectAnimator objectAnimY=ObjectAnimator.ofFloat(llTop,"y",0.0f);
+             objectAnimY.setDuration(200);
+//-----------------------------------------------------------------------------------------------------------------
+             ObjectAnimator objectAnimYY=ObjectAnimator.ofFloat(llBottom,"y",llBottom.getY()-llBottom.getHeight());
+             objectAnimYY.setDuration(200);
+//-----------------------------------------------------------------------------------------------------------------
+              AnimatorSet animatorSet = new AnimatorSet();
+              animatorSet.play(objectAnimY).with(objectAnimYY);
+              animatorSet.start();
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        llPermission.setVisibility(View.GONE);
-                    }
+         });
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
-                objectAnimator.start();
-            }
+        Button btnHide = findViewById(R.id.button2);
+        btnHide.setOnClickListener(v -> {
+            ObjectAnimator objectAnimY=ObjectAnimator.ofFloat(llTop,"y",(float)-llTop.getHeight());
+            objectAnimY.setDuration(200);
+//-----------------------------------------------------------------------------------------------------------------
+            ObjectAnimator objectAnimYY=ObjectAnimator.ofFloat(llBottom,"y",(llBottom.getY()+llBottom.getHeight()));
+            objectAnimYY.setDuration(200);
+//-----------------------------------------------------------------------------------------------------------------
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.play(objectAnimY).with(objectAnimYY);
+            animatorSet.start();
         });
 
     }

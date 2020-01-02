@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPrefHelper mHelper = ((TeleMedApplication) getActivity().getApplicationContext()).getSharedPrefInstance();
+        SharedPrefHelper mHelper = ((TeleMedApplication) requireActivity().getApplicationContext()).getSharedPrefInstance();
         mFirstName=mHelper.read(SharedPrefHelper.KEY_FIRST_NAME, "");
     }
 
@@ -147,10 +147,10 @@ public class HomeFragment extends Fragment {
     private void initObserver() {
 
         mViewModel.getProgress()
-                .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
         mViewModel.getViewEnabled()
-                .observe(this, this::resetEnableView);
+                .observe(getViewLifecycleOwner(), this::resetEnableView);
 
         mViewModel.getSignOutResultant().observe(this, response -> {
             switch (response.getStatus()) {

@@ -42,7 +42,7 @@ import com.telemed.doctor.videocall.AppointmentSummaryFragment;
 import com.telemed.doctor.videocall.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
-                                                                          //, LifecycleObserver, LifecycleOwner
+//, LifecycleObserver, LifecycleOwner
 public class HomeActivity extends BaseActivity implements HomeFragmentSelectedListener {
 
     // to support vector icon for lower versions
@@ -59,7 +59,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         hideStatusBar();
         setContentView(R.layout.activity_home);
 
-      // getLifecycle().addObserver(this);
+        // getLifecycle().addObserver(this);
 
 
 //-------------------------------------------------------------------------------------------------
@@ -87,18 +87,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             }
         }
 //-------------------------------------------------------------------------------------------------
-        registerReceiver(mBroadcastReceiver, intentFilter);
-//-------------------------------------------------------------------------------------------------
         showFragment("HomeFragment");
 //-------------------------------------------------------------------------------------------------
-
+        registerReceiver(mBroadcastReceiver, intentFilter);
+//-------------------------------------------------------------------------------------------------
     }
 
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(mBroadcastReceiver);
-        super.onDestroy();
-    }
 
     // Note : take care of Toolbar presence
     protected void hideStatusBar() {
@@ -142,6 +136,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "MyConsultFragment":
                 getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, MyConsultFragment.newInstance())
                         .addToBackStack("MyConsultFragment")
                         .commit();
@@ -281,7 +276,6 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         }
 
 
-
     }
 
     @Override
@@ -317,22 +311,23 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             startActivity(intent);
             finish();
 
-        }else if(tag.equals("DeviceSettingActivity")){
+        } else if (tag.equals("DeviceSettingActivity")) {
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
             startActivity(intent);
 
-        }else if(tag.equals("SecondaryActivity")){
-            String whichFragment= (String) object;
+        } else if (tag.equals("SecondaryActivity")) {
+            String whichFragment = (String) object;
             Intent intent = new Intent(this, SecondaryActivity.class);
             Bundle b = new Bundle();
             b.putString("TAG_FRAGMENT", whichFragment);
             intent.putExtras(b);
             startActivity(intent);
-            overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
-        }else {}
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+        } else {
+        }
 
     }
 
@@ -352,10 +347,10 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         @Override
         public void onConnectionChanged() {
             if (isNetAvail()) {
-                tvAlertView.showTopAlert("Internet Available");
+                tvAlertView.showTopAlert("You are online");
                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
             } else {
-                tvAlertView.showTopAlert("No Internet");
+                tvAlertView.showTopAlert("You are offline");
                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorRed));
             }
 
@@ -365,7 +360,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void start(){
+    void start() {
         Toast.makeText(getApplicationContext(), "onStartEvent", Toast.LENGTH_SHORT).show();
 
 
@@ -383,4 +378,16 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 //
 //
 //    }
+
+
+
+
+
+    @Override
+    protected void onDestroy() {
+//-------------------------------------------------------------------------------------------------
+        unregisterReceiver(mBroadcastReceiver);
+//-------------------------------------------------------------------------------------------------
+        super.onDestroy();
+    }
 }

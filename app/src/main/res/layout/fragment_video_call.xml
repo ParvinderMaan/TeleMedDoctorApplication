@@ -34,7 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="horizontal">
 
         <ImageButton
@@ -43,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_gallery" />
 
@@ -51,6 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingBottom="@dimen/_20sdp"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_medical_report" />
@@ -61,6 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
+            android:paddingBottom="@dimen/_20sdp"
+            android:paddingTop="@dimen/_10sdp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_start_call" />
 
@@ -89,6 +93,7 @@
     <!--     header layout -->
     <RelativeLayout
         android:id="@+id/rl_header"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -125,6 +130,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_call_duration"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +156,7 @@
     </RelativeLayout>
 <!--     Permission layout-->
     <LinearLayout
-        android:id="@+id/ll_permission"
+        android:id="@+id/ll_top"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:elevation="@dimen/_10sdp"

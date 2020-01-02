@@ -2,50 +2,24 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fl_container"
-    android:gravity="center"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TestingActivity">
     <LinearLayout
-        android:id="@+id/ll_permission"
+        android:id="@+id/ll_top"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:visibility="visible"
-        android:layout_margin="50dp"
-        android:layout_centerInParent="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp">
-        <TextView
-            android:text="@string/rationale_camera_and_mic"
-            android:textSize="20sp"
-            android:padding="@dimen/_30sdp"
-            android:textAlignment="center"
-            android:textColor="@color/colorWhite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_device_setting"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:text="Allow"
-            android:clickable="true"
-            android:focusable="true"
-            android:textSize="12sp"
-            android:textColor="@color/colorWhite"
-            android:paddingStart="@dimen/_20sdp"
-            android:paddingEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_background_xii"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
+        android:layout_height="100dp">
     </LinearLayout>
 
     <Button
         android:id="@+id/button"
-        android:layout_alignParentBottom="true"
+       android:layout_centerInParent="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,9 +27,28 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:layout_alignParentStart="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hide" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON / OFF"/>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:background="@color/colorBlue"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+    </LinearLayout>
 </RelativeLayout>
