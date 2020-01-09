@@ -45,12 +45,17 @@ import com.opentok.android.PublisherKit;
 import com.opentok.android.Session;
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
+import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
+import com.telemed.doctor.consult.model.Appointment;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.network.WebUrl;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -66,6 +71,8 @@ public class VideoCallFragment extends Fragment {
     private static final int REQUEST_CODE_VIDEO_PERM = 124;
     //--------------------------------------------------------------------------------------------------
     private ImageButton ibtnGallery, ibtnDocument, ibtnCallControl, ibtnMuteControl;
+    private CircleImageView civSubscriberPic;
+    private TextView tvSubscriberName,tvUserWaitingPrompt;
     private TextView tvCallDuration;
     private AppCompatButton btnDeviceSetting;
     private CustomAlertTextView tvAlertView;
@@ -83,8 +90,14 @@ public class VideoCallFragment extends Fragment {
     private Subscriber mSubscriber;
     private VideoCallGestureDetector mVideoCallGestureDetector;
     //--------------------------------------------------------------------------------------------------
-    public static VideoCallFragment newInstance() {
-        return new VideoCallFragment();
+    private String mUsrProfilePic, mUsrName;
+
+    public static VideoCallFragment newInstance(Object payload) {
+        VideoCallFragment fragment = new VideoCallFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("KEY_", (Appointment) payload); // SignUpIResponse.Data
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public void onAttach(@NonNull Context context) {
@@ -95,6 +108,16 @@ public class VideoCallFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // collect our intent
+        if (getArguments() != null) {
+            Appointment objInfo = getArguments().getParcelable("KEY_");
+            if (objInfo != null) API_KEY = String.valueOf(objInfo.getApiKey());
+            if (objInfo != null) SESSION_ID = objInfo.getSessionId();
+            if (objInfo != null) TOKEN = objInfo.getToken();
+            if (objInfo != null) mUsrName = objInfo.getFirstName() + " " + objInfo.getLastName();
+            if (objInfo != null) mUsrProfilePic = objInfo.getProfilePic();
+
+        }
     }
 
     @Override
@@ -102,6 +125,7 @@ public class VideoCallFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_video_call, container, false);
+
     }
 
     @Override
@@ -113,6 +137,16 @@ public class VideoCallFragment extends Fragment {
         initObserver();
         initTokbox();
         initDefaultAttribute();
+        //-------------------------------------------------------------------------------------------
+        tvSubscriberName.setText(mUsrName != null ? mUsrName : "");
+        if (mUsrProfilePic != null && !mUsrProfilePic.isEmpty()) {
+            Picasso.get().load(WebUrl.IMAGE_URL + mUsrProfilePic)
+                    .placeholder(R.drawable.img_avatar)
+                    .error(R.drawable.img_avatar)
+                    .fit()
+                    .centerCrop()
+                    .into(civSubscriberPic);
+        }
         //-------------------------------------------------------------------------------------------
         if (!isRuntimePermGranted()) {
             mViewModel.setAllPermGranted(false);
@@ -133,7 +167,9 @@ public class VideoCallFragment extends Fragment {
         mViewModel.setPermissionLayoutVisibility(false); // default
         mViewModel.setMainLayoutVisible(false); // default
         mViewModel.setTopBottomLayoutVisible(true); // default
+        mViewModel.setOtherUsrLiveStatus(true); // default (although call has not connected yet!)
         ibtnCallControl.setTag(0); // by default
+
     }
 
     private boolean isRuntimePermGranted() {
@@ -190,11 +226,15 @@ public class VideoCallFragment extends Fragment {
         llBottom = v.findViewById(R.id.ll_bottom);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         llPermission = v.findViewById(R.id.ll_top);
-        tvCallDuration=v.findViewById(R.id.tv_call_duration);
+        tvCallDuration = v.findViewById(R.id.tv_call_duration);
         btnDeviceSetting = v.findViewById(R.id.btn_device_setting);
         progressBar = v.findViewById(R.id.progress_bar);
-//--------------------------------------------------------------------------------------------------
+        tvSubscriberName = v.findViewById(R.id.tv_subscriber_name);
+        civSubscriberPic = v.findViewById(R.id.civ_subscriber_pic);
+        tvUserWaitingPrompt = v.findViewById(R.id.tv_user_waiting);
 
+
+//--------------------------------------------------------------------------------------------------
 
     }
 
@@ -205,11 +245,12 @@ public class VideoCallFragment extends Fragment {
         ibtnGallery.setOnClickListener(mOnClickListener);
         ibtnMuteControl.setOnClickListener(mOnClickListener);
         btnDeviceSetting.setOnClickListener(mOnClickListener);
-
+        mPublisherViewContainer.setOnClickListener(mOnClickListener);
         v.setOnTouchListener((v1, event) -> mGestureDetector.onTouchEvent(event));
-        mVideoCallGestureDetector=new VideoCallGestureDetector() {
+        mVideoCallGestureDetector = new VideoCallGestureDetector() {
             @Override
             boolean onSingleTap(MotionEvent e) {
+
                 if (mViewModel.getMainLayoutVisibilityValue()) {
                     if (mViewModel.getTopBottomLayoutVisibilityVal()) {
                         mViewModel.setTopBottomLayoutVisible(false);
@@ -218,10 +259,13 @@ public class VideoCallFragment extends Fragment {
                     }
                     return true;
                 }
+
+
                 return false;
             }
         };
-        mGestureDetector = new GestureDetector(requireActivity().getApplicationContext(),mVideoCallGestureDetector) ;
+        mGestureDetector = new GestureDetector(requireActivity().getApplicationContext(), mVideoCallGestureDetector);
+
     }
 
     @Override
@@ -236,7 +280,7 @@ public class VideoCallFragment extends Fragment {
     }
 
 
-//--------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -267,10 +311,12 @@ public class VideoCallFragment extends Fragment {
                         }
 
                         @Override
-                        public void onAnimationCancel(Animator animation) { }
+                        public void onAnimationCancel(Animator animation) {
+                        }
 
                         @Override
-                        public void onAnimationRepeat(Animator animation) { }
+                        public void onAnimationRepeat(Animator animation) {
+                        }
                     });
                     animatorSet.start();
 
@@ -300,10 +346,12 @@ public class VideoCallFragment extends Fragment {
                         }
 
                         @Override
-                        public void onAnimationCancel(Animator animation) { }
+                        public void onAnimationCancel(Animator animation) {
+                        }
 
                         @Override
-                        public void onAnimationRepeat(Animator animation) { }
+                        public void onAnimationRepeat(Animator animation) {
+                        }
                     });
                     animatorSettt.start();
 
@@ -341,15 +389,19 @@ public class VideoCallFragment extends Fragment {
                                 mSession.disconnect();
                                 ibtnCallControl.setTag(0);
                                 ibtnCallControl.setImageResource(R.drawable.ic_start_call);
+                                if (mFragmentListener != null)
+                                    mFragmentListener.popTopMostFragment();
                             }
 
                         }
 
                         @Override
-                        public void onAnimationCancel(Animator animation) { }
+                        public void onAnimationCancel(Animator animation) {
+                        }
 
                         @Override
-                        public void onAnimationRepeat(Animator animation) { }
+                        public void onAnimationRepeat(Animator animation) {
+                        }
                     });
                     animatorSetO.start();
 
@@ -402,6 +454,11 @@ public class VideoCallFragment extends Fragment {
                     animatorSett.start();
 
                     break;
+                case R.id.publisher_container:
+                    if (mPublisher != null)
+                        mPublisher.cycleCamera();
+
+                    break;
 
                 case R.id.btn_device_setting:
                     if (mFragmentListener != null) {
@@ -417,8 +474,10 @@ public class VideoCallFragment extends Fragment {
         @Override
         public void onConnected(Session session) {
             Log.i(TAG, "Session Connected");
+            tvAlertView.showTopAlert("Session Connected");
+            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
             mViewModel.setProgress(false);
-            mTimerManager=new TimerManager();
+            mTimerManager = new TimerManager();
             mTimerManager.setWeakReference(VideoCallFragment.this);
             mTimerManager.start();
 //          mPublisher = new Publisher.Builder(getActivity()).build(); changed by PM.
@@ -430,17 +489,22 @@ public class VideoCallFragment extends Fragment {
 //            }
 
             mSession.publish(mPublisher);
+  //        mSubscriberViewContainer.setBackgroundResource(R.drawable.img_call_waiting);
+
         }
 
         @Override
         public void onDisconnected(Session session) {
             Log.i(TAG, "Session Disconnected");
+            tvAlertView.showTopAlert("Session Disconnected");
+
             mTimerManager.stop();
             tvCallDuration.setText("0:00");
-
-            mPublisher.startPreview();
+//          mSession.unsubscribe(mSubscriber);
+//          mSession.unpublish(mPublisher);
             mSubscriberViewContainer.removeAllViews();
-
+            mPublisherViewContainer.removeAllViews();
+            mPublisherViewContainer.addView(mPublisher.getView());
         }
 
         @Override
@@ -452,8 +516,9 @@ public class VideoCallFragment extends Fragment {
                 mSession.subscribe(mSubscriber);
                 mSubscriberViewContainer.addView(mSubscriber.getView());
 
-
             }
+               mViewModel.setOtherUsrLiveStatus(true);
+            //  mSubscriberViewContainer.setBackgroundResource(0);
         }
 
         @Override
@@ -463,7 +528,10 @@ public class VideoCallFragment extends Fragment {
             if (mSubscriber != null) {
                 mSubscriber = null;
                 mSubscriberViewContainer.removeAllViews();
+                mViewModel.setOtherUsrLiveStatus(false);
             }
+
+            // mSubscriberViewContainer.setBackgroundResource(R.drawable.img_call_waiting);
         }
 
         @Override
@@ -511,13 +579,12 @@ public class VideoCallFragment extends Fragment {
     private Session.ReconnectionListener mReconnectionListener = new Session.ReconnectionListener() {
         @Override
         public void onReconnecting(Session session) {
-                   mViewModel.setProgress(true);
+            mViewModel.setProgress(true);
         }
 
         @Override
         public void onReconnected(Session session) {
             mViewModel.setProgress(false);
-
 
         }
     };
@@ -526,19 +593,19 @@ public class VideoCallFragment extends Fragment {
 
     private Session.StreamPropertiesListener mStreamPropertiesListener = new Session.StreamPropertiesListener() {
         @Override
-            public void onStreamHasAudioChanged(Session session, Stream stream, boolean hasAudio ) {
+        public void onStreamHasAudioChanged(Session session, Stream stream, boolean hasAudio) {
 
-            if(hasAudio){
+            if (hasAudio) {
+                ibtnMuteControl.setImageResource(R.drawable.ic_unmute);
+            } else {
                 ibtnMuteControl.setImageResource(R.drawable.ic_mute);
-                } else {
-                 ibtnMuteControl.setImageResource(R.drawable.ic_unmute);
-                }
+            }
 
         }
 
         @Override
-        public void onStreamHasVideoChanged(Session session, Stream stream, boolean hasVideo ) {
-            if(hasVideo){
+        public void onStreamHasVideoChanged(Session session, Stream stream, boolean hasVideo) {
+            if (hasVideo) {
 
             }
         }
@@ -586,7 +653,6 @@ public class VideoCallFragment extends Fragment {
         mPublisher = new Publisher.Builder(requireActivity()).build();
         mPublisher.setPublisherListener(mPublisherListener);
         mPublisherViewContainer.addView(mPublisher.getView());
-
         if (mPublisher.getView() instanceof GLSurfaceView) {
             ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
         }
@@ -614,69 +680,76 @@ public class VideoCallFragment extends Fragment {
             mSubscriberViewContainer.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
         });
         //----------------------------------------------------------------------------------------------
+        mViewModel.getOtherUsrLiveStatus().observe(getViewLifecycleOwner(),status->{
+
+            tvUserWaitingPrompt.setVisibility(status ? View.GONE : View.VISIBLE);
+
+        });
+
+        //----------------------------------------------------------------------------------------------
 
         mViewModel.getProgress().observe(getViewLifecycleOwner(), isLoading ->
-                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
         //----------------------------------------------------------------------------------------------
         mViewModel.getTopBottomLayoutVisibility().observe(getViewLifecycleOwner(), status -> {
 //            rlHeader.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
 //            llBottom.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
-              if(status){ // show
-                  ObjectAnimator objectAnimY=ObjectAnimator.ofFloat(rlHeader,"y",0.0f);
-                  objectAnimY.setDuration(200);
-                  objectAnimY.addListener(new Animator.AnimatorListener() {
-                      @Override
-                      public void onAnimationStart(Animator animation) {
-                          mVideoCallGestureDetector.setGestureEnable(false);
-                          rlHeader.setVisibility(View.VISIBLE);
-                          llBottom.setVisibility(View.VISIBLE);
-                      }
+            if (status) { // show
+                ObjectAnimator objectAnimY = ObjectAnimator.ofFloat(rlHeader, "y", 0.0f);
+                objectAnimY.setDuration(200);
+                objectAnimY.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        mVideoCallGestureDetector.setGestureEnable(false);
+                        rlHeader.setVisibility(View.VISIBLE);
+                        llBottom.setVisibility(View.VISIBLE);
+                    }
 
-                      @Override
-                      public void onAnimationEnd(Animator animation) {
-                          mVideoCallGestureDetector.setGestureEnable(true);
-                      }
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mVideoCallGestureDetector.setGestureEnable(true);
+                    }
 
-                      @Override
-                      public void onAnimationCancel(Animator animation) {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
 
-                      }
+                    }
 
-                      @Override
-                      public void onAnimationRepeat(Animator animation) {
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
 
-                      }
-                  });
-                  objectAnimY.start();
-              }else { // hide
-                  ObjectAnimator objectAnimY=ObjectAnimator.ofFloat(rlHeader,"y",(float)-rlHeader.getHeight());
-                  objectAnimY.setDuration(200);
-                  objectAnimY.addListener(new Animator.AnimatorListener() {
-                      @Override
-                      public void onAnimationStart(Animator animation) {
-                          mVideoCallGestureDetector.setGestureEnable(false);
-                          llBottom.setVisibility(View.INVISIBLE);
-                      }
+                    }
+                });
+                objectAnimY.start();
+            } else { // hide
+                ObjectAnimator objectAnimY = ObjectAnimator.ofFloat(rlHeader, "y", (float) -rlHeader.getHeight());
+                objectAnimY.setDuration(200);
+                objectAnimY.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        mVideoCallGestureDetector.setGestureEnable(false);
+                        llBottom.setVisibility(View.INVISIBLE);
+                    }
 
-                      @Override
-                      public void onAnimationEnd(Animator animation) {
-                          mVideoCallGestureDetector.setGestureEnable(true);
-                          rlHeader.setVisibility(View.INVISIBLE);
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mVideoCallGestureDetector.setGestureEnable(true);
+                        rlHeader.setVisibility(View.INVISIBLE);
 
-                      }
+                    }
 
-                      @Override
-                      public void onAnimationCancel(Animator animation) {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
 
-                      }
+                    }
 
-                      @Override
-                      public void onAnimationRepeat(Animator animation) {
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
 
-                      }
-                  });
-                  objectAnimY.start();
-              }
+                    }
+                });
+                objectAnimY.start();
+            }
 
         });
         //----------------------------------------------------------------------------------------------
@@ -696,13 +769,15 @@ public class VideoCallFragment extends Fragment {
             mViewModel.setAllPermGranted(false);
             mViewModel.setPermissionLayoutVisibility(true);
             mViewModel.setMainLayoutVisible(false);
+
+            TimerManager c = new TimerManager();
+            System.out.println();
         }
 
     }
 
 
     private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
-
 
 
     private static class TimerManager {
@@ -712,7 +787,7 @@ public class VideoCallFragment extends Fragment {
         long timeInMilliseconds = 0L;
         long timeSwapBuff = 0L;
         long updatedTime = 0L;
-        private Runnable updateTimerThread =new Runnable() {
+        private Runnable updateTimerThread = new Runnable() {
             @Override
             public void run() {
                 VideoCallFragment anotherClass = mAnotherClassReference.get();
@@ -724,12 +799,12 @@ public class VideoCallFragment extends Fragment {
                 int secs = (int) (updatedTime / 1000);
                 int mins = secs / 60;
                 secs = secs % 60;
-                ttt="" + mins + ":" + String.format(Locale.getDefault(),"%02d", secs);
+                ttt = "" + mins + ":" + String.format(Locale.getDefault(), "%02d", secs);
                 anotherClass.tvCallDuration.setText(ttt);
                 customHandler.postDelayed(this, 0);
             }
         };
-        private String ttt="";
+        private String ttt = "";
 
         void setWeakReference(VideoCallFragment anotherClass) {
             mAnotherClassReference = new WeakReference<>(anotherClass);
@@ -754,19 +829,17 @@ public class VideoCallFragment extends Fragment {
         }
 
         void stop() {
-             startTime = 0L;
-             timeInMilliseconds = 0L;
-             timeSwapBuff = 0L;
-             updatedTime = 0L;
-             customHandler.removeCallbacks(updateTimerThread);
+            startTime = 0L;
+            timeInMilliseconds = 0L;
+            timeSwapBuff = 0L;
+            updatedTime = 0L;
+            customHandler.removeCallbacks(updateTimerThread);
         }
-
-
-
 
     }
 
-    private  TimerManager mTimerManager=new TimerManager();
+    private TimerManager mTimerManager = new TimerManager();
+
 }
 /*
 

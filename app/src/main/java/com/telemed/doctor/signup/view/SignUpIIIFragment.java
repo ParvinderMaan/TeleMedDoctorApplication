@@ -180,8 +180,9 @@ public class SignUpIIIFragment extends BaseFragment {
                         .setDeaNumber(mDea)
                         .setNpiNumber(mNpiNo)
                         .build();
-                Log.e(TAG,in.toString());
 
+
+                Log.e(TAG,in.toString());
                 Map<String, String> map = new HashMap<>();
                 map.put("content-type", "application/json");
                 map.put("Authorization","Bearer "+mAccessToken);

@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mFragmentListener!=null)
-                    mFragmentListener.showFragment("ChangePasswordFragment");
+                    mFragmentListener.showFragment("ChangePasswordFragment", null);
             }
         });
 
@@ -82,7 +81,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mFragmentListener!=null)
-                    mFragmentListener.showFragment("TermAndConditionFragment");
+                    mFragmentListener.showFragment("TermAndConditionFragment", null);
             }
         });
 

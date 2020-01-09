@@ -60,7 +60,11 @@ public class ProfessionalInfoProfileViewModel extends AndroidViewModel {
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
 
 
 

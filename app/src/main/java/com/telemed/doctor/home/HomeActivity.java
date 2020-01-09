@@ -53,13 +53,15 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     private CustomAlertTextView tvAlertView;
     private String mAccessToken;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_home);
 
-        // getLifecycle().addObserver(this);
+      // getLifecycle().addObserver(this);
+
 
 
 //-------------------------------------------------------------------------------------------------
@@ -87,7 +89,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             }
         }
 //-------------------------------------------------------------------------------------------------
-        showFragment("HomeFragment");
+        showFragment("HomeFragment", null);
 //-------------------------------------------------------------------------------------------------
         registerReceiver(mBroadcastReceiver, intentFilter);
 //-------------------------------------------------------------------------------------------------
@@ -117,7 +119,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     //-------------------------------------------------------------------------------------------------
 
     @Override
-    public void showFragment(String tag) {
+    public void showFragment(String tag, Object payload) {
         switch (tag) {
             case "HomeFragment":
                 getSupportFragmentManager().beginTransaction()
@@ -188,7 +190,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "VideoCallFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, VideoCallFragment.newInstance())
+                        .add(R.id.fl_container, VideoCallFragment.newInstance((Object)payload))
                         .addToBackStack("VideoCallFragment")
                         .commit();
                 break;
@@ -327,6 +329,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
         } else {
+
         }
 
     }

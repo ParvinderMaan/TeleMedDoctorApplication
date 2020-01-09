@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.telemed.doctor.ErrorHandler;
@@ -13,10 +14,14 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
+import com.telemed.doctor.room.database.TeleMedDatabase;
 import com.telemed.doctor.signin.SignInResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,17 +35,38 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     //@use Dagger instead
     private final WebService mWebService;
     private final HashMap<String, String> mHeaderMap;
+    private final TeleMedDatabase mDatabase;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<ApiResponse<BasicInfoResponse>> resultant;
+    private MutableLiveData<BasicInfoResponse.BasicDetail> basicDetail;
+    private ScheduledExecutorService mService;
 
+    public LiveData<BasicInfoResponse.BasicDetail> getBasicDetail() {
+        //basicDetail
+        return mDatabase.basicInfoProfileDao().getBasicDetail();
+    }
+
+    public void setBasicDetail(BasicInfoResponse.BasicDetail basicDetail) {
+      //  this.basicDetail.setValue(basicDetail);
+        mService.submit(() -> {
+                   mDatabase.basicInfoProfileDao().insert(basicDetail);
+        });
+
+    }
 
     public BasicInfoProfileViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         String accessToken = ((TeleMedApplication) application).getSharedPrefInstance()
                 .read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
+
+        mDatabase=((TeleMedApplication)application).getDatabaseInstance();
+        mService= Executors.newSingleThreadScheduledExecutor();
+
+
         isLoading=new MutableLiveData<>();
         resultant=new MutableLiveData<>();
+        basicDetail=new MutableLiveData<>();
 
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
@@ -63,7 +89,11 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
 
             }
 
@@ -87,6 +117,8 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     }
 
 
-
+/*
+java.net.SocketTimeoutException
+ */
 
 }

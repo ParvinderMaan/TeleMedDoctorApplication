@@ -76,8 +76,8 @@ public class ChooseOptionActivity extends BaseActivity {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                            StateResponse.Data result = response.getData().getData();
-                            mViewModel.setStateList(result.getStates());
+                        StateResponse.Data result = response.getData().getData();
+                        mViewModel.setStateList(result.getStates());
 
                     }
 

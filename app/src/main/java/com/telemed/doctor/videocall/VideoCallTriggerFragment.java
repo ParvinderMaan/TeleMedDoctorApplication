@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 
@@ -51,7 +50,7 @@ public class VideoCallTriggerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mFragmentListener!=null)
-                    mFragmentListener.showFragment("VideoCallFragment");
+                    mFragmentListener.showFragment("VideoCallFragment", null);
             }
         });
 

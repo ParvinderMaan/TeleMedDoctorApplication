@@ -6,88 +6,98 @@
     android:layout_height="wrap_content"
     android:background="@color/colorRed"
     android:orientation="vertical">
-
 <!-- middle layout-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_20sdp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:baselineAligned="false">
         <LinearLayout
-            android:padding="@dimen/_5sdp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".3">
+            android:id="@+id/ll_one"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/civ_profile_pic"
+                android:layout_width="@dimen/_65sdp"
+                android:layout_height="@dimen/_65sdp"
                 android:src="@drawable/img_patient"
                 app:civ_border_color="@color/colorWhite"
-                app:civ_border_width="2dp" />
-
+                app:civ_border_width="@dimen/_2sdp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/ll_two"
+            android:layout_toEndOf="@+id/ll_one"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
             android:padding="@dimen/_5sdp"
             android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_weight=".35">
+            android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:includeFontPadding="false"
+                android:includeFontPadding="true"
                 android:lines="1"
                 android:maxLines="1"
+                android:maxLength="10"
                 android:text="Pordan Gill"
                 android:textColor="@color/colorWhite"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
             <TextView
+                android:id="@+id/tv_address"
                 android:layout_width="match_parent"
                 android:textColor="@color/colorWhite"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:includeFontPadding="false"
+                android:textSize="16sp"
+                android:includeFontPadding="true"
                 android:lines="1"
+                android:maxLength="10"
                 android:maxLines="1"
                 android:text="Miami, FL" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/ll_three"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
             android:padding="@dimen/_5sdp"
             android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_weight=".05">
+            android:layout_toStartOf="@+id/ll_four"
+            android:layout_height="wrap_content">
 
           <View
               android:layout_gravity="center"
               android:layout_width="1.0dp"
               android:background="@color/colorLightWhite"
               android:layout_height="@dimen/_50sdp"/>
-
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_four"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp"
-            android:layout_width="0dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_weight=".3">
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_day_of_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:lines="1"
                 android:maxLines="1"
-                android:includeFontPadding="false"
+                android:includeFontPadding="true"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:ellipsize="end"
@@ -95,6 +105,7 @@
                 android:textAllCaps="true"
                 android:text="THU" />
             <TextView
+                android:id="@+id/tv_call_span"
                 android:layout_width="match_parent"
                 android:textColor="@color/colorWhite"
                 android:layout_height="wrap_content"
@@ -108,7 +119,7 @@
 
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- bottom layout-->
     <LinearLayout
@@ -132,6 +143,7 @@
            android:layout_height="wrap_content">
 
            <Button
+               android:id="@+id/btn_estimate_time"
                android:layout_width="match_parent"
                android:textColor="@color/colorWhite"
                android:paddingStart="@dimen/_20sdp"
@@ -140,9 +152,8 @@
                android:background="@android:color/transparent"
                android:layout_marginStart="@dimen/_5sdp"
                android:layout_marginEnd="@dimen/_5sdp"
-               app:drawableLeftCompat="@drawable/ic_time"
                android:layout_height="wrap_content"
-               android:text="@string/estimate_time" />
+               android:text="Join Call" />
 
        </LinearLayout>
 
@@ -164,7 +175,6 @@
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:textAllCaps="false"
-
                 android:background="@drawable/rounded_background_iii"
                 android:layout_height="wrap_content"
                 android:text="More" />
@@ -178,3 +188,5 @@
 
     </LinearLayout>
 </LinearLayout>
+<!--    app:drawableLeftCompat="@drawable/ic_time"-->
+<!--    android:text="@string/estimate_time"-->

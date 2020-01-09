@@ -1,6 +1,7 @@
 package com.telemed.doctor.network;
 
 import com.google.gson.JsonObject;
+import com.telemed.doctor.consult.model.AppointmentListResponse;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
 import com.telemed.doctor.password.model.ResetPasswordRequest;
@@ -146,6 +147,10 @@ public interface WebService {
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.RESET_PASSWORD)
     Call<ResetPasswordResponse> attemptResetPassword(@Body ResetPasswordRequest in);
+
+
+    @GET(WebUrl.FETCH_UPCOMING_APPOINTMENT)
+    Call<AppointmentListResponse> fetchUpcomingAppointment(@HeaderMap Map<String, String> token);
 
 }
 

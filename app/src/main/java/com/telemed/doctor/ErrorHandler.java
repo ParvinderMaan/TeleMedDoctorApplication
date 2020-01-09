@@ -45,4 +45,27 @@ public class ErrorHandler {
 
         return errorMessage;
     }
+
+
+
+    public static String reportError(int errorCode) {
+        String errorMessage="";
+        switch (errorCode) {
+                case HttpsURLConnection.HTTP_UNAUTHORIZED:
+                    errorMessage="Unauthorised User";
+                    break;
+                case HttpsURLConnection.HTTP_FORBIDDEN:
+                    errorMessage="Forbidden";
+                    break;
+                case HttpsURLConnection.HTTP_INTERNAL_ERROR:
+                    errorMessage="Internal Server Error";
+                    break;
+                case HttpsURLConnection.HTTP_BAD_REQUEST:
+                    errorMessage="Bad Request";
+                    break;
+
+        }
+
+        return errorMessage;
+    }
 }

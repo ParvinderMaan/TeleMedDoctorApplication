@@ -29,13 +29,7 @@ public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignInResponse>> resultant;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-
-
-
     private MutableLiveData<SignInRequest> mSignInRequest;
-
-
-
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
@@ -66,6 +60,9 @@ public class SignInViewModel extends AndroidViewModel {
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
 

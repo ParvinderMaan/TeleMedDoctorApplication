@@ -58,23 +58,25 @@ public class BasicInfoProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(BasicInfoProfileViewModel.class);
-
         initView(v);
+        initObserver();
 
+        mViewModel.fetchBasicInfo();
+    }
 
+    private void initObserver() {
         mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        BasicInfoResponse.Data infoObj = response.getData().getData();
-                        setView(infoObj);
+                        BasicInfoResponse.BasicDetail infoObj = response.getData().getData();
+                        mViewModel.setBasicDetail(infoObj);
                     }
-
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-                       // tvAlertView.showTopAlert(response.getErrorMsg());
+                        // tvAlertView.showTopAlert(response.getErrorMsg());
                     }
                     break;
 
@@ -83,14 +85,19 @@ public class BasicInfoProfileFragment extends Fragment {
 
         });
 
-        mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-        mViewModel.fetchBasicInfo();
+        mViewModel.getBasicDetail().observe(getViewLifecycleOwner(), this::setView);
+
+        mViewModel.getProgress()
+                .observe(getViewLifecycleOwner(), isLoading ->
+                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+
 
     }
 
-    private void setView(BasicInfoResponse.Data info) {
+    private void setView(BasicInfoResponse.BasicDetail info) {
+        if(info ==null) return;
+
         // setting up
         edtDocName.setText(info.getFirstName() != null ? info.getFirstName() : "");
         edtDocSurname.setText(info.getLastName() != null ? info.getLastName() : "");

@@ -75,6 +75,12 @@
     <!--    MyConsultFragment-->
     <string name="estimate_time"><b>Estimate</b> \n <font size="12">2 minutes </font></string>
     <string name="last_appointment_time"><b>10/10/19</b> \n <font size="10">4:30 PM - 5:00 PM</font></string>
+    <string name="header_my_consult">My Consult</string>
+    <string name="title_upcoming_appointment">Upcoming Appointments</string>
+    <string name="title_last_appointments">Last Appointments</string>
+
+
+
 
     <!--    MySortFragment-->
 

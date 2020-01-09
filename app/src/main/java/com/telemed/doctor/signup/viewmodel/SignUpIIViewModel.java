@@ -64,9 +64,11 @@ public class SignUpIIViewModel extends AndroidViewModel {
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
-                }else {
-
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
 
 
 

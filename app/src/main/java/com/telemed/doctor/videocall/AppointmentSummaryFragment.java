@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 /**
@@ -47,7 +46,7 @@ public class AppointmentSummaryFragment extends Fragment {
              public void onClick(View v) {
 
                  if (mFragmentListener != null)
-                     mFragmentListener.showFragment("PatientRatingFragment");
+                     mFragmentListener.showFragment("PatientRatingFragment", null);
              }
          });
 

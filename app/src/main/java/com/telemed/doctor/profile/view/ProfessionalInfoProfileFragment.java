@@ -44,18 +44,20 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ProfessionalInfoProfileViewModel.class);
         initView(v);
-
+        initObserver();
         mViewModel.fetchProfessionalInfo();
 
+    }
+
+    private void initObserver() {
 
         mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        ProfessionalInfoResponse.Data infoObj = response.getData().getData();
+                        ProfessionalInfoResponse.ProfessionalDetail infoObj = response.getData().getData();
                         setView(infoObj);
                     }
-
                     break;
 
                 case FAILURE:
@@ -63,7 +65,6 @@ public class ProfessionalInfoProfileFragment extends Fragment {
                         // tvAlertView.showTopAlert(response.getErrorMsg());
                     }
                     break;
-
             }
 
 
@@ -73,7 +74,6 @@ public class ProfessionalInfoProfileFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
     }
-
 
 
     private void initView(View v){
@@ -89,7 +89,7 @@ public class ProfessionalInfoProfileFragment extends Fragment {
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
     }
 
-    private void setView(ProfessionalInfoResponse.Data info) {
+    private void setView(ProfessionalInfoResponse.ProfessionalDetail info) {
         edtMedicalDegree.setText(info.getMedicalDegree()!=null?info.getMedicalDegree():"");
         edtMdWhere.setText(info.getDegreeFrom()!=null?info.getDegreeFrom():"");
         edtOtherDegree.setText(info.getOtherDegree()!=null?info.getOtherDegree():"");

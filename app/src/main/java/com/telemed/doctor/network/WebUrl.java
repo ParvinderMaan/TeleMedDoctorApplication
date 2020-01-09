@@ -7,8 +7,8 @@ package com.telemed.doctor.network;
 public interface WebUrl {
     // base urls
     String IMAGE_URL="https://telemedwebapi.azurewebsites.net/";
-    String BASE_URL ="https://telemedwebapi.azurewebsites.net/api/"; //
-
+    String BASE_URL ="https://telemedwebapi.azurewebsites.net/api/"; // https://telemedwebapi-dev.azurewebsites.net/api/
+                                                                      // https://telemedwebapi.azurewebsites.net/api/
 
     // headers
     String CONTENT_HEADER ="content-type:application/json";
@@ -44,5 +44,9 @@ public interface WebUrl {
     String PROFESSIONAL_PROFILE_INFO = "Doctor/GetDoctorProfessionalInfo";
     String BANK_PROFILE_INFO = "Doctor/GetDoctorBankInfo";
     String ALTER_PROFILE_PIC = "Auth/UpdateProfilePic";
+
+
+    String FETCH_UPCOMING_APPOINTMENT="OpentokMedia/AppointmentList";
+
 
 }

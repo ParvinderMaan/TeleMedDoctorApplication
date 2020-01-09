@@ -13,7 +13,7 @@ public class ProfessionalInfoResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private ProfessionalDetail data;
 
     public Boolean getStatus() {
         return status;
@@ -31,15 +31,15 @@ public class ProfessionalInfoResponse {
         this.message = message;
     }
 
-    public Data getData() {
+    public ProfessionalDetail getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(ProfessionalDetail data) {
         this.data = data;
     }
 
-    public static class Data {
+    public static class ProfessionalDetail {
         @SerializedName("medicalDegree")
         @Expose
         private String medicalDegree;

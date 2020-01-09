@@ -51,19 +51,19 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         hideStatusBar();
         setContentView(R.layout.activity_router);
 
+            // case 0  -----> fresh launch
+            // case 1  ----------> sign out
+            int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
+            switch (tag) {
+                case 0:
+                    showFragment("SplashFragment", null);
+                    break;
 
-        // case 0  -----> fresh launch
-        // case 1  ----------> sign out
-        int tag = getIntent().getIntExtra("KEY_SIGN_OUT", 0);
-        switch (tag) {
-            case 0:
-                showFragment("SplashFragment", null);
-                break;
+                case 1:
+                    showFragment("SignInFragment", null);
+                    break;
+            }
 
-            case 1:
-                showFragment("SignInFragment", null);
-                break;
-        }
 
 
     }
@@ -160,8 +160,6 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     @Override
     public void popTopMostFragment() {
         getSupportFragmentManager().popBackStackImmediate();
-
-
     }
 
     @Override
@@ -177,7 +175,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             abortSignUpDialog();
         }
   */
-        ;
+;
 
         switch (getActiveFragmentTag()) {
             case "SignInFragment":

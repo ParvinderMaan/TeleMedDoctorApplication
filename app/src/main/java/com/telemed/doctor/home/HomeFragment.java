@@ -100,27 +100,27 @@ public class HomeFragment extends Fragment {
         switch (v.getId()) {
             case R.id.tv_my_profile:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("ProfileFragment");
+                    mFragmentListener.showFragment("ProfileFragment", null);
                 break;
 
             case R.id.tv_my_consults:
                 if (mFragmentListener!= null)
-                    mFragmentListener.showFragment("MyConsultFragment");
+                    mFragmentListener.showFragment("MyConsultFragment", null);
                 break;
 
             case R.id.tv_my_dashboard:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("MyDashboardFragment");
+                    mFragmentListener.showFragment("MyDashboardFragment", null);
                 break;
 
             case R.id.tv_notification:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("NotificationFragment");
+                    mFragmentListener.showFragment("NotificationFragment", null);
                 break;
 
             case R.id.tv_setting:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("SettingFragment");
+                    mFragmentListener.showFragment("SettingFragment", null);
                 break;
             case R.id.tv_sign_out:
 
@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.btn_my_schedule:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("MyScheduleFragment");
+                    mFragmentListener.showFragment("MyScheduleFragment", null);
                 break;
         }
 

@@ -13,7 +13,7 @@ public class BankInfoResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private BankDetail data;
 
     public Boolean getStatus() {
         return status;
@@ -31,15 +31,15 @@ public class BankInfoResponse {
         this.message = message;
     }
 
-    public Data getData() {
+    public BankDetail getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(BankDetail data) {
         this.data = data;
     }
 
-    public static class Data {
+    public static class BankDetail {
 
         @SerializedName("routingNumber")
         @Expose

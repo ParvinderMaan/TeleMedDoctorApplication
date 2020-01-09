@@ -57,6 +57,9 @@ public class ResetPasswordViewModel extends AndroidViewModel {
                     }else {
                         resultantResetPassword.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantResetPassword.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
             }

@@ -60,6 +60,9 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
                     }else {
                         resultantResendOtp.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantResendOtp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
 
@@ -95,6 +98,9 @@ public class OneTimePasswordViewModel extends AndroidViewModel {
                     }else {
                         resultantVerifyUser.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantVerifyUser.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
 

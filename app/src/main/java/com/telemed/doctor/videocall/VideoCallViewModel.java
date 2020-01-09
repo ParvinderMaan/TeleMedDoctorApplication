@@ -12,6 +12,7 @@ public class VideoCallViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isPermissionLayoutVisible;  // hide other view
     private MutableLiveData<Boolean> isMainLayoutVisible,isTopBottomLayoutVisible;
     private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<Boolean> isOtherUsrLive;
 
     public MutableLiveData<Boolean> getTopBottomLayoutVisibility() {
         return isTopBottomLayoutVisible;
@@ -31,6 +32,7 @@ public class VideoCallViewModel extends AndroidViewModel {
         isMainLayoutVisible=new MutableLiveData<>();
         isDeviceSettingVisited=new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
+        isOtherUsrLive=new MutableLiveData<>();
         isTopBottomLayoutVisible=new MutableLiveData<>();
 
     //-----------------------------------------------------------
@@ -74,6 +76,14 @@ public class VideoCallViewModel extends AndroidViewModel {
 
     public void setAllPermGranted(Boolean isAllPermGranted) {
         this.isAllPermGranted.setValue(isAllPermGranted);
+    }
+
+    public MutableLiveData<Boolean> getOtherUsrLiveStatus() {
+        return isOtherUsrLive;
+    }
+
+    public void setOtherUsrLiveStatus(Boolean isOtherUsrLive) {
+        this.isOtherUsrLive.setValue(isOtherUsrLive);
     }
 
     public void setProgress(Boolean isLoading) {

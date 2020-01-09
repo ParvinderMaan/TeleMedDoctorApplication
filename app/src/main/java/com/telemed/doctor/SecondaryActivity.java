@@ -21,14 +21,14 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
         if(getIntent()!=null){
             String tag = getIntent().getStringExtra("TAG_FRAGMENT");
             if(tag!=null)
-            showFragment(tag);
+            showFragment(tag, null);
         }
 
     }
 
 
     @Override
-    public void showFragment(String tag) {
+    public void showFragment(String tag, Object payload) {
         switch (tag) {
 
             case "PatientGalleryFragment":

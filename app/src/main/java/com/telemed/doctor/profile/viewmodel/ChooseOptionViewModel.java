@@ -21,8 +21,12 @@ import com.telemed.doctor.profile.model.OptionResponse;
 import com.telemed.doctor.profile.model.Speciliaty;
 import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.model.StateResponse;
+import com.telemed.doctor.room.database.TeleMedDatabase;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,28 +76,28 @@ public class ChooseOptionViewModel extends AndroidViewModel {
     public void fetchDoctorDrills(){
         isLoading.setValue(true);
         mWebService.fetchDrillInfo().enqueue(new Callback<OptionResponse>() {
-        @Override
-        public void onResponse(@NonNull Call<OptionResponse> call, @NonNull Response<OptionResponse> response) {
-            isLoading.setValue(false);
+            @Override
+            public void onResponse(@NonNull Call<OptionResponse> call, @NonNull Response<OptionResponse> response) {
+                isLoading.setValue(false);
 
-            if (response.isSuccessful() && response.body()!=null) {
-                OptionResponse result = response.body();
-                if(result.getStatus()){
-                    resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
-                }else {
-                    resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                if (response.isSuccessful() && response.body()!=null) {
+                    OptionResponse result = response.body();
+                    if(result.getStatus()){
+                        resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
                 }
+
             }
 
-        }
-
-        @Override
-        public void onFailure(@NonNull Call<OptionResponse> call, @NonNull Throwable error) {
-            isLoading.setValue(false);
-            String errorMsg = ErrorHandler.reportError(error);
-            resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-        }
-    });
+            @Override
+            public void onFailure(@NonNull Call<OptionResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
 
     }
 
@@ -136,7 +140,11 @@ public class ChooseOptionViewModel extends AndroidViewModel {
                     }else {
                         resultantState.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultant.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
 
 
 

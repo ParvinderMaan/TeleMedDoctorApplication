@@ -19,11 +19,7 @@ import android.widget.PopupMenu;
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.TimeUtil;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,11 +81,11 @@ public class ChatFragment extends BaseFragment {
         mPopupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_gallery:
-                    if(mFragmentListener !=null) mFragmentListener.showFragment("PatientGalleryFragment");
+                    if(mFragmentListener !=null) mFragmentListener.showFragment("PatientGalleryFragment", null);
 
                     break;
                 case R.id.menu_medical_record:
-                    if(mFragmentListener !=null) mFragmentListener.showFragment("MedicalRecordFragment");
+                    if(mFragmentListener !=null) mFragmentListener.showFragment("MedicalRecordFragment", null);
 
                     break;
                 case R.id.menu_delete:

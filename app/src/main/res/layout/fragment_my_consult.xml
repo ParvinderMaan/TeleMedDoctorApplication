@@ -10,36 +10,44 @@
     android:focusable="true"
     android:orientation="vertical"
     tools:context=".consult.MyConsultFragment">
-    <!--    header layout-->
+    <!--    header layout -->
     <RelativeLayout
         android:id="@+id/ll_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/screen_start_padding"
-        android:paddingTop="@dimen/screen_top_padding"
-        android:paddingEnd="@dimen/screen_end_padding"
-        android:paddingBottom="@dimen/screen_bottom_padding">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_header"
-            android:layout_width="wrap_content"
+            android:paddingStart="@dimen/screen_start_padding"
+            android:paddingEnd="@dimen/screen_end_padding"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Consult"
-            android:layout_centerVertical="true"
+            android:text="@string/title_my_consults"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:paddingTop="@dimen/screen_top_padding"
+            android:paddingBottom="@dimen/screen_bottom_padding"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/ibtn_close"
-            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
+            android:paddingStart="@dimen/screen_start_padding"
+            android:paddingEnd="@dimen/screen_end_padding"
+            android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_cross_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_alignParentEnd="true" />
+
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar" />
+
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
 
     <!--  scroll layout   -->
@@ -60,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:text="Upcoming Appointments"
+                android:text="@string/title_upcoming_appointment"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -80,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
+                tools:itemCount="2"
                 tools:listitem="@layout/list_item_appointment_upcoming" />
 
             <TextView
@@ -88,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:text="Last Appointments"
+                android:text="@string/title_last_appointments"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"

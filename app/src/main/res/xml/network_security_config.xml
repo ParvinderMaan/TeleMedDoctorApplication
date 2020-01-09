@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true"> abc</domain>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">telemedwebapi.azurewebsites.net</domain>
+<!--        <domain includeSubdomains="true">telemedwebapi-dev.azurewebsites.net</domain>-->
+
     </domain-config>
 </network-security-config>
+

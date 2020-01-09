@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.telemed.doctor.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link BottomSheetDialogFragment} subclass.
  */
 public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment {
     private static String TAG= "";
@@ -31,7 +31,6 @@ public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment
         return new HistoryOptionsBottomSheetFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_bottom_sheet_history_option, container, false);
@@ -41,6 +40,7 @@ public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
+
     }
 
     private void initView(View v) {
@@ -51,14 +51,12 @@ public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment
             TAG="TAG_RATE_APPOINTMENT";
             dismiss();
 
-
-
         });
-        llPrescribeAppointment=v.findViewById(R.id.ll_precribe_the_appointment);
+
+
         llPrescribeAppointment.setOnClickListener(v1 -> {
             TAG="TAG_PRESCRIBE_PATIENT";
             dismiss();
-
 
         });
 
@@ -84,8 +82,6 @@ public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment
 
                 break;
 
-
-
         }
     }
 
@@ -99,4 +95,5 @@ public class HistoryOptionsBottomSheetFragment extends BottomSheetDialogFragment
         llRateAppointment.setOnClickListener(null);
         llPrescribeAppointment.setOnClickListener(null);
     }
+
 }

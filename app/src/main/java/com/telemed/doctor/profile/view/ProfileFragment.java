@@ -320,7 +320,7 @@ public class ProfileFragment extends Fragment {
                 .setRequestedSize(400, 400)
                 .setCropMenuCropButtonIcon(android.R.drawable.ic_menu_crop);
 
-        Intent intent = activityBuilder.getIntent(getActivity());
+        Intent intent = activityBuilder.getIntent(requireActivity());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
@@ -370,7 +370,7 @@ public class ProfileFragment extends Fragment {
         return MultipartBody.Part.createFormData(name, file.getName(), requestFile);
     }
 
-    public void updateUi(BasicInfoResponse.Data info) {
+    public void updateUi(BasicInfoResponse.BasicDetail info) {
         tvDocSpeciality.setText(info.getSpeciality()); // 1-->MALE 2 --> FEMALE 3-->OTHER
     }
 }

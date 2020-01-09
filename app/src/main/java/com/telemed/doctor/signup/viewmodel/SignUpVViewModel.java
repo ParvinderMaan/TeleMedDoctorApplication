@@ -75,7 +75,11 @@ public class SignUpVViewModel extends AndroidViewModel {
                     }else {
                         resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
 
 
 
@@ -128,6 +132,9 @@ public class SignUpVViewModel extends AndroidViewModel {
                     }else {
                         resultantFileUpload.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
 
@@ -163,7 +170,11 @@ public class SignUpVViewModel extends AndroidViewModel {
                     }else {
                         resultantFileDelete.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantFileDelete.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
+
             }
 
             @Override
@@ -198,6 +209,9 @@ public class SignUpVViewModel extends AndroidViewModel {
                     }else {
                         resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                     }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                 }
 
 

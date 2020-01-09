@@ -47,33 +47,33 @@ public class BankInfoProfileFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(BankInfoProfileViewModel.class);
         initView(v);
+        initObserver();
+
         mViewModel.fetchBankInfo();
+    }
 
-        mViewModel.getResultant().observe(getViewLifecycleOwner(), new Observer<ApiResponse<BankInfoResponse>>() {
-            @Override
-            public void onChanged(ApiResponse<BankInfoResponse> response) {
-                switch (response.getStatus()) {
-                    case SUCCESS:
-                        if (response.getData() != null) {
-                            BankInfoResponse.Data infoObj = response.getData().getData();
-                            setView(infoObj);
-                        }
-                        break;
+    private void initObserver() {
+        mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        BankInfoResponse.BankDetail infoObj = response.getData().getData();
+                        setView(infoObj);
+                    }
+                    break;
 
-                    case FAILURE:
-                        if (response.getErrorMsg() != null) {
-                            // tvAlertView.showTopAlert(response.getErrorMsg());
-                        }
-                        break;
-                }
-
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        // tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    break;
             }
+
         });
 
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading ->
                         progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
-
 
     }
 
@@ -90,7 +90,7 @@ public class BankInfoProfileFragment extends Fragment {
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
     }
 
-    private void setView(BankInfoResponse.Data info) {
+    private void setView(BankInfoResponse.BankDetail info) {
         edtRoutingNumber.setText(info.getRoutingNumber()!=null?info.getRoutingNumber():"");
         edtCity.setText(info.getCity()!=null?info.getCity():"");
         edtPostCode.setText(info.getPostCode()!=null?info.getPostCode():"");

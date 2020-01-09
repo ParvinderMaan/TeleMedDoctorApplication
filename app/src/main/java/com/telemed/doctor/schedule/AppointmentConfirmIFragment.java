@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 /**
@@ -58,7 +57,7 @@ public class AppointmentConfirmIFragment extends Fragment {
 
 
             if (mFragmentListener != null)
-                mFragmentListener.showFragment("MedicalRecordFragment");
+                mFragmentListener.showFragment("MedicalRecordFragment", null);
 
         });
 
