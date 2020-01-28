@@ -237,7 +237,7 @@
             android:layout_marginTop="@dimen/_40sdp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_continue"
+                android:id="@+id/btn_edit_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -246,7 +246,7 @@
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
                 android:text="@string/title_edit"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_white"
                 android:textSize="@dimen/_14sdp"

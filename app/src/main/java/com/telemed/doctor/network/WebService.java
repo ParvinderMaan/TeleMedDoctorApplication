@@ -10,10 +10,13 @@ import com.telemed.doctor.password.model.VerficationRequest;
 import com.telemed.doctor.password.model.VerificationResponse;
 import com.telemed.doctor.password.model.ResendOtpResponse;
 import com.telemed.doctor.profile.model.AlterProfilePicResponse;
+import com.telemed.doctor.profile.model.BankInfoRequest;
 import com.telemed.doctor.profile.model.BankInfoResponse;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.model.OptionResponse;
+import com.telemed.doctor.profile.model.ProfessionalInfoRequest;
 import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
+import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.profile.model.StateResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
@@ -31,6 +34,7 @@ import com.telemed.doctor.signup.model.SignUpIVResponse;
 import com.telemed.doctor.signup.model.SignUpVRequest;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -51,7 +55,7 @@ import retrofit2.http.Query;
 
 public interface WebService {
 
-
+  // signup
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_I)
     Call<SignUpIResponse> attemptSignUpOne(@Body SignUpIRequest in);
@@ -73,22 +77,18 @@ public interface WebService {
     Call<StateResponse> fetchStateInfo(@Query("CountryId") String id);
 
 
-//   @Headers({WebUrl.CONTENT_HEADER,})
     @POST(WebUrl.SIGN_UP_II)
     Call<SignUpIIResponse> attemptSignUpTwo(@HeaderMap Map<String, String> headers, @Body SignUpIIRequest in);
 
 
-//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_III)
     Call<SignUpIIIResponse> attemptSignUpThree(@HeaderMap Map<String, String> headers, @Body SignUpIIIRequest in);
 
 
-//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_IV)
     Call<SignUpIVResponse> attemptSignUpFour(@HeaderMap Map<String, String> headers, @Body SignUpIVRequest in);
 
 
-//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_V)
     Call<SignUpVResponse> attemptSignUpFive(@HeaderMap Map<String, String> headers);
 
@@ -137,6 +137,18 @@ public interface WebService {
     Call<BankInfoResponse> fetchBankProfileInfo(@HeaderMap Map<String, String> token);
 
 
+    @POST(WebUrl.UPDATE_BANK_PROFILE_INFO)
+    Call<ProfileUpdateResponse> updateBankInfo(@HeaderMap Map<String, String> headers, @Body BankInfoRequest in);
+
+
+
+    @POST(WebUrl.UPDATE_PROFESSIONAL_PROFILE_INFO)
+    Call<ProfileUpdateResponse> updateProfessionalProfileInfo(@HeaderMap Map<String, String> headers, @Body ProfessionalInfoRequest in);
+
+
+    @POST(WebUrl.UPDATE_BASIC_PROFILE_INFO)
+    Call<ProfileUpdateResponse> updateBasicProfileInfo(@HeaderMap Map<String, String> headers, @Body SignUpIVRequest in);
+
     @Multipart
     @POST(WebUrl.ALTER_PROFILE_PIC)
     Call<AlterProfilePicResponse> alterProfilePic(@HeaderMap Map<String, String> token,
@@ -151,6 +163,8 @@ public interface WebService {
 
     @GET(WebUrl.FETCH_UPCOMING_APPOINTMENT)
     Call<AppointmentListResponse> fetchUpcomingAppointment(@HeaderMap Map<String, String> token);
+
+
 
 }
 

@@ -308,13 +308,13 @@
             android:layout_marginTop="@dimen/_40sdp">
 
             <Button
-                android:id="@+id/btn_continue"
+                android:id="@+id/btn_edit_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/rounded_background_ii"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
                 android:text="@string/title_edit"

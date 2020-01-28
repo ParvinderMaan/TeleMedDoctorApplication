@@ -46,8 +46,6 @@ public class ServiceGenerator {
     }
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl) {
-
-
         return createService(serviceClass, baseUrl, null);
     }
 
@@ -78,6 +76,9 @@ public class ServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
+    /**
+     * @return
+     */
     private static Cache getCache() {
 
         Cache cache = null;

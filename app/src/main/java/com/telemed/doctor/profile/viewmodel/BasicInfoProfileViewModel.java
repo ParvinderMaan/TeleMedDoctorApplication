@@ -38,19 +38,20 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     private final TeleMedDatabase mDatabase;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<ApiResponse<BasicInfoResponse>> resultant;
-    private MutableLiveData<BasicInfoResponse.BasicDetail> basicDetail;
+    private MutableLiveData<BasicInfoResponse.BasicDetail> mBasicDetail;
     private ScheduledExecutorService mService;
 
     public LiveData<BasicInfoResponse.BasicDetail> getBasicDetail() {
+        //mDatabase.basicInfoProfileDao().getBasicDetail()
         //basicDetail
-        return mDatabase.basicInfoProfileDao().getBasicDetail();
+        return mBasicDetail;
     }
 
     public void setBasicDetail(BasicInfoResponse.BasicDetail basicDetail) {
-      //  this.basicDetail.setValue(basicDetail);
-        mService.submit(() -> {
-                   mDatabase.basicInfoProfileDao().insert(basicDetail);
-        });
+      this.mBasicDetail.setValue(basicDetail);
+//        mService.submit(() -> {
+//                   mDatabase.basicInfoProfileDao().insert(basicDetail);
+//        });
 
     }
 
@@ -66,7 +67,7 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
 
         isLoading=new MutableLiveData<>();
         resultant=new MutableLiveData<>();
-        basicDetail=new MutableLiveData<>();
+        mBasicDetail=new MutableLiveData<>();
 
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");

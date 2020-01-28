@@ -45,6 +45,10 @@ public interface WebUrl {
     String BANK_PROFILE_INFO = "Doctor/GetDoctorBankInfo";
     String ALTER_PROFILE_PIC = "Auth/UpdateProfilePic";
 
+    String UPDATE_BANK_PROFILE_INFO="Doctor/UpdateDoctorBankInfo";
+    String UPDATE_PROFESSIONAL_PROFILE_INFO="Doctor/UpdateDoctorProfessionalInfo";
+    String UPDATE_BASIC_PROFILE_INFO = "Doctor/UpdateDoctorPersonalInfo";
+
 
     String FETCH_UPCOMING_APPOINTMENT="OpentokMedia/AppointmentList";
 

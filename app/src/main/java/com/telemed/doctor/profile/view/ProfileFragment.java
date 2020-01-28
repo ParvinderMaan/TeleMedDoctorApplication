@@ -30,6 +30,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.helper.Common;
 import com.telemed.doctor.helper.FileUtil;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
@@ -50,7 +51,8 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class ProfileFragment extends Fragment {
-    private TextView tvBasicInfo, tvProfessionalInfo, tvBankInfo,tvDocSpeciality,tvDocName;
+    private static final int REQUEST_CODE_PERM=99;
+    private TextView tvBasicInfo, tvProfessionalInfo, tvBankInfo,tvViewDocument,tvDocName;
     private ImageButton ibtnClose,ibtnEditProfilePic;
     private BankInfoProfileFragment mBankInfoFragment;
     private ProfessionalInfoProfileFragment mProfessionalInfoFragment;
@@ -65,6 +67,7 @@ public class ProfileFragment extends Fragment {
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
+
     }
 
     public void onAttach(@NonNull Context context) {
@@ -96,10 +99,24 @@ public class ProfileFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
         initView(v);
+        initListener();
         initObserver();
         // @init
         setTextViewState(true,false,false);
         showFragment("TAG_BASIC");
+    }
+
+    private void initListener() {
+
+        civProfilePic.setOnClickListener(v-> {
+            checkRuntimePermission();
+        });
+
+        tvViewDocument.setOnClickListener(v -> {
+
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("ProfileDocumentFragment",null);
+        });
     }
 
     private void initObserver() {
@@ -158,17 +175,13 @@ public class ProfileFragment extends Fragment {
         ibtnClose.setOnClickListener(mClickListener);
         ibtnEditProfilePic.setOnClickListener(mClickListener);
         //------------------------------------------------
-        tvDocSpeciality = v.findViewById(R.id.tv_doc_speciality);
+        tvViewDocument = v.findViewById(R.id.tv_view_document);
         civProfilePic = v.findViewById(R.id.civ_profile_pic);
         progressBar = v.findViewById(R.id.progress_bar);
-
-
-
+        //------------------------------------------------
         tvDocName.setText(mFirstName+" "+mLastName);
-        tvDocSpeciality.setText("");
-        if(mProfilePicUrl!=null && !mProfilePicUrl.isEmpty()) {
-            progressBar.setVisibility(View.VISIBLE);
-            Picasso.get().load(WebUrl.IMAGE_URL+mProfilePicUrl)
+        progressBar.setVisibility(View.VISIBLE);
+        Picasso.get().load(mProfilePicUrl!=null && !mProfilePicUrl.isEmpty() ?WebUrl.IMAGE_URL+mProfilePicUrl:"www.example.com")
                     .placeholder(R.drawable.img_avatar)
                     .error(R.drawable.img_avatar)
                     .fit()
@@ -176,27 +189,17 @@ public class ProfileFragment extends Fragment {
                     .into(civProfilePic, new Callback() {
                 @Override
                 public void onSuccess() {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onError(Exception e) {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             });
-        }else{
-            Picasso.get().load("abcdef")
-                    .placeholder(R.drawable.img_avatar)
-                    .error(R.drawable.img_avatar)
-                    .fit()
-                    .centerCrop()
-                    .into(civProfilePic);
-        }
 
-        civProfilePic.setOnClickListener(v1 -> {
 
-            checkRuntimePermission();
-        });
+
 
     }
 
@@ -260,9 +263,7 @@ public class ProfileFragment extends Fragment {
                     break;
 
                 case R.id.ibtn_edit_profile_pic:
-
                     checkRuntimePermission();
-
                     break;
             }
 
@@ -299,7 +300,7 @@ public class ProfileFragment extends Fragment {
                 openGallery();
             } else {
                 requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, 99);
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERM);
             }
         } else {
                openGallery();
@@ -346,14 +347,14 @@ public class ProfileFragment extends Fragment {
 
     private void attemptImageUpload(String imagePath) {
         if(imagePath!=null)
-            mViewModel.alterProfilePic(prepareImgFilePart(imagePath,"imgFile")); // key
+            mViewModel.alterProfilePic(Common.prepareImgFilePart(imagePath,"imgFile")); // key
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 99) {
+        if (requestCode == REQUEST_CODE_PERM) {
             if (grantResults.length == 0) {
                 Log.e("permission", "Permission has been denied by user");
             } else {
@@ -363,14 +364,14 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    @NonNull
-    private MultipartBody.Part prepareImgFilePart(String filee, String name) {
-        File file = new File(filee);
-        RequestBody requestFile = RequestBody.create(file,okhttp3.MediaType.parse("image/*"));
-        return MultipartBody.Part.createFormData(name, file.getName(), requestFile);
-    }
+//    @NonNull
+//    private MultipartBody.Part prepareImgFilePart(String filee, String name) {
+//        File file = new File(filee);
+//        RequestBody requestFile = RequestBody.create(file,okhttp3.MediaType.parse("image/*"));
+//        return MultipartBody.Part.createFormData(name, file.getName(), requestFile);
+//    }
 
-    public void updateUi(BasicInfoResponse.BasicDetail info) {
-        tvDocSpeciality.setText(info.getSpeciality()); // 1-->MALE 2 --> FEMALE 3-->OTHER
-    }
+//    public void updateUi(BasicInfoResponse.BasicDetail info) {
+//        tvDocSpeciality.setText(info.getSpeciality()); // 1-->MALE 2 --> FEMALE 3-->OTHER
+//    }
 }

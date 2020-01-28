@@ -4,11 +4,17 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import androidx.annotation.NonNull;
+
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class Common {
 
@@ -92,5 +98,12 @@ public class Common {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @NonNull
+    public static MultipartBody.Part prepareImgFilePart(String filee, String name) {
+        File file = new File(filee);
+        RequestBody requestFile = RequestBody.create(file,okhttp3.MediaType.parse("image/*"));
+        return MultipartBody.Part.createFormData(name, file.getName(), requestFile);
     }
 }

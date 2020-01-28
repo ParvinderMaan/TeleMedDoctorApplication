@@ -72,30 +72,36 @@
                android:id="@+id/tv_doc_name"
                android:text="************"
                android:ellipsize="end"
-               android:maxLength="10"
                android:textColor="@color/colorWhite"
                android:textStyle="bold"
                android:includeFontPadding="false"
                android:textSize="@dimen/_20sdp"
+               android:layout_gravity="start"
+
                android:layout_toEndOf="@+id/rl_profile_pic"
-               android:paddingStart="@dimen/_10sdp"
+               android:layout_marginStart="@dimen/_10sdp"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"/>
 
 
 
            <TextView
-               android:id="@+id/tv_doc_speciality"
+               android:id="@+id/tv_view_document"
                android:includeFontPadding="false"
-               android:text="*******"
-               android:ellipsize="end"
-               android:maxLength="20"
-               android:paddingStart="@dimen/_10sdp"
+               android:text="View Documents"
+               android:layout_marginStart="@dimen/_10sdp"
+               android:background="@drawable/rounded_background_xii"
+               android:paddingStart="@dimen/_7sdp"
+               android:layout_marginTop="@dimen/_2sdp"
+               android:paddingTop="@dimen/_2sdp"
+               android:paddingBottom="@dimen/_2sdp"
+               android:paddingEnd="@dimen/_7sdp"
+               android:layout_gravity="start"
                android:textColor="@color/colorWhite"
                android:layout_below="@+id/tv_doc_name"
                android:textSize="@dimen/_10sdp"
                android:layout_toEndOf="@+id/rl_profile_pic"
-               android:layout_width="match_parent"
+               android:layout_width="wrap_content"
                android:layout_height="wrap_content"/>
 
 

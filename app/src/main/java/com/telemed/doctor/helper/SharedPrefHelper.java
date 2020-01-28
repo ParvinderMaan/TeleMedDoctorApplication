@@ -25,8 +25,6 @@ public class SharedPrefHelper {
 
     public SharedPrefHelper(Context context) {
         mSharedPref = context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE);
-
-
     }
 
 

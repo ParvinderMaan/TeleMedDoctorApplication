@@ -100,7 +100,7 @@ public class SignUpIIIViewModel extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<Boolean> getViewEnabled() {
+    public MutableLiveData<Boolean> getEnableView() {
         return isViewEnabled;
     }
 }

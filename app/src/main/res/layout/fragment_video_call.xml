@@ -9,26 +9,18 @@
     android:focusable="true"
     android:background="@color/colorGrey"
     tools:context=".videocall.VideoCallFragment">
-    <!--     subscriber layout -->
+    <!--     subscriber layout 0-->
     <FrameLayout
         android:id="@+id/subscriber_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <!--     publisher layout -->
+    <!--     publisher layout 1-->
     <FrameLayout
         android:id="@+id/publisher_container"
-        android:layout_width="@dimen/_75sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_above="@+id/ll_bottom"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:background="@color/colorBlue"
-        android:padding="@dimen/_2sdp" />
-    <!--     bottom layout -->
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />
+    <!--     bottom layout  2-->
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
@@ -78,18 +70,18 @@
 
 
     </LinearLayout>
-    <!--     alert layout -->
+    <!--     alert layout  3-->
     <include
         android:id="@+id/tv_alert_view"
         layout="@layout/layout_top_alert_box" />
-    <!--     progress layout -->
+    <!--     progress layout 4-->
     <include
         android:id="@+id/progress_bar"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         layout="@layout/layout_progress_bar" />
-    <!--     header layout -->
+    <!--     header layout  5-->
     <RelativeLayout
         android:id="@+id/rl_header"
         android:visibility="invisible"
@@ -110,7 +102,7 @@
             app:civ_border_width="2dp" />
 
 
-        <!--    upper layout -->
+        <!--    upper layout  6-->
         <TextView
             android:id="@+id/tv_subscriber_name"
             android:layout_width="match_parent"
@@ -154,7 +146,7 @@
 
 
     </RelativeLayout>
-<!--     Permission layout-->
+<!--     Permission layout  6-->
     <LinearLayout
         android:id="@+id/ll_top"
         android:background="@color/colorBlue"
@@ -191,7 +183,7 @@
 
     </LinearLayout>
 
-<!--    waiting user-->
+<!--    waiting user  7-->
     <TextView
         android:id="@+id/tv_user_waiting"
         android:textColor="@color/colorBlack"
@@ -203,3 +195,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </RelativeLayout>
+
+
+
+    <!--     publisher layout 1-->
+<!--<FrameLayout-->
+<!--android:id="@+id/publisher_container"-->
+<!--android:layout_width="@dimen/_75sdp"-->
+<!--android:layout_height="@dimen/_100sdp"-->
+<!--android:layout_above="@+id/ll_bottom"-->
+<!--android:layout_alignParentEnd="true"-->
+<!--android:layout_gravity="bottom|end"-->
+<!--android:layout_marginLeft="@dimen/_16sdp"-->
+<!--android:layout_marginEnd="@dimen/_16sdp"-->
+<!--android:layout_marginRight="@dimen/_16sdp"-->
+<!--android:layout_marginBottom="@dimen/_16sdp"-->
+<!--android:background="@color/colorBlue"-->
+<!--android:padding="@dimen/_2sdp" />-->

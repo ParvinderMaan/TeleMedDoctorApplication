@@ -48,10 +48,10 @@ public class PatientRatingFragment extends Fragment {
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
-            if(mFragmentListener!=null){
-                mFragmentListener.popTillFragment("MyConsultFragment",0);
-            }
-
+//            if(mFragmentListener!=null){
+//                mFragmentListener.popTillFragment("MyConsultFragment",0);
+//            }
+                  requireActivity().finish();
         });
     }
 

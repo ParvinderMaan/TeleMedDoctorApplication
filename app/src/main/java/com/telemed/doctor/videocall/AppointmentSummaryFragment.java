@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.SecondaryActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 /**
@@ -21,7 +22,7 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 public class AppointmentSummaryFragment extends Fragment {
 
 
-    private HomeFragmentSelectedListener mFragmentListener;
+   // private HomeFragmentSelectedListener mFragmentListener;
 
     public static AppointmentSummaryFragment newInstance() {
        return new AppointmentSummaryFragment();
@@ -29,7 +30,7 @@ public class AppointmentSummaryFragment extends Fragment {
 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mFragmentListener = (HomeFragmentSelectedListener) context;
+     //   mFragmentListener = (HomeFragmentSelectedListener) context;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,8 +46,10 @@ public class AppointmentSummaryFragment extends Fragment {
              @Override
              public void onClick(View v) {
 
-                 if (mFragmentListener != null)
-                     mFragmentListener.showFragment("PatientRatingFragment", null);
+//                 if (mFragmentListener != null)
+//                     mFragmentListener.showFragment("PatientRatingFragment", null);
+
+                 ((SecondaryActivity)requireActivity()).showFragmentPatientRating();
              }
          });
 

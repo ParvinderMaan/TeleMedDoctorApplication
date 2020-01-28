@@ -27,6 +27,7 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.dialog.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
+import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.MyScheduleFragment;
@@ -273,7 +274,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .addToBackStack("MedicalRecordFragment")
                         .commit();
                 break;
+            case "ProfileDocumentFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .add(R.id.fl_container, ProfileDocumentFragment.newInstance())
+                        .addToBackStack("ProfileDocumentFragment")
+                        .commit();
 
+                break;
 
         }
 
@@ -328,10 +336,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             intent.putExtras(b);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-        } else {
-
         }
-
     }
 
     @Override

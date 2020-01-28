@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
+import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.videocall.AppointmentSummaryFragment;
 
@@ -62,6 +63,11 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
                         .commit();
                 break;
 
+
+
+
+
+
         }
     }
 
@@ -89,6 +95,12 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
     }
 
 
+    // temp method
+    public void showFragmentPatientRating(){
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, PatientRatingFragment.newInstance())
+                .commit();
+    }
 
 
 }

@@ -33,6 +33,7 @@ public class BasicInfoProfileFragment extends Fragment {
     private BasicInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
     private Button btnEditSave;
+    private String selectorState[]={"Edit","Save"};
 
 
     public BasicInfoProfileFragment() {
@@ -77,6 +78,7 @@ public class BasicInfoProfileFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         // tvAlertView.showTopAlert(response.getErrorMsg());
+                        // handle later...
                     }
                     break;
 
@@ -116,9 +118,9 @@ public class BasicInfoProfileFragment extends Fragment {
 
 
         //----------
-        if (getParentFragment() != null) {
-            ((ProfileFragment)getParentFragment()).updateUi(info);
-        }
+//        if (getParentFragment() != null) {
+//            ((ProfileFragment)getParentFragment()).updateUi(info);
+//        }
 
     }
 
@@ -146,6 +148,8 @@ public class BasicInfoProfileFragment extends Fragment {
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
 
         btnEditSave.setOnClickListener(vv->{
+
+
 
 
         });

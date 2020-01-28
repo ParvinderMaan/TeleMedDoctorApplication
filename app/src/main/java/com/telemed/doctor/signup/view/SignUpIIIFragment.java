@@ -109,7 +109,7 @@ public class SignUpIIIFragment extends BaseFragment {
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
-        mViewModel.getViewEnabled()
+        mViewModel.getEnableView()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
 
 
@@ -145,6 +145,7 @@ public class SignUpIIIFragment extends BaseFragment {
             }
 
         });
+
 
 
     }
