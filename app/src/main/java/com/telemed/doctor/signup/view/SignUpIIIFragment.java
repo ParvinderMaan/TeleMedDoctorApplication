@@ -96,12 +96,6 @@ public class SignUpIIIFragment extends BaseFragment {
         initListener();
         initObserver();
 
-
-
-
-
-
-
     }
 
     private void initObserver() {

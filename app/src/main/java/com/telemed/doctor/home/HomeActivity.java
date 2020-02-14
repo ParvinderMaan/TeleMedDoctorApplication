@@ -27,6 +27,9 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.dialog.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
+import com.telemed.doctor.password.view.OneTimePasswordFragment;
+import com.telemed.doctor.profile.view.ChangeEmailFragment;
+import com.telemed.doctor.profile.view.OneTimeFragment;
 import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
@@ -281,6 +284,21 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .addToBackStack("ProfileDocumentFragment")
                         .commit();
 
+                break;
+            case "UpdateEmailFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .add(R.id.fl_container, ChangeEmailFragment.newInstance((Object)payload))
+                        .addToBackStack("UpdateEmailFragment")
+                        .commit();
+                break;
+
+            case "OneTimeFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, OneTimeFragment.newInstance((Object) payload), "OneTimeFragment")
+                        .addToBackStack("OneTimeFragment")
+                        .commit();
                 break;
 
         }

@@ -126,6 +126,7 @@
                             android:inputType="number"
                             android:padding="@dimen/_10sdp"
                             android:text=""
+                            android:maxLength="16"
                             android:imeOptions="actionNext"
                             android:textColor="@color/colorWhite"
                             android:textColorHint="@color/colorLightBlue"

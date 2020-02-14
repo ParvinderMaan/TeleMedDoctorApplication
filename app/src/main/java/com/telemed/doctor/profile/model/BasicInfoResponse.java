@@ -167,15 +167,18 @@ public class BasicInfoResponse {
         @Expose
         private String stateName;
 
-
-
-
         @ColumnInfo(name = "email")
         @SerializedName("email")
         @Expose
         private String email;
 
+        @ColumnInfo(name = "phoneNumber")
+        @SerializedName("phoneNumber")
+        private String phoneNumber;
 
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
 
         public String getId() {
             return id;
@@ -357,10 +360,13 @@ public class BasicInfoResponse {
             return email;
         }
 
-        public void setEmail(String email) {
+        public void setEmail(String phoneNumber) {
             this.email = email;
         }
 
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
     }
 
 }

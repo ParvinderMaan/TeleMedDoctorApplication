@@ -27,6 +27,8 @@ public interface WebUrl {
     String SIGN_OUT ="Auth/Logout";
 
 
+    String VERIFY_RESETEMAIL = "Auth/ResetEmail";
+
     String VERIFY_USER = "Auth/VerifyUser";
     String RESEND_OTP = "Auth/ResendCode";
     String FETCH_DRILLS="Content/GetDoctorDrillsPI";
@@ -40,6 +42,7 @@ public interface WebUrl {
     String RESET_PASSWORD = "Auth/ResetPassword";
 
     // profile
+    String CHANGE_EMAIL = "Auth/ChangeEmail";
     String BASIC_PROFILE_INFO = "Doctor/GetDoctorPersonalInfo";
     String PROFESSIONAL_PROFILE_INFO = "Doctor/GetDoctorProfessionalInfo";
     String BANK_PROFILE_INFO = "Doctor/GetDoctorBankInfo";

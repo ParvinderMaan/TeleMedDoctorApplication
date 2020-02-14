@@ -11,10 +11,10 @@ public class BankInfoRequest {
     private String routingNumber;
     @SerializedName("accountNumber")
     @Expose
-    private Integer accountNumber;
+    private Long accountNumber;
     @SerializedName("cardNumber")
     @Expose
-    private Integer cardNumber;
+    private Long cardNumber;
     @SerializedName("address")
     @Expose
     private String address;
@@ -25,7 +25,7 @@ public class BankInfoRequest {
     @Expose
     private String postCode;
 
-    private BankInfoRequest(String routingNumber, Integer accountNumber, Integer cardNumber, String address, String city, String postCode) {
+    private BankInfoRequest(String routingNumber, Long accountNumber, Long cardNumber, String address, String city, String postCode) {
         super();
         this.id = generateId();
         this.routingNumber = routingNumber;
@@ -50,19 +50,19 @@ public class BankInfoRequest {
         this.routingNumber = routingNumber;
     }
 
-    public Integer getAccountNumber() {
+    public Long getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Integer accountNumber) {
+    public void setAccountNumber(Long accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public Integer getCardNumber() {
+    public Long getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(Integer cardNumber) {
+    public void setCardNumber(Long cardNumber) {
         this.cardNumber = cardNumber;
     }
 
@@ -93,8 +93,8 @@ public class BankInfoRequest {
 
     static public class Builder {
         private String routingNumber;
-        private Integer accountNumber;
-        private Integer cardNumber;
+        private Long accountNumber;
+        private Long cardNumber;
         private String address;
         private String city;
         private String postCode;
@@ -102,7 +102,7 @@ public class BankInfoRequest {
         public Builder() {
         }
 
-        public Builder setCardNumber(Integer cardNumber) {
+        public Builder setCardNumber(Long cardNumber) {
             this.cardNumber = cardNumber;
             return this;
         }
@@ -112,7 +112,7 @@ public class BankInfoRequest {
             return this;
         }
 
-        public Builder setAccountNumber(Integer accountNumber) {
+        public Builder setAccountNumber(Long accountNumber) {
             this.accountNumber = accountNumber;
             return this;
         }

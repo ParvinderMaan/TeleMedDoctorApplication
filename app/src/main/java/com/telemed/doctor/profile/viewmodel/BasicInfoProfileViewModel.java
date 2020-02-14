@@ -13,7 +13,11 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
+import com.telemed.doctor.profile.model.BankInfoRequest;
+import com.telemed.doctor.profile.model.BankInfoResponse;
+import com.telemed.doctor.profile.model.BasicInfoRequest;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
+import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.room.database.TeleMedDatabase;
 import com.telemed.doctor.signin.SignInResponse;
 
@@ -40,6 +44,13 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<BasicInfoResponse>> resultant;
     private MutableLiveData<BasicInfoResponse.BasicDetail> mBasicDetail;
     private ScheduledExecutorService mService;
+    private MutableLiveData<Boolean> mEditableView;
+    private MutableLiveData<ApiResponse<ProfileUpdateResponse>> resultantUpdateBankInfo;
+
+
+    public MutableLiveData<Boolean> getEditableView() {
+        return mEditableView;
+    }
 
     public LiveData<BasicInfoResponse.BasicDetail> getBasicDetail() {
         //mDatabase.basicInfoProfileDao().getBasicDetail()
@@ -68,6 +79,8 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
         isLoading=new MutableLiveData<>();
         resultant=new MutableLiveData<>();
         mBasicDetail=new MutableLiveData<>();
+        mEditableView=new MutableLiveData<>();
+        resultantUpdateBankInfo=new MutableLiveData<>();
 
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
@@ -109,12 +122,60 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
 
     }
 
+
+    public void updateBasicInfo(BasicInfoRequest in) {
+        this.isLoading.setValue(true);
+      //  this.mEnableView.setValue(false);
+        mWebService.updateBasicDoctorProfileInfo(mHeaderMap,in).enqueue(new Callback<ProfileUpdateResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ProfileUpdateResponse> call, @NonNull Response<ProfileUpdateResponse> response) {
+                isLoading.setValue(false);
+             //   mEnableView.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    ProfileUpdateResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+                        resultantUpdateBankInfo.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultantUpdateBankInfo.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantUpdateBankInfo.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ProfileUpdateResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+               // mEnableView.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantUpdateBankInfo.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+
+
+    }
+
+    public MutableLiveData<ApiResponse<ProfileUpdateResponse>> getUpdateResultant() {
+        return resultantUpdateBankInfo;
+    }
     public MutableLiveData<ApiResponse<BasicInfoResponse>> getResultant() {
         return resultant;
     }
 
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
+    }
+
+    public void setEditableView(boolean enableView) {
+        this.mEditableView.setValue(enableView);
     }
 
 

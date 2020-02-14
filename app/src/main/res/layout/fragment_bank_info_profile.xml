@@ -97,6 +97,7 @@
                     android:inputType="text"
                     android:padding="@dimen/_10sdp"
                     android:text=""
+                    android:maxLength="16"
                     android:textColor="@color/colorLightWhite"
                     android:textColorHint="@color/colorLightBlue"
                     android:textStyle="bold"

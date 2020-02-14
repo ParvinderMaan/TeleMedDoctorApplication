@@ -11,7 +11,7 @@ public class SignUpIVRequest {
     private String routingNumber;
     @SerializedName("accountNumber")
     @Expose
-    private Integer accountNumber;
+    private Long accountNumber;
     @SerializedName("address")
     @Expose
     private String address;
@@ -22,7 +22,7 @@ public class SignUpIVRequest {
     @Expose
     private String postCode;
 
-    public SignUpIVRequest(String routingNumber, Integer accountNumber, String address, String city, String postCode) {
+    public SignUpIVRequest(String routingNumber, Long accountNumber, String address, String city, String postCode) {
         super();
         this.id = generateId();
         this.routingNumber = routingNumber;
@@ -41,7 +41,7 @@ public class SignUpIVRequest {
 
     static public class Builder {
         private String routingNumber;
-        private Integer accountNumber;
+        private Long accountNumber;
         private String address;
         private String city;
         private String postCode;
@@ -52,7 +52,7 @@ public class SignUpIVRequest {
             return this;
         }
 
-        public Builder setAccountNumber(Integer accountNumber) {
+        public Builder setAccountNumber(Long accountNumber) {
             this.accountNumber = accountNumber;
             return this;
         }

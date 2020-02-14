@@ -77,8 +77,8 @@ public class BankInfoProfileFragment extends Fragment {
 
                      if(isFormValid()){
                          BankInfoRequest in=new BankInfoRequest.Builder()
-                                 .setAccountNumber(Integer.valueOf(mAccountNumber))
-                                 .setCardNumber(Integer.valueOf(0)) // no need ..
+                                 .setAccountNumber(Long.parseLong(mAccountNumber))
+                                 .setCardNumber(Long.valueOf(0)) // no need ..
                                  .setAddress(mAddress)
                                  .setCity(mCity)
                                  .setRoutingNumber(mRoutingNumber)
@@ -168,9 +168,6 @@ public class BankInfoProfileFragment extends Fragment {
         progressBar=v.findViewById(R.id.progress_bar);
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
-
-
-
     }
 
 
@@ -178,7 +175,7 @@ public class BankInfoProfileFragment extends Fragment {
         edtRoutingNumber.setText(info.getRoutingNumber()!=null?info.getRoutingNumber():"");
         edtCity.setText(info.getCity()!=null?info.getCity():"");
         edtPostCode.setText(info.getPostCode()!=null?info.getPostCode():"");
-        edtAccountNumber.setText(info.getAccountNumber()!=null?Integer.toString(info.getAccountNumber()):"");
+        edtAccountNumber.setText(info.getAccountNumber()!=null?info.getAccountNumber():"");
         edtAddr.setText(info.getAddress()!=null?info.getAddress():"");
     }
 

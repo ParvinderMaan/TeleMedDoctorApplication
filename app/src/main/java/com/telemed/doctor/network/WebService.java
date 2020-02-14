@@ -12,7 +12,12 @@ import com.telemed.doctor.password.model.ResendOtpResponse;
 import com.telemed.doctor.profile.model.AlterProfilePicResponse;
 import com.telemed.doctor.profile.model.BankInfoRequest;
 import com.telemed.doctor.profile.model.BankInfoResponse;
+import com.telemed.doctor.profile.model.BasicInfoRequest;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
+import com.telemed.doctor.profile.model.ChangeEmailRequest;
+import com.telemed.doctor.profile.model.ChangeEmailResponse;
+import com.telemed.doctor.profile.model.OTPRequest;
+import com.telemed.doctor.profile.model.OTPResponse;
 import com.telemed.doctor.profile.model.OptionResponse;
 import com.telemed.doctor.profile.model.ProfessionalInfoRequest;
 import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
@@ -65,6 +70,10 @@ public interface WebService {
     Call<VerificationResponse> attemptVerifyUser(@Body VerficationRequest in);
 
     @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.VERIFY_RESETEMAIL)
+    Call<OTPResponse> attemptResetEmail(@HeaderMap Map<String, String> headers , @Body OTPRequest in);
+
+    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.RESEND_OTP)
     Call<ResendOtpResponse> attemptResendOtp(@Body JsonObject in);
 
@@ -100,6 +109,10 @@ public interface WebService {
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_IN)
     Call<SignInResponse> attemptSignIn(@Body SignInRequest in);
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.CHANGE_EMAIL)
+    Call<ChangeEmailResponse> attemptChangeEmail(@HeaderMap Map<String, String> headers,@Body ChangeEmailRequest in);
 
 
     @POST(WebUrl.SIGN_OUT)
@@ -141,13 +154,16 @@ public interface WebService {
     Call<ProfileUpdateResponse> updateBankInfo(@HeaderMap Map<String, String> headers, @Body BankInfoRequest in);
 
 
-
     @POST(WebUrl.UPDATE_PROFESSIONAL_PROFILE_INFO)
     Call<ProfileUpdateResponse> updateProfessionalProfileInfo(@HeaderMap Map<String, String> headers, @Body ProfessionalInfoRequest in);
 
 
     @POST(WebUrl.UPDATE_BASIC_PROFILE_INFO)
     Call<ProfileUpdateResponse> updateBasicProfileInfo(@HeaderMap Map<String, String> headers, @Body SignUpIVRequest in);
+
+    @POST(WebUrl.UPDATE_BASIC_PROFILE_INFO)
+    Call<ProfileUpdateResponse> updateBasicDoctorProfileInfo(@HeaderMap Map<String, String> headers, @Body BasicInfoRequest in);
+
 
     @Multipart
     @POST(WebUrl.ALTER_PROFILE_PIC)

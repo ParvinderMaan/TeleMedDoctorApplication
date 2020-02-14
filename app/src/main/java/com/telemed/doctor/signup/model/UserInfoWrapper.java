@@ -14,6 +14,7 @@ public class UserInfoWrapper implements Parcelable {
     private String firstName;
     private String lastName;
     private String profilePic;
+    private String oldPassword;
 
     public Integer getLastScreenId() {
         return lastScreenId;
@@ -80,7 +81,13 @@ public class UserInfoWrapper implements Parcelable {
         this.accessToken = accessToken;
     }
 
+    public String getOldPassword() {
+        return oldPassword;
+    }
 
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 
     public UserInfoWrapper() {
     }
@@ -101,6 +108,7 @@ public class UserInfoWrapper implements Parcelable {
         dest.writeString(this.lastName);
         dest.writeString(this.firstName);
         dest.writeString(this.profilePic);
+        dest.writeString(this.oldPassword);
     }
 
     protected UserInfoWrapper(Parcel in) {
@@ -112,6 +120,7 @@ public class UserInfoWrapper implements Parcelable {
         this.lastName = in.readString();
         this.firstName = in.readString();
         this.profilePic = in.readString();
+        this.oldPassword = in.readString();
     }
 
     public static final Parcelable.Creator<UserInfoWrapper> CREATOR = new Parcelable.Creator<UserInfoWrapper>() {

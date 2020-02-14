@@ -166,7 +166,7 @@ public class SignUpIVFragment extends BaseFragment {
             if(isFormValid()){
                 SignUpIVRequest in=new SignUpIVRequest.Builder()
                         .setRoutingNumber(mRoutingNumber)
-                        .setAccountNumber(Integer.parseInt(mAccountNumber))
+                        .setAccountNumber(Long.parseLong(mAccountNumber))
                         .setCity(mCity)
                         .setAddress(mAddress)
                         .setPostCode(mPostCode)

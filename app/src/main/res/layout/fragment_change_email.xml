@@ -18,25 +18,7 @@
         layout="@layout/layout_progress_bar" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edt_usr_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/edt_usr_password"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:hint="@string/hint_email"
-        android:imeOptions="actionGo"
-        android:inputType="textEmailAddress"
-        android:longClickable="false"
-        android:padding="@dimen/_10sdp"
-        android:text=""
-        android:textColor="@color/colorBlue"
-        android:textColorHint="@color/colorLightBlue"
-        app:backgroundTint="@color/colorBlue" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edt_usr_password"
+        android:id="@+id/edt_current_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -44,55 +26,60 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:ems="15"
-        android:hint="@string/hint_password"
+        android:hint="@string/enter_current_password"
         android:imeOptions="actionNext"
         android:inputType="textPassword"
-        android:longClickable="false"
+        android:focusable="true"
         android:padding="@dimen/_10sdp"
         android:text=""
         android:textColor="@color/colorBlue"
         android:textColorHint="@color/colorLightBlue"
         app:backgroundTint="@color/colorBlue" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_forgot_password"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_new_email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_usr_password"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_below="@+id/edt_current_password"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:text="@string/title_forgot_password"
-        android:textColor="@color/colorBlue" />
+        android:hint="Enter new  email"
+        android:imeOptions="actionGo"
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/_10sdp"
+        android:text=""
+        android:textColor="@color/colorBlue"
+        android:textColorHint="@color/colorLightBlue"
+        app:backgroundTint="@color/colorBlue" />
 
     <Button
-        android:id="@+id/btn_sign_in"
+        android:id="@+id/btn_updateEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_forgot_password"
+        android:layout_below="@+id/edt_new_email"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
         android:background="@drawable/rounded_background_i"
         android:paddingStart="@dimen/_40sdp"
         android:paddingEnd="@dimen/_40sdp"
-        android:text="@string/title_log_in"
+        android:text="@string/update"
         android:textAllCaps="false"
         android:textColor="@drawable/selector_text_blue"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_sign_up"
+    <TextView
+        android:id="@+id/textCancel"
+        android:layout_below="@+id/btn_updateEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:text="@string/sign_up"
-
-        android:textColor="@drawable/selector_text_blue"
-        android:textSize="22sp" />
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/title_cancel"
+        android:textColor="@color/colorLightBlue"
+        android:layout_marginTop="@dimen/_15sdp"/>
 
     <ImageView
         android:id="@+id/imageView"

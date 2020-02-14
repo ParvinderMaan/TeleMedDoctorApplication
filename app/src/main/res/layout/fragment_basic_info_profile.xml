@@ -275,6 +275,10 @@
                 android:layout_height="wrap_content"
                 android:hint=""
                 android:enabled="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:longClickable="false"
                 android:includeFontPadding="false"
                 android:inputType="text"
                 android:padding="@dimen/_10sdp"
@@ -282,8 +286,8 @@
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textStyle="bold"
-
-                app:backgroundTint="@color/colorWhite" />
+                app:backgroundTint="@color/colorWhite"
+                app:drawableRightCompat="@drawable/ic_arrow_down"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -314,10 +318,15 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:longClickable="false"
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textStyle="bold"
-                app:backgroundTint="@color/colorWhite" />
+                app:backgroundTint="@color/colorWhite"
+                app:drawableRightCompat="@drawable/ic_arrow_down"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -384,10 +393,15 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:longClickable="false"
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
-                app:backgroundTint="@color/colorWhite" />
+                app:backgroundTint="@color/colorWhite"
+                app:drawableRightCompat="@drawable/ic_arrow_down"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -419,10 +433,15 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:longClickable="false"
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
-                app:backgroundTint="@color/colorWhite" />
+                app:backgroundTint="@color/colorWhite"
+                app:drawableRightCompat="@drawable/ic_arrow_down"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -454,11 +473,11 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
-
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
-                app:backgroundTint="@color/colorWhite" />
+                app:backgroundTint="@color/colorWhite"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -468,7 +487,7 @@
                 android:paddingEnd="@dimen/_10sdp"
                 android:text="@string/title_city"
                 android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorLightBlue" />
+                 />
 
         </LinearLayout>
 
@@ -517,6 +536,40 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorLightBlue" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_phoneNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:includeFontPadding="false"
+                    android:inputType="phone"
+                    android:padding="@dimen/_10sdp"
+                    android:text=""
+                    android:enabled="false"
+                    android:textColor="@color/colorLightWhite"
+                    android:textColorHint="@color/colorLightBlue"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/colorWhite"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/title_phone"
+                    android:textColor="@color/colorWhite"
+                    />
+
+            </LinearLayout>
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edt_email"
                 android:layout_width="match_parent"
@@ -528,6 +581,9 @@
                 android:padding="@dimen/_10sdp"
                 android:text=""
                 android:enabled="false"
+                android:clickable="true"
+                android:focusable="false"
+                android:cursorVisible="false"
                 android:textColor="@color/colorLightWhite"
                 android:textColorHint="@color/colorLightBlue"
                 android:textStyle="bold"
@@ -559,7 +615,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/rounded_background_ii"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:paddingStart="@dimen/_40sdp"
                 android:paddingEnd="@dimen/_40sdp"
                 android:text="@string/title_edit"
@@ -568,7 +624,6 @@
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
 
     </LinearLayout>
 </ScrollView>

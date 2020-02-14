@@ -25,7 +25,7 @@ public class ChangePasswordFragment extends Fragment {
     private ChangePasswordViewModel mViewModel;
 
     public ChangePasswordFragment() {
-        // Required empty public constructor
+        // Required empty public
     }
 
     public static ChangePasswordFragment newInstance() {

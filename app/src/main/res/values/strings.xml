@@ -29,6 +29,7 @@
     <string name="title_city">City</string>
     <string name="title_address">Address</string>
     <string name="title_email">Email</string>
+    <string name="title_phone">Phone No</string>
 
 
     <!--    SignUpIIIFragment-->
@@ -78,8 +79,6 @@
     <string name="header_my_consult">My Consult</string>
     <string name="title_upcoming_appointment">Upcoming Appointments</string>
     <string name="title_last_appointments">Last Appointments</string>
-
-
 
 
     <!--    MySortFragment-->
@@ -174,4 +173,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_current_password">Enter current password</string>
+    <string name="update">Update</string>
+    <string name="back">Back</string>
 </resources>

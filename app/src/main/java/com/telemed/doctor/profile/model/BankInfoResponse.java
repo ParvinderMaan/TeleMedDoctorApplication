@@ -46,7 +46,7 @@ public class BankInfoResponse {
         private String routingNumber;
         @SerializedName("accountNumber")
         @Expose
-        private Integer accountNumber;
+        private String accountNumber;
         @SerializedName("address")
         @Expose
         private String address;
@@ -65,11 +65,11 @@ public class BankInfoResponse {
             this.routingNumber = routingNumber;
         }
 
-        public Integer getAccountNumber() {
+        public String getAccountNumber() {
             return accountNumber;
         }
 
-        public void setAccountNumber(Integer accountNumber) {
+        public void setAccountNumber(String accountNumber) {
             this.accountNumber = accountNumber;
         }
 

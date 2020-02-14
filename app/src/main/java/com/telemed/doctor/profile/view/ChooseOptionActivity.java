@@ -62,12 +62,9 @@ public class ChooseOptionActivity extends BaseActivity {
             mType = getIntent().getStringExtra("KEY_");
             mCountryId = getIntent().getStringExtra("KEY_COUNTRY_ID");
         }
-
-
         initView();
         initRecyclerView();
         initValue();
-
 
         mViewModel.getProgress()
                 .observe(this, isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
@@ -78,7 +75,6 @@ public class ChooseOptionActivity extends BaseActivity {
                     if (response.getData() != null) {
                         StateResponse.Data result = response.getData().getData();
                         mViewModel.setStateList(result.getStates());
-
                     }
 
                     break;
