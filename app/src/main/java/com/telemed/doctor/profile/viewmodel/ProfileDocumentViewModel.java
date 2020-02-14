@@ -41,7 +41,6 @@ public class ProfileDocumentViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<AllDocumentResponse>> resultantAllDocument;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-    private final HashMap<String, String> mHeaderMap;
 
 
 
@@ -58,70 +57,23 @@ public class ProfileDocumentViewModel extends AndroidViewModel {
         isViewEnabled =new MutableLiveData<>();
         resultantAllDocument=new MutableLiveData<>();
 
-        mHeaderMap = new HashMap<>();
-        mHeaderMap.put("content-type", "application/json");
-        mHeaderMap.put("Authorization","Bearer "+accessToken);
-
-    }
-
-
-    public void attemptSignUp(Map<String, String> map) {
-        this.isLoading.setValue(true);
-        this.isViewEnabled.setValue(false);
-        mWebService.attemptSignUpFive(map).enqueue(new Callback<SignUpVResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<SignUpVResponse> call, @NonNull Response<SignUpVResponse> response) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-
-                if (response.isSuccessful() && response.body()!=null) {
-                    SignUpVResponse result = response.body();
-                    Log.e(TAG,result.toString());
-                    if(result.getStatus()){
-                        resultantSignUp.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    }else {
-                        resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
-                }else{
-                    String errorMsg = ErrorHandler.reportError(response.code());
-                    resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                }
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<SignUpVResponse> call, @NonNull Throwable error) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-                String errorMsg = ErrorHandler.reportError(error);
-                resultantSignUp.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-            }
-        });
 
 
     }
 
-    public MutableLiveData<ApiResponse<SignUpVResponse>> getResultantSignUp() {
-        return resultantSignUp;
-    }
 
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
     }
 
-    void cancelRequest(){
 
-    }
 
     public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
     }
 
 
-    public void attemptFileUpload(Map<String, String> token, MultipartBody.Part docFile, int viewIndex) {
+    public void attemptFileUpload(Map<String, String> mHeaderMap, MultipartBody.Part docFile, int viewIndex) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
         mWebService.attemptUploadFile(mHeaderMap,docFile).enqueue(new Callback<FileUploadResponse>() {
@@ -158,7 +110,7 @@ public class ProfileDocumentViewModel extends AndroidViewModel {
 
     }
 
-    public void attemptDeleteFile(Map<String, String> token, int fileId,int viewIndex) {
+    public void attemptDeleteFile(Map<String, String> mHeaderMap, int fileId,int viewIndex) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
         mWebService.attemptDeleteFile(mHeaderMap,fileId).enqueue(new Callback<FileDeleteResponse>() {
@@ -199,51 +151,11 @@ public class ProfileDocumentViewModel extends AndroidViewModel {
         return resultantFileUpload;
     }
 
-    public void fetchAllDocuments(){
-        this.isLoading.setValue(true);
-        this.isViewEnabled.setValue(false);
-        mWebService.fetchAllDocument(mHeaderMap).enqueue(new Callback<AllDocumentResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<AllDocumentResponse> call, @NonNull Response<AllDocumentResponse> response) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-
-                if (response.isSuccessful() && response.body()!=null) {
-                    AllDocumentResponse result = response.body();
-                    Log.e(TAG,result.toString());
-                    if(result.getStatus()){
-                        resultantAllDocument.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    }else {
-                        resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
-                }else{
-                    String errorMsg = ErrorHandler.reportError(response.code());
-                    resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<AllDocumentResponse> call, @NonNull Throwable error) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-                String errorMsg = ErrorHandler.reportError(error);
-                resultantAllDocument.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-            }
-        });
-
-
-    }
 
     public MutableLiveData<ApiResponse<FileDeleteResponse>> getResultantFileDelete() {
         return resultantFileDelete;
     }
 
-    public MutableLiveData<ApiResponse<AllDocumentResponse>> getResultantAllDocument() {
-        return resultantAllDocument;
-    }
 
 
 

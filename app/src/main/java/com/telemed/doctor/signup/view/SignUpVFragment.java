@@ -156,7 +156,7 @@ public class SignUpVFragment extends BaseFragment {
         mDocMap.put("Authorization", "Bearer " + mAccessToken);
 
         mSignUpMap = new HashMap<>();
-        mSignUpMap.put("content-type", "application/json"); //additional
+        mSignUpMap.put("content-type", "application/json"); // additional
         mSignUpMap.put("Authorization", "Bearer " + mAccessToken);
 
         mAdapter = new DocumentAdapter();

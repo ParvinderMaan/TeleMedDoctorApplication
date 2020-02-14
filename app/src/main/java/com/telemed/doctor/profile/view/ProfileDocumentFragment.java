@@ -27,7 +27,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.filepicker.FilePickerActivity;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.profile.viewmodel.ChooseOptionViewModel;
 import com.telemed.doctor.profile.viewmodel.ProfileDocumentViewModel;
@@ -65,7 +67,9 @@ public class ProfileDocumentFragment extends Fragment {
     private TextView tvCancel;
     private CustomAlertTextView tvAlertView;
     private Button btnContinue;
-//    private HashMap<String, String> mDocMap;
+    private HashMap<String, String> mDocMap;
+
+    //    private HashMap<String, String> mDocMap;
 //    private HashMap<String, String> mSignUpMap;
     //@adapter
     private ProfileDocumentAdapter mProfileDocumentAdapter;
@@ -115,13 +119,13 @@ public class ProfileDocumentFragment extends Fragment {
                 MultipartBody.Part filePath;
                 String path = (String) info.getPath();
                 filePath = prepareImgFilePart(path);
-                mViewModel.attemptFileUpload(null, filePath, pos);
+                mViewModel.attemptFileUpload(mDocMap, filePath, pos);
             }
 
 
             if (type.equals("DELETE")) {
                 int id = info.getId();
-                mViewModel.attemptDeleteFile(null, id, pos);
+                mViewModel.attemptDeleteFile(mDocMap, id, pos);
             }
         }
     };
@@ -147,9 +151,13 @@ public class ProfileDocumentFragment extends Fragment {
 //
 //            Log.e(TAG, mAccessToken);
         }
+        SharedPrefHelper mHelper = ((TeleMedApplication) requireActivity().getApplicationContext()).getSharedPrefInstance();
+        mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
+       if(mAccessToken!=null){
+           mDocMap = new HashMap<>();
+           mDocMap.put("Authorization", "Bearer " + mAccessToken);
+       }
 
-//        mDocMap = new HashMap<>();
-//        mDocMap.put("Authorization", "Bearer " + mAccessToken);
 //
 //        mSignUpMap = new HashMap<>();
 //        mSignUpMap.put("content-type", "application/json"); //additional
@@ -174,7 +182,7 @@ public class ProfileDocumentFragment extends Fragment {
         initRecyclerView(v);
         initObserver();
 
-        mViewModel.fetchAllDocuments();
+
     }
 
     private void initObserver() {
@@ -235,56 +243,9 @@ public class ProfileDocumentFragment extends Fragment {
                     }
                 });
 
-        mViewModel.getResultantSignUp().observe(getViewLifecycleOwner(), response -> {
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-//                         SignUpVResponse.Data data = response.getData().getData(); // adding Additional Info
-                        // tvAlertView.showTopAlert(response.getData().getMessage());
-                        // tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                        String msg = response.getData().getMessage();
-//                        if (mFragmentListener != null)
-//                            mFragmentListener.showSignUpSuccessDialog(msg);
-
-                    }
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
-                    }
-                    break;
-
-            }
 
 
-        });
 
-        mViewModel.getResultantAllDocument().observe(getViewLifecycleOwner(), response -> {
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        AllDocumentResponse.Data data = response.getData().getData(); // adding Additional Info
-                        if(!data.getDocumentList().isEmpty()){
-                            mProfileDocumentAdapter.addAll(data.getDocumentList());
-                            mProfileDocumentAdapter.addView(new DocumentInfo()); // addView 1 tile manually
-                        }else {
-                            mProfileDocumentAdapter.addView(new DocumentInfo()); // addView 1 tile manually
-                        }
-                    }
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
-                        //  mAdapter.addView(new DocumentInfo()); // addView 1 tile manually  /// remove it in !!!
-                    }
-                    break;
-
-            }
-
-
-        });
 
 
     }
@@ -306,6 +267,7 @@ public class ProfileDocumentFragment extends Fragment {
         rvDocument.setAdapter(mProfileDocumentAdapter);
 
         mProfileDocumentAdapter.setOnItemClickListener(mItemClickListener);
+        mProfileDocumentAdapter.addView(new DocumentInfo()); // addView 1 tile manually
     }
 
     private void initListener() {

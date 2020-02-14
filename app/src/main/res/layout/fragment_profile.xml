@@ -88,7 +88,7 @@
            <TextView
                android:id="@+id/tv_view_document"
                android:includeFontPadding="false"
-               android:text="View Documents"
+               android:text="Add Document"
                android:layout_marginStart="@dimen/_10sdp"
                android:background="@drawable/rounded_background_xii"
                android:paddingStart="@dimen/_7sdp"
