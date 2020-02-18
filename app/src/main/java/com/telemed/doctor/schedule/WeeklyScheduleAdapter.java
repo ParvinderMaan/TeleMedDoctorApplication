@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,8 @@ public class WeeklyScheduleAdapter extends RecyclerView.Adapter<WeeklyScheduleAd
     private OnItemClickListener onItemClickListener;
 
     public WeeklyScheduleAdapter() {
+
+
         list.add("Abc");
         list.add("Abc");
         list.add("Abc");
@@ -31,9 +34,9 @@ public class WeeklyScheduleAdapter extends RecyclerView.Adapter<WeeklyScheduleAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+
         public ViewHolder(View itemView) {
             super(itemView);
-
 
         }
 
@@ -45,6 +48,9 @@ public class WeeklyScheduleAdapter extends RecyclerView.Adapter<WeeklyScheduleAd
 
                 }
             });
+
+
+
         }
     }
 

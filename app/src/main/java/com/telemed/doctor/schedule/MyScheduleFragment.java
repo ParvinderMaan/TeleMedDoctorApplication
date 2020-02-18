@@ -2,17 +2,25 @@ package com.telemed.doctor.schedule;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -42,11 +50,11 @@ public class MyScheduleFragment extends Fragment {
     private HomeFragmentSelectedListener mFragmentListener;
     private ImageButton ibtnClose;
     private MaterialCalendarView calViewSchedule;
-    private HashMap<String, Boolean> calDatesMap;
+    private HashMap<String, Boolean> mClientDateMap;
     private List<Integer> listOfDays;
-
-
-
+    private ScheduleModel mServerDates;
+    private LinearLayout llSyncOptions;
+    private TextView tvSyncDate,tvSyncWeekday,tvCancelOptions;
 
 
     public static MyScheduleFragment newInstance() {
@@ -62,7 +70,7 @@ public class MyScheduleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listOfDays = new ArrayList<>();
-        calDatesMap = new HashMap<>();
+        mClientDateMap = new HashMap<>();
     }
 
     @Override
@@ -73,24 +81,25 @@ public class MyScheduleFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        mServerDates=fetchDataFromServer();
 
         initView(v);
         initListener();
         initCalendarView(v);
 
-
-
     }
+
+
     private void initCalendarView(View v) {
         calViewSchedule = v.findViewById(R.id.calendar_view_schedule);
-        calViewSchedule.addDecorator(new PrimeDayDisableDecorator());
+//      calViewSchedule.addDecorator(new PrimeDayDisableDecorator());
 
 
-         LocalDate calendar = LocalDate.now();
-         calViewSchedule.setSelectedDate(calendar);
+        LocalDate calendar = LocalDate.now();
+//        calViewSchedule.setSelectedDate(calendar);
 
-         final LocalDate minDate = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
-         final LocalDate maxDate = minDate.plusMonths(3).minusDays(1);
+        final LocalDate minDate = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
+        final LocalDate maxDate = minDate.plusMonths(3).minusDays(1);
 
 
         CalendarDay mAbc = CalendarDay.from(maxDate);
@@ -101,34 +110,49 @@ public class MyScheduleFragment extends Fragment {
         minDateSelect.set(Calendar.DAY_OF_MONTH, 1);
 
         Calendar maxDateSelect = Calendar.getInstance();
-        maxDateSelect.set(maxDate.getYear(), maxDate.getMonthValue(),maxDate.getDayOfMonth());
+        maxDateSelect.set(maxDate.getYear(), maxDate.getMonthValue(), maxDate.getDayOfMonth());
 
         Calendar calendar1 = Calendar.getInstance();
         String curr = calendar1.get(Calendar.DAY_OF_MONTH) + "/" + (calendar1.get(Calendar.MONTH) + 1) + "/" + calendar1.get(Calendar.YEAR);
 
         // Add current date in hash map and disable current date
-        calDatesMap.put(curr,true);
+      //  mClientDateMap.put(curr, true);
 
         // Add dates in hash map to disable unavailable dates
-        for (Calendar loopdate = minDateSelect; minDateSelect.before(maxDateSelect); minDateSelect.add(Calendar.DATE, 1), loopdate = minDateSelect) {
-            String date = loopdate.get(Calendar.DAY_OF_MONTH) + "/" + (loopdate.get(Calendar.MONTH) + 1) + "/" + loopdate.get(Calendar.YEAR);
+        for (Calendar loopdate = minDateSelect;
+             minDateSelect.before(maxDateSelect);
+             minDateSelect.add(Calendar.DATE, 1), loopdate = minDateSelect) {
+             String date = loopdate.get(Calendar.DAY_OF_MONTH) + "/" + (loopdate.get(Calendar.MONTH) + 1) + "/" + loopdate.get(Calendar.YEAR);
 
+//            if (loopdate.before(curr)) {
+//                mClientDateMap.put(date,true);
+//            }else {
+//                mClientDateMap.put(date,false);
+//            }
 
-             if(loopdate.before(curr)){
-
-
-             }
-
-
+         //   Log.e("MyScheduleFragment",""+date);
 
         }
-calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-    }
-});
+
+        calViewSchedule.addDecorators(new BlueColorDecorator(),new WhiteColorDecorator(),new RedColorDecorator());
+
+
         // Commit calendar
-//        calViewSchedule.setWeekDayLabels(new CharSequence[]{"S","M","T","W","T","F","S"});
+
+
+
+        calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay day, boolean selected) {
+
+                String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+                Toast.makeText(requireActivity(), ""+date, Toast.LENGTH_SHORT).show();
+
+                if(mFragmentListener!=null)mFragmentListener.showFragment("DayWiseAvailabilityFragment",null);
+            }
+        });
+
+//      calViewSchedule.setWeekDayLabels(new CharSequence[]{"S","M","T","W","T","F","S"});
         calViewSchedule.setWeekDayFormatter(new WeekDayFormatter() {
             @Override
             public CharSequence format(DayOfWeek dayOfWeek) {
@@ -142,18 +166,18 @@ calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
                 .setShowWeekDays(true)
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .setMaximumDate(maxDate)
-
                 .commit();
-
-
-
-
-
     }
 
     private void initView(View v) {
-         ibtnClose = v.findViewById(R.id.ibtn_close);
-         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
+        ibtnClose = v.findViewById(R.id.ibtn_close);
+        btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
+
+        llSyncOptions = v.findViewById(R.id.ll_sync_options);
+        tvSyncDate= v.findViewById(R.id.tv_sync_date);
+        tvSyncWeekday= v.findViewById(R.id.tv_sync_weekday);
+        tvCancelOptions= v.findViewById(R.id.tv_cancel_options);
+
 
     }
 
@@ -166,14 +190,31 @@ calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
         });
         btnSynchronizeSchedule.setOnClickListener(v -> {
 
-            if (mFragmentListener != null) {
-                mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
+            if(llSyncOptions.getVisibility()==View.VISIBLE){
+                llSyncOptions.setVisibility(View.INVISIBLE);
+            }else {
+                llSyncOptions.setVisibility(View.VISIBLE);
             }
         });
 
+
+        tvSyncDate.setOnClickListener(v->{
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
+            }
+
+        });
+        tvSyncWeekday.setOnClickListener(v->{
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
+            }
+
+        });
+        tvCancelOptions.setOnClickListener(v->{
+            llSyncOptions.setVisibility(View.INVISIBLE);
+        });
+
     }
-
-
 
 
     //  Disable dates decorator
@@ -189,8 +230,8 @@ calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
 //            String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
             String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
 
-            if (calDatesMap.get(date) != null)
-                if (calDatesMap.get(date)) {
+            if (mClientDateMap.get(date) != null)
+                if (mClientDateMap.get(date)) {
                     return true;
                 } else {
                     return false;
@@ -202,10 +243,104 @@ calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
         @Override
         public void decorate(final DayViewFacade view) {
             view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_ii));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iv));
 
+            SpannableStringBuilder spannable = new SpannableStringBuilder();
+
+            view.addSpan(spannable);
         }
 
+    }
+
+
+    private class WhiteColorDecorator implements DayViewDecorator {
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+
+
+            Log.e("WhiteColorDecorator",""+date);
+
+            if (mServerDates.getAvailableDays() != null && !mServerDates.getAvailableDays().isEmpty())
+                if (mServerDates.getAvailableDays().contains(date)) {
+                    return true;
+                }else  return false;
+
+            return false;
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorBlue)));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
+
+        }
+    }
+
+
+    private class BlueColorDecorator implements DayViewDecorator {
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+            Log.e("BlueColorDecorator",""+date);
+
+            if (mServerDates.getAvailableDays() != null && !mServerDates.getAvailableDays().isEmpty())
+                if (mServerDates.getAvailableDays().contains(date)) {
+                    return false;
+                }else  return true;
+
+            return true;
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
+        }
+    }
+
+
+    private class RedColorDecorator implements DayViewDecorator {
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+
+            Log.e("RedColorDecorator",""+date);
+
+            if (mServerDates.getBookedDays() != null && !mServerDates.getBookedDays().isEmpty())
+                if (mServerDates.getBookedDays().contains(date)) {
+                    return true;
+                }else {
+                    return false;
+                }
+
+            return false;
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iv));
+
+        }
+    }
+
+
+    private ScheduleModel fetchDataFromServer() {
+        ScheduleModel scheduleModel = new ScheduleModel();
+        List<String> lstOfBookedDays = new ArrayList<>();
+        List<String> lstOfAvailableDays = new ArrayList<>();
+        lstOfAvailableDays.add("16/2/2020");
+        lstOfAvailableDays.add("17/2/2020");
+        lstOfAvailableDays.add("18/2/2020");
+        lstOfAvailableDays.add("20/2/2020");
+        lstOfAvailableDays.add("25/2/2020");
+        scheduleModel.setAvailableDays(lstOfAvailableDays);
+        lstOfBookedDays.add("22/2/2020");
+        lstOfBookedDays.add("23/2/2020");
+        lstOfBookedDays.add("26/2/2020");
+        scheduleModel.setBookedDays(lstOfBookedDays);
+        return scheduleModel;
     }
 
 }

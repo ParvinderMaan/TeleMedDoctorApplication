@@ -33,12 +33,14 @@ import com.telemed.doctor.profile.view.OneTimeFragment;
 import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
+import com.telemed.doctor.schedule.DayWiseAvailabilityFragment;
 import com.telemed.doctor.schedule.MyScheduleFragment;
 import com.telemed.doctor.schedule.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
 import com.telemed.doctor.password.view.ChangePasswordFragment;
 import com.telemed.doctor.schedule.ScheduleSychronizeFragment;
+import com.telemed.doctor.schedule.WeekDaysScheduleFragment;
 import com.telemed.doctor.setting.SettingFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -301,8 +303,24 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .commit();
                 break;
 
-        }
+            case "DayWiseAvailabilityFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, DayWiseAvailabilityFragment.newInstance((Object) payload), "DayWiseAvailabilityFragment")
+                        .addToBackStack("DayWiseAvailabilityFragment")
+                        .commit();
+                break;
 
+
+            case "WeekDaysScheduleFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, WeekDaysScheduleFragment.newInstance((Object) payload), "WeekDaysScheduleFragment")
+                        .addToBackStack("WeekDaysScheduleFragment")
+                        .commit();
+                break;
+
+        }
 
     }
 
@@ -385,12 +403,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 //-------------------------------------------------------------------------------------------------
 
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void start() {
-        Toast.makeText(getApplicationContext(), "onStartEvent", Toast.LENGTH_SHORT).show();
-
-
-    }
+//    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+//    void start() {
+//        Toast.makeText(getApplicationContext(), "onStartEvent", Toast.LENGTH_SHORT).show();
+//
+//
+//    }
 
 //    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
 //    void stop(){

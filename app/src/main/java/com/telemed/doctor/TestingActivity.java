@@ -31,6 +31,7 @@ public class TestingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_testing);
+
 //
 //        TeleMedDatabase mDatabase = ((TeleMedApplication) getApplicationContext()).getDatabaseInstance();
 //        mDatabase.countryDao().getAllCountries().observe(this, new Observer<List<Country>>() {

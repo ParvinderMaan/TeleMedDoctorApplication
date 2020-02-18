@@ -23,6 +23,8 @@ import com.telemed.doctor.profile.model.ProfessionalInfoRequest;
 import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
 import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.profile.model.StateResponse;
+import com.telemed.doctor.schedule.WeekScheduleRequest;
+import com.telemed.doctor.schedule.WeekScheduleResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
 import com.telemed.doctor.signup.model.AllDocumentResponse;
@@ -181,6 +183,12 @@ public interface WebService {
     Call<AppointmentListResponse> fetchUpcomingAppointment(@HeaderMap Map<String, String> token);
 
 
+    @POST(WebUrl.CREATE_WEEK_SCHEDULE)
+    Call<WeekScheduleResponse> createWeekSchedule(@HeaderMap Map<String, String> headers, @Body WeekScheduleRequest in);
+
+
+    @GET(WebUrl.FETCH_WEEK_SCHEDULES)
+    Call<AppointmentListResponse> fetchWeekSchedules(@HeaderMap Map<String, String> token);
 
 }
 

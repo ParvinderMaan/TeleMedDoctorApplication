@@ -56,4 +56,10 @@ public interface WebUrl {
     String FETCH_UPCOMING_APPOINTMENT="OpentokMedia/AppointmentList";
 
 
+    // schedule....
+    String CREATE_WEEK_SCHEDULE="Doctor/CreateRecurringSchedule";
+    String DELETE_WEEK_SCHEDULE="Doctor/DeleteRecurringSchedule";
+    String UPDATE_WEEK_SCHEDULE="Doctor/UpdateRecurringSchedule";
+    String FETCH_WEEK_SCHEDULES="Doctor/GetRecurringSchedule";
+
 }

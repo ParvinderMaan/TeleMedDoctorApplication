@@ -87,17 +87,78 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_10sdp"
+            android:paddingTop="@dimen/_10sdp"
             app:mcv_leftArrow="@drawable/ic_arrow_left_blue"
             app:mcv_rightArrow="@drawable/ic_arrow_right_blue"
             android:theme="@style/CalenderViewCustom"
             android:background="@drawable/rounded_background_iii"
             app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
             app:mcv_monthLabels="@color/colorBlue"
-            app:mcv_selectionColor="@color/colorRed"
             app:mcv_showOtherDates="all"
             app:mcv_weekDayLabels="@color/colorWhite"
             app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
 
+    </LinearLayout>
+
+
+    <!-- Adding bottom layout after main content -->
+    <LinearLayout
+        android:id="@+id/ll_sync_options"
+        android:visibility="invisible"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/rounded_background_v"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_sync_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date wise"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="@dimen/_5sdp"
+            android:gravity="center"
+            android:textStyle="normal" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <TextView
+            android:id="@+id/tv_sync_weekday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Week wise"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <TextView
+            android:id="@+id/tv_cancel_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="normal" />
+
 
     </LinearLayout>
+
 </RelativeLayout>
+
+<!--    app:mcv_selectionColor="@android:color/transparent"-->

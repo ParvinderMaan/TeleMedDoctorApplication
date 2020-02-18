@@ -262,7 +262,7 @@ public class ProfileDocumentFragment extends Fragment {
 
     private void initRecyclerView(View v) {
         rvDocument = v.findViewById(R.id.rv_document);
-        rvDocument.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvDocument.setLayoutManager(new LinearLayoutManager(requireActivity()));
         rvDocument.setHasFixedSize(true);
         rvDocument.setAdapter(mProfileDocumentAdapter);
 
@@ -290,7 +290,7 @@ public class ProfileDocumentFragment extends Fragment {
 
     }
 
-    public void openDocument(int index) {
+    private void openDocument(int index) {
         fileIndex = index;
         Intent in = new Intent(getActivity(), FilePickerActivity.class);
         in.putExtra(Constant.MAX_NUMBER, 1);
