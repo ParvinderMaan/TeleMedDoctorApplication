@@ -1,8 +1,6 @@
 package com.telemed.doctor.home;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
@@ -27,20 +24,19 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
 import com.telemed.doctor.dialog.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
-import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.profile.view.ChangeEmailFragment;
 import com.telemed.doctor.profile.view.OneTimeFragment;
 import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
-import com.telemed.doctor.schedule.AppointmentConfirmIFragment;
-import com.telemed.doctor.schedule.DayWiseAvailabilityFragment;
-import com.telemed.doctor.schedule.MyScheduleFragment;
-import com.telemed.doctor.schedule.PatientGalleryFragment;
+import com.telemed.doctor.schedule.view.AppointmentConfirmIFragment;
+import com.telemed.doctor.schedule.view.DayWiseAvailabilityFragment;
+import com.telemed.doctor.schedule.view.MyScheduleFragment;
+import com.telemed.doctor.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
 import com.telemed.doctor.password.view.ChangePasswordFragment;
-import com.telemed.doctor.schedule.ScheduleSychronizeFragment;
-import com.telemed.doctor.schedule.WeekDaysScheduleFragment;
+import com.telemed.doctor.schedule.view.ScheduleSychronizeFragment;
+import com.telemed.doctor.schedule.view.WeekDaysScheduleFragment;
 import com.telemed.doctor.setting.SettingFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;

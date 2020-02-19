@@ -23,8 +23,10 @@ import com.telemed.doctor.profile.model.ProfessionalInfoRequest;
 import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
 import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.profile.model.StateResponse;
-import com.telemed.doctor.schedule.WeekScheduleRequest;
-import com.telemed.doctor.schedule.WeekScheduleResponse;
+import com.telemed.doctor.schedule.model.WeekScheduleRequest;
+import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
+import com.telemed.doctor.schedule.model.WeekScheduleResponse;
+import com.telemed.doctor.schedule.model.DeleteWeekScheduleResponse;
 import com.telemed.doctor.signin.SignInRequest;
 import com.telemed.doctor.signin.SignInResponse;
 import com.telemed.doctor.signup.model.AllDocumentResponse;
@@ -38,16 +40,14 @@ import com.telemed.doctor.signup.model.SignUpIRequest;
 import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.model.SignUpIVRequest;
 import com.telemed.doctor.signup.model.SignUpIVResponse;
-import com.telemed.doctor.signup.model.SignUpVRequest;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
@@ -184,11 +184,15 @@ public interface WebService {
 
 
     @POST(WebUrl.CREATE_WEEK_SCHEDULE)
-    Call<WeekScheduleResponse> createWeekSchedule(@HeaderMap Map<String, String> headers, @Body WeekScheduleRequest in);
+    Call<CreateWeekScheduleResponse> createWeekSchedule(@HeaderMap Map<String, String> headers, @Body WeekScheduleRequest in);
 
 
     @GET(WebUrl.FETCH_WEEK_SCHEDULES)
-    Call<AppointmentListResponse> fetchWeekSchedules(@HeaderMap Map<String, String> token);
+    Call<WeekScheduleResponse> fetchWeekSchedules(@HeaderMap Map<String, String> token);
+
+    @DELETE(WebUrl.DELETE_WEEK_SCHEDULE)
+    Call <DeleteWeekScheduleResponse> deleteWeekSchedule(@Query("Id") int scheduleId,@HeaderMap Map<String, String> token);
+
 
 }
 

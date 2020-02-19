@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.view;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.schedule.viewmodel.DayWiseAvailabiltyViewModel;
+import com.telemed.doctor.schedule.model.TimeSlotModel;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 
 import java.util.ArrayList;

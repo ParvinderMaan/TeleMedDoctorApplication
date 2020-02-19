@@ -38,7 +38,7 @@ public class AllergyDrugAdapter extends RecyclerView.Adapter<AllergyDrugAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    listener.onItemClick(getLayoutPosition());
+//                    listener.onItemClickDelete(getLayoutPosition());
 
                 }
             });

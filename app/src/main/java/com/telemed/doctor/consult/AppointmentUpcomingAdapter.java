@@ -86,7 +86,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
 //          tvAddress=itemView.findViewById(R.id.tv_address);
 
             itemView.setOnClickListener(v -> {
-           //     listener.onItemClick(getAdapterPosition(), model);
+           //     listener.onItemClickDelete(getAdapterPosition(), model);
 
             });
             btnMore.setOnClickListener(v -> {

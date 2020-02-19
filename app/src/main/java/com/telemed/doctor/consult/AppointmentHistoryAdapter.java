@@ -44,7 +44,7 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 //   listener.onItemClick(getLayoutPosition());
+                 //   listener.onItemClickDelete(getLayoutPosition());
 
                 }
             });

@@ -42,7 +42,7 @@ public class PatientGalleryAdapter extends RecyclerView.Adapter<PatientGalleryAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 //   listener.onItemClick(getLayoutPosition());
+                 //   listener.onItemClickDelete(getLayoutPosition());
 
                 }
             });

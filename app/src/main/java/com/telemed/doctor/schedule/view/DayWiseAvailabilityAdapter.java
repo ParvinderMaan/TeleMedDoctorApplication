@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,13 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.schedule.model.TimeSlotModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvailabilityAdapter.ViewHolder> {
 
-    private static final String TAG = WeeklyScheduleAdapter.class.getSimpleName();
+    private static final String TAG = DayWiseAvailabilityAdapter.class.getSimpleName();
     private List<TimeSlotModel> list=new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 

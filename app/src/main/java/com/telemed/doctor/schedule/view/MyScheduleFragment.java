@@ -1,15 +1,13 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.view;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -19,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.schedule.model.ScheduleModel;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -45,7 +45,6 @@ import java.util.Locale;
 
 public class MyScheduleFragment extends Fragment {
 
-    private WeeklyScheduleAdapter mAdapter;
     private Button btnSynchronizeSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
     private ImageButton ibtnClose;
@@ -54,6 +53,7 @@ public class MyScheduleFragment extends Fragment {
     private List<Integer> listOfDays;
     private ScheduleModel mServerDates;
     private LinearLayout llSyncOptions;
+    private RelativeLayout rlRoot;
     private TextView tvSyncDate,tvSyncWeekday,tvCancelOptions;
 
 
@@ -170,6 +170,7 @@ public class MyScheduleFragment extends Fragment {
     }
 
     private void initView(View v) {
+        rlRoot= v.findViewById(R.id.rl_root);
         ibtnClose = v.findViewById(R.id.ibtn_close);
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
 
@@ -182,6 +183,14 @@ public class MyScheduleFragment extends Fragment {
     }
 
     private void initListener() {
+        rlRoot.setOnClickListener(v -> {
+
+            if(llSyncOptions.getVisibility()==View.VISIBLE){
+                llSyncOptions.setVisibility(View.INVISIBLE);
+            }
+
+        });
+
         ibtnClose.setOnClickListener(v -> {
             if (mFragmentListener != null) {
                 mFragmentListener.popTopMostFragment();
@@ -200,12 +209,14 @@ public class MyScheduleFragment extends Fragment {
 
         tvSyncDate.setOnClickListener(v->{
             if (mFragmentListener != null) {
+                llSyncOptions.setVisibility(View.INVISIBLE);
                 mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
             }
 
         });
         tvSyncWeekday.setOnClickListener(v->{
             if (mFragmentListener != null) {
+                llSyncOptions.setVisibility(View.INVISIBLE);
                 mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
             }
 

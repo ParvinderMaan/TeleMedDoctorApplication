@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.model;
 
 import java.util.List;
 

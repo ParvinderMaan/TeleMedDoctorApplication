@@ -29,10 +29,10 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Sun"
-            android:textColor="@color/colorGrey"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
 
         <TextView
@@ -40,10 +40,10 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Mon"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
 
         <TextView
@@ -52,10 +52,10 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Tue"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
 
         <TextView
@@ -63,10 +63,10 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Wed"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp"/>
     </LinearLayout>
 
@@ -83,10 +83,10 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Thu"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
 
         <TextView
@@ -94,20 +94,20 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Fri"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_sat"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/custom_circle"
+            android:background="@drawable/selector_day_of_week"
             android:gravity="center"
             android:text="Sat"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
     </LinearLayout>
 

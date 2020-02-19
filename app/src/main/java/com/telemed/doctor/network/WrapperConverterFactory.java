@@ -11,7 +11,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WrapperConverterFactory   extends Converter.Factory{
+public class WrapperConverterFactory  extends Converter.Factory{
     private GsonConverterFactory factory;
 
     public WrapperConverterFactory(GsonConverterFactory factory) {

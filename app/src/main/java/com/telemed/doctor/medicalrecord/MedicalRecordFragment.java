@@ -69,7 +69,7 @@ public class MedicalRecordFragment extends Fragment {
         rvCurrentMedication.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
 //            @Override
-//            public void onItemClick(int position) {
+//            public void onItemClickDelete(int position) {
 //
 //                if(getActivity() !=null){
 //                    ((HomeActivity)getActivity()).showVideoCallTriggerFragment();
@@ -95,7 +95,7 @@ public class MedicalRecordFragment extends Fragment {
         rvMedicalHistory.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
 //            @Override
-//            public void onItemClick(int position) {
+//            public void onItemClickDelete(int position) {
 //
 //                if(getActivity() !=null){
 //                    ((HomeActivity)getActivity()).showVideoCallTriggerFragment();
@@ -122,7 +122,7 @@ public class MedicalRecordFragment extends Fragment {
         rvPatientDrug.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
 //            @Override
-//            public void onItemClick(int position) {
+//            public void onItemClickDelete(int position) {
 //
 //                if(getActivity() !=null){
 //                    ((HomeActivity)getActivity()).showVideoCallTriggerFragment();

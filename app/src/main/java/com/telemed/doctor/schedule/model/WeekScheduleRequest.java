@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

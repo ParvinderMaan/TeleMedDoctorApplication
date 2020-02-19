@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.schedule.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 

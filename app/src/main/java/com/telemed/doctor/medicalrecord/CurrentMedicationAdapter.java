@@ -39,7 +39,7 @@ public class CurrentMedicationAdapter extends RecyclerView.Adapter<CurrentMedica
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    listener.onItemClick(getLayoutPosition());
+//                    listener.onItemClickDelete(getLayoutPosition());
 
                 }
             });

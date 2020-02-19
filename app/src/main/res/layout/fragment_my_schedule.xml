@@ -7,9 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:clickable="true"
+    android:id="@+id/rl_root"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".schedule.MyScheduleFragment">
+    tools:context=".schedule.view.MyScheduleFragment">
     <!--    header -->
 
     <!--    header layout-->
