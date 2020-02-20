@@ -61,5 +61,11 @@ public interface WebUrl {
     String DELETE_WEEK_SCHEDULE="Doctor/DeleteRecurringSchedule";
     String UPDATE_WEEK_SCHEDULE="Doctor/UpdateRecurringSchedule";
     String FETCH_WEEK_SCHEDULES="Doctor/GetRecurringSchedule";
+    String FETCH_MONTHLY_SCHEDULES="Doctor/GetDoctorMonthlyAvailableSchedules";
+    String FETCH_AVAIL_TIME_SLOTS="Doctor/DoctorAvailableTimeSlot";
+    String CREATE_DAY_SCHEDULE="Doctor/CreateDateofAvalibility";
+    String DELETE_DAY_SCHEDULE="Doctor/DeleteDateofAvalibility";
+
+
 
 }

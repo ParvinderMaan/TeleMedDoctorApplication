@@ -2,7 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/btn_dow_selected"
         android:state_selected="true"/>
-
     <item android:drawable="@drawable/btn_dow_unselected" />
-
 </selector>

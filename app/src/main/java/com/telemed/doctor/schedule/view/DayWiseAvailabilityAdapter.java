@@ -30,6 +30,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
 
     public void setItems(List<TimeSlotModel> items) {
         list.addAll(items);
+        notifyDataSetChanged();
 
     }
 
@@ -64,11 +65,18 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
                 }
             });
 
-              tvTimeSlot.setText(model.getTimeSlot());
+              tvTimeSlot.setText(model.getSlotFrom()+" - "+model.getSlotTo());
+/*
+public enum AppointmentStatus
+        {
+            Open = 1,
+            Pending=2,
+            Confirmed=3
+        }
+ */
+              switch (model.getAppointmentStatus()){
 
-              switch (model.getStatus()){
-
-                  case 0:
+                  case 1:
                       viewOne.setBackgroundResource(R.color.colorBlue);
                       viewTwo.setBackgroundResource(R.color.colorBlue);
                       llRoot.setBackgroundResource(R.drawable.rounded_background_xiv);
@@ -78,7 +86,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
                       tvPatientName.setText("--");
                       tvFirmName.setText("--");
                       break;
-                  case 1:
+                  case 2:
                       viewOne.setBackgroundResource(R.color.colorWhite);
                       viewTwo.setBackgroundResource(R.color.colorWhite);
                       llRoot.setBackgroundResource(R.drawable.rounded_background_xv);
@@ -86,9 +94,9 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
                       tvPatientName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvFirmName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvPatientName.setText(model.getPatientName());
-                      tvFirmName.setText(model.getFirmName());
+                      tvFirmName.setText("Infinity Doctor");
                       break;
-                  case 2:
+                  case 3:
                       viewOne.setBackgroundResource(R.color.colorWhite);
                       viewTwo.setBackgroundResource(R.color.colorWhite);
                       llRoot.setBackgroundResource(R.drawable.rounded_background_xiii);
@@ -96,7 +104,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
                       tvPatientName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvFirmName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvPatientName.setText(model.getPatientName());
-                      tvFirmName.setText(model.getFirmName());
+                      tvFirmName.setText("Infinity Doctor");
                       break;
               }
 

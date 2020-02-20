@@ -11,7 +11,7 @@
     android:focusable="true"
     android:orientation="vertical"
     tools:context=".schedule.view.MyScheduleFragment">
-    <!--    header -->
+
 
     <!--    header layout-->
     <RelativeLayout
@@ -46,6 +46,13 @@
             app:srcCompat="@drawable/ic_cross_blue" />
     </RelativeLayout>
     <!-- middle layout-->
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progress_bar"/>
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
     <!--    body -->
 
 

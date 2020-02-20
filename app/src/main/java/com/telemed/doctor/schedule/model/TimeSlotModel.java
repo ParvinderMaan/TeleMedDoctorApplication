@@ -1,40 +1,88 @@
 package com.telemed.doctor.schedule.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class TimeSlotModel {
 
-    private String id;
-    private int status ; //0,1,2
-    private String firmName;
+    @SerializedName("doctorId")
+    @Expose
+    private String doctorId;
+    @SerializedName("patientId")
+    @Expose
+    private String patientId;
+    @SerializedName("patientName")
+    @Expose
+    private String patientName;
+    @SerializedName("appointmentDate")
+    @Expose
+    private String appointmentDate;
+    @SerializedName("slotFrom")
+    @Expose
+    private String slotFrom;
+    @SerializedName("slotTo")
+    @Expose
+    private String slotTo;
+    @SerializedName("appointmentStatus")
+    @Expose
+    private Integer appointmentStatus;
 
-    public String getId() {
-        return id;
+    public String getDoctorId() {
+        return doctorId;
     }
 
-    public int getStatus() {
-        return status;
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
-    public String getFirmName() {
-        return firmName;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public String getTimeSlot() {
-        return timeSlot;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     public String getPatientName() {
         return patientName;
     }
 
-    public TimeSlotModel(String id, int status, String firmName, String timeSlot, String patientName) {
-        this.id = id;
-        this.status = status;
-        this.firmName = firmName;
-        this.timeSlot = timeSlot;
+    public void setPatientName(String patientName) {
         this.patientName = patientName;
     }
 
-    private String timeSlot;
-    private String patientName;
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getSlotFrom() {
+        return slotFrom;
+    }
+
+    public void setSlotFrom(String slotFrom) {
+        this.slotFrom = slotFrom;
+    }
+
+    public String getSlotTo() {
+        return slotTo;
+    }
+
+    public void setSlotTo(String slotTo) {
+        this.slotTo = slotTo;
+    }
+
+    public Integer getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(Integer appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+    }
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.telemed.doctor.schedule.view;
 
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -11,32 +12,49 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.schedule.model.ScheduleTimeSlotResponse;
 import com.telemed.doctor.schedule.viewmodel.DayWiseAvailabiltyViewModel;
 import com.telemed.doctor.schedule.model.TimeSlotModel;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
+import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class DayWiseAvailabilityFragment extends Fragment {
+    private final String TAG= DayWiseAvailabilityFragment.class.getSimpleName();
 
     private DayWiseAvailabiltyViewModel mViewModel;
     private RecyclerView rvTimeSlot;
     private ImageButton ibtnClose;
     private HomeFragmentSelectedListener mFragmentListener;
+    private ProgressBar progressBar;
+    private CustomAlertTextView tvAlertView;
+    private TextView tvTimeSlot;
+    private DayWiseAvailabilityAdapter mAdapter;
+    private String mDateOfAppointment;
+    private HashMap<String, String> mHeaderMap;
+    private String mAccessToken;
+
 
     public static DayWiseAvailabilityFragment newInstance(Object payload) {
         DayWiseAvailabilityFragment fragment = new DayWiseAvailabilityFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("KEY_", (UserInfoWrapper) payload); // SignUpIResponse.Data
+        bundle.putString("KEY_", (String) payload); // SignUpIResponse.Data
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -44,19 +62,48 @@ public class DayWiseAvailabilityFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
+        SharedPrefHelper mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
+        mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // collect our intent
+        if (getArguments() != null) {
+             mDateOfAppointment = getArguments().getString("KEY_");
+            Log.e(TAG, mDateOfAppointment);
+        }
+
+        mHeaderMap = new HashMap<>();
+        mHeaderMap.put("content-type", "application/json");
+        mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
+
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_day_wise_availability, container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        return localInflater.inflate(R.layout.fragment_day_wise_availability, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(DayWiseAvailabiltyViewModel.class);
+
+        progressBar = v.findViewById(R.id.progress_bar);
+        tvAlertView = v.findViewById(R.id.tv_alert_view);
+
+        tvTimeSlot = v.findViewById(R.id.tv_time_slot);
+        tvTimeSlot.setText(mDateOfAppointment);
+
+        progressBar.setVisibility(View.INVISIBLE);
         initRecyclerView(v);
+        initObserver();
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
@@ -64,35 +111,72 @@ public class DayWiseAvailabilityFragment extends Fragment {
         });
 
 
+        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
+
+
     }
 
     private void initRecyclerView(View v) {
         rvTimeSlot=v.findViewById(R.id.rv_time_slot);
-        DayWiseAvailabilityAdapter mAdapter = new DayWiseAvailabilityAdapter();
+        mAdapter = new DayWiseAvailabilityAdapter();
         mAdapter.setOnItemClickListener(position -> {
             if(mFragmentListener!=null) mFragmentListener.showFragment("AppointmentConfirmIFragment",null);
 
         });
-        mAdapter.setItems(fetchTimeSlot());
         rvTimeSlot.setHasFixedSize(true);
         rvTimeSlot.setLayoutManager(new LinearLayoutManager(requireActivity()));
         rvTimeSlot.setAdapter(mAdapter);
 
+
     }
 
 
-    public  List<TimeSlotModel>   fetchTimeSlot() {
-        List<TimeSlotModel> lstOfAvailableSlot=new ArrayList<>();
-        //String id, int status, String firmName, String timeSlot, String patientName
-        lstOfAvailableSlot.add(new TimeSlotModel("1",0,"Infinity Doc","8:00 / 8:30","John Ali"));
-        lstOfAvailableSlot.add(new TimeSlotModel("2",0,"Infinity Doc","8:30 / 9:00","Mic Laki"));
-        lstOfAvailableSlot.add(new TimeSlotModel("3",1,"Infinity Doc","9:00 / 9:30","Ahil Ali"));
-        lstOfAvailableSlot.add(new TimeSlotModel("4",1,"Infinity Doc","10:00 / 10:30","John Ali"));
-        lstOfAvailableSlot.add(new TimeSlotModel("5",2,"Infinity Doc","10:30 / 11:00","John Ali"));
-        lstOfAvailableSlot.add(new TimeSlotModel("5",2,"Infinity Doc","10:30 / 11:00","John Ali"));
+    private void initObserver() {
+        mViewModel.getProgress()
+                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-        return lstOfAvailableSlot;
+        mViewModel.getEnableView()
+                .observe(getViewLifecycleOwner(), this::resetEnableView);
+
+        mViewModel.getResultantTimeSlot().observe(getViewLifecycleOwner(), response -> {
+
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        ScheduleTimeSlotResponse.Data infoObj = response.getData().getData();
+                        if (infoObj.getAvailableTimeSlots() != null) {
+                            mViewModel.setTimeSlotList(infoObj.getAvailableTimeSlots());
+                        }
+                    }
+
+                    break;
+
+                case FAILURE:
+                    if (response.getErrorMsg() != null) {
+                        tvAlertView.showTopAlert(response.getErrorMsg());
+
+                    }
+                    break;
+            }
+        });
+
+
+        mViewModel.getAllTimeSlot()
+                .observe(getViewLifecycleOwner(), lstOfSchedules -> {
+                    if (!lstOfSchedules.isEmpty()) {
+                        mAdapter.setItems(lstOfSchedules);
+                    }
+                });
+
+
     }
+
+    private void resetEnableView(Boolean isView) {
+
+    }
+
+
+
 
 
 

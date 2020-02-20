@@ -23,6 +23,11 @@ import com.telemed.doctor.profile.model.ProfessionalInfoRequest;
 import com.telemed.doctor.profile.model.ProfessionalInfoResponse;
 import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.profile.model.StateResponse;
+import com.telemed.doctor.schedule.model.DayScheduleDeletionResponse;
+import com.telemed.doctor.schedule.model.DayScheduleRequest;
+import com.telemed.doctor.schedule.model.DayScheduleAlterationResponse;
+import com.telemed.doctor.schedule.model.MonthlyScheduleResponse;
+import com.telemed.doctor.schedule.model.ScheduleTimeSlotResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
@@ -192,6 +197,24 @@ public interface WebService {
 
     @DELETE(WebUrl.DELETE_WEEK_SCHEDULE)
     Call <DeleteWeekScheduleResponse> deleteWeekSchedule(@Query("Id") int scheduleId,@HeaderMap Map<String, String> token);
+
+
+    @GET(WebUrl.FETCH_MONTHLY_SCHEDULES)
+    Call<MonthlyScheduleResponse> fetchMonthlySchedules(@HeaderMap Map<String, String> token, @Query("CurrentPage") int pageNo);
+
+    @GET(WebUrl.FETCH_AVAIL_TIME_SLOTS)
+    Call<ScheduleTimeSlotResponse> fetchScheduleTimeSlots(@HeaderMap Map<String, String> token, @Query("appointmentDate") String appointmentDate);
+
+
+    @POST(WebUrl.CREATE_DAY_SCHEDULE)
+    Call<DayScheduleAlterationResponse> createDaySchedule(@HeaderMap Map<String, String> headers, @Body DayScheduleRequest in);
+
+
+    @DELETE(WebUrl.DELETE_DAY_SCHEDULE)
+    Call <DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
+
+
+
 
 
 }

@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/ll_header"
@@ -40,6 +41,13 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp" />
     </RelativeLayout>
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progress_bar"/>
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
     <!--    body layout-->
 
     <TextView
@@ -128,7 +136,7 @@
 
          <TextView
              android:id="@+id/tv_open_"
-             android:text="A"
+             android:text="O"
              android:layout_marginTop="@dimen/_10sdp"
 
              android:layout_marginStart="@dimen/_20sdp"
