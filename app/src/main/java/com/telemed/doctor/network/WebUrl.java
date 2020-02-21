@@ -66,6 +66,10 @@ public interface WebUrl {
     String CREATE_DAY_SCHEDULE="Doctor/CreateDateofAvalibility";
     String DELETE_DAY_SCHEDULE="Doctor/DeleteDateofAvalibility";
 
+    //booking
+    String FETCH_PATIENT_DETAIL="Patient/GetPatientConsults";
+    String PROCESS_APPOINTMENT_REQUEST="Appointment/UpdateAppointmentStatus";
+
 
 
 }

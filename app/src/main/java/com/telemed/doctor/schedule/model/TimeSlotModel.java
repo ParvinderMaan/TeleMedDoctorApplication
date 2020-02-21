@@ -1,9 +1,12 @@
 package com.telemed.doctor.schedule.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TimeSlotModel {
+public class TimeSlotModel implements Parcelable {
 
     @SerializedName("doctorId")
     @Expose
@@ -83,6 +86,58 @@ public class TimeSlotModel {
         this.appointmentStatus = appointmentStatus;
     }
 
+    public Integer getAppointmentId() {
+        return appointmentId;
+    }
 
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 
+    @SerializedName("appointmentId")
+    @Expose
+    private Integer appointmentId;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.doctorId);
+        dest.writeString(this.patientId);
+        dest.writeString(this.patientName);
+        dest.writeString(this.appointmentDate);
+        dest.writeString(this.slotFrom);
+        dest.writeString(this.slotTo);
+        dest.writeValue(this.appointmentStatus);
+        dest.writeValue(this.appointmentId);
+    }
+
+    public TimeSlotModel() {
+    }
+
+    protected TimeSlotModel(Parcel in) {
+        this.doctorId = in.readString();
+        this.patientId = in.readString();
+        this.patientName = in.readString();
+        this.appointmentDate = in.readString();
+        this.slotFrom = in.readString();
+        this.slotTo = in.readString();
+        this.appointmentStatus = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.appointmentId = (Integer) in.readValue(Integer.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<TimeSlotModel> CREATOR = new Parcelable.Creator<TimeSlotModel>() {
+        @Override
+        public TimeSlotModel createFromParcel(Parcel source) {
+            return new TimeSlotModel(source);
+        }
+
+        @Override
+        public TimeSlotModel[] newArray(int size) {
+            return new TimeSlotModel[size];
+        }
+    };
 }

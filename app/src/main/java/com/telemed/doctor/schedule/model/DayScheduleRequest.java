@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DayScheduleRequest {
+
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -58,5 +60,17 @@ public class DayScheduleRequest {
 
     public void setIsAvailable(Boolean isAvailable) {
         this.isAvailable = isAvailable;
+    }
+
+
+    @Override
+    public String toString() {
+        return "DayScheduleRequest{" +
+                "id=" + id +
+                ", availableDate='" + availableDate + '\'' +
+                ", fromTime='" + fromTime + '\'' +
+                ", toTime='" + toTime + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
     }
 }

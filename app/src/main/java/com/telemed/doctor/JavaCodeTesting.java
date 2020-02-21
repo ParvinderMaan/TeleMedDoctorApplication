@@ -23,12 +23,23 @@ public class JavaCodeTesting {
 
     public static void main(String[] args) {
 
-        try {
-            System.out.println(formatDate("2020-2-2"));
+//        try {
+//            System.out.println(formatDate("2020-2-2"));
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
+        String oldDate="2:1";
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(oldDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
+        String date = simpleDateFormat.format(date1);
+        System.out.println(date);
 
     }
 

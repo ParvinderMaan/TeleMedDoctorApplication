@@ -216,7 +216,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "AppointmentConfirmIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance())
+                        .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance((Object)payload))
                         .addToBackStack("AppointmentConfirmIFragment")
                         .commit();
                 break;

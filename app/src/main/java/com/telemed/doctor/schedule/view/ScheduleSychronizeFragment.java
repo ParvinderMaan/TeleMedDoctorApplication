@@ -222,31 +222,31 @@ public class ScheduleSychronizeFragment extends Fragment {
         calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay day, boolean selected) {
-                String selectedDate = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+                dateSelected = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
 //                Toast.makeText(requireActivity(), "" + selectedDate, Toast.LENGTH_SHORT).show();
-                if (mHashMapDD.containsKey(selectedDate)) {
-                    mDayDecoratorDateSelected=selectedDate;
-                    if(mHashMapDD.get(selectedDate) instanceof RedColorDecorator){
+                if (mHashMapDD.containsKey(dateSelected)) {
+                    mDayDecoratorDateSelected=dateSelected;
+                    if(mHashMapDD.get(dateSelected) instanceof RedColorDecorator){
                         Toast.makeText(requireActivity(), "" + "RedColorDecorator", Toast.LENGTH_SHORT).show();
                         /// delete.......
 
 
 
-                    }else if(mHashMapDD.get(selectedDate) instanceof WhiteColorDecorator){
+                    }else if(mHashMapDD.get(dateSelected) instanceof WhiteColorDecorator){
                         Toast.makeText(requireActivity(), "" + "WhiteColorDecorator", Toast.LENGTH_SHORT).show();
                         /// delete.......
                         DayScheduleRequest in=new DayScheduleRequest();
                         in.setId(0);
-                        in.setAvailableDate(selectedDate);
-                        in.setFromTime("00:00:00");
-                        in.setToTime("00:00:00");
+                        in.setAvailableDate(formatDateIII(dateSelected));
+                        in.setFromTime("00:00");
+                        in.setToTime("00:00");
                         in.setIsAvailable(false);
+
                         mViewModel.deleteWeekSchedule(mHeaderMap,in);// id
 
-                    }else if(mHashMapDD.get(selectedDate) instanceof BlueColorDecorator){
+                    }else if(mHashMapDD.get(dateSelected) instanceof BlueColorDecorator){
                         Toast.makeText(requireActivity(), "" + "BlueColorDecorator", Toast.LENGTH_SHORT).show();
-                     /// create.......
-
+                        /// create.......
                         getFromTime();
 
 
@@ -480,9 +480,12 @@ public class ScheduleSychronizeFragment extends Fragment {
                         tvAlertView.showTopAlert(response.getData().getMessage());
                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         BlueColorDecorator decorator=new BlueColorDecorator(mDayDecoratorDateSelected);
-                        mHashMapDD.put(mDayDecoratorDateSelected,decorator);
                         calViewSchedule.removeDecorator(mHashMapDD.get(mDayDecoratorDateSelected));
                         calViewSchedule.addDecorator(decorator);
+                        mHashMapDD.put(mDayDecoratorDateSelected,decorator);
+
+                       //  calViewSchedule.addDecorator(decorator);
+                      //   calViewSchedule.removeDecorator(listOfDecoration.get(3));
                     }
 
                     break;
@@ -671,7 +674,16 @@ public class ScheduleSychronizeFragment extends Fragment {
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 String fromTime = selectedHour + ":" + selectedMinute;
                 Log.e("From: ", fromTime);
-                startTimeSelected = fromTime;
+
+                Date date1 = null;
+                try {
+                    date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(fromTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
+                String date = simpleDateFormat.format(date1);
+                startTimeSelected = date;
                 getToTime();
 
 
@@ -687,6 +699,7 @@ public class ScheduleSychronizeFragment extends Fragment {
     }
 
     private void getToTime() {
+
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -694,16 +707,25 @@ public class ScheduleSychronizeFragment extends Fragment {
         mTimePicker = new TimePickerDialog(requireActivity(), R.style.PickerStyle, (timePicker, selectedHour, selectedMinute) -> {
             String to = selectedHour + ":" + selectedMinute;
             Log.e("To: ", to);
+            Date date1 = null;
+            try {
+                date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(to);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
+            String date = simpleDateFormat.format(date1);
 
-
-            //call apii....
-            endTimeSelected = to;
+            //call api....
+            endTimeSelected = date;
             DayScheduleRequest in = new DayScheduleRequest();
             in.setId(0);
-            in.setAvailableDate(dateSelected);
+            in.setAvailableDate(formatDateIII(dateSelected));
             in.setFromTime(startTimeSelected);
             in.setToTime(endTimeSelected);
             in.setIsAvailable(true);
+
+            Log.e(TAG,in.toString());
             mViewModel.createDaySchedule(mHeaderMap, in);
 
             // to stop ...
@@ -730,6 +752,21 @@ public class ScheduleSychronizeFragment extends Fragment {
         editText.setText("Ending Time :");
         mTimePicker.show();
 
+}
+
+    private String formatDateIII(String inputText) {
+        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+
+
+        Date date = null;
+        try {
+            date = inputFormat.parse(inputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String outputText = outputFormat.format(date);
+        return outputText;
     }
 
 //

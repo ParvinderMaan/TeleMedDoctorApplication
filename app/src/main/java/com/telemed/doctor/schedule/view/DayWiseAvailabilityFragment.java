@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -26,13 +27,9 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.schedule.model.ScheduleTimeSlotResponse;
 import com.telemed.doctor.schedule.viewmodel.DayWiseAvailabiltyViewModel;
-import com.telemed.doctor.schedule.model.TimeSlotModel;
-import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class DayWiseAvailabilityFragment extends Fragment {
@@ -119,8 +116,12 @@ public class DayWiseAvailabilityFragment extends Fragment {
     private void initRecyclerView(View v) {
         rvTimeSlot=v.findViewById(R.id.rv_time_slot);
         mAdapter = new DayWiseAvailabilityAdapter();
-        mAdapter.setOnItemClickListener(position -> {
-            if(mFragmentListener!=null) mFragmentListener.showFragment("AppointmentConfirmIFragment",null);
+        mAdapter.setOnItemClickListener((position, model) -> {
+          Log.e(TAG,model.toString());
+            if(mFragmentListener!=null) {
+                mFragmentListener.showFragment("AppointmentConfirmIFragment",model);
+            }
+
 
         });
         rvTimeSlot.setHasFixedSize(true);

@@ -1,7 +1,11 @@
 package com.telemed.doctor.network;
 
 import com.google.gson.JsonObject;
+import com.telemed.doctor.appointment.model.AppointmentProcessRequest;
+import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.consult.model.AppointmentListResponse;
+import com.telemed.doctor.schedule.model.PatientDetailResponse;
+import com.telemed.doctor.schedule.model.PatientProfileInfo;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
 import com.telemed.doctor.password.model.ResetPasswordRequest;
@@ -213,8 +217,11 @@ public interface WebService {
     @DELETE(WebUrl.DELETE_DAY_SCHEDULE)
     Call <DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
 
+    @GET(WebUrl.FETCH_PATIENT_DETAIL)
+    Call<PatientDetailResponse> fetchPatientDetail(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
 
-
+    @POST(WebUrl.PROCESS_APPOINTMENT_REQUEST)
+    Call<AppointmentProcessResponse> processAppointmentRequest(@HeaderMap Map<String, String> headers, @Body AppointmentProcessRequest in);
 
 
 }

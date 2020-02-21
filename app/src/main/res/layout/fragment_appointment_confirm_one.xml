@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,6 +42,13 @@
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_cross_blue" />
     </RelativeLayout>
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progress_bar"/>
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
     <!-- middle layout-->
     <LinearLayout
         android:id="@+id/ll_top"
@@ -60,9 +68,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="@dimen/_66sdp"
-
+                android:id="@+id/civ_profile_pic"
                 android:layout_height="@dimen/_66sdp"
-                android:src="@drawable/img_patient"
                 app:civ_border_color="@color/colorBlue"
                 app:civ_border_width="@dimen/_1sdp" />
 
@@ -88,6 +95,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_patient_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
@@ -98,8 +106,8 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_address"
                         android:layout_width="match_parent"
-
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:text="Miami, FL"
@@ -116,6 +124,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_review_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5"
@@ -192,6 +201,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="29"
@@ -215,6 +225,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Male"
@@ -242,6 +253,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="291"
@@ -267,6 +279,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="290"
@@ -305,7 +318,7 @@
           android:gravity="center"
           android:layout_height="match_parent">
           <Button
-              android:id="@+id/btn_more"
+              android:id="@+id/btn_medical_record"
               android:layout_width="wrap_content"
               android:textColor="@color/colorWhite"
               android:textStyle="bold"
@@ -325,9 +338,10 @@
           android:layout_height="wrap_content">
 
           <TextView
+              android:id="@+id/tv_start_time"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="10.30am / ME"
+              android:text="10.30am"
               android:textStyle="bold"
               android:textColor="@color/colorBlue"
               android:textSize="@dimen/_10sdp" />
@@ -346,16 +360,18 @@
            <LinearLayout
                android:paddingTop="@dimen/_5sdp"
                android:orientation="horizontal"
+               android:gravity="center"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content">
                <TextView
-                   android:id="@+id/tv_confirm"
+                   android:id="@+id/tv_confirm_appointment"
                    android:layout_marginEnd="@dimen/_2sdp"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="Conf"
-                   android:paddingTop="@dimen/_1sdp"
-                   android:paddingBottom="@dimen/_1sdp"
+                   android:visibility="visible"
+                   android:paddingTop="@dimen/_3sdp"
+                   android:paddingBottom="@dimen/_3sdp"
                    android:background="@drawable/rounded_background_i"
                    android:textStyle="bold"
                    android:paddingStart="@dimen/_8sdp"
@@ -363,13 +379,30 @@
                    android:textColor="@color/colorBlue"
                    android:textSize="12sp" />
                <TextView
+                   android:visibility="visible"
+                   android:id="@+id/tv_deny_appointment"
                    android:layout_marginStart="@dimen/_2sdp"
-
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="Deny"
-                   android:paddingTop="@dimen/_1sdp"
-                   android:paddingBottom="@dimen/_1sdp"
+                   android:paddingTop="@dimen/_3sdp"
+                   android:paddingBottom="@dimen/_3sdp"
+                   android:paddingStart="@dimen/_8sdp"
+                   android:paddingEnd="@dimen/_8sdp"
+                   android:background="@drawable/rounded_background_viii"
+                   android:textStyle="bold"
+                   android:textColor="@color/colorRed"
+                   android:textSize="12sp" />
+
+               <TextView
+                   android:id="@+id/tv_cancel_appointment"
+                   android:layout_marginStart="@dimen/_2sdp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Cancel"
+                   android:visibility="gone"
+                   android:paddingTop="@dimen/_3sdp"
+                   android:paddingBottom="@dimen/_3sdp"
                    android:paddingStart="@dimen/_8sdp"
                    android:paddingEnd="@dimen/_8sdp"
                    android:background="@drawable/rounded_background_viii"

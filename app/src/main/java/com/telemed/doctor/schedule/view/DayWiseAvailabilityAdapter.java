@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
+import com.telemed.doctor.appointment.AppointmentStatus;
 import com.telemed.doctor.schedule.model.TimeSlotModel;
 
 import java.util.ArrayList;
@@ -57,10 +58,12 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
         }
 
         public void bind(final TimeSlotModel model, final DayWiseAvailabilityAdapter.OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            this.llRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(getLayoutPosition());
+                    if(model.getAppointmentStatus()== 2 || model.getAppointmentStatus()== 3){
+                        listener.onItemClick(getLayoutPosition(),model);
+                    }
 
                 }
             });
@@ -137,7 +140,8 @@ public enum AppointmentStatus
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position, TimeSlotModel model);
+
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
