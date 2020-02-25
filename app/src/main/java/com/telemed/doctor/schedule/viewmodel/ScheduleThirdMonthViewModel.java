@@ -5,21 +5,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
-import com.telemed.doctor.schedule.model.AllWeekSchedule;
-import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
-import com.telemed.doctor.schedule.model.DeleteWeekScheduleResponse;
 import com.telemed.doctor.schedule.model.MonthlyScheduleResponse;
-import com.telemed.doctor.schedule.model.WeekScheduleRequest;
-import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -31,11 +24,10 @@ import retrofit2.Response;
 import static com.telemed.doctor.network.Status.FAILURE;
 import static com.telemed.doctor.network.Status.SUCCESS;
 
-public class MyScheduleViewModel extends AndroidViewModel {
-    private final String TAG= MyScheduleViewModel.class.getSimpleName();
+public class ScheduleThirdMonthViewModel  extends AndroidViewModel {
+    private final String TAG= ScheduleThirdMonthViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-    private final MediatorLiveData<MonthlyScheduleResponse> result;
     private MutableLiveData<ApiResponse<MonthlyScheduleResponse>> resultantAllSchedule;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
@@ -43,7 +35,7 @@ public class MyScheduleViewModel extends AndroidViewModel {
     private MutableLiveData<List<AllMonthSchedule>> lstOfSchedule;
     private Call<MonthlyScheduleResponse> liveData1,liveData2,liveData3;
 
-    public MyScheduleViewModel(@NonNull Application application) {
+    public ScheduleThirdMonthViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultantAllSchedule= new MutableLiveData<>();
@@ -52,7 +44,6 @@ public class MyScheduleViewModel extends AndroidViewModel {
         headerMap=new MutableLiveData<>();
         lstOfSchedule=new MutableLiveData<>();
         //---------------------------
-         result = new MediatorLiveData<MonthlyScheduleResponse>();
 
 
     }
@@ -125,12 +116,7 @@ public class MyScheduleViewModel extends AndroidViewModel {
     }
 
 
-    public void fetchMonthlySchedulesI(Map<String, String> map) {
-        liveData1=mWebService.fetchMonthlySchedules(map,1);
-        liveData2=mWebService.fetchMonthlySchedules(map,2);
-        liveData3=mWebService.fetchMonthlySchedules(map,3);
 
-    }
 
 
 

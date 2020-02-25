@@ -63,11 +63,16 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_below="@+id/tv_time_slot"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/rl_bottom"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_below="@+id/tv_time_slot"
+
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
         android:clipToPadding="false"
@@ -75,10 +80,9 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:overScrollMode="never"
-        android:layout_above="@+id/rl_bottom"
         android:id="@+id/rv_time_slot"/>
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
      <RelativeLayout
          android:id="@+id/rl_bottom"

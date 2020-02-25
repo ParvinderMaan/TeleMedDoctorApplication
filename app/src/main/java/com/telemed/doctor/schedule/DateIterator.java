@@ -16,6 +16,7 @@ public class DateIterator implements Iterator<Date>, Iterable<Date> {
         this.end.add(Calendar.DATE, -1);
         this.current.setTime(start);
         this.current.add(Calendar.DATE, -1);
+
     }
 
     @Override

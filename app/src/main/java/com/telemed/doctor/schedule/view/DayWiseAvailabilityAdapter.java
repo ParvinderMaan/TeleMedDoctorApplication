@@ -30,6 +30,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
     }
 
     public void setItems(List<TimeSlotModel> items) {
+        list.clear();
         list.addAll(items);
         notifyDataSetChanged();
 

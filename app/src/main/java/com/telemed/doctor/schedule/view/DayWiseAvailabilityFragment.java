@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
     private String mDateOfAppointment;
     private HashMap<String, String> mHeaderMap;
     private String mAccessToken;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public static DayWiseAvailabilityFragment newInstance(Object payload) {
@@ -98,7 +100,12 @@ public class DayWiseAvailabilityFragment extends Fragment {
         tvTimeSlot = v.findViewById(R.id.tv_time_slot);
         tvTimeSlot.setText(mDateOfAppointment);
 
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE); // not used here
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment));
+
         initRecyclerView(v);
         initObserver();
 
@@ -134,7 +141,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
     private void initObserver() {
         mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> swipeRefreshLayout.setRefreshing(isLoading));
 
         mViewModel.getEnableView()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);

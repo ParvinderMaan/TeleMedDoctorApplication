@@ -31,7 +31,7 @@ public @interface FragmentType {
     //NotificationFragment
     //SettingFragment
     //SignOutDialog
-    //MyScheduleFragment
+    //ScheduleFragment
     //PatientGalleryFragment
     //AppointmentSummaryFragment
     //DoctorDocumentFragment

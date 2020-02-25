@@ -30,7 +30,7 @@ import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.schedule.view.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.view.DayWiseAvailabilityFragment;
-import com.telemed.doctor.schedule.view.MyScheduleFragment;
+import com.telemed.doctor.schedule.view.ScheduleFragment;
 import com.telemed.doctor.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.TermAndConditionFragment;
@@ -170,11 +170,11 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .commit();
                 break;
 
-            case "MyScheduleFragment":
+            case "ScheduleFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MyScheduleFragment.newInstance())
-                        .addToBackStack("MyScheduleFragment")
+                        .add(R.id.fl_container, ScheduleFragment.newInstance())
+                        .addToBackStack("ScheduleFragment")
                         .commit();
 //                getSupportFragmentManager().beginTransaction()
 //                        .add(R.id.fl_container, MyScheduleDemoFragment.newInstance())

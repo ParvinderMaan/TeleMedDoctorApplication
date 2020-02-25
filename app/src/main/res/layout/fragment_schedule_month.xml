@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"
+    android:layout_below="@+id/btn_synchronize_schedule"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:orientation="vertical"
+    tools:context=".schedule.view.ScheduleFirstMonthFragment">
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar_view_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:theme="@style/CalenderViewCustom"
+        app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+        app:mcv_leftArrow="@drawable/ic_arrow_left_blue"
+        app:mcv_monthLabels="@color/colorBlue"
+        app:mcv_rightArrow="@drawable/ic_arrow_right_blue"
+        app:mcv_showOtherDates="all"
+        app:mcv_weekDayLabels="@color/colorWhite"
+        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText">
+
+
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+</LinearLayout>
+
+<!--    android:background="@drawable/rounded_background_iii"-->

@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.btn_my_schedule:
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("MyScheduleFragment", null);
+                    mFragmentListener.showFragment("ScheduleFragment", null);
                 break;
         }
 
