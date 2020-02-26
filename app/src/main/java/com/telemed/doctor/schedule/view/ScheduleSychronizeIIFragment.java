@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -67,6 +68,8 @@ public class ScheduleSychronizeIIFragment extends Fragment {
     //    private List<DayViewDecorator> lstOfDisableDays = new ArrayList<>();
 //    private List<DayViewDecorator> lstOfEnableDays = new ArrayList<>();
     private List<DayViewDecorator> listOfDayDecoration = new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     public static ScheduleSychronizeIIFragment newInstance() {
         return new ScheduleSychronizeIIFragment();
     }
@@ -84,7 +87,6 @@ public class ScheduleSychronizeIIFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
-        mDeleteDialogFragment = AlertDialogFragment.newInstance();
 
     }
 
@@ -100,7 +102,13 @@ public class ScheduleSychronizeIIFragment extends Fragment {
         initCalendarView(v);
         initObserver();
 
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
 
+            ((ScheduleSychronizeFragment)requireParentFragment()).fetchMonthlySchedules(1);
+
+        });
     }
 
 
@@ -128,6 +136,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
         mViewModel.getDeleteDialogVisibility()
                 .observe(getViewLifecycleOwner(), isVisibile -> {
                     if(isVisibile){
+                        mDeleteDialogFragment = AlertDialogFragment.newInstance();
                         mDeleteDialogFragment.show(getChildFragmentManager(), "TAG");
                         mDeleteDialogFragment.setOnAlertDialogListener(() -> {
                             DayScheduleRequest in=new DayScheduleRequest();
@@ -288,6 +297,11 @@ public class ScheduleSychronizeIIFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
+
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
 
                     if (!lstOfSchedules.isEmpty()) {
 //                        List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();

@@ -12,7 +12,6 @@
     android:orientation="vertical"
     tools:context=".schedule.view.ScheduleFragment">
 
-
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/ll_header"

@@ -113,7 +113,6 @@ public class ScheduleFragment extends Fragment {
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
 
-        mScheduleDialogFragment = SychronizeScheduleDialogFragment.newInstance();
     }
 
     @Override
@@ -136,6 +135,8 @@ public class ScheduleFragment extends Fragment {
 //        tvMonthName.setText(fragmentI.getMonthName());
 
         mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+
+
 
 
     }
@@ -484,6 +485,7 @@ public class ScheduleFragment extends Fragment {
         mViewModel.getDialogVisiblility()
                 .observe(getViewLifecycleOwner(), isVisible -> {
                     if (isVisible) {
+                        mScheduleDialogFragment = SychronizeScheduleDialogFragment.newInstance();
                         mScheduleDialogFragment.setOnScheduleDialogListener(new SychronizeScheduleDialogFragment.SychronizeScheduleDialogListener() {
                             @Override
                             public void onClickWeekWise() {
@@ -500,6 +502,7 @@ public class ScheduleFragment extends Fragment {
                                 }
                             }
                         });
+
                         mScheduleDialogFragment.show(getChildFragmentManager(), "TAG");
                     } else {
                         mScheduleDialogFragment.setOnScheduleDialogListener(null);
@@ -772,6 +775,11 @@ public class ScheduleFragment extends Fragment {
         public Fragment getRegisteredFragment(int position) {
             return registeredFragments.get(position);
         }
+
+    }
+
+    public void fetchMonthlySchedules(int monthIndex){
+        mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex);
 
     }
 

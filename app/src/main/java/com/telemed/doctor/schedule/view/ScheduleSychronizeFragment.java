@@ -477,7 +477,9 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     }
 
-
+    public void fetchMonthlySchedules(int monthIndex) {
+        mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex); // 0,1,2
+    }
 
 
     //  Disable dates decorator

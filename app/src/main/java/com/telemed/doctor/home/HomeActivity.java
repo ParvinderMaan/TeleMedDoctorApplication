@@ -18,7 +18,7 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.broadcastreceiver.InternetBroadcastReceiver;
 import com.telemed.doctor.chat.ChatFragment;
-import com.telemed.doctor.consult.MyConsultFragment;
+import com.telemed.doctor.consult.view.MyConsultFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.MedicalRecordFragment;

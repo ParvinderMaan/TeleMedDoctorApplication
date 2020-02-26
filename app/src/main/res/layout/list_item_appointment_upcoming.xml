@@ -1,192 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorRed"
-    android:orientation="vertical">
-<!-- middle layout-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:paddingTop="@dimen/_15sdp"
-        android:paddingBottom="@dimen/_20sdp"
+    android:background="@color/colorRed">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_profile_pic"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:src="@drawable/img_patient"
+        app:civ_border_color="@color/colorWhite"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_patient_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
-        <LinearLayout
-            android:id="@+id/ll_one"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/_10sdp"
-            android:layout_alignParentStart="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_profile_pic"
-                android:layout_width="@dimen/_65sdp"
-                android:layout_height="@dimen/_65sdp"
-                android:src="@drawable/img_patient"
-                app:civ_border_color="@color/colorWhite"
-                app:civ_border_width="@dimen/_2sdp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_two"
-            android:layout_toEndOf="@+id/ll_one"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:includeFontPadding="true"
-                android:lines="1"
-                android:maxLines="1"
-                android:maxLength="10"
-                android:text="Pordan Gill"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_width="match_parent"
-                android:textColor="@color/colorWhite"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:includeFontPadding="true"
-                android:lines="1"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:text="Miami, FL" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_three"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:orientation="vertical"
-            android:layout_toStartOf="@+id/ll_four"
-            android:layout_height="wrap_content">
-
-          <View
-              android:layout_gravity="center"
-              android:layout_width="1.0dp"
-              android:background="@color/colorLightWhite"
-              android:layout_height="@dimen/_50sdp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_four"
-            android:layout_centerVertical="true"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_day_of_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:lines="1"
-                android:maxLines="1"
-                android:includeFontPadding="true"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"
-                android:ellipsize="end"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:text="THU" />
-            <TextView
-                android:id="@+id/tv_call_span"
-                android:layout_width="match_parent"
-                android:textColor="@color/colorWhite"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textAlignment="center"
-                android:includeFontPadding="true"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="5:30PM - 6:00PM" />
-        </LinearLayout>
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:text="Pordan Gill"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/civ_profile_pic"
+        app:layout_constraintTop_toTopOf="@+id/civ_profile_pic" />
 
 
-
-    </RelativeLayout>
-
-    <!-- bottom layout-->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_patient_addr"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="Miami, FL"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_profile_pic"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/civ_profile_pic"
+        app:layout_constraintTop_toTopOf="@+id/civ_profile_pic" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="true"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="THU"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_call_span"
+        app:layout_constraintEnd_toEndOf="@+id/tv_call_span"
+        app:layout_constraintStart_toStartOf="@+id/tv_call_span"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_call_span"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:includeFontPadding="true"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="5:30PM - 6:00PM"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day_of_week" />
 
 
-        <LinearLayout
-            android:padding="@dimen/_5sdp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5">
+    <View
+        android:id="@+id/view"
+        android:layout_width="1.0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@color/colorLightWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_call_span"
+        app:layout_constraintEnd_toStartOf="@+id/tv_call_span"
+        app:layout_constraintTop_toTopOf="@+id/tv_day_of_week" />
 
+    <Button
+        android:id="@+id/btn_estimate_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/rounded_background_iv"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_20sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:textColor="@color/colorWhite"
+        app:drawableLeftCompat="@drawable/ic_time"
+        android:text="@string/estimate_time"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_more"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/civ_profile_pic" />
 
-       <LinearLayout
-           android:orientation="vertical"
-           android:background="@drawable/rounded_background_iv"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_more"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/rounded_background_iii"
+        android:text="More"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:textColor="@drawable/selector_text_white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/btn_estimate_time"
+        app:layout_constraintTop_toBottomOf="@+id/civ_profile_pic" />
 
-           <Button
-               android:id="@+id/btn_estimate_time"
-               android:layout_width="match_parent"
-               android:textColor="@color/colorWhite"
-               android:paddingStart="@dimen/_20sdp"
-               android:paddingEnd="@dimen/_20sdp"
-               android:textAllCaps="false"
-               android:background="@android:color/transparent"
-               android:layout_marginStart="@dimen/_5sdp"
-               android:layout_marginEnd="@dimen/_5sdp"
-               android:layout_height="wrap_content"
-               android:text="Join Call" />
-
-       </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:padding="@dimen/_5sdp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5">
-
-            <Button
-                android:id="@+id/btn_more"
-                android:layout_width="match_parent"
-                android:textColor="@drawable/selector_text_white"
-                android:textStyle="bold"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
-                android:textAllCaps="false"
-                android:background="@drawable/rounded_background_iii"
-                android:layout_height="wrap_content"
-                android:text="More" />
-        </LinearLayout>
-
-<!--        Medical Records-->
-
-
-
-
-
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 <!--    app:drawableLeftCompat="@drawable/ic_time"-->
 <!--    android:text="@string/estimate_time"-->

@@ -53,8 +53,8 @@ public interface WebUrl {
     String UPDATE_BASIC_PROFILE_INFO = "Doctor/UpdateDoctorPersonalInfo";
 
 
-    String FETCH_UPCOMING_APPOINTMENT="OpentokMedia/AppointmentList";
-
+    String FETCH_UPCOMING_APPOINTMENT="Doctor/GetDoctorUpcomingAppointments";
+    String FETCH_PAST_APPOINTMENT="Doctor/GetDoctorPastAppointments";
 
     // schedule....
     String CREATE_WEEK_SCHEDULE="Doctor/CreateRecurringSchedule";

@@ -9,7 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".consult.MyConsultFragment">
+    tools:context=".consult.view.MyConsultFragment">
     <!--    header layout -->
     <RelativeLayout
         android:id="@+id/ll_header"
@@ -71,11 +71,14 @@
                 android:text="@string/title_upcoming_appointment"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
+                android:drawableEnd="@drawable/ic_arrow_right_white"
                 android:textStyle="bold" />
 
             <View
+                android:id="@+id/view_upcoming_appointment_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
+                android:visibility="visible"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -97,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
+                android:drawableRight="@drawable/ic_arrow_right_white"
                 android:text="@string/title_last_appointments"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:textColor="@color/colorWhite"
@@ -104,6 +108,7 @@
                 android:textStyle="bold" />
 
             <View
+                android:id="@+id/view_last_appointment_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginStart="@dimen/_10sdp"

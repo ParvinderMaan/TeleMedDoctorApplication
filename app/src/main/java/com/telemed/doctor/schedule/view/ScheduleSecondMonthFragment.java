@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -53,6 +54,7 @@ public class ScheduleSecondMonthFragment extends Fragment {
     private List<DayViewDecorator> listOfDayDecoration=new ArrayList<>();
     private HashMap<String, String> mHeaderMap;
     private Calendar calendarObj;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public ScheduleSecondMonthFragment() {
         // Required empty public constructor
@@ -90,6 +92,13 @@ public class ScheduleSecondMonthFragment extends Fragment {
         initCalendarView(v);
         initObserver();
       //  mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+
+            ((ScheduleFragment)requireParentFragment()).fetchMonthlySchedules(1);
+        });
     }
 
     private void initCalendarView(View v) {
@@ -196,6 +205,10 @@ public class ScheduleSecondMonthFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
                     if (!lstOfSchedules.isEmpty()) {
 
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();

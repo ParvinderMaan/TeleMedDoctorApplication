@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class ScheduleFirstMonthFragment extends Fragment {
     private ScheduleFirstMonthViewModel mViewModel;
     private String monthName;
     private Calendar calendarObj;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public String getMonthName() {
         return monthName;
@@ -101,11 +103,17 @@ public class ScheduleFirstMonthFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ScheduleFirstMonthViewModel.class);
-
         initCalendarView(v);
         initObserver();
 
        // mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+
+            ((ScheduleFragment)requireParentFragment()).fetchMonthlySchedules(0);
+        });
+
     }
 
 
@@ -329,6 +337,10 @@ public class ScheduleFirstMonthFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
                     if (!lstOfSchedules.isEmpty()) {
 
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();

@@ -3,9 +3,10 @@ package com.telemed.doctor.network;
 import com.google.gson.JsonObject;
 import com.telemed.doctor.appointment.model.AppointmentProcessRequest;
 import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
-import com.telemed.doctor.consult.model.AppointmentListResponse;
+import com.telemed.doctor.consult.model.PastAppointmentResponse;
+import com.telemed.doctor.consult.model.AppointmentRequest;
+import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
 import com.telemed.doctor.schedule.model.PatientDetailResponse;
-import com.telemed.doctor.schedule.model.PatientProfileInfo;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
 import com.telemed.doctor.password.model.ResetPasswordRequest;
@@ -188,8 +189,11 @@ public interface WebService {
     Call<ResetPasswordResponse> attemptResetPassword(@Body ResetPasswordRequest in);
 
 
-    @GET(WebUrl.FETCH_UPCOMING_APPOINTMENT)
-    Call<AppointmentListResponse> fetchUpcomingAppointment(@HeaderMap Map<String, String> token);
+    @POST(WebUrl.FETCH_UPCOMING_APPOINTMENT)
+    Call<UpcomingAppointmentResponse> fetchUpcomingAppointment(@HeaderMap Map<String, String> token, @Body AppointmentRequest in);
+
+    @POST(WebUrl.FETCH_PAST_APPOINTMENT)
+    Call<PastAppointmentResponse> fetchPastAppointment(@HeaderMap Map<String, String> token, @Body AppointmentRequest in);
 
 
     @POST(WebUrl.CREATE_WEEK_SCHEDULE)

@@ -1,4 +1,4 @@
-package com.telemed.doctor.consult;
+package com.telemed.doctor.consult.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
-import com.telemed.doctor.consult.model.Appointment;
+import com.telemed.doctor.consult.model.UpcomingAppointment;
 import com.telemed.doctor.network.WebUrl;
 
 import java.util.ArrayList;
@@ -21,18 +21,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<AppointmentUpcomingAdapter.ViewHolder> {
     private static final String TAG = AppointmentUpcomingAdapter.class.getSimpleName();
-    private List<Appointment> items = new ArrayList<>();
+    private List<UpcomingAppointment> items = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 
     public AppointmentUpcomingAdapter() {
-//        items.add("Abc");
-//        items.add("Abc");
-//        items.add("Abc");
-//        items.add("Abc");
-//        items.add("Abc");
+
     }
 
-    public void addAll(List<Appointment> lstOfAppointments) {
+    public void addAll(List<UpcomingAppointment> lstOfAppointments) {
          items.clear();
          items.addAll(lstOfAppointments);
          notifyDataSetChanged();
@@ -51,8 +47,8 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
         public ViewHolder(View itemView) {
             super(itemView);
             civProfilePic=itemView.findViewById(R.id.civ_profile_pic);
-            tvName=itemView.findViewById(R.id.tv_name);
-            tvAddress=itemView.findViewById(R.id.tv_address);
+            tvName=itemView.findViewById(R.id.tv_patient_name);
+            tvAddress=itemView.findViewById(R.id.tv_patient_addr);
             tvDayOfWeek=itemView.findViewById(R.id.tv_day_of_week);
             tvCallSpan=itemView.findViewById(R.id.tv_call_span);
             btnEstimateTime=itemView.findViewById(R.id.btn_estimate_time);
@@ -61,7 +57,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
 
         }
 
-        public void bind(final Appointment model, final OnItemClickListener listener) {
+        public void bind(final UpcomingAppointment model, final OnItemClickListener listener) {
 
             if(model.getProfilePic()!=null && !model.getProfilePic().isEmpty()){
                 Picasso.get().load(WebUrl.IMAGE_URL+model.getProfilePic())
@@ -114,7 +110,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Appointment item = items.get(position);
+        UpcomingAppointment item = items.get(position);
         holder.bind(item, onItemClickListener);
     }
 
@@ -125,7 +121,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<Appointment
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position, Appointment model);
+        void onItemClick(int position, UpcomingAppointment model);
         void onItemClickMore(String tag, int pos);
 
     }

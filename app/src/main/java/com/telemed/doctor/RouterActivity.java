@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.home.HomeActivity;
@@ -34,6 +35,8 @@ import com.telemed.doctor.signup.view.SignUpIIIFragment;
 import com.telemed.doctor.signup.view.SignUpIVFragment;
 import com.telemed.doctor.signup.view.SignUpVFragment;
 import com.telemed.doctor.splash.SplashFragment;
+
+import java.util.ArrayList;
 
 
 public class RouterActivity extends BaseActivity implements RouterFragmentSelectedListener {
@@ -63,7 +66,6 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
                     showFragment("SignInFragment", null);
                     break;
             }
-
 
 
     }

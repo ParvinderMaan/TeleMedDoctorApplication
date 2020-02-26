@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -54,6 +55,7 @@ public class ScheduleThirdMonthFragment extends Fragment {
     private ScheduleThirdMonthViewModel mViewModel;
     private HashMap<String, String> mHeaderMap;
     private Calendar calendarObj;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public ScheduleThirdMonthFragment() {
         // Required empty public constructor
@@ -95,6 +97,15 @@ public class ScheduleThirdMonthFragment extends Fragment {
         initCalendarView(v);
         initObserver();
       //  mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+
+            ((ScheduleFragment)requireParentFragment()).fetchMonthlySchedules(2);
+
+        });
+
     }
 
     private void initCalendarView(View v) {
@@ -312,6 +323,11 @@ public class ScheduleThirdMonthFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+
                     if (!lstOfSchedules.isEmpty()) {
                         listOfDayDecoration.clear();
                         calViewSchedule.removeDecorators();
