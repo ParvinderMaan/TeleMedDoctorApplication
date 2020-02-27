@@ -8,6 +8,8 @@ public class UpcomingAppointment {
     @SerializedName("appointmentId")
     @Expose
     private Integer appointmentId;
+
+
     @SerializedName("userId")
     @Expose
     private String userId;
@@ -115,4 +117,8 @@ public class UpcomingAppointment {
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
+
+    public UpcomingAppointment() {
+    }
+
 }

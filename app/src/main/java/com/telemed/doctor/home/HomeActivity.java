@@ -18,6 +18,8 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.broadcastreceiver.InternetBroadcastReceiver;
 import com.telemed.doctor.chat.ChatFragment;
+import com.telemed.doctor.consult.view.AppointmentHistoryFragment;
+import com.telemed.doctor.consult.view.AppointmentUpcomingFragment;
 import com.telemed.doctor.consult.view.MyConsultFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
@@ -313,6 +315,23 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
                         .add(R.id.fl_container, WeekDaysScheduleFragment.newInstance((Object) payload), "WeekDaysScheduleFragment")
                         .addToBackStack("WeekDaysScheduleFragment")
+                        .commit();
+                break;
+
+
+            case "AppointmentUpcomingFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, AppointmentUpcomingFragment.newInstance((Object) payload), "AppointmentUpcomingFragment")
+                        .addToBackStack("AppointmentUpcomingFragment")
+                        .commit();
+                break;
+
+            case "AppointmentHistoryFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .add(R.id.fl_container, AppointmentHistoryFragment.newInstance((Object) payload), "AppointmentHistoryFragment")
+                        .addToBackStack("AppointmentHistoryFragment")
                         .commit();
                 break;
 

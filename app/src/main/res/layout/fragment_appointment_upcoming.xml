@@ -40,21 +40,27 @@
             android:paddingEnd="@dimen/screen_end_padding"
             app:srcCompat="@drawable/ic_cross_blue" />
 
-        <include
-            android:id="@+id/progress_bar"
-            layout="@layout/layout_progress_bar" />
+<!--        <include-->
+<!--            android:id="@+id/progress_bar"-->
+<!--            layout="@layout/layout_progress_bar" />-->
 
         <include
             android:id="@+id/tv_alert_view"
             layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_upcoming_appointment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         tools:itemCount="2"
         tools:listitem="@layout/list_item_appointment_upcoming" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

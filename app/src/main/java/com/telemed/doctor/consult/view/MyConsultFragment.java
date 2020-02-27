@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.consult.model.AppointmentRequest;
+import com.telemed.doctor.consult.model.PastAppointment;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.UpcomingAppointment;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
@@ -92,7 +93,7 @@ public class MyConsultFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(1);
         in.setPageSize(3);
-        in.setSearchQuery("1");
+        in.setSearchQuery("");  // no need there
         in.setFilterBy(""); // no need there
         mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
         mViewModel.fetchPastAppointments(mHeaderMap,in);
@@ -127,15 +128,15 @@ public class MyConsultFragment extends Fragment {
         });
 
         tvLastAppointmentTitle.setOnClickListener(v1 -> {
-//            if (mFragmentListener != null)
-//                mFragmentListener.popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("AppointmentHistoryFragment",null);
 
         });
 
 
         tvUpcomingAppointmentTitle.setOnClickListener(v1 -> {
-//            if (mFragmentListener != null)
-//                mFragmentListener.popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("AppointmentUpcomingFragment",null);
 
         });
 
@@ -158,6 +159,7 @@ public class MyConsultFragment extends Fragment {
                         viewUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
                         tvUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
                     }
+                    mUpComingAppointmentAdapter.clearAll();
                     mUpComingAppointmentAdapter.addAll(lstOfAppointments);
                 });
 
@@ -296,15 +298,13 @@ public class MyConsultFragment extends Fragment {
 
         mPastAppointmentAdapter.setOnItemClickListener(new AppointmentHistoryAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-
+            public void onItemClick(int position, PastAppointment model) {
 
             }
 
             @Override
-            public void onItemMoreClick(int position) {
-              //  HistoryOptionsBottomSheetFragment mHistoryOptionsBottomSheetFragment = HistoryOptionsBottomSheetFragment.newInstance();
-              //  mHistoryOptionsBottomSheetFragment.showNow(getChildFragmentManager(), mHistoryOptionsBottomSheetFragment.getTag());
+            public void onItemClickMore(String tag, int pos) {
+
             }
         });
 
