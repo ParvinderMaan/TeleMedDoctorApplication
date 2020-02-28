@@ -35,6 +35,32 @@ public class PastAppointment {
     @Expose
     private String profilePic;
 
+
+    @SerializedName("countryName")
+    @Expose
+    private String countryName;
+
+    @SerializedName("stateName")
+    @Expose
+    private String stateName;
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+
     public Integer getAppointmentId() {
         return appointmentId;
     }

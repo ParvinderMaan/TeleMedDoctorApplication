@@ -30,14 +30,12 @@ public class ScheduleSychronizeIIViewModel extends AndroidViewModel {
     private final String TAG = ScheduleSychronizeIIViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-    private MutableLiveData<ApiResponse<MonthlyScheduleResponse>> resultantAllSchedule;
     private MutableLiveData<ApiResponse<DayScheduleAlterationResponse>> resultantDayScheduleCreation;
     private MutableLiveData<ApiResponse<DayScheduleAlterationResponse>> resultantDayScheduleDeletion;
 
 
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-    private MutableLiveData<Map<String, String>> headerMap;
     private MutableLiveData<List<AllMonthSchedule>> lstOfSchedule;
     public MutableLiveData<Boolean> getDeleteDialogVisibility() {
         return isDeleteDialogVisibile;
@@ -49,13 +47,11 @@ public class ScheduleSychronizeIIViewModel extends AndroidViewModel {
     public ScheduleSychronizeIIViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
-        resultantAllSchedule = new MutableLiveData<>();
         resultantDayScheduleCreation=new MutableLiveData<>();
         resultantDayScheduleDeletion=new MutableLiveData<>();
         isDeleteDialogVisibile=new MutableLiveData<>();
         isLoading = new MutableLiveData<>();
         isViewEnabled = new MutableLiveData<>();
-        headerMap = new MutableLiveData<>();
         lstOfSchedule = new MutableLiveData<>();
 
 
@@ -67,51 +63,11 @@ public class ScheduleSychronizeIIViewModel extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<ApiResponse<MonthlyScheduleResponse>> getResultantAllSchedule() {
-        return resultantAllSchedule;
-    }
-
     public MutableLiveData<Boolean> getEnableView() {
         return isViewEnabled;
     }
 
 
-    public void fetchMonthlySchedules(Map<String, String> map, int monthNo) {
-        this.isLoading.setValue(true);
-        this.isViewEnabled.setValue(false);
-
-        mWebService.fetchMonthlySchedules(map, monthNo).enqueue(new Callback<MonthlyScheduleResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-
-                if (response.isSuccessful() && response.body() != null) {
-                    MonthlyScheduleResponse result = response.body();
-                    Log.e(TAG, result.toString());
-                    if (result.getStatus()) {
-                        resultantAllSchedule.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    } else {
-                        resultantAllSchedule.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
-                } else {
-                    String errorMsg = ErrorHandler.reportError(response.code());
-                    resultantAllSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Throwable error) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-                String errorMsg = ErrorHandler.reportError(error);
-                resultantAllSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-            }
-        });
-
-    }
 
     public MutableLiveData<List<AllMonthSchedule>> getAllSchedules() {
         return lstOfSchedule;

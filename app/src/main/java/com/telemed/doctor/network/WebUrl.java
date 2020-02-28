@@ -71,5 +71,8 @@ public interface WebUrl {
     String PROCESS_APPOINTMENT_REQUEST="Appointment/UpdateAppointmentStatus";
 
 
+   // calling
+    String FETCH_CALL_SESSION="ConferenceMedia/GetCallSession";
+    String FETCH_MEDICAL_RECORD="MedicalHistory/GetPatientMedicalHistory";
 
 }

@@ -1,20 +1,18 @@
 package com.telemed.doctor.schedule.view;
 
-
 import android.content.Context;
 import android.os.Bundle;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -26,10 +24,9 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.helper.SharedPrefHelper;
-import com.telemed.doctor.schedule.DateIterator;
+import com.telemed.doctor.helper.DateIterator;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
-import com.telemed.doctor.schedule.model.MonthlyScheduleResponse;
-import com.telemed.doctor.schedule.viewmodel.ScheduleFirstMonthViewModel;
+import com.telemed.doctor.schedule.viewmodel.ScheduleIIIMonthViewModel;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -47,44 +44,33 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ScheduleFirstMonthFragment extends Fragment {
-    private final String TAG = ScheduleFirstMonthFragment.class.getSimpleName();
+public class ScheduleIIIMonthFragment extends Fragment {
+    private final String TAG = ScheduleIIIMonthFragment.class.getSimpleName();
     private MaterialCalendarView calViewSchedule;
-    private List<DayViewDecorator> lstOfDisableDays=new ArrayList<>();; // not used yet
-    private List<DayViewDecorator> lstOfEnableDays=new ArrayList<>();;
-    private List<DayViewDecorator> listOfDayDecoration=new ArrayList<>();
-    private HashMap<String, String> mHeaderMap;
-
+    private List<DayViewDecorator> lstOfDisableDays,lstOfEnableDays, listOfDayDecoration;
     private String mAccessToken;
-    private ScheduleFirstMonthViewModel mViewModel;
-    private String monthName;
+    private ScheduleIIIMonthViewModel mViewModel;
+    private HashMap<String, String> mHeaderMap;
     private Calendar calendarObj;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public String getMonthName() {
-        return monthName;
-    }
-
-    public void setMonthName(String monthName) {
-        this.monthName = monthName;
-    }
-
-    public ScheduleFirstMonthFragment() {
+    public ScheduleIIIMonthFragment() {
         // Required empty public constructor
     }
 
 
-    public static ScheduleFirstMonthFragment newInstance() {
-        ScheduleFirstMonthFragment fragment = new ScheduleFirstMonthFragment();
+    public static ScheduleIIIMonthFragment newInstance() {
+        ScheduleIIIMonthFragment fragment = new ScheduleIIIMonthFragment();
         return fragment;
     }
+
 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         SharedPrefHelper mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
         mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
-    }
 
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +78,10 @@ public class ScheduleFirstMonthFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
+
+        lstOfDisableDays=new ArrayList<>();; // not used yet
+        lstOfEnableDays=new ArrayList<>();; // not used yet
+        listOfDayDecoration=new ArrayList<>();
     }
 
     @Override
@@ -99,63 +89,54 @@ public class ScheduleFirstMonthFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_schedule_month, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ScheduleFirstMonthViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ScheduleIIIMonthViewModel.class);
+
         initCalendarView(v);
         initObserver();
 
-       // mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
 
-            ((ScheduleFragment)requireParentFragment()).fetchMonthlySchedules(0);
+            ((ScheduleFragment)requireParentFragment()).fetchMonthlySchedules(2);
+
         });
 
     }
-
-
 
     private void initCalendarView(View v) {
         calViewSchedule = v.findViewById(R.id.calendar_view_schedule);
         LocalDate calendar = LocalDate.now();
 
-        final LocalDate minDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
-        final LocalDate maxDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth(), minDateOfCalendar.lengthOfMonth());
+        final LocalDate minDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue()+2, 1);
+        final LocalDate maxDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue()+2, minDateOfCalendar.lengthOfMonth());
 
         // Add dates on calendars
         Calendar minDateSelect = Calendar.getInstance();
+        minDateSelect.add(Calendar.MONTH, 2);
         minDateSelect.set(minDateSelect.get(Calendar.YEAR), minDateSelect.get(Calendar.MONTH), minDateSelect.getActualMinimum(Calendar.DATE));
 
         Calendar maxDateSelect = Calendar.getInstance();
+        maxDateSelect.add(Calendar.MONTH, 2);
         maxDateSelect.set(maxDateSelect.get(Calendar.YEAR), maxDateSelect.get(Calendar.MONTH), maxDateSelect.getActualMaximum(Calendar.DATE));
-
-
-         Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
-         setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
-        ((ScheduleFragment)requireParentFragment()).setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
-
          calendarObj = Calendar.getInstance();
+
         Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
         while (i.hasNext()) {
             Date date = i.next();
-            Log.e(TAG, "all dates: " + date);
+//            Log.e(TAG, "all dates: " + date);
             String dateee = null;
             dateee = formatDateZ(date);
             if (date.before(calendarObj.getTime())) {
-//                lstOfDisableDays.add(new DisableDateDecorator(dateee)); old
                 lstOfDisableDays.add(new DisableDateDecorator(dateee));
-                Log.e(TAG, "all dates: before" + dateee);
-
-
+//                Log.e(TAG, "all dates: before" + dateee);
             } else {
-                //  lstOfEnableDays.add(new BlueColorDecorator(dateee)); old
                 lstOfEnableDays.add(new BlueColorDecorator(dateee));
-                Log.e(TAG, "all dates: after" + dateee);
-
-
+//                Log.e(TAG, "all dates: after" + dateee);
             }
         }
 
@@ -167,9 +148,9 @@ public class ScheduleFirstMonthFragment extends Fragment {
                 .setMaximumDate(maxDateOfCalendar)
                 .commit();
 
-       // ((ScheduleFragment)requireParentFragment()).setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
 
-
+        Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
+        setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
         calViewSchedule.setTopbarVisible(false);
 
         calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -179,12 +160,9 @@ public class ScheduleFirstMonthFragment extends Fragment {
                 String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
                 date=formatDateII(date);
 
-                if (getParentFragment() != null)
-                    ((ScheduleFragment)requireParentFragment()).showFragment("DayWiseAvailabilityFragment", date);
+                ((ScheduleFragment)requireParentFragment()).showFragment("DayWiseAvailabilityFragment", date);
             }
         });
-
-//      calViewSchedule.setWeekDayLabels(new CharSequence[]{"S","M","T","W","T","F","S"});
 
         calViewSchedule.setWeekDayFormatter(new WeekDayFormatter() {
             @Override
@@ -193,6 +171,17 @@ public class ScheduleFirstMonthFragment extends Fragment {
             }
         });
     }
+
+    private String getMonthName(int i) {
+        String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+
+        return monthName[i];
+    }
+
+
 
     public String formatDateZ(Date oldDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
@@ -211,20 +200,8 @@ public class ScheduleFirstMonthFragment extends Fragment {
         return sdFormat.format(freshDate);
     }
 
-    public Date formatDateIY(String oldDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date date = null;
-        try {
-            date = dateFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
     public void updateUi(List<AllMonthSchedule> availableScheduleList) {
         mViewModel.setScheduleList(availableScheduleList);
-
     }
 
     private class BlueColorDecorator implements DayViewDecorator {
@@ -239,14 +216,8 @@ public class ScheduleFirstMonthFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("BlueColorDecorator", "" + date);
+//            Log.e("BlueColorDecorator", "" + date);
             return this.date.equals(date);
-
-//            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("BlueColorDecorator",""+date);
-//
-
-
         }
 
         @Override
@@ -255,8 +226,6 @@ public class ScheduleFirstMonthFragment extends Fragment {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
         }
     }
-
-
     private class RedColorDecorator implements DayViewDecorator {
         private String date;
 
@@ -267,7 +236,7 @@ public class ScheduleFirstMonthFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("RedColorDecorator", "" + date);
+//            Log.e("RedColorDecorator", "" + date);
             return this.date.equals(date);
         }
 
@@ -277,8 +246,6 @@ public class ScheduleFirstMonthFragment extends Fragment {
 
         }
     }
-
-    //  Disable dates decorator
     private class DisableDateDecorator implements DayViewDecorator {
 
         private String date;
@@ -290,7 +257,7 @@ public class ScheduleFirstMonthFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("DisableDateDecorator", "" + date);
+//            Log.e("DisableDateDecorator", "" + date);
             return this.date.equals(date);
         }
         @Override
@@ -303,38 +270,7 @@ public class ScheduleFirstMonthFragment extends Fragment {
     }
 
 
-
     private void initObserver() {
-        mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> {
-                    ((ScheduleFragment)requireParentFragment()).showProgress(isLoading);
-                });
-
-        mViewModel.getEnableView()
-                .observe(getViewLifecycleOwner(), this::resetEnableView);
-
-        mViewModel.getResultantAllSchedule().observe(getViewLifecycleOwner(), response -> {
-
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        MonthlyScheduleResponse.Data infoObj = response.getData().getData();
-                        if (infoObj.getAvailableScheduleList() != null) {
-                            mViewModel.setScheduleList(infoObj.getAvailableScheduleList());
-                        }
-                    }
-
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        ((ScheduleFragment)requireParentFragment()).showAlertMessage(response.getErrorMsg());
-                    }
-                    break;
-            }
-        });
-
-
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
                     if(swipeRefreshLayout.isRefreshing()){
@@ -342,6 +278,8 @@ public class ScheduleFirstMonthFragment extends Fragment {
                     }
 
                     if (!lstOfSchedules.isEmpty()) {
+                        listOfDayDecoration.clear();
+                        calViewSchedule.removeDecorators();
 
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();
                         for (int i = 0; i < lstOfSchedules.size(); i++) {
@@ -356,21 +294,10 @@ public class ScheduleFirstMonthFragment extends Fragment {
 
                         }
 
-//                        HashMap<String,Boolean> map=new HashMap<>();
-//                        for(AllMonthSchedule item:lstOfSchedules){
-//                            map.put(item.getDate(),item.getAnyPendingAppointment());
-//                        }
-//                      calViewSchedule.removeDecorators();  //,new DisableDateDecorator(lstOfDisableDays)
-//                      calViewSchedule.addDecorators(new BlueColorDecorator() ,new WhiteColorDecorator(map),new RedColorDecorator(map)); //,,new RedColorDecorator(map)
-                       // in order to refresh ,it needs to be clear ....
-                        listOfDayDecoration.clear();
-                        calViewSchedule.removeDecorators();
-
                         listOfDayDecoration.addAll(lstOfDisableDays);
                         listOfDayDecoration.addAll(lstOfEnableDays);
                         for(AllMonthSchedule item:lstOfSchedulesTemp){
                             String freshDate = formatDate(item.getDate());
-
                             if(item.getAnyPendingAppointment()){
                                 listOfDayDecoration.add(new RedColorDecorator(freshDate));
                             }else {
@@ -383,12 +310,10 @@ public class ScheduleFirstMonthFragment extends Fragment {
 
                 });
 
-
     }
 
-    private void resetEnableView(Boolean isView) {
+    private void resetEnableView(Boolean isView) { }
 
-    }
     public String formatDate(String oldDate)  {
         DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
         Date freshDate = null;
@@ -402,8 +327,6 @@ public class ScheduleFirstMonthFragment extends Fragment {
 
 
     private class WhiteColorDecorator implements DayViewDecorator {
-
-
         private String date;
 
         public WhiteColorDecorator(String date) {
@@ -413,7 +336,7 @@ public class ScheduleFirstMonthFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("WhiteColorDecorator", "" + date);
+//            Log.e("WhiteColorDecorator", "" + date);
             return this.date.equals(date);
 
         }
@@ -424,16 +347,30 @@ public class ScheduleFirstMonthFragment extends Fragment {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
 
         }
+
+
     }
 
-    private String getMonthName(int i) {
-        String[] monthName = {"January", "February",
-                "March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
+    private String monthName;
 
-        return monthName[i];
+    public String getMonthName() {
+        return monthName;
     }
 
+    public void setMonthName(String monthName) {
+        this.monthName = monthName;
+    }
+
+
+    public Date formatDateIY(String oldDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date date = null;
+        try {
+            date = dateFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
 }

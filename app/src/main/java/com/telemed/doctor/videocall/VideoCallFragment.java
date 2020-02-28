@@ -55,6 +55,7 @@ import com.telemed.doctor.consult.model.Appointment;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.network.WebUrl;
 import com.telemed.doctor.util.CustomAlertTextView;
+import com.telemed.doctor.videocall.model.VideoCallDetail;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class VideoCallFragment extends Fragment {
     public static VideoCallFragment newInstance(Object payload) {
         VideoCallFragment fragment = new VideoCallFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("KEY_", (Appointment) payload); // SignUpIResponse.Data
+        bundle.putParcelable("KEY_", (VideoCallDetail) payload); // SignUpIResponse.Data
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -118,8 +119,8 @@ public class VideoCallFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // collect our intent
         if (getArguments() != null) {
-            Appointment objInfo = getArguments().getParcelable("KEY_");
-            if (objInfo != null) API_KEY = String.valueOf(objInfo.getApiKey());
+            VideoCallDetail objInfo = getArguments().getParcelable("KEY_");
+            if (objInfo != null) API_KEY = String.valueOf(objInfo.getOpenTokApiKey());
             if (objInfo != null) SESSION_ID = objInfo.getSessionId();
             if (objInfo != null) TOKEN = objInfo.getToken();
             if (objInfo != null) mUsrName = objInfo.getFirstName() + " " + objInfo.getLastName();
@@ -873,7 +874,6 @@ public class VideoCallFragment extends Fragment {
         @Override
         public void onConnected(SubscriberKit subscriberKit) {
             Log.e(TAG,"Subscriber onConnected");
-
             shrinkPublisherView();
 
         }

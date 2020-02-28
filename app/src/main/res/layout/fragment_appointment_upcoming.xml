@@ -17,12 +17,12 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_header"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/ibtn_close"
             android:paddingStart="@dimen/screen_start_padding"
             android:paddingTop="@dimen/screen_top_padding"
-            android:paddingEnd="@dimen/screen_end_padding"
             android:paddingBottom="@dimen/screen_bottom_padding"
             android:text="@string/title_upcoming_appointment"
             android:textColor="@color/colorWhite"
@@ -36,8 +36,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:paddingStart="@dimen/screen_start_padding"
-            android:paddingEnd="@dimen/screen_end_padding"
+            android:layout_marginEnd="@dimen/screen_end_margin"
             app:srcCompat="@drawable/ic_cross_blue" />
 
 <!--        <include-->

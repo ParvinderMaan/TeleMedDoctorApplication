@@ -33,6 +33,8 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.util.DividerItemDecoration;
+import com.telemed.doctor.videocall.model.VideoCallDetail;
+import com.telemed.doctor.videocall.model.VideoCallDetailResponse;
 
 import java.util.HashMap;
 
@@ -97,9 +99,7 @@ public class MyConsultFragment extends Fragment {
         in.setFilterBy(""); // no need there
         mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
         mViewModel.fetchPastAppointments(mHeaderMap,in);
-
-
-
+        
     }
 
     private void initView(View v) {
@@ -161,6 +161,7 @@ public class MyConsultFragment extends Fragment {
                     }
                     mUpComingAppointmentAdapter.clearAll();
                     mUpComingAppointmentAdapter.addAll(lstOfAppointments);
+
                 });
 
         mViewModel.getPastAppointments()
@@ -172,7 +173,7 @@ public class MyConsultFragment extends Fragment {
                         tvLastAppointmentTitle.setVisibility(View.VISIBLE);
                         viewLastAppointmentTitle.setVisibility(View.VISIBLE);
                     }
-
+                    mPastAppointmentAdapter.clearAll();
                     mPastAppointmentAdapter.addAll(lstOfAppointments);
                 });
 
@@ -191,6 +192,7 @@ public class MyConsultFragment extends Fragment {
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
+                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorBlue));
                         tvAlertView.showTopAlert(response.getErrorMsg());
                     }
                     break;
@@ -201,7 +203,6 @@ public class MyConsultFragment extends Fragment {
 
 
         mViewModel.getResultPastAppointment().observe(getViewLifecycleOwner(), response -> {
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -210,17 +211,46 @@ public class MyConsultFragment extends Fragment {
                             mViewModel.setPastAppointmentList(infoObj.getDataList());
                         }
                     }
-
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
+                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorBlue));
                         tvAlertView.showTopAlert(response.getErrorMsg());
                     }
                     break;
             }
 
         });
+
+
+
+        mViewModel.getResultVideoCallDetail()
+                .observe(getViewLifecycleOwner(), response -> {
+                    switch (response.getStatus()) {
+                        case SUCCESS:
+                            if (response.getData() != null) {
+                                VideoCallDetailResponse.Data infoObj = response.getData().getData(); // adding Additional Info
+                                if(infoObj!=null && infoObj.getMediaValue()!=null ){
+
+                                    if(mFragmentListener!=null){
+                                        VideoCallDetail value =infoObj.getMediaValue();
+                                        value.setOpenTokApiKey(infoObj.getOpenTokApiKey());
+                                        mFragmentListener.showFragment("VideoCallFragment",value);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case FAILURE:
+                            if (response.getErrorMsg() != null) {
+                                tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorBlue));
+                                tvAlertView.showTopAlert(response.getErrorMsg());
+                            }
+                            break;
+                    }
+
+                });
 
     }
 
@@ -231,55 +261,12 @@ public class MyConsultFragment extends Fragment {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(requireActivity());
         rvAppointmentsUpcoming.setLayoutManager(mLinearLayoutManager);
         rvAppointmentsUpcoming.setAdapter(mUpComingAppointmentAdapter);
-        mUpComingAppointmentAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, UpcomingAppointment model) {
+        mUpComingAppointmentAdapter.setOnItemClickListener(mUpcomOnItemClickListener);
 
-//                if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
-//                }
-//
-//            for now
-//              if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallFragment", model);
-//                }
-            }
-
-            @Override
-            public void onItemClickMore(String tag, int pos) {
-
-//
-////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
-////                        UpcomingOptionsBottomSheetFragment.newInstance();
-////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
-////                        mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
-
-//               switch (tag){
-//
-//
-//                   case "TAG_CHAT":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
-//                       break;
-//                   case "TAG_GALLERY":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
-//
-//                       break;
-//                   case "TAG_MEDICAL_RECORD":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
-//
-//                       break;
-//               }
-
-            }
-        });
-
-            Drawable dividerDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.custom_divider_white);
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
-            rvAppointmentsUpcoming.addItemDecoration(dividerItemDecoration);
-
-
+        Drawable dividerDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.custom_divider_white);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
+        rvAppointmentsUpcoming.addItemDecoration(dividerItemDecoration);
         ViewCompat.setNestedScrollingEnabled(rvAppointmentsUpcoming, false);
-
     }
 
     private void initHistoryAppointmentRecyclerView(View v) {
@@ -288,26 +275,12 @@ public class MyConsultFragment extends Fragment {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(requireActivity());
         rvAppointmentsHistory.setLayoutManager(mLinearLayoutManager);
         rvAppointmentsHistory.setAdapter(mPastAppointmentAdapter);
+        mPastAppointmentAdapter.setOnItemClickListener(mHisOnItemClickListener);
 
-            Drawable dividerDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.custom_divider_white);
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
-            rvAppointmentsHistory.addItemDecoration(dividerItemDecoration);
-
-
+        Drawable dividerDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.custom_divider_white);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
+        rvAppointmentsHistory.addItemDecoration(dividerItemDecoration);
         ViewCompat.setNestedScrollingEnabled(rvAppointmentsHistory, false);
-
-        mPastAppointmentAdapter.setOnItemClickListener(new AppointmentHistoryAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, PastAppointment model) {
-
-            }
-
-            @Override
-            public void onItemClickMore(String tag, int pos) {
-
-            }
-        });
-
     }
 
 
@@ -344,6 +317,65 @@ public class MyConsultFragment extends Fragment {
 //------------------------------------------------------------------------------------
 
     }
+
+
+private AppointmentUpcomingAdapter.OnItemClickListener mUpcomOnItemClickListener=new AppointmentUpcomingAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(int position, UpcomingAppointment model) {
+
+//                if (mFragmentListener != null) {
+//                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
+//                }
+//
+//            for now
+//              if (mFragmentListener != null) {
+//                    mFragmentListener.showFragment("VideoCallFragment", model);
+//                }
+
+                mViewModel.fetchVideoCallDetail(mHeaderMap,model.getAppointmentId());
+
+
+        }
+
+        @Override
+        public void onItemClickMore(String tag, int pos) {
+
+//
+////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
+////                        UpcomingOptionsBottomSheetFragment.newInstance();
+////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
+////                        mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
+
+//               switch (tag){
+//
+//
+//                   case "TAG_CHAT":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
+//                       break;
+//                   case "TAG_GALLERY":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
+//
+//                       break;
+//                   case "TAG_MEDICAL_RECORD":
+//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
+//
+//                       break;
+//               }
+
+        }
+    };
+
+private AppointmentHistoryAdapter.OnItemClickListener mHisOnItemClickListener=new AppointmentHistoryAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(int position, PastAppointment model) {
+
+        }
+
+        @Override
+        public void onItemClickMore(String tag, int pos) {
+
+        }
+    };
 }
 
 

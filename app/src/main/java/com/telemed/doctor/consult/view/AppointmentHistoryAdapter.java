@@ -312,6 +312,17 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
 //              tvDateTime.append(startTime+" - "+endTime);
                 tvDateTime.append("1:00 AM"+" - "+"1:30 AM"); // temp??
             }
+
+
+            if (model.getStateName() != null && model.getCountryName() != null) {
+                String stateName = model.getStateName();
+                stateName = stateName.substring(0, 1).toUpperCase() + stateName.substring(1).toLowerCase();
+                String countryName = model.getCountryName();
+                countryName = countryName.substring(0, 1).toUpperCase() + countryName.substring(1).toLowerCase();
+                tvPatientAddr.setText(stateName);
+                tvPatientAddr.append(",");
+                tvPatientAddr.append(countryName);
+            }
         }
     }
     static class FooterViewHolder extends RecyclerView.ViewHolder {

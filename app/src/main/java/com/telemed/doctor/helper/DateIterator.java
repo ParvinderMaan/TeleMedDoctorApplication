@@ -1,4 +1,4 @@
-package com.telemed.doctor.schedule;
+package com.telemed.doctor.helper;
 
 import org.jetbrains.annotations.NotNull;
 

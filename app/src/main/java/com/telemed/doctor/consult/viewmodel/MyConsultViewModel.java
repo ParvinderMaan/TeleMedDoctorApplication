@@ -25,6 +25,7 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.profile.model.AlterProfilePicResponse;
+import com.telemed.doctor.videocall.model.VideoCallDetailResponse;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,8 +56,11 @@ public class MyConsultViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading,isViewEnabled;
     private MutableLiveData<ApiResponse<UpcomingAppointmentResponse>> resultUpComingAppointment;
     private MutableLiveData<ApiResponse<PastAppointmentResponse>> resultPastAppointment;
+    private MutableLiveData<ApiResponse<VideoCallDetailResponse>> resultVideoCallDetail;
 
-
+    public MutableLiveData<ApiResponse<VideoCallDetailResponse>> getResultVideoCallDetail() {
+        return resultVideoCallDetail;
+    }
 
     public MutableLiveData<ApiResponse<UpcomingAppointmentResponse>> getResultUpComingAppointment() {
         return resultUpComingAppointment;
@@ -76,8 +80,7 @@ public class MyConsultViewModel extends AndroidViewModel {
         isViewEnabled=new MutableLiveData<>();
         lstOfUpComingAppointment=new MutableLiveData<>();
         lstOfPastAppointment=new MutableLiveData<>();
-
-
+        resultVideoCallDetail=new MutableLiveData<>();
     }
 
 
@@ -169,4 +172,38 @@ public class MyConsultViewModel extends AndroidViewModel {
     }
 
 
+
+    public void fetchVideoCallDetail(HashMap<String, String> headerMap, Integer appointmentId) {
+        this.isLoading.setValue(true);
+        isViewEnabled.setValue(false);
+        mWebService.fetchVideoCallDetail(headerMap,appointmentId).enqueue(new Callback<VideoCallDetailResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<VideoCallDetailResponse> call, @NonNull Response<VideoCallDetailResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                if (response.isSuccessful() && response.body()!=null) {
+                    VideoCallDetailResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+                        resultVideoCallDetail.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultVideoCallDetail.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultVideoCallDetail.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<VideoCallDetailResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultVideoCallDetail.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+
+    }
 }

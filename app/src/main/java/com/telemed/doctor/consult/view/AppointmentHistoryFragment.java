@@ -35,9 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-import static com.telemed.doctor.network.Status.FAILURE;
-import static com.telemed.doctor.network.Status.SUCCESS;
-
 public class AppointmentHistoryFragment extends Fragment {
     private static final int PAGE_SIZE = 5;
     private AppointmentHistoryViewModel mViewModel;
@@ -75,7 +72,7 @@ public class AppointmentHistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout._fragment_appointment_history, container, false);
+        return inflater.inflate(R.layout.fragment_appointment_history, container, false);
     }
 
 

@@ -36,7 +36,6 @@ public class ScheduleViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isDialogVisible;
     private MutableLiveData<Boolean> isViewEnabled;
     private MutableLiveData<Map<String, String>> headerMap;
-    private MutableLiveData<List<AllMonthSchedule>> lstOfSchedule;
 
     public String getTAG() {
         return TAG;
@@ -52,7 +51,6 @@ public class ScheduleViewModel extends AndroidViewModel {
         isDialogVisible=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
         headerMap=new MutableLiveData<>();
-        lstOfSchedule=new MutableLiveData<>();
         //---------------------------
 
 
@@ -199,14 +197,7 @@ public class ScheduleViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<List<AllMonthSchedule>> getAllSchedules() {
-        return lstOfSchedule;
-    }
 
-    public void setScheduleList(List<AllMonthSchedule> scheduleList) {
-        lstOfSchedule.setValue(scheduleList);
-
-    }
 
 
     public MutableLiveData<ApiResponse<MonthlyScheduleResponse>> getResultAllScheduleIIMonth() {

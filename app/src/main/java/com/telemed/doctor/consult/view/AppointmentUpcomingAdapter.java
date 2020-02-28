@@ -132,7 +132,6 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
     // inner interfaces
     public interface OnItemClickListener {
         void onItemClick(int position, UpcomingAppointment model);
-
         void onItemClickMore(String tag, int pos);
 
     }
@@ -195,20 +194,28 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
 
             }
 
+            if (model.getStateName() != null && model.getCountryName() != null) {
+                String stateName = model.getStateName();
+                stateName = stateName.substring(0, 1).toUpperCase() + stateName.substring(1).toLowerCase();
+                String countryName = model.getCountryName();
+                countryName = countryName.substring(0, 1).toUpperCase() + countryName.substring(1).toLowerCase();
+                tvAddress.setText(stateName);
+                tvAddress.append(",");
+                tvAddress.append(countryName);
+            }
+
+
 //          tvAddress=itemView.findViewById(R.id.tv_address);
-
             itemView.setOnClickListener(v -> {
-                //     listener.onItemClickDelete(getAdapterPosition(), model);
-
-            });
-            tvMore.setOnClickListener(v -> {
-                listener.onItemClickMore("", 1);
-
-            });
-
-            tvEstimateTime.setOnClickListener(v -> {
                 listener.onItemClick(getAdapterPosition(), model);
             });
+//            tvMore.setOnClickListener(v -> {
+//                listener.onItemClickMore("", 1);
+//            });
+//
+//            tvEstimateTime.setOnClickListener(v -> {
+//                listener.onItemClick(getAdapterPosition(), model);
+//            });
 
         }
 
@@ -253,10 +260,10 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
             notifyItemRemoved(position);
         }
     }
-    public UpcomingAppointment getItem(int position) {
+    private UpcomingAppointment getItem(int position) {
         return items.get(position);
     }
-    public boolean isLastPosition(int position) {
+    private boolean isLastPosition(int position) {
         return (position == items.size() - 1);
     }
 

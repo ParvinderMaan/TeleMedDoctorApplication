@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +28,7 @@ import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.AlertDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
-import com.telemed.doctor.schedule.DateIterator;
+import com.telemed.doctor.helper.DateIterator;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
 import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.viewmodel.ScheduleSychronizeIIIViewModel;
@@ -52,21 +51,15 @@ import java.util.Locale;
 // month three..
 public class ScheduleSychronizeIIIFragment extends Fragment {
     private final String TAG = ScheduleSychronizeIIIFragment.class.getSimpleName();
-
     private ScheduleSychronizeIIIViewModel mViewModel;
     private MaterialCalendarView calViewSchedule;
     private HashMap<String, DayViewDecorator> mHashMapDD = new HashMap<>();
     private String startTimeSelected, endTimeSelected, dateSelected;
     private String mDayDecoratorDateSelected;
-
     private Calendar calendarObj;
     private String mAccessToken;
     private HashMap<String, String> mHeaderMap;
     private AlertDialogFragment mDeleteDialogFragment;
-
-//    private List<DayViewDecorator> lstOfDisableDays = new ArrayList<>();
-//    private List<DayViewDecorator> lstOfEnableDays = new ArrayList<>();
-    private List<DayViewDecorator> listOfDayDecoration = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public static ScheduleSychronizeIIIFragment newInstance() {
@@ -105,9 +98,7 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-
             ((ScheduleSychronizeFragment)requireParentFragment()).fetchMonthlySchedules(2);
-
         });
 
     }
@@ -133,7 +124,6 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
 
 
     private void initObserver() {
-
         mViewModel.getDeleteDialogVisibility()
                 .observe(getViewLifecycleOwner(), isVisibile -> {
                     if(isVisibile){
@@ -154,108 +144,23 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
                     }
 
                 });
-//        mViewModel.getProgress()
-//                .observe(getViewLifecycleOwner(), isLoading -> {
-//                    progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE);
-//                });
-
-//        mViewModel.getEnableView()
-//                .observe(getViewLifecycleOwner(), this::resetEnableView);
-
-//        mViewModel.getResultAllScheduleIMonth().observe(getViewLifecycleOwner(), response -> {
-//
-//            switch (response.getStatus()) {
-//                case SUCCESS:
-//                    if (response.getData() != null) {
-//                        MonthlyScheduleResponse.Data infoObj = response.getData().getData();
-//                        if (infoObj.getAvailableScheduleList() != null) {
-//                            ScheduleSychronizeIFragment fragment = (ScheduleSychronizeIFragment) mMonthPagerAdapter.getRegisteredFragment(0);
-//                            fragment.updateUi(infoObj.getAvailableScheduleList());
-//                        }
-//                    }
-//
-//                    break;
-//
-//                case FAILURE:
-//                    if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg());
-//
-//                    }
-//                    break;
-//            }
-//        });
-
-//        mViewModel.getResultAllScheduleIIMonth().observe(getViewLifecycleOwner(), response -> {
-//
-//            switch (response.getStatus()) {
-//                case SUCCESS:
-//                    if (response.getData() != null) {
-//                        MonthlyScheduleResponse.Data infoObj = response.getData().getData();
-//                        if (infoObj.getAvailableScheduleList() != null) {
-//                            ScheduleSychronizeIIFragment fragment = (ScheduleSychronizeIIFragment) mMonthPagerAdapter.getRegisteredFragment(0);
-//                            fragment.updateUi(infoObj.getAvailableScheduleList());
-//                        }
-//                    }
-//
-//                    break;
-//
-//                case FAILURE:
-//                    if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg());
-//
-//                    }
-//                    break;
-//            }
-//        });
-//
-//
-//        mViewModel.getResultAllScheduleIIIMonth().observe(getViewLifecycleOwner(), response -> {
-//
-//            switch (response.getStatus()) {
-//                case SUCCESS:
-//                    if (response.getData() != null) {
-//                        MonthlyScheduleResponse.Data infoObj = response.getData().getData();
-//                        if (infoObj.getAvailableScheduleList() != null) {
-//                            ScheduleSychronizeIIIFragment fragment = (ScheduleSychronizeIIIFragment) mMonthPagerAdapter.getRegisteredFragment(0);
-//                            fragment.updateUi(infoObj.getAvailableScheduleList());
-//                        }
-//                    }
-//
-//                    break;
-//
-//                case FAILURE:
-//                    if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg());
-//
-//                    }
-//                    break;
-//            }
-//        });
 
 
         mViewModel.getResultantDayScheduleCreation().observe(getViewLifecycleOwner(), response -> {
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-//                        tvAlertView.showTopAlert(response.getData().getMessage());
-//                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),R.color.colorGreen);
-
                         WhiteColorDecorator decorator=new WhiteColorDecorator(mDayDecoratorDateSelected);
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
                         calViewSchedule.addDecorator(decorator);
-//                        calViewSchedule.invalidateDecorators();
-
                     }
 
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg());
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),R.color.colorRed);
-
                     }
                     break;
             }
@@ -263,30 +168,21 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
 
 
         mViewModel.getResultantDayScheduleDeletion().observe(getViewLifecycleOwner(), response -> {
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-//                        tvAlertView.showTopAlert(response.getData().getMessage());
-//                        tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),R.color.colorGreen);
-
                         BlueColorDecorator decorator=new BlueColorDecorator(mDayDecoratorDateSelected);
                         calViewSchedule.removeDecorator(mHashMapDD.get(mDayDecoratorDateSelected));
                         calViewSchedule.addDecorator(decorator);
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
-
-                        //  calViewSchedule.addDecorator(decorator);
-                        //   calViewSchedule.removeDecorator(listOfDecoration.get(3));
                     }
 
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg());
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),R.color.colorRed);
-
                     }
                     break;
             }
@@ -295,28 +191,12 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
-
                     if(swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
 
                     if (!lstOfSchedules.isEmpty()) {
-//                        List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();
-//                        for (int i = 0; i < lstOfSchedules.size(); i++) {
-//                            Date date = formatDateII(lstOfSchedules.get(i).getDate());
-//                            if (date.before(calendarObj.getTime())) {
-//                                // remove ....
-//                            } else {
-//                                // add
-//                                lstOfSchedulesTemp.add(lstOfSchedules.get(i));
-//                            }
-//
-//
-//                        }
-
-//                        listOfDayDecoration.addAll(lstOfDisableDays);
-//                        listOfDayDecoration.addAll(lstOfEnableDays);
                         for (AllMonthSchedule item : lstOfSchedules) {
                             String freshDate = formatDate(item.getDate());
 
@@ -326,18 +206,16 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
                                 mHashMapDD.put(freshDate, new WhiteColorDecorator(freshDate));
                             }
                         }
-
                         calViewSchedule.addDecorators(new ArrayList<>(mHashMapDD.values()));
                     }
-
                 });
 
 
-    }
-
-    private void resetEnableView(Boolean aBoolean) {
+        mViewModel.getEnableView().observe(getViewLifecycleOwner(), this::resetEnableView);
 
     }
+
+    private void resetEnableView(Boolean aBoolean) { }
 
     private void initCalendarView(View v) {
         calViewSchedule = v.findViewById(R.id.calendar_view_schedule);
@@ -361,87 +239,32 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
 
         calendarObj = Calendar.getInstance();
 
-
-
-
         Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
         while (i.hasNext()) {
             Date date = i.next();
-            Log.e(TAG, "all dates: " + date);
+//          Log.e(TAG, "all dates: " + date);
             String dateee = null;
             dateee = formatDateZ(date);
             mHashMapDD.put(dateee, new BlueColorDecorator(dateee));
-//            if (date.before(calendarObj.getTime())) {
-//                mHashMapDD.put(dateee, new DisableDateDecorator(dateee));
-////                lstOfDisableDays.add(new DisableDateDecorator(dateee));
-//                Log.e(TAG, "all dates: before" + dateee);
-//
-//
-//            } else {
-//                mHashMapDD.put(dateee, new BlueColorDecorator(dateee));
-////                lstOfEnableDays.add(new BlueColorDecorator(dateee));
-//                Log.e(TAG, "all dates: after" + dateee);
-//
-//
-//            }
         }
-
-
 
         calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay day, boolean selected) {
                 dateSelected = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//                Toast.makeText(requireActivity(), "" + selectedDate, Toast.LENGTH_SHORT).show();
                 if (mHashMapDD.containsKey(dateSelected)) {
                     mDayDecoratorDateSelected=dateSelected;
                     if(mHashMapDD.get(dateSelected) instanceof RedColorDecorator){
-                        Toast.makeText(requireActivity(), "" + "RedColorDecorator", Toast.LENGTH_SHORT).show();
                         /// delete.......
                         mViewModel.setDeleteDialogVisibility(true);
-
-
                     }else if(mHashMapDD.get(dateSelected) instanceof WhiteColorDecorator){
-                        Toast.makeText(requireActivity(), "" + "WhiteColorDecorator", Toast.LENGTH_SHORT).show();
                         /// delete.......
                         mViewModel.setDeleteDialogVisibility(true);
-
-
                     }else if(mHashMapDD.get(dateSelected) instanceof BlueColorDecorator){
-                        Toast.makeText(requireActivity(), "" + "BlueColorDecorator", Toast.LENGTH_SHORT).show();
                         /// create.......
                         getFromTime();
-
-
                     }
-
-
                 }
-
-
-//                try {
-//                    dateSelected=formatDate(selectedDate);
-//
-//                    if(mHashMap.containsKey(dateSelected)){           // ---> white  -->  create
-//                        getFromTime();
-//
-//                    }else {                                             // ---> blue  -->   delete
-//
-//                        DayScheduleRequest in=new DayScheduleRequest();
-//                        in.setId(0);
-//                        in.setAvailableDate(selectedDate);
-//                        in.setFromTime("00:00:00");
-//                        in.setToTime("00:00:00");
-//                        in.setIsAvailable(false);
-//                        mViewModel.deleteWeekSchedule(mHeaderMap,in); // it's a delete api ....
-//                    }
-//
-//                 //   mViewModel.deleteWeekSchedule(mHeaderMap,selectedDate);// id
-//
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-
             }
         });
 
@@ -473,85 +296,27 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
     }
 
 
-    public String formatDateZ(Date oldDate) {
+    private String formatDateZ(Date oldDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
         String strDate = dateFormat.format(oldDate);
         return strDate;
     }
 
-//    public String formatDateII(String oldDate)  {
-//        DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//        Date freshDate = null;
-//        try {
-//            freshDate = sdFormat.parse(oldDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return sdFormat.format(freshDate);
-//    }
-
-    public Date formatDateII(String oldDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date date = null;
-        try {
-            date = dateFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-
-    //  Disable dates decorator
-    private class DisableDateDecorator implements DayViewDecorator {
-
-        private String date;
-
-        public DisableDateDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("DisableDateDecorator", "" + date);
-            return this.date.equals(date);
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
-
-        }
-
-    }
-
     private class BlueColorDecorator implements DayViewDecorator {
-
         private String date;
-
         public BlueColorDecorator(String date) {
             this.date = date;
         }
 
-
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("BlueColorDecorator", "" + date);
+//            Log.e("BlueColorDecorator", "" + date);
             return this.date.equals(date);
-
-//            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("BlueColorDecorator",""+date);
-//
-
-
         }
 
         @Override
         public void decorate(final DayViewFacade view) {
-//            view.setDaysDisabled(true);
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
         }
     }
@@ -567,20 +332,17 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("RedColorDecorator", "" + date);
+//            Log.e("RedColorDecorator", "" + date);
             return this.date.equals(date);
         }
 
         @Override
         public void decorate(final DayViewFacade view) {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iv));
-
         }
     }
 
     private class WhiteColorDecorator implements DayViewDecorator {
-
-
         private String date;
 
         public WhiteColorDecorator(String date) {
@@ -590,12 +352,8 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-            Log.e("WhiteColorDecorator", "" + date);
-
-
+//            Log.e("WhiteColorDecorator", "" + date);
             return this.date.equals(date);
-
-
         }
 
         @Override
@@ -610,8 +368,6 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
     private String formatDateIII(String inputText) {
         DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-
-
         Date date = null;
         try {
             date = inputFormat.parse(inputText);
@@ -710,13 +466,6 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
         editText.setText("Ending Time :");
         mTimePicker.show();
 
-    }
-
-
-    public String formatDate(Date oldDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
     }
 
 

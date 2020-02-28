@@ -9,7 +9,7 @@
     android:layout_gravity="start"
     android:layout_below="@+id/btn_synchronize_schedule"
     android:orientation="vertical"
-    tools:context=".schedule.view.ScheduleFirstMonthFragment">
+    tools:context=".schedule.view.ScheduleIMonthFragment">
 
     <ScrollView
         android:layout_marginTop="@dimen/_10sdp"

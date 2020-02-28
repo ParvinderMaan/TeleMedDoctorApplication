@@ -9,7 +9,6 @@
     android:background="@color/colorWhite"
     android:layout_height="match_parent"
     tools:context=".medicalrecord.MedicalRecordFragment">
-
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/ll_header"

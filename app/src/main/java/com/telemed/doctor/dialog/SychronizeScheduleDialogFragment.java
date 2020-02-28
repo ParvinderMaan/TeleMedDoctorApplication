@@ -18,7 +18,6 @@ import androidx.fragment.app.DialogFragment;
 import com.telemed.doctor.R;
 
 public class SychronizeScheduleDialogFragment extends DialogFragment {
-
     private SychronizeScheduleDialogListener mDialogListener;
     private TextView tvSyncDate,tvSyncWeekday,tvCancelOptions;
     private static String TAG;
@@ -27,8 +26,6 @@ public class SychronizeScheduleDialogFragment extends DialogFragment {
     public static SychronizeScheduleDialogFragment newInstance() {
         return new SychronizeScheduleDialogFragment();
     }
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,16 +67,11 @@ public class SychronizeScheduleDialogFragment extends DialogFragment {
         tvSyncWeekday.setOnClickListener(v->{
             TAG="WEEK_WISE";
             dismiss();
-
-
-
         });
 
         tvCancelOptions.setOnClickListener(v->{
             TAG="CANCEL";
             dismiss();
-
-
         });
 
     }
@@ -91,10 +83,7 @@ public class SychronizeScheduleDialogFragment extends DialogFragment {
     public interface SychronizeScheduleDialogListener {
         void onClickWeekWise();
         void onClickDateWise();
-
-
     }
-
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
@@ -104,7 +93,6 @@ public class SychronizeScheduleDialogFragment extends DialogFragment {
                 if(mDialogListener!=null){
                     mDialogListener.onClickDateWise();
                 }
-
                 break;
             case "WEEK_WISE":
                 if(mDialogListener!=null){

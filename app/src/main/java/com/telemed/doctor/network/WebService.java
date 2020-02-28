@@ -6,6 +6,7 @@ import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
+import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
 import com.telemed.doctor.schedule.model.PatientDetailResponse;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
@@ -51,6 +52,7 @@ import com.telemed.doctor.signup.model.SignUpIResponse;
 import com.telemed.doctor.signup.model.SignUpIVRequest;
 import com.telemed.doctor.signup.model.SignUpIVResponse;
 import com.telemed.doctor.signup.model.SignUpVResponse;
+import com.telemed.doctor.videocall.model.VideoCallDetailResponse;
 
 import java.util.Map;
 
@@ -217,7 +219,6 @@ public interface WebService {
     @POST(WebUrl.CREATE_DAY_SCHEDULE)
     Call<DayScheduleAlterationResponse> createDaySchedule(@HeaderMap Map<String, String> headers, @Body DayScheduleRequest in);
 
-
     @DELETE(WebUrl.DELETE_DAY_SCHEDULE)
     Call <DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
 
@@ -226,6 +227,14 @@ public interface WebService {
 
     @POST(WebUrl.PROCESS_APPOINTMENT_REQUEST)
     Call<AppointmentProcessResponse> processAppointmentRequest(@HeaderMap Map<String, String> headers, @Body AppointmentProcessRequest in);
+
+    @GET(WebUrl.FETCH_CALL_SESSION)
+    Call<VideoCallDetailResponse> fetchVideoCallDetail(@HeaderMap Map<String, String> token, @Query("AppointmentId") Integer appointmentId);
+
+
+    @GET(WebUrl.FETCH_MEDICAL_RECORD)
+    Call<MedicalRecordResponse> fetchMedicalRecord(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
+
 
 
 }
