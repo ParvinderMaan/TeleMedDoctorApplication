@@ -1,5 +1,6 @@
 package com.telemed.doctor.consult.view;
 
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -29,6 +30,7 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.consult.viewmodel.AppointmentHistoryViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
+import com.telemed.doctor.util.CustomTypingEditText;
 import com.telemed.doctor.util.DividerItemDecoration;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +52,8 @@ public class AppointmentHistoryFragment extends Fragment {
     private boolean isLastPage = false;
     private boolean isListLoading = false;
     private int currentPage = 1;
+    private CustomTypingEditText edtSearchView;
+    private String mSearchQuery="";
 
     public static AppointmentHistoryFragment newInstance(Object payload) {
         return new AppointmentHistoryFragment();
@@ -72,6 +76,9 @@ public class AppointmentHistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return inflater.inflate(R.layout.fragment_appointment_history, container, false);
     }
 
@@ -80,8 +87,23 @@ public class AppointmentHistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AppointmentHistoryViewModel.class);
+        initView(v);
         initHistoryRecyclerView(v);
         initObserver();
+
+        AppointmentRequest in=new AppointmentRequest();
+        in.setPageNumber(currentPage);
+        in.setPageSize(20);
+        in.setSearchQuery("");
+        in.setFilterBy(""); // no need there
+
+        mViewModel.fetchPastAppointments(mHeaderMap,in);
+
+
+
+    }
+
+    private void initView(View v) {
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
@@ -89,14 +111,35 @@ public class AppointmentHistoryFragment extends Fragment {
                 mFragmentListener.popTopMostFragment();
         });
 
+        edtSearchView = v.findViewById(R.id.edt_search_view);
+        edtSearchView.setOnTypingModified((view, isTyping) -> {
+            currentPage=1;
 
-        AppointmentRequest in=new AppointmentRequest();
-        in.setPageNumber(1);
-        in.setPageSize(20);
-        in.setSearchQuery("");
-        in.setFilterBy(""); // no need there
+            if (!isTyping) {
+                //  Log.e(TAG, "User stopped typing.");
+                mSearchQuery=view.getText().toString().trim();
+                AppointmentRequest in=new AppointmentRequest();
+                in.setPageNumber(currentPage);
+                in.setPageSize(PAGE_SIZE);
+                in.setSearchQuery(mSearchQuery); // no need there
+                in.setFilterBy(""); // no need there
+                mViewModel.fetchPastAppointments(mHeaderMap,in);
 
-        mViewModel.fetchPastAppointments(mHeaderMap,in);
+            }
+        });
+
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            currentPage=1;
+            AppointmentRequest in=new AppointmentRequest();
+            in.setPageNumber(currentPage);
+            in.setPageSize(PAGE_SIZE);
+            in.setSearchQuery("");
+            in.setFilterBy(""); // no need there
+            mViewModel.fetchPastAppointments(mHeaderMap,in);
+        });
 
     }
 
@@ -114,17 +157,6 @@ public class AppointmentHistoryFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
         rvAppointmentsHistory.addItemDecoration(dividerItemDecoration);
 
-        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-
-            AppointmentRequest in=new AppointmentRequest();
-            in.setPageNumber(1);
-            in.setPageSize(PAGE_SIZE);
-            in.setSearchQuery("");
-            in.setFilterBy(""); // no need there
-            mViewModel.fetchPastAppointments(mHeaderMap,in);
-        });
 
     }
 
@@ -170,9 +202,10 @@ public class AppointmentHistoryFragment extends Fragment {
                         if(infoObj.getDataList()!=null && (!infoObj.getDataList().isEmpty())){
                             mAdapter.clearAll(); // just to make sure refreshing works ok ....
                             mViewModel.setPastAppointmentList(infoObj.getDataList());
+                        }else {
+                            mAdapter.clearAll();
                         }
                     }
-
                     break;
 
                 case FAILURE:
@@ -250,9 +283,9 @@ public class AppointmentHistoryFragment extends Fragment {
 
 //
 ////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
-////                        UpcomingOptionsBottomSheetFragment.newInstance();
+////                UpcomingOptionsBottomSheetFragment.newInstance();
 ////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
-////                        mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
+////                mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
 
 //               switch (tag){
 //
@@ -293,7 +326,6 @@ public class AppointmentHistoryFragment extends Fragment {
         in.setSearchQuery(""); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchPastNextAppointments(mHeaderMap,in);
-
 
     };
 

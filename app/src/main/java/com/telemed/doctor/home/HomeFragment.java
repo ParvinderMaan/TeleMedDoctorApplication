@@ -164,7 +164,10 @@ public class HomeFragment extends Fragment {
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
+//                        tvAlertView.showTopAlert(response.getErrorMsg()); // hack !!!
+                        if (mFragmentListener != null){
+                            mFragmentListener.startActivity("RouterActivity", null);
+                        }
                     }
                     break;
             }

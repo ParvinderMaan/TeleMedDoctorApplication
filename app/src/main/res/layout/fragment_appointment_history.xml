@@ -47,6 +47,29 @@
             layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_search_view"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/rounded_background_viii"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.telemed.doctor.util.CustomTypingEditText
+            android:id="@+id/edt_search_view"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:maxLength="30"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"

@@ -159,6 +159,7 @@ public class AppointmentUpcomingViewModel extends AndroidViewModel {
 
     public void setUpComingAppointmentList(List<UpcomingAppointment> appointmentList) {
         lstOfUpComingAppointment.setValue(appointmentList);
+
     }
 
 

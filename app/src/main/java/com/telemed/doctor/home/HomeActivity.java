@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.telemed.doctor.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
@@ -97,6 +98,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 //-------------------------------------------------------------------------------------------------
         registerReceiver(mBroadcastReceiver, intentFilter);
 //-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
     }
 
 

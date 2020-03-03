@@ -32,7 +32,7 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isViewEnabled;
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        mWebService = ((TeleMedApplication) application).getRetrofitInstance();
+         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
          mHelper = ((TeleMedApplication)application).getSharedPrefInstance();
 
         resultant = new MutableLiveData<>();

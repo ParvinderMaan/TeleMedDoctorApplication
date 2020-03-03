@@ -11,7 +11,6 @@
     android:focusable="true"
     android:orientation="vertical"
     tools:context=".schedule.view.ScheduleFragment">
-
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/ll_header"
@@ -75,7 +74,6 @@
         android:textAllCaps="false"
         android:textColor="@drawable/selector_text_blue"
         android:textStyle="bold"
-
         app:drawableRightCompat="@drawable/ic_arrow_right" />
 
     <LinearLayout
@@ -88,7 +86,6 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/rounded_background_ii"
         android:orientation="vertical">
-
         <RelativeLayout
             android:id="@+id/rl_calandar_header"
             android:layout_width="match_parent"
@@ -132,12 +129,11 @@
                 android:background="@color/colorGrey"
                 android:layout_height="1dp"/>
         </RelativeLayout>
-
         <!--    calendar layout -->
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_300sdp" />
+            android:layout_height="@dimen/_320sdp" />
 
 
     </LinearLayout>

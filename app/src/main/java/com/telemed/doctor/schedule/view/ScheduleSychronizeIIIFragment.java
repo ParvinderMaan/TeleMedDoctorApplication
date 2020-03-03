@@ -27,6 +27,8 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.AlertDialogFragment;
+import com.telemed.doctor.dialog.EndTimePickerDialogFragment;
+import com.telemed.doctor.dialog.StartTimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.helper.DateIterator;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
@@ -262,7 +264,8 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
                         mViewModel.setDeleteDialogVisibility(true);
                     }else if(mHashMapDD.get(dateSelected) instanceof BlueColorDecorator){
                         /// create.......
-                        getFromTime();
+//                        getFromTime();
+                        showStartTimePicker();
                     }
                 }
             }
@@ -478,6 +481,36 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
             e.printStackTrace();
         }
         return sdFormat.format(freshDate);
+    }
+
+    private void showStartTimePicker() {
+        StartTimePickerDialogFragment mDialogFragment = StartTimePickerDialogFragment.newInstance();
+        mDialogFragment.setOnStartTimePickerDialogFragmentListener((value, key) -> {
+            startTimeSelected=value;
+            showEndTimePicker(key);
+        });
+
+        mDialogFragment.show(getChildFragmentManager(), "TAG");
+
+    }
+
+    private void showEndTimePicker(int keyIndex) {
+        EndTimePickerDialogFragment mDialogFragment = EndTimePickerDialogFragment.newInstance(keyIndex);
+        mDialogFragment.setOnEndTimePickerDialogFragmentListener((value, key) -> {
+            endTimeSelected=value;
+            //call api....
+            DayScheduleRequest in = new DayScheduleRequest();
+            in.setId(0);
+            in.setAvailableDate(formatDateIII(dateSelected));
+            in.setFromTime(startTimeSelected);
+            in.setToTime(endTimeSelected);
+            in.setIsAvailable(true);
+            Log.e(TAG,in.toString());
+            mViewModel.createDaySchedule(mHeaderMap, in);
+        });
+
+        mDialogFragment.show(getChildFragmentManager(), "TAG");
+
     }
 
 }

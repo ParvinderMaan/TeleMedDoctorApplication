@@ -27,8 +27,11 @@ import android.widget.TimePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
+import com.telemed.doctor.dialog.EndTimePickerDialogFragment;
+import com.telemed.doctor.dialog.StartTimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 import com.telemed.doctor.schedule.viewmodel.WeekDaysScheduleViewModel;
@@ -312,7 +315,8 @@ public class WeekDaysScheduleFragment extends Fragment {
 
 //       arrDaySelected = new Integer[]{sun, mon, tue, wed, thu, fri, sat};
             dialog.dismiss();
-            getFromTime();
+//            getFromTime();
+            showStartTimePicker();
         });
         tvSelectAll.setOnClickListener(view -> {
 
@@ -359,7 +363,6 @@ public class WeekDaysScheduleFragment extends Fragment {
                 Log.e("From: ", fromTime);
                 getToTime();
                 startTimeSelected=fromTime;
-
             }
         }, hour, minute, true);//Yes 24 hour time
 //      mTimePicker.setTitle("From");
@@ -369,6 +372,8 @@ public class WeekDaysScheduleFragment extends Fragment {
         editText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         editText.setText("Starting Time :");
         mTimePicker.show();
+
+
     }
 
     private void getToTime() {
@@ -517,6 +522,34 @@ public class WeekDaysScheduleFragment extends Fragment {
 
     }
 
+
+    private void showStartTimePicker() {
+        StartTimePickerDialogFragment mDialogFragment = StartTimePickerDialogFragment.newInstance();
+        mDialogFragment.setOnStartTimePickerDialogFragmentListener((value, key) -> {
+            startTimeSelected=value;
+            showEndTimePicker(key);
+        });
+
+        mDialogFragment.show(getChildFragmentManager(), "TAG");
+
+    }
+
+    private void showEndTimePicker(int keyIndex) {
+        EndTimePickerDialogFragment mDialogFragment = EndTimePickerDialogFragment.newInstance(keyIndex);
+        mDialogFragment.setOnEndTimePickerDialogFragmentListener((value, key) -> {
+            endTimeSelected=value;
+            //call api....
+            WeekScheduleRequest in=new WeekScheduleRequest();
+            in.setRecSecId(0); // no need only distration !!!!
+            in.setFromTime(startTimeSelected);
+            in.setToTime(endTimeSelected);
+            in.setWeekDays(arrDaySelected);
+            mViewModel.createWeekDaySchedule(mHeaderMap,in);
+        });
+
+        mDialogFragment.show(getChildFragmentManager(), "TAG");
+
+    }
 
 
 }

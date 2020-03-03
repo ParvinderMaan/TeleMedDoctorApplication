@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.telemed.doctor.R;
@@ -30,6 +32,7 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.consult.viewmodel.AppointmentUpcomingViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
+import com.telemed.doctor.util.CustomTypingEditText;
 import com.telemed.doctor.util.DividerItemDecoration;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 public class AppointmentUpcomingFragment extends Fragment {
+    private String TAG=AppointmentUpcomingFragment.class.getSimpleName();
     private static final int PAGE_SIZE = 5;
     private AppointmentUpcomingViewModel mViewModel;
     private RecyclerView rvAppointmentsUpcoming;
@@ -51,6 +55,8 @@ public class AppointmentUpcomingFragment extends Fragment {
     private boolean isLastPage = false;
     private boolean isListLoading = false;
     private int currentPage = 1;
+    private CustomTypingEditText edtSearchView;
+    private String mSearchQuery="";
 
 
     public static AppointmentUpcomingFragment newInstance(Object payload) {
@@ -75,7 +81,9 @@ public class AppointmentUpcomingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_appointment_upcoming, container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        return localInflater.inflate(R.layout.fragment_appointment_upcoming, container, false);
     }
 
 
@@ -90,7 +98,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
         in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(""); // no need there
+        in.setSearchQuery(mSearchQuery); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
 
@@ -103,7 +111,35 @@ public class AppointmentUpcomingFragment extends Fragment {
             if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
         });
+        edtSearchView = v.findViewById(R.id.edt_search_view);
+        edtSearchView.setOnTypingModified((view, isTyping) -> {
+            currentPage=1;
 
+            if (!isTyping) {
+            //  Log.e(TAG, "User stopped typing.");
+                mSearchQuery=view.getText().toString().trim();
+                AppointmentRequest in=new AppointmentRequest();
+                in.setPageNumber(currentPage);
+                in.setPageSize(PAGE_SIZE);
+                in.setSearchQuery(mSearchQuery); // no need there
+                in.setFilterBy(""); // no need there
+                mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
+
+            }
+        });
+
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            currentPage=1;
+            AppointmentRequest in=new AppointmentRequest();
+            in.setPageNumber(currentPage);
+            in.setPageSize(PAGE_SIZE);
+            in.setSearchQuery(mSearchQuery); // no need there
+            in.setFilterBy(""); // no need there
+            mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
+        });
     }
 
     private void initUpcomingRecyclerView(View v) {
@@ -121,18 +157,6 @@ public class AppointmentUpcomingFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
         rvAppointmentsUpcoming.addItemDecoration(dividerItemDecoration);
 
-        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            AppointmentRequest in=new AppointmentRequest();
-            in.setPageNumber(currentPage);
-            in.setPageSize(PAGE_SIZE);
-            in.setSearchQuery(""); // no need there
-            in.setFilterBy(""); // no need there
-            mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
-        });
-
-
 
     }
 
@@ -142,7 +166,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
         in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(""); // no need there
+        in.setSearchQuery(mSearchQuery); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchUpcomingNextAppointments(mHeaderMap,in);
     }
@@ -184,6 +208,8 @@ public class AppointmentUpcomingFragment extends Fragment {
                         if(infoObj.getDataList()!=null && (!infoObj.getDataList().isEmpty())){
                             mAdapter.clearAll(); // just to make sure refreshing works ok ....
                             mViewModel.setUpComingAppointmentList(infoObj.getDataList());
+                        }else {
+                            mAdapter.clearAll();
                         }
                     }
                     break;
@@ -293,7 +319,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
         in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(""); // no need there
+        in.setSearchQuery(mSearchQuery); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchUpcomingNextAppointments(mHeaderMap,in);
 
