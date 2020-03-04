@@ -27,8 +27,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.AlertDialogFragment;
-import com.telemed.doctor.dialog.EndTimePickerDialogFragment;
-import com.telemed.doctor.dialog.StartTimePickerDialogFragment;
+import com.telemed.doctor.dialog.TimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.helper.DateIterator;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
@@ -153,18 +152,18 @@ public class ScheduleSychronizeIIFragment extends Fragment {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),R.color.colorGreen);
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
                         WhiteColorDecorator decorator=new WhiteColorDecorator(mDayDecoratorDateSelected);
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
                         calViewSchedule.addDecorator(decorator);
-
+                        ((ScheduleSychronizeFragment)requireParentFragment()).refreshPreviousUi();
                     }
 
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),R.color.colorRed);
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),"RED");
 
                     }
                     break;
@@ -176,19 +175,20 @@ public class ScheduleSychronizeIIFragment extends Fragment {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),R.color.colorGreen);
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
 
                         BlueColorDecorator decorator=new BlueColorDecorator(mDayDecoratorDateSelected);
                         calViewSchedule.removeDecorator(mHashMapDD.get(mDayDecoratorDateSelected));
                         calViewSchedule.addDecorator(decorator);
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
+                        ((ScheduleSychronizeFragment)requireParentFragment()).refreshPreviousUi();
                     }
 
                     break;
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),R.color.colorRed);
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),"RED");
 
                     }
                     break;
@@ -274,8 +274,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
                         mViewModel.setDeleteDialogVisibility(true);
                     }else if(mHashMapDD.get(dateSelected) instanceof BlueColorDecorator){
                         // create.......
-                       // getFromTime();
-                        showStartTimePicker();
+                        showTimePicker();
                     }
                 }
             }
@@ -408,81 +407,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
         return outputText;
     }
 
-    private void getFromTime() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(getActivity(), R.style.PickerStyle, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String fromTime = selectedHour + ":" + selectedMinute;
-                Log.e("From: ", fromTime);
 
-                Date date1 = null;
-                try {
-                    date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(fromTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
-                String date = simpleDateFormat.format(date1);
-                startTimeSelected = date;
-                getToTime();
-
-
-            }
-        }, hour, minute, true);//Yes 24 hour time
-//      mTimePicker.setTitle("From");
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
-        mTimePicker.setCustomTitle(dialogView);
-        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
-        editText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        editText.setText("Starting Time :");
-        mTimePicker.show();
-    }
-
-    private void getToTime() {
-
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(requireActivity(), R.style.PickerStyle, (timePicker, selectedHour, selectedMinute) -> {
-            String to = selectedHour + ":" + selectedMinute;
-            Log.e("To: ", to);
-            Date date1 = null;
-            try {
-                date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(to);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
-            String date = simpleDateFormat.format(date1);
-
-            //call api....
-            endTimeSelected = date;
-            DayScheduleRequest in = new DayScheduleRequest();
-            in.setId(0);
-            in.setAvailableDate(formatDateIII(dateSelected));
-            in.setFromTime(startTimeSelected);
-            in.setToTime(endTimeSelected);
-            in.setIsAvailable(true);
-
-            Log.e(TAG,in.toString());
-            mViewModel.createDaySchedule(mHeaderMap, in);
-
-
-     }, hour, minute, true); // Yes 24 hour time
-        //      mTimePicker.setTitle("To");
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
-        mTimePicker.setCustomTitle(dialogView);
-        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
-        editText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        editText.setText("Ending Time :");
-        mTimePicker.show();
-
-    }
 
 
     public String formatDate(String oldDate) {
@@ -497,21 +422,9 @@ public class ScheduleSychronizeIIFragment extends Fragment {
     }
 
 
-    private void showStartTimePicker() {
-        StartTimePickerDialogFragment mDialogFragment = StartTimePickerDialogFragment.newInstance();
-        mDialogFragment.setOnStartTimePickerDialogFragmentListener((value, key) -> {
-            startTimeSelected=value;
-            showEndTimePicker(key);
-        });
-
-        mDialogFragment.show(getChildFragmentManager(), "TAG");
-
-    }
-
-    private void showEndTimePicker(int keyIndex) {
-        EndTimePickerDialogFragment mDialogFragment = EndTimePickerDialogFragment.newInstance(keyIndex);
-        mDialogFragment.setOnEndTimePickerDialogFragmentListener((value, key) -> {
-            endTimeSelected=value;
+    private void showTimePicker() {
+        TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
+        mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
             //call api....
             DayScheduleRequest in = new DayScheduleRequest();
             in.setId(0);
@@ -527,5 +440,11 @@ public class ScheduleSychronizeIIFragment extends Fragment {
 
     }
 
+
+    public void refreshUi() {
+        if(swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
 }
 

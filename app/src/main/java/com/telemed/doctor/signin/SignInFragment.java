@@ -207,7 +207,8 @@ public class SignInFragment extends BaseFragment {
                     .setDiscriminator(DISCRIMINATOR_TYPE)
                     .build();
             mViewModel.setSignInInfo(in);
-            edtUsrEmail.clearFocus();edtUsrPassword.clearFocus();
+            edtUsrEmail.clearFocus();
+            edtUsrPassword.clearFocus();
             mViewModel.attemptSignIn();
         }
 
@@ -272,10 +273,7 @@ public class SignInFragment extends BaseFragment {
                     }
 
                     break;
-
-
             }
-
 
             return false;
         }
@@ -298,8 +296,8 @@ public class SignInFragment extends BaseFragment {
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDA1M2VhZC05OTA5LTQwZDAtODgwYy02YzViODk4YzZiNzUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc2MDQ2OTUzLCJleHAiOjE1NzYxMzMzNTMsImlhdCI6MTU3NjA0Njk1M30.AE8wPmMKk-m7PduK3U-tr-EL65OUNzo0jT6GDiSQJbQ",
         "lastScreenId": 1,
         "emailConfirmed": false
-    }
-  }
+       }
+      }
          */
     }
 

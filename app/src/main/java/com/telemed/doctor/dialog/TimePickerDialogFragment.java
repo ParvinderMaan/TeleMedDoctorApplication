@@ -1,51 +1,43 @@
 package com.telemed.doctor.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.telemed.doctor.R;
 
 import java.util.HashMap;
 
-public class EndTimePickerDialogFragment extends BottomSheetDialogFragment {
-    private EndTimePickerDialogFragmentListener mDialogListener;
+public class TimePickerDialogFragment extends BottomSheetDialogFragment {
+    private TimePickerDialogFragment.TimePickerDialogFragmentListener mDialogListener;
     private TextView tvTitle,tvTime,tvDone;
+    private TextView tvTitle_,tvTime_,tvDone_;
     private ImageButton ibtnDecr,ibtnIncr;
+    private ImageButton ibtnDecr_,ibtnIncr_;
     private static String TAG="";
     private HashMap<Integer, String> map;
-    private int keyIndex,lowerBound;
+    private int keyIndex=0, keyIndex_,lowerBound;
+    private ViewFlipper viewFlipper;
 
     @NonNull
-    public static EndTimePickerDialogFragment newInstance(Integer payload) {
-        EndTimePickerDialogFragment fragment=new EndTimePickerDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("KEY_", (Integer) payload); // SignUpIResponse.Data
-        fragment.setArguments(bundle);
-        return fragment;
+    public static TimePickerDialogFragment newInstance() {
+        return new TimePickerDialogFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         map=getTimeIntervals();
-        if (getArguments() != null) {
-            keyIndex =lowerBound= getArguments().getInt("KEY_");
-
-        }
     }
     @Nullable
     @Override
@@ -55,56 +47,103 @@ public class EndTimePickerDialogFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+        viewFlipper = v.findViewById(R.id.view_flipper);
+        viewFlipper.setFlipInterval(3000);
 
-        tvTitle = view.findViewById(R.id.tv_title);
-        tvTime = view.findViewById(R.id.tv_time);
-        ibtnDecr = view.findViewById(R.id.ibtn_decr);
-        ibtnIncr = view.findViewById(R.id.ibtn_incr);
-        tvDone = view.findViewById(R.id.tv_ok);
 
-        tvTitle.setText("Ending Time");
-        tvTime.setText(map.get(++keyIndex));
+        tvTitle = v.findViewById(R.id.tv_title);
+        tvTime = v.findViewById(R.id.tv_time);
+        ibtnDecr = v.findViewById(R.id.ibtn_decr);
+        ibtnIncr = v.findViewById(R.id.ibtn_incr);
 
-        ibtnDecr.setOnClickListener(v->{
+        tvTitle_ = v.findViewById(R.id.tv_title_);
+        tvTime_ = v.findViewById(R.id.tv_time_);
+        ibtnDecr_ = v.findViewById(R.id.ibtn_decr_);
+        ibtnIncr_ = v.findViewById(R.id.ibtn_incr_);
 
-            if(keyIndex>lowerBound+1)
+
+        tvDone = v.findViewById(R.id.tv_ok);
+
+        tvDone_ = v.findViewById(R.id.tv_ok_);
+
+
+        tvTitle.setText("Starting Time");
+        tvTitle_.setText("Ending Time");
+
+        tvTime.setText(map.get(keyIndex));
+
+
+        ibtnDecr.setOnClickListener(vv->{
+
+            if(keyIndex>0)
                 tvTime.setText(map.get(--keyIndex));
+
         });
-        ibtnIncr.setOnClickListener(v->{
-            if(keyIndex<map.size())
+        ibtnIncr.setOnClickListener(vv->{
+            if(keyIndex<map.size()-1)
                 tvTime.setText(map.get(++keyIndex));
         });
 
-        tvDone.setOnClickListener(v->{
+
+        ibtnDecr_.setOnClickListener(vv->{
+
+            if(keyIndex_>lowerBound+1)
+                tvTime_.setText(map.get(--keyIndex_));
+        });
+        ibtnIncr_.setOnClickListener(vv->{
+            if(keyIndex_<map.size()-1)
+                tvTime_.setText(map.get(++keyIndex_));
+        });
+
+
+        tvDone.setOnClickListener(vv->{
+            tvTime_.setText(map.get(++keyIndex));
+            keyIndex_=lowerBound=keyIndex;
+
+            viewFlipper.setInAnimation(requireActivity(), android.R.anim.slide_in_left);
+            viewFlipper.setOutAnimation(requireActivity(), android.R.anim.slide_out_right);
+            viewFlipper.showNext();
+           // viewFlipper.showPrevious();
+
+        });
+
+        tvDone_.setOnClickListener(vv->{
             TAG="DONE";
             dismiss();
+
         });
 
 
 
+
+
     }
-    public void setOnEndTimePickerDialogFragmentListener(EndTimePickerDialogFragmentListener listener) {
-        mDialogListener= listener;
+    public void setOnTimePickerDialogFragmentListener(TimePickerDialogFragment.TimePickerDialogFragmentListener listener) {
+        mDialogListener=  listener;
     }
 
 
-    public interface EndTimePickerDialogFragmentListener {
-        void onClick(String value, int key);
+    public interface TimePickerDialogFragmentListener {
+        void onClick(String startTime, String endTime);
+
     }
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
+
         if(mDialogListener!=null && TAG.equals("DONE")){
-            mDialogListener.onClick(map.get(keyIndex),keyIndex);
+            TAG="";
+            mDialogListener.onClick(map.get(keyIndex),map.get(keyIndex_));
         }
+        super.onDismiss(dialog);
 
     }
     @SuppressLint("UseSparseArrays")
     public HashMap<Integer,String> getTimeIntervals() {
         HashMap<Integer,String> map=new HashMap<Integer, String>();
+        map.put(0,"00:00");
         map.put(1,"00:30");
         map.put(2,"01:00");
         map.put(3,"01:30");
@@ -152,9 +191,13 @@ public class EndTimePickerDialogFragment extends BottomSheetDialogFragment {
         map.put(45,"22:30");
         map.put(46,"23:00");
         map.put(47,"23:30");
-        map.put(48,"24:00");
+//      map.put(48,"24:00");
 
         return map;
     }
 
+//    @Override
+//    public int getTheme() {
+//        return R.style.MyAlertDialogTheme;
+//    }
 }

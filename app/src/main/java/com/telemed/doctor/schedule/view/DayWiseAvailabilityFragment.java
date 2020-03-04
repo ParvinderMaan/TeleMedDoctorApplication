@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -30,7 +29,12 @@ import com.telemed.doctor.schedule.model.ScheduleTimeSlotResponse;
 import com.telemed.doctor.schedule.viewmodel.DayWiseAvailabiltyViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class DayWiseAvailabilityFragment extends Fragment {
@@ -91,14 +95,29 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(DayWiseAvailabiltyViewModel.class);
+        super.onViewCreated(v, savedInstanceState);
+        initView(v);
+        initRecyclerView(v);
+        initObserver();
 
+        try {
+            tvTimeSlot.setText(convert(mDateOfAppointment));
+        } catch (ParseException e) {
+         //   e.printStackTrace();
+            tvTimeSlot.setText(mDateOfAppointment);
+        }
+
+        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
+
+    }
+
+
+    private void initView(View v) {
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
 
         tvTimeSlot = v.findViewById(R.id.tv_time_slot);
-        tvTimeSlot.setText(mDateOfAppointment);
 
         progressBar.setVisibility(View.INVISIBLE); // not used here
 
@@ -106,19 +125,15 @@ public class DayWiseAvailabilityFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment));
 
-        initRecyclerView(v);
-        initObserver();
-
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
             if(mFragmentListener!=null) mFragmentListener.popTopMostFragment();
         });
 
 
-        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
-
-
     }
+
+
 
     private void initRecyclerView(View v) {
         rvTimeSlot=v.findViewById(R.id.rv_time_slot);
@@ -185,9 +200,22 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
 
 
+    public  String convert(String dateString) throws ParseException {
+        // System.out.println("Given date is " + dateString);
+
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+        Date date = sdf.parse(dateString);
+
+        return new SimpleDateFormat("dd  MMMM",Locale.US).format(date);
+
+    }
 
 
-
-
-
+    public void refreshUi() {
+        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
+        // it means we have to change previous fragment too !!! checky...
+        if(mFragmentListener!=null){
+            mFragmentListener.refreshFragment("ScheduleFragment");
+        }
+    }
 }

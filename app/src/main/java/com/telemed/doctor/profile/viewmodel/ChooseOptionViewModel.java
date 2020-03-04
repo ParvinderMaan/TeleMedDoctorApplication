@@ -21,7 +21,6 @@ import com.telemed.doctor.profile.model.OptionResponse;
 import com.telemed.doctor.profile.model.Speciliaty;
 import com.telemed.doctor.profile.model.State;
 import com.telemed.doctor.profile.model.StateResponse;
-import com.telemed.doctor.room.database.TeleMedDatabase;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

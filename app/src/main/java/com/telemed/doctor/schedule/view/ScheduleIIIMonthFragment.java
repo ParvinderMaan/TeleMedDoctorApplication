@@ -204,6 +204,15 @@ public class ScheduleIIIMonthFragment extends Fragment {
         mViewModel.setScheduleList(availableScheduleList);
     }
 
+
+
+    public void hideRefreshing() {
+        if(swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
+    }
+
     private class BlueColorDecorator implements DayViewDecorator {
 
 
@@ -268,6 +277,30 @@ public class ScheduleIIIMonthFragment extends Fragment {
         }
 
     }
+    private class WhiteColorDecorator implements DayViewDecorator {
+        private String date;
+
+        public WhiteColorDecorator(String date) {
+            this.date = date;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+//            Log.e("WhiteColorDecorator", "" + date);
+            return this.date.equals(date);
+
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorBlue)));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
+
+        }
+
+
+    }
 
 
     private void initObserver() {
@@ -326,30 +359,6 @@ public class ScheduleIIIMonthFragment extends Fragment {
     }
 
 
-    private class WhiteColorDecorator implements DayViewDecorator {
-        private String date;
-
-        public WhiteColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("WhiteColorDecorator", "" + date);
-            return this.date.equals(date);
-
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorBlue)));
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
-
-        }
-
-
-    }
 
     private String monthName;
 

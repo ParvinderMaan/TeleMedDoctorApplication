@@ -41,14 +41,14 @@ public class BasicInfoProfileFragment extends Fragment {
 
     private static int REQUEST_CODE_SELECT = 121;
     private AppCompatEditText edtDocName, edtDocSurname, edtDob, edtBirthCity, edtBirthCountry, edtSpeciality,
-            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail, edtNationality , edtCountry, edtState, edtCity
-            ,edtPhoneNo;
+            edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail, edtNationality, edtCountry, edtState, edtCity, edtPhoneNo;
     private BasicInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
     private Button btnEditSave;
-    private String selectorState[]={"Edit","Save"};
+    private String selectorState[] = {"Edit", "Save"};
     private HomeFragmentSelectedListener mFragmentListener;
-    private String mLanguageOne , mLanguageTwo , mCountry , mState , mCity , mAddress , mEmail , mPhoneNo;
+    private String mLanguageOne, mLanguageTwo, mCountry, mState, mCity, mAddress, mEmail, mPhoneNo;
+    private int languageOneId, languageTwoId, countryId, stateId;
 
     public BasicInfoProfileFragment() {
         // Required empty public constructor
@@ -89,38 +89,43 @@ public class BasicInfoProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_SELECT && resultCode == Activity.RESULT_OK && data != null) {
             String type = data.getStringExtra("KEY_");
-            String item;Integer itemId;
+            String item;
+            Integer itemId;
 
-            if(type==null) return;
+            if (type == null) return;
 
             switch (type) {
 
                 case "TAG_LANGUAGE_ONE":
-                    item = data.getStringExtra( "KEY_NAME");
-                    itemId= data.getIntExtra("KEY_ID",0);
+                    item = data.getStringExtra("KEY_NAME");
+                    itemId = data.getIntExtra("KEY_ID", 0);
                     edtLanguageOne.setText(item);
-                    edtLanguageOne.setTag(itemId);
+//                    edtLanguageOne.setTag(itemId);
+                    languageOneId=itemId;
                     break;
 
                 case "TAG_LANGUAGE_TWO":
-                    item = data.getStringExtra( "KEY_NAME");
-                    itemId= data.getIntExtra("KEY_ID",0);
+                    item = data.getStringExtra("KEY_NAME");
+                    itemId = data.getIntExtra("KEY_ID", 0);
                     edtLanguageTwo.setText(item);
-                    edtLanguageTwo.setTag(itemId);
+//                    edtLanguageTwo.setTag(itemId);
+                    languageTwoId=itemId;
                     break;
 
                 case "TAG_COUNTRY":
-                    item = data.getStringExtra( "KEY_NAME");
-                    itemId= data.getIntExtra("KEY_ID",0);
+                    item = data.getStringExtra("KEY_NAME");
+                    itemId = data.getIntExtra("KEY_ID", 0);
                     edtCountry.setText(item);
-                    edtCountry.setTag(itemId); // for fetching country id
+//                  edtCountry.setTag(itemId); // for fetching country id
+                    countryId=itemId;
                     break;
 
                 case "TAG_STATE":
-                    item = data.getStringExtra( "KEY_NAME");
-                    itemId= data.getIntExtra("KEY_ID",0);
+                    item = data.getStringExtra("KEY_NAME");
+                    itemId = data.getIntExtra("KEY_ID", 0);
                     edtState.setText(item);
-                    edtState.setTag(itemId);
+//                  edtState.setTag(itemId);
+                    stateId=itemId;
                     break;
 
             }
@@ -138,25 +143,25 @@ public class BasicInfoProfileFragment extends Fragment {
         edtEmail.setOnClickListener(mClickListener);
 
         btnEditSave.setOnClickListener(v1 -> {
-            String tag= (String) btnEditSave.getText();
-            switch (tag){
+            String tag = (String) btnEditSave.getText();
+            switch (tag) {
                 case "Edit":
                     mViewModel.setEditableView(true);
                     btnEditSave.setText(selectorState[1]);
                     break;
                 case "Save":
-                   // mViewModel.setEnableView(false);
+                    // mViewModel.setEnableView(false);
                     btnEditSave.setText(selectorState[0]);
 
-                    if(isFormValid()){
-                        BasicInfoRequest in=new BasicInfoRequest.Builder()
+                    if (isFormValid()) {
+                        BasicInfoRequest in = new BasicInfoRequest.Builder()
                                 .setPhoneNumber(mPhoneNo)
-                                .setPrimaryLanguageId((Integer) edtLanguageOne.getTag())
-                                .setsecondaryLanguageId((Integer) edtLanguageTwo.getTag())
+                                .setPrimaryLanguageId(languageOneId)
+                                .setsecondaryLanguageId(languageTwoId)
                                 .setAddress(mAddress)
                                 .setCity(mCity)
-                                .setCountryId((Integer) edtCountry.getTag())
-                                .setStateId((Integer) edtState.getTag()).build();
+                                .setCountryId(countryId)
+                                .setStateId(stateId).build();
                         mViewModel.updateBasicInfo(in);
                     }
 
@@ -172,9 +177,9 @@ public class BasicInfoProfileFragment extends Fragment {
         mLanguageTwo = edtLanguageTwo.getText().toString();
         mCountry = edtCountry.getText().toString();
         mState = edtState.getText().toString();
-        mCity=edtCity.getText().toString();
-        mAddress=edtAddr.getText().toString();
-        mEmail=edtEmail.getText().toString();
+        mCity = edtCity.getText().toString();
+        mAddress = edtAddr.getText().toString();
+        mEmail = edtEmail.getText().toString();
         mPhoneNo = edtPhoneNo.getText().toString();
 
         if (TextUtils.isEmpty(mLanguageOne)) {
@@ -230,33 +235,33 @@ public class BasicInfoProfileFragment extends Fragment {
                 Intent iii = new Intent(getActivity(), ChooseOptionActivity.class);
                 iii.putExtra("KEY_", "TAG_LANGUAGE_TWO");
                 startActivityForResult(iii, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                    getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if (getActivity() != null)
+                    getActivity().overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 break;
 
             case R.id.edt_country:
                 Intent v1 = new Intent(getActivity(), ChooseOptionActivity.class);
                 v1.putExtra("KEY_", "TAG_COUNTRY");
                 startActivityForResult(v1, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                    getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if (getActivity() != null)
+                    getActivity().overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 break;
 
 
             case R.id.edt_state:
-                String countryId= String.valueOf((Integer) edtCountry.getTag());
+                String countryId = String.valueOf(this.countryId);
                 Intent in = new Intent(getActivity(), ChooseOptionActivity.class);
                 in.putExtra("KEY_", "TAG_STATE");
-                in.putExtra("KEY_COUNTRY_ID",countryId);
+                in.putExtra("KEY_COUNTRY_ID", countryId);
                 startActivityForResult(in, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                    getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if (getActivity() != null)
+                    getActivity().overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 break;
 
             case R.id.edt_email:
 
                 if (mFragmentListener != null)
-                    mFragmentListener.showFragment("UpdateEmailFragment",null);
+                    mFragmentListener.showFragment("UpdateEmailFragment", null);
 
                 break;
 
@@ -288,7 +293,7 @@ public class BasicInfoProfileFragment extends Fragment {
 
         mViewModel.getUpdateResultant().observe(getViewLifecycleOwner(), response -> {
             mViewModel.setEditableView(false); //newly added ..
-          //  mViewModel.setEnableView(true);
+            //  mViewModel.setEnableView(true);
 
             switch (response.getStatus()) {
                 case SUCCESS:
@@ -325,7 +330,7 @@ public class BasicInfoProfileFragment extends Fragment {
     }
 
     private void setView(BasicInfoResponse.BasicDetail info) {
-        if(info ==null) return;
+        if (info == null) return;
 
         // setting up
         edtDocName.setText(info.getFirstName() != null ? info.getFirstName() : "");
@@ -342,13 +347,13 @@ public class BasicInfoProfileFragment extends Fragment {
         edtCity.setText(info.getCity() != null ? info.getCity() : "");
         edtAddr.setText(info.getAddress1() != null ? info.getCity() : "");
         edtPhoneNo.setText(info.getPhoneNumber() != null ? info.getPhoneNumber() : "");
-        edtEmail.setText(info.getEmail()!=null?info.getEmail():"");
+        edtEmail.setText(info.getEmail() != null ? info.getEmail() : "");
 
+        languageOneId = info.getPrimaryLanguageId();
+        languageTwoId = info.getSecondaryLanguageId();
+        countryId = info.getCountryId();
+        stateId = info.getStateId();
 
-        //----------
-//        if (getParentFragment() != null) {
-//            ((ProfileFragment)getParentFragment()).updateUi(info);
-//        }
 
     }
 
@@ -388,7 +393,7 @@ public class BasicInfoProfileFragment extends Fragment {
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
 
-        btnEditSave.setOnClickListener(vv->{
+        btnEditSave.setOnClickListener(vv -> {
 
         });
 

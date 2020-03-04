@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.SychronizeScheduleDialogFragment;
@@ -259,7 +263,8 @@ public class ScheduleFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
+                        fragment.hideRefreshing();
                     }
                     break;
             }
@@ -281,7 +286,8 @@ public class ScheduleFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleIIMonthFragment fragment = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                        fragment.hideRefreshing();
                     }
                     break;
             }
@@ -302,7 +308,8 @@ public class ScheduleFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleIIIMonthFragment fragment = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(2);
+                        fragment.hideRefreshing();
                     }
                     break;
             }
@@ -312,6 +319,27 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void resetEnableView(Boolean isView) { }
+
+    public void refreshUi() { // 0,1,2
+
+        switch (vpPager.getCurrentItem()){
+            case 0:
+                mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+                break;
+
+            case 1:
+                mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
+                break;
+
+            case 2:
+                mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
+                break;
+
+
+        }
+
+
+    }
 
     static class MonthPagerAdapter extends FragmentStatePagerAdapter {
         private static int NUM_ITEMS = 3;
@@ -363,5 +391,7 @@ public class ScheduleFragment extends Fragment {
     public void fetchMonthlySchedules(int monthIndex){
         mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex);
     }
+
+
 
 }

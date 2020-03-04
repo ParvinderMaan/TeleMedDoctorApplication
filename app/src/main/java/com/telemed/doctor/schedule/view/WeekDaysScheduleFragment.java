@@ -27,11 +27,9 @@ import android.widget.TimePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.dialog.EndTimePickerDialogFragment;
-import com.telemed.doctor.dialog.StartTimePickerDialogFragment;
+import com.telemed.doctor.dialog.TimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
-import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 import com.telemed.doctor.schedule.viewmodel.WeekDaysScheduleViewModel;
@@ -437,6 +435,7 @@ public class WeekDaysScheduleFragment extends Fragment {
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                             mViewModel.fetchWeekSchedules(mHeaderMap);
+                            if(mFragmentListener !=null) mFragmentListener.refreshFragment("ScheduleFragment");
                         }
                     }
                     break;
@@ -495,6 +494,8 @@ public class WeekDaysScheduleFragment extends Fragment {
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                              mAdapter.deleteItem(itemToDeletePos);
+                            if(mFragmentListener !=null) mFragmentListener.refreshFragment("ScheduleFragment");
+
 
                             if(mAdapter.getItemCount()==0){
                                 rvSchedule.setVisibility(View.INVISIBLE);
@@ -524,20 +525,8 @@ public class WeekDaysScheduleFragment extends Fragment {
 
 
     private void showStartTimePicker() {
-        StartTimePickerDialogFragment mDialogFragment = StartTimePickerDialogFragment.newInstance();
-        mDialogFragment.setOnStartTimePickerDialogFragmentListener((value, key) -> {
-            startTimeSelected=value;
-            showEndTimePicker(key);
-        });
-
-        mDialogFragment.show(getChildFragmentManager(), "TAG");
-
-    }
-
-    private void showEndTimePicker(int keyIndex) {
-        EndTimePickerDialogFragment mDialogFragment = EndTimePickerDialogFragment.newInstance(keyIndex);
-        mDialogFragment.setOnEndTimePickerDialogFragmentListener((value, key) -> {
-            endTimeSelected=value;
+        TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
+        mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
             //call api....
             WeekScheduleRequest in=new WeekScheduleRequest();
             in.setRecSecId(0); // no need only distration !!!!
@@ -550,6 +539,8 @@ public class WeekDaysScheduleFragment extends Fragment {
         mDialogFragment.show(getChildFragmentManager(), "TAG");
 
     }
+
+
 
 
 }

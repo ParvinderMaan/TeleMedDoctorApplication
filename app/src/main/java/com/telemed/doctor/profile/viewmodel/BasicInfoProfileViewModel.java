@@ -13,17 +13,11 @@ import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
-import com.telemed.doctor.profile.model.BankInfoRequest;
-import com.telemed.doctor.profile.model.BankInfoResponse;
 import com.telemed.doctor.profile.model.BasicInfoRequest;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.model.ProfileUpdateResponse;
-import com.telemed.doctor.room.database.TeleMedDatabase;
-import com.telemed.doctor.signin.SignInResponse;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -39,11 +33,9 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     //@use Dagger instead
     private final WebService mWebService;
     private final HashMap<String, String> mHeaderMap;
-    private final TeleMedDatabase mDatabase;
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<ApiResponse<BasicInfoResponse>> resultant;
     private MutableLiveData<BasicInfoResponse.BasicDetail> mBasicDetail;
-    private ScheduledExecutorService mService;
     private MutableLiveData<Boolean> mEditableView;
     private MutableLiveData<ApiResponse<ProfileUpdateResponse>> resultantUpdateBankInfo;
 
@@ -53,16 +45,12 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
     }
 
     public LiveData<BasicInfoResponse.BasicDetail> getBasicDetail() {
-        //mDatabase.basicInfoProfileDao().getBasicDetail()
-        //basicDetail
         return mBasicDetail;
     }
 
     public void setBasicDetail(BasicInfoResponse.BasicDetail basicDetail) {
       this.mBasicDetail.setValue(basicDetail);
-//        mService.submit(() -> {
-//                   mDatabase.basicInfoProfileDao().insert(basicDetail);
-//        });
+
 
     }
 
@@ -72,8 +60,6 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
         String accessToken = ((TeleMedApplication) application).getSharedPrefInstance()
                 .read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
 
-        mDatabase=((TeleMedApplication)application).getDatabaseInstance();
-        mService= Executors.newSingleThreadScheduledExecutor();
 
 
         isLoading=new MutableLiveData<>();
@@ -178,9 +164,5 @@ public class BasicInfoProfileViewModel extends AndroidViewModel {
         this.mEditableView.setValue(enableView);
     }
 
-
-/*
-java.net.SocketTimeoutException
- */
 
 }

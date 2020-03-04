@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.profile.model.Country;
-import com.telemed.doctor.room.database.TeleMedDatabase;
 
 import java.util.List;
 

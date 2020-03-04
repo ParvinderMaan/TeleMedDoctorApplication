@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -122,10 +123,33 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             popTopMostFragment();
 
         } else {
-
-            finish();
+            onBackPressDoubleClick();
         }
     }
+
+    private void onBackPressDoubleClick() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Click back again to exit", Toast.LENGTH_SHORT).show();
+
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+                handler.removeCallbacks(this);
+            }
+        }, 2000);
+
+    }
+    boolean doubleBackToExitPressedOnce = false;
+
+
 
     //-------------------------------------------------------------------------------------------------
 
@@ -182,7 +206,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ScheduleFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ScheduleFragment.newInstance())
+                        .add(R.id.fl_container, ScheduleFragment.newInstance(),"ScheduleFragment")
                         .addToBackStack("ScheduleFragment")
                         .commit();
 //                getSupportFragmentManager().beginTransaction()
@@ -395,6 +419,122 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
         }
+    }
+
+    @Override
+    public void refreshFragment(String tag) {
+        switch (tag) {
+            case "HomeFragment":
+
+                break;
+
+            case "ProfileFragment":
+
+                break;
+
+            case "MyConsultFragment":
+
+                break;
+
+            case "MyDashboardFragment":
+
+                break;
+
+            case "NotificationFragment":
+
+                break;
+
+            case "SettingFragment":
+
+                break;
+
+            case "ScheduleFragment": {
+                ScheduleFragment fragment = (ScheduleFragment) getSupportFragmentManager().findFragmentByTag("ScheduleFragment");
+                if (fragment != null)
+                    fragment.refreshUi();
+            }
+                break;
+
+            case "VideoCallTriggerFragment":
+
+                break;
+            case "VideoCallFragment":
+
+                break;
+
+            case "TermAndConditionFragment":
+
+                break;
+
+            case "ChangePasswordFragment":
+
+                break;
+
+            case "AppointmentConfirmIFragment":
+
+                break;
+
+            case "PatientGalleryFragment":
+
+                break;
+
+            case "ChatFragment":
+
+                break;
+
+            case "DoctorDocumentFragment":
+
+                break;
+
+            case "ScheduleSychronizeFragment":
+
+                break;
+
+            case "AppointmentSummaryFragment":
+
+                break;
+
+            case "PatientRatingFragment":
+
+                break;
+            case "MedicalRecordFragment":
+
+                break;
+            case "ProfileDocumentFragment":
+
+                break;
+            case "UpdateEmailFragment":
+
+                break;
+
+            case "OneTimeFragment":
+
+                break;
+
+            case "DayWiseAvailabilityFragment": {
+                DayWiseAvailabilityFragment fragment = (DayWiseAvailabilityFragment) getSupportFragmentManager().findFragmentByTag("DayWiseAvailabilityFragment");
+                if (fragment != null)
+                    fragment.refreshUi();
+            }
+                break;
+
+
+            case "WeekDaysScheduleFragment":
+
+                break;
+
+
+            case "AppointmentUpcomingFragment":
+
+                break;
+
+            case "AppointmentHistoryFragment":
+
+                break;
+
+        }
+
+
     }
 
     @Override

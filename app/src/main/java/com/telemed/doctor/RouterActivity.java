@@ -166,18 +166,6 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
     @Override
     public void onBackPressed() {      // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
-/*
-        Log.e(TAG,""+getSupportFragmentManager().getBackStackEntryCount());
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-
-        } else if(getSupportFragmentManager().getBackStackEntryCount() == 2) {
-           popTopMostFragment();
-        }else {
-            abortSignUpDialog();
-        }
-  */
-;
 
         switch (getActiveFragmentTag()) {
             case "SignInFragment":

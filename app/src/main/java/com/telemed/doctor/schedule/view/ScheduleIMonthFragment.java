@@ -210,6 +210,15 @@ public class ScheduleIMonthFragment extends Fragment {
         mViewModel.setScheduleList(availableScheduleList);
 
     }
+
+    public void hideRefreshing() {
+        if(swipeRefreshLayout.isRefreshing()){
+                swipeRefreshLayout.setRefreshing(false);
+            }
+    }
+
+
+
     private class WhiteColorDecorator implements DayViewDecorator {
 
 

@@ -7,6 +7,7 @@ public interface HomeFragmentSelectedListener {
     void popTopMostFragment();
     void showDialog(String tag);
     void startActivity(String tag, Object object);
+    void refreshFragment(String tag);
     void signOut();
 
 }

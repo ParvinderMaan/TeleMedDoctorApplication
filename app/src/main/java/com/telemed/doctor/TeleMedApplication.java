@@ -13,7 +13,6 @@ import com.telemed.doctor.helper.Common;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
-import com.telemed.doctor.room.database.TeleMedDatabase;
 
 import java.io.File;
 
@@ -51,10 +50,10 @@ public class TeleMedApplication extends Application  {     //implements Lifecycl
     }
 
     // @use DI
-    public  TeleMedDatabase getDatabaseInstance() {
-        return TeleMedDatabase.getDatabaseInstance(getApplicationContext());
-
-    }
+//    public  TeleMedDatabase getDatabaseInstance() {
+//        return TeleMedDatabase.getDatabaseInstance(getApplicationContext());
+//
+//    }
 
     public boolean isNetAvail() {
         return Common.isNetworkAvail(getApplicationContext());

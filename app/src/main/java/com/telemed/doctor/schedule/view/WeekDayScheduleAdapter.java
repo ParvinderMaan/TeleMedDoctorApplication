@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
@@ -71,7 +72,8 @@ public class WeekDayScheduleAdapter extends RecyclerView.Adapter<WeekDaySchedule
 
     class Viewholder extends RecyclerView.ViewHolder {
         private ImageButton ibtnDelete;
-        private TextView tvSun, tvMon, tvTue, tvWed, tvThu, tvFri, tvSat, tvTime;
+        private TextView tvSun, tvMon, tvTue, tvWed, tvThu, tvFri, tvSat;
+        private AppCompatTextView tvTime;
 
         Viewholder(View itemView) {
             super(itemView);

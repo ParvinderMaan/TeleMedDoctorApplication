@@ -53,16 +53,16 @@ public interface WebUrl {
     String UPDATE_BASIC_PROFILE_INFO = "Doctor/UpdateDoctorPersonalInfo";
 
 
-    String FETCH_UPCOMING_APPOINTMENT="Doctor/GetDoctorUpcomingAppointments";
-    String FETCH_PAST_APPOINTMENT="Doctor/GetDoctorPastAppointments";
+    String FETCH_UPCOMING_APPOINTMENT="Doctor/GetNewDoctorUpcomingAppointments";
+    String FETCH_PAST_APPOINTMENT="Doctor/GetNewDoctorPastAppointments";
 
     // schedule....
     String CREATE_WEEK_SCHEDULE="Doctor/CreateRecurringSchedule";
     String DELETE_WEEK_SCHEDULE="Doctor/DeleteRecurringSchedule";
     String UPDATE_WEEK_SCHEDULE="Doctor/UpdateRecurringSchedule";
-    String FETCH_WEEK_SCHEDULES="Doctor/GetRecurringSchedule";
+    String FETCH_WEEK_SCHEDULES="Doctor/GetNewRecurringSchedule";
     String FETCH_MONTHLY_SCHEDULES="Doctor/GetDoctorMonthlyAvailableSchedules";
-    String FETCH_AVAIL_TIME_SLOTS="Doctor/DoctorAvailableTimeSlot";
+    String FETCH_AVAIL_TIME_SLOTS="Doctor/DoctorNewAvailableTimeSlot";
     String CREATE_DAY_SCHEDULE="Doctor/CreateDateofAvalibility";
     String DELETE_DAY_SCHEDULE="Doctor/DeleteDateofAvalibility";
 

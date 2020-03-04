@@ -84,6 +84,11 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
     public void startActivity(String tag, Object object) { }
 
     @Override
+    public void refreshFragment(String tag) {
+
+    }
+
+    @Override
     public void signOut() { }
 
     // Note : take care of Toolbar presence

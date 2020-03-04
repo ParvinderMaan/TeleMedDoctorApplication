@@ -30,14 +30,14 @@ public class JavaCodeTesting {
 //            e.printStackTrace();
 //        }
 
-        String oldDate="2:1";
+        String oldDate="2020-03-06";
         Date date1 = null;
         try {
-            date1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(oldDate);
+            date1 = new SimpleDateFormat("yyyy", Locale.getDefault()).parse(oldDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "HH:mm",Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "dd MMMM yyyy",Locale.getDefault());
         String date = simpleDateFormat.format(date1);
         System.out.println(date);
 

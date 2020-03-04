@@ -242,6 +242,8 @@ public class ScheduleIIMonthFragment extends Fragment {
 
     }
 
+
+
     private class BlueColorDecorator implements DayViewDecorator {
 
 
@@ -286,7 +288,6 @@ public class ScheduleIIMonthFragment extends Fragment {
 
         }
     }
-
     //  Disable dates decorator
     private class DisableDateDecorator implements DayViewDecorator {
 
@@ -310,7 +311,6 @@ public class ScheduleIIMonthFragment extends Fragment {
         }
 
     }
-
 
     private class WhiteColorDecorator implements DayViewDecorator {
         private String date;
@@ -362,6 +362,16 @@ public class ScheduleIIMonthFragment extends Fragment {
             e.printStackTrace();
         }
         return date;
+    }
+
+
+
+    public void hideRefreshing() {
+
+        if(swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
     }
 
 }

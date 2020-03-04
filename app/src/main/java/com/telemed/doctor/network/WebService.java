@@ -143,7 +143,6 @@ public interface WebService {
     Call<FileUploadResponse> attemptUploadFile(@HeaderMap Map<String, String> token,
                                                @Part MultipartBody.Part docFile);  // fileData
 
-//    @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.DELETE_FILE)
     Call<FileDeleteResponse> attemptDeleteFile(@HeaderMap Map<String, String> token, @Query("DocumentId") Integer id);
 
@@ -234,6 +233,9 @@ public interface WebService {
 
     @GET(WebUrl.FETCH_MEDICAL_RECORD)
     Call<MedicalRecordResponse> fetchMedicalRecord(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
+
+
+
 
 
 

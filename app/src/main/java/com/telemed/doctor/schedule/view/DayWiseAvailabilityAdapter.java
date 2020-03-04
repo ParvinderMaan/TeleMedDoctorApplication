@@ -59,7 +59,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
         }
 
         public void bind(final TimeSlotModel model, final DayWiseAvailabilityAdapter.OnItemClickListener listener) {
-            this.llRoot.setOnClickListener(new View.OnClickListener() {
+            this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(model.getAppointmentStatus()== 2 || model.getAppointmentStatus()== 3){

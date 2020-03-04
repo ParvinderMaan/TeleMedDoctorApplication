@@ -1,10 +1,7 @@
 package com.telemed.doctor.profile.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -45,134 +42,110 @@ public class BasicInfoResponse {
         this.data = data;
     }
 
-    @Entity(tableName = "basicinfo")
     public static class BasicDetail {
-        @PrimaryKey(autoGenerate = false)
         @NonNull
         @SerializedName("id")
         @Expose
         private String id;
 
-        @ColumnInfo(name = "firstName")
         @SerializedName("firstName")
         @Expose
         private String firstName;
 
-        @ColumnInfo(name = "lastName")
         @SerializedName("lastName")
         @Expose
         private String lastName;
 
-        @ColumnInfo(name = "dateOfBirth")
         @SerializedName("dateOfBirth")
         @Expose
         private String dateOfBirth;
 
-        @ColumnInfo(name = "birthCity")
         @SerializedName("birthCity")
         @Expose
         private String birthCity;
 
-        @ColumnInfo(name = "birthCountry")
         @SerializedName("birthCountry")
         @Expose
         private String birthCountry;
 
-        @Ignore
+
         @SerializedName("nationalityId")
         @Expose
         private Integer nationalityId;
 
 
-        @ColumnInfo(name = "nationality")
         @SerializedName("nationality")
         @Expose
         private String nationality;
 
 
-        @Ignore
         @SerializedName("genderId")
         @Expose
         private Integer genderId;
 
 
-        @ColumnInfo(name = "gender")
         @SerializedName("gender")
         @Expose
         private String gender;
 
-        @Ignore
         @SerializedName("specialityId")
         @Expose
         private Integer specialityId;
 
-        @ColumnInfo(name = "speciality")
         @SerializedName("speciality")
         @Expose
         private String speciality;
 
 
-        @Ignore
         @SerializedName("primaryLanguageId")
         @Expose
         private Integer primaryLanguageId;
 
 
-        @ColumnInfo(name = "primaryLanguage")
         @SerializedName("primaryLanguage")
         @Expose
         private String primaryLanguage;
 
-        @Ignore
         @SerializedName("secondaryLanguageId")
         @Expose
         private Integer secondaryLanguageId;
 
-        @ColumnInfo(name = "secondaryLanguage")
         @SerializedName("secondaryLanguage")
         @Expose
         private String secondaryLanguage;
 
-        @ColumnInfo(name = "address1")
         @SerializedName("address1")
         @Expose
         private String address1;
 
 
-        @ColumnInfo(name = "city")
         @SerializedName("city")
         @Expose
         private String city;
 
 
-        @Ignore
         @SerializedName("countryId")
         @Expose
         private Integer countryId;
 
-        @ColumnInfo(name = "countryName")
         @SerializedName("countryName")
         @Expose
         private String countryName;
 
 
-        @Ignore
         @SerializedName("stateId")
         @Expose
         private Integer stateId;
 
 
-        @ColumnInfo(name = "stateName")
         @SerializedName("stateName")
         @Expose
         private String stateName;
 
-        @ColumnInfo(name = "email")
         @SerializedName("email")
         @Expose
         private String email;
 
-        @ColumnInfo(name = "phoneNumber")
         @SerializedName("phoneNumber")
         private String phoneNumber;
 

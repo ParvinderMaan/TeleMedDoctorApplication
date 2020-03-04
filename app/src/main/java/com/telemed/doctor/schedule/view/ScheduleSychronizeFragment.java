@@ -1,11 +1,9 @@
 package com.telemed.doctor.schedule.view;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -211,7 +209,8 @@ public class ScheduleSychronizeFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleSychronizeIFragment fragment = (ScheduleSychronizeIFragment) mMonthPagerAdapter.getRegisteredFragment(0);
+                        fragment.refreshUi();
                     }
                     break;
             }
@@ -232,7 +231,8 @@ public class ScheduleSychronizeFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleSychronizeIIFragment fragment = (ScheduleSychronizeIIFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                        fragment.refreshUi();
                     }
                     break;
             }
@@ -255,7 +255,8 @@ public class ScheduleSychronizeFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
+                        ScheduleSychronizeIIIFragment fragment = (ScheduleSychronizeIIIFragment) mMonthPagerAdapter.getRegisteredFragment(2);
+                        fragment.refreshUi();
                     }
                     break;
             }
@@ -264,7 +265,7 @@ public class ScheduleSychronizeFragment extends Fragment {
     }
 
 
-     static class MonthPagerAdapter extends FragmentStatePagerAdapter {
+    static class MonthPagerAdapter extends FragmentStatePagerAdapter {
         private static int NUM_ITEMS = 3;
         // Sparse array to keep track of registered fragments in memory
         private SparseArray<Fragment> registeredFragments = new SparseArray<>();
@@ -320,11 +321,16 @@ public class ScheduleSychronizeFragment extends Fragment {
     }
 
 
-    @SuppressLint("ResourceAsColor")
-    void showAlertView(String msg, @ColorRes int colorId){
+    void showAlertView(String msg, String colorName){
+        tvAlertView.setBackgroundColor(colorName.equals("GREEN")?getResources().getColor(R.color.colorGreen)
+                :getResources().getColor(R.color.colorRed));
         tvAlertView.showTopAlert(msg);
-        tvAlertView.setBackgroundColor(colorId);
 
 
+    }
+
+
+    void refreshPreviousUi(){
+        if(mFragmentListener!=null) mFragmentListener.refreshFragment("ScheduleFragment");
     }
 }

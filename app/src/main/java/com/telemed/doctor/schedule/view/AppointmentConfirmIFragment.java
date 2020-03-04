@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -37,9 +36,6 @@ import com.telemed.doctor.util.CustomAlertTextView;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.telemed.doctor.network.Status.FAILURE;
-import static com.telemed.doctor.network.Status.SUCCESS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -226,7 +222,9 @@ public class AppointmentConfirmIFragment extends Fragment {
                             tvConfirmAppointment.setVisibility(View.GONE);
                             tvCancelAppointment.setVisibility(View.VISIBLE);
                             tvDenyAppointment.setVisibility(View.GONE);
-
+                            if(mFragmentListener!=null){
+                                mFragmentListener.refreshFragment("DayWiseAvailabilityFragment");
+                            }
                         }
                     }
 
@@ -235,7 +233,6 @@ public class AppointmentConfirmIFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
-
                     }
                     break;
             }
@@ -250,8 +247,10 @@ public class AppointmentConfirmIFragment extends Fragment {
                         if (response.getData().getMessage() != null) {
                         //    tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         //    tvAlertView.showTopAlert(response.getData().getMessage());
-                            if (mFragmentListener != null)
+                            if (mFragmentListener != null) {
+                                mFragmentListener.refreshFragment("DayWiseAvailabilityFragment");
                                 mFragmentListener.popTopMostFragment();
+                            }
                         }
                     }
 
@@ -276,8 +275,10 @@ public class AppointmentConfirmIFragment extends Fragment {
                         if (response.getData().getMessage() != null) {
                        //     tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                        //     tvAlertView.showTopAlert(response.getData().getMessage());
-                            if (mFragmentListener != null)
+                            if (mFragmentListener != null) {
+                                mFragmentListener.refreshFragment("DayWiseAvailabilityFragment");
                                 mFragmentListener.popTopMostFragment();
+                            }
                         }
                     }
 
@@ -291,28 +292,6 @@ public class AppointmentConfirmIFragment extends Fragment {
             }
         });
 
-
-
-        mViewModel.getResultantPatientDetail().observe(getViewLifecycleOwner(), response -> {
-
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        PatientDetailResponse.Data infoObj = response.getData().getData();
-                        if (infoObj.getProfileInfo() != null) {
-                            setView(infoObj.getProfileInfo());
-                        }
-                    }
-
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
-                    }
-                    break;
-            }
-        });
 
     }
 

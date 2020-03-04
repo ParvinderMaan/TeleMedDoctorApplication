@@ -45,7 +45,7 @@
         android:layout_marginEnd="@dimen/_20sdp"
         android:ems="15"
         android:hint="@string/hint_password"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionGo"
         android:inputType="textPassword"
         android:longClickable="false"
         android:padding="@dimen/_10sdp"
