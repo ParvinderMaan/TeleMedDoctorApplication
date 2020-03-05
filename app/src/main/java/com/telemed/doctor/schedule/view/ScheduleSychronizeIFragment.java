@@ -263,6 +263,7 @@ public class ScheduleSychronizeIFragment extends Fragment {
         ((ScheduleSychronizeFragment)requireParentFragment()).setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
 
         calendarObj = Calendar.getInstance();
+        calendarObj.add(Calendar.DAY_OF_MONTH, -1);
 
         Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
         while (i.hasNext()) {
@@ -320,9 +321,9 @@ public class ScheduleSychronizeIFragment extends Fragment {
     }
 
     private void showTimePicker() {
-        TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
-        mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
-            //call api....
+          TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
+          mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
+            // call api....
             DayScheduleRequest in = new DayScheduleRequest();
             in.setId(0);
             in.setAvailableDate(formatDateIII(dateSelected));

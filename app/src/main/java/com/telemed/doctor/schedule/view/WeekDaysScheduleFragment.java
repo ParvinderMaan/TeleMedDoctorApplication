@@ -530,8 +530,8 @@ public class WeekDaysScheduleFragment extends Fragment {
             //call api....
             WeekScheduleRequest in=new WeekScheduleRequest();
             in.setRecSecId(0); // no need only distration !!!!
-            in.setFromTime(startTimeSelected);
-            in.setToTime(endTimeSelected);
+            in.setFromTime(startTime);
+            in.setToTime(endTime);
             in.setWeekDays(arrDaySelected);
             mViewModel.createWeekDaySchedule(mHeaderMap,in);
         });

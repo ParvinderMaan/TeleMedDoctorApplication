@@ -283,14 +283,15 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                         .fit()
                         .centerCrop()
                         .into(civPatientPic);
+            }else {
+                Picasso.get().load(R.drawable.img_avatar)
+                        .fit()
+                        .centerCrop()
+                        .into(civPatientPic);
             }
 
 
-            civPatientPic=itemView.findViewById(R.id.civ_patient_pic);
-            tvPatientName=itemView.findViewById(R.id.tv_patient_name);
-            tvPatientAddr=itemView.findViewById(R.id.tv_patient_addr);
-            tvDateTime=itemView.findViewById(R.id.tv_date_time);
-            ibtnMore=itemView.findViewById(R.id.ibtn_more);
+
 
             if(model.getFirstName()!=null && model.getLastName()!=null){
                 String fName  = model.getFirstName();
@@ -322,6 +323,15 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 tvPatientAddr.setText(stateName);
                 tvPatientAddr.append(",");
                 tvPatientAddr.append(countryName);
+            }
+
+
+            if (model.getStartTime() != null && model.getEndTime() != null) {
+                String startTime = model.getStartTime();
+                String endTime = model.getEndTime();
+                tvDateTime.setText(startTime);
+                tvDateTime.append("-");
+                tvDateTime.append(endTime);
             }
         }
     }

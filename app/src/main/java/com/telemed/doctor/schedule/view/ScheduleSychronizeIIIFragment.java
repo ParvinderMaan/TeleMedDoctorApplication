@@ -397,8 +397,8 @@ public class ScheduleSychronizeIIIFragment extends Fragment {
             DayScheduleRequest in = new DayScheduleRequest();
             in.setId(0);
             in.setAvailableDate(formatDateIII(dateSelected));
-            in.setFromTime(startTimeSelected);
-            in.setToTime(endTimeSelected);
+            in.setFromTime(startTime);
+            in.setToTime(endTime);
             in.setIsAvailable(true);
             Log.e(TAG,in.toString());
             mViewModel.createDaySchedule(mHeaderMap, in);

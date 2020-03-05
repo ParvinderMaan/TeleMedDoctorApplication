@@ -46,6 +46,14 @@ public class UpcomingAppointment {
     @Expose
     private String stateName;
 
+    @SerializedName("dayOfWeek")
+    @Expose
+    String dayOfWeek;
+
+    @SerializedName("estimatedTimeInMinutes")
+    @Expose
+    Integer estimatedTimeInMinutes;
+
     public String getCountryName() {
         return countryName;
     }
@@ -142,6 +150,24 @@ public class UpcomingAppointment {
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public Integer getEstimatedTimeInMinutes() {
+        return estimatedTimeInMinutes;
+    }
+
+    public void setEstimatedTimeInMinutes(Integer estimatedTimeInMinutes) {
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
+    }
+
+
 
     public UpcomingAppointment() {
     }

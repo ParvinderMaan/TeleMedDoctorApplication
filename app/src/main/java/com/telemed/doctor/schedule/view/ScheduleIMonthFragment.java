@@ -32,6 +32,7 @@ import com.telemed.doctor.schedule.viewmodel.ScheduleIMonthViewModel;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.chrono.ChronoLocalDate;
 import org.threeten.bp.format.TextStyle;
 
 import java.text.DateFormat;
@@ -135,20 +136,22 @@ public class ScheduleIMonthFragment extends Fragment {
          setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
         ((ScheduleFragment)requireParentFragment()).setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
 
-         calendarObj = Calendar.getInstance();
+        calendarObj = Calendar.getInstance();
+        calendarObj.add(Calendar.DAY_OF_MONTH, -1);
         Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
         while (i.hasNext()) {
             Date date = i.next();
-//            Log.e(TAG, "all dates: " + date);
-            String dateee = null;
-            dateee = formatDateZ(date);
+//          Log.e(TAG, "all dates: " + date);
+            String dateee = formatDateZ(date);
             if (date.before(calendarObj.getTime())) {
                 lstOfDisableDays.add(new DisableDateDecorator(dateee));
-//                Log.e(TAG, "all dates: before" + dateee);
+           //  Log.e(TAG, "all dates: before" + dateee);
             } else {
                 lstOfEnableDays.add(new BlueColorDecorator(dateee));
-//                Log.e(TAG, "all dates: after" + dateee);
+          //  Log.e(TAG, "all dates: after" + dateee);
             }
+
+
         }
 
         calViewSchedule.state().edit()
@@ -160,28 +163,20 @@ public class ScheduleIMonthFragment extends Fragment {
                 .commit();
 
         calViewSchedule.setTopbarVisible(false);
-        calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay day, boolean selected) {
-                String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-                date=formatDateII(date);
-                if (getParentFragment() != null)
-                    ((ScheduleFragment)requireParentFragment()).showFragment("DayWiseAvailabilityFragment", date);
-            }
+        calViewSchedule.setOnDateChangedListener((widget, day, selected) -> {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+            date=formatDateII(date);
+            if (getParentFragment() != null)
+                ((ScheduleFragment)requireParentFragment()).showFragment("DayWiseAvailabilityFragment", date);
         });
 
-        calViewSchedule.setWeekDayFormatter(new WeekDayFormatter() {
-            @Override
-            public CharSequence format(DayOfWeek dayOfWeek) {
-                return dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault());
-            }
-        });
+        calViewSchedule.setWeekDayFormatter(dayOfWeek ->
+                dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault()));
     }
 
     public String formatDateZ(Date oldDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
+        return dateFormat.format(oldDate);
     }
 
     public String formatDateII(String oldDate)  {

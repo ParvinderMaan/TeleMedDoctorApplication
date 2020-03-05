@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -53,6 +55,7 @@ public class MyConsultFragment extends Fragment {
     private HashMap<String, String> mHeaderMap;
     private AppointmentHistoryAdapter mPastAppointmentAdapter;
     private View viewUpcomingAppointmentTitle,viewLastAppointmentTitle;
+    private TextView tvEmptyView;
 
     public static MyConsultFragment newInstance() {
         return new MyConsultFragment();
@@ -107,6 +110,9 @@ public class MyConsultFragment extends Fragment {
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         ibtnClose=v.findViewById(R.id.ibtn_close);
 
+        tvEmptyView=v.findViewById(R.id.tv_empty_view);
+
+
         tvLastAppointmentTitle = v.findViewById(R.id.tv_last_appointment_title);
         tvUpcomingAppointmentTitle = v.findViewById(R.id.tv_upcoming_appointment_title);
         tvLastAppointmentTitle.setVisibility(View.GONE);
@@ -155,23 +161,29 @@ public class MyConsultFragment extends Fragment {
                     if(lstOfAppointments.isEmpty()) {
                         viewUpcomingAppointmentTitle.setVisibility(View.GONE);
                         tvUpcomingAppointmentTitle.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
                     }else {
                         viewUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
                         tvUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
                     }
                     mUpComingAppointmentAdapter.clearAll();
                     mUpComingAppointmentAdapter.addAll(lstOfAppointments);
 
                 });
 
+
         mViewModel.getPastAppointments()
                 .observe(getViewLifecycleOwner(), lstOfAppointments -> {
                     if(lstOfAppointments.isEmpty()){
                         tvLastAppointmentTitle.setVisibility(View.GONE);
                         viewLastAppointmentTitle.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
                     } else{
                         tvLastAppointmentTitle.setVisibility(View.VISIBLE);
                         viewLastAppointmentTitle.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
                     }
                     mPastAppointmentAdapter.clearAll();
                     mPastAppointmentAdapter.addAll(lstOfAppointments);
@@ -184,7 +196,7 @@ public class MyConsultFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         UpcomingAppointmentResponse.Data infoObj = response.getData().getData(); // adding Additional Info
-                        if(infoObj.getDataList()!=null && (!infoObj.getDataList().isEmpty())){
+                        if(infoObj.getDataList()!=null ){
                             mViewModel.setUpComingAppointmentList(infoObj.getDataList());
                         }
                     }
@@ -207,7 +219,7 @@ public class MyConsultFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         PastAppointmentResponse.Data infoObj = response.getData().getData(); // adding Additional Info
-                        if(infoObj.getDataList()!=null && (!infoObj.getDataList().isEmpty())){
+                        if(infoObj.getDataList()!=null){
                             mViewModel.setPastAppointmentList(infoObj.getDataList());
                         }
                     }

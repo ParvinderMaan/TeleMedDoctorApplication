@@ -78,12 +78,12 @@
                 android:id="@+id/view_upcoming_appointment_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:visibility="visible"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@color/colorLightWhite">
             </View>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_upcoming_appointment"
@@ -124,6 +124,15 @@
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 tools:listitem="@layout/list_item_appointment_history" />
+
+         <TextView
+             android:visibility="gone"
+             android:id="@+id/tv_empty_view"
+             android:text="No Appointments"
+             android:textColor="@color/colorWhite"
+             android:gravity="center"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/_400sdp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -1,5 +1,9 @@
 package com.telemed.doctor.consult.view;
 
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +22,12 @@ import com.telemed.doctor.network.WebUrl;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -181,6 +189,11 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
                         .fit()
                         .centerCrop()
                         .into(civProfilePic);
+            }else {
+                Picasso.get().load(R.drawable.img_avatar)
+                        .fit()
+                        .centerCrop()
+                        .into(civProfilePic);
             }
 
             if (model.getFirstName() != null && model.getLastName() != null) {
@@ -204,6 +217,13 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
                 tvAddress.append(countryName);
             }
 
+            if (model.getStartTime() != null && model.getEndTime() != null) {
+                String startTime = model.getStartTime();
+                String endTime = model.getEndTime();
+                tvCallSpan.setText(startTime);
+                tvCallSpan.append("-");
+                tvCallSpan.append(endTime);
+            }
 
 //          tvAddress=itemView.findViewById(R.id.tv_address);
             itemView.setOnClickListener(v -> {
@@ -213,11 +233,47 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
 //                listener.onItemClickMore("", 1);
 //            });
 //
-//            tvEstimateTime.setOnClickListener(v -> {
-//                listener.onItemClick(getAdapterPosition(), model);
-//            });
 
-        }
+
+            tvDayOfWeek.setText(model.getDayOfWeek()!=null?""+model.getDayOfWeek().substring(0,3).toUpperCase():"");
+
+            if (model.getEstimatedTimeInMinutes() != null ) {
+                tvEstimateTime.setText("Estimate\n");
+                tvEstimateTime.append(""+model.getEstimatedTimeInMinutes()+" ");
+                tvEstimateTime.append("minutes");
+            }
+ //-----------------------------------------------------------------------------------------------------------------
+            int totMinutes= model.getEstimatedTimeInMinutes();
+            if(totMinutes>0){  // +ve
+                if(totMinutes>=1440){  // days
+                    int totDays=totMinutes/1440;
+                    tvEstimateTime.setText("Estimate\n"+totDays+" days");
+                }else {
+                    if(totMinutes>=60){      // hours
+                        int totHours=totMinutes/60;
+                        tvEstimateTime.setText("Estimate\n"+totHours+" hours");
+                    }else {            // mins
+                        tvEstimateTime.setText("Estimate\n"+totMinutes+" minutes");
+                    }
+                }
+
+            }else if(totMinutes==0){    // =0
+                tvEstimateTime.setText("Join Call");
+                tvEstimateTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }else {                   // -ve
+                tvEstimateTime.setText("Join Call");
+                tvEstimateTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
+
+//-----------------------------------------------------------------------------------------------------------------
+ }
+
+//    public static String getWeekDay(String date) throws ParseException {
+//              SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+//              Date xxx= dateFormat.parse(date);
+//              SimpleDateFormat simpleDateformat = new SimpleDateFormat("E", Locale.US); // the day of the week abbreviated
+//              return simpleDateformat.format(xxx);
+//    }
 
 
     }

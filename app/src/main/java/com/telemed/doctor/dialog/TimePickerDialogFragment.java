@@ -82,7 +82,7 @@ public class TimePickerDialogFragment extends BottomSheetDialogFragment {
 
         });
         ibtnIncr.setOnClickListener(vv->{
-            if(keyIndex<map.size()-1)
+            if(keyIndex<map.size()-2)
                 tvTime.setText(map.get(++keyIndex));
         });
 
