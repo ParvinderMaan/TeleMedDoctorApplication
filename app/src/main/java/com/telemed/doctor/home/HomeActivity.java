@@ -304,7 +304,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "MedicalRecordFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MedicalRecordFragment.newInstance())
+                        .add(R.id.fl_container, MedicalRecordFragment.newInstance((Object)payload))
                         .addToBackStack("MedicalRecordFragment")
                         .commit();
                 break;

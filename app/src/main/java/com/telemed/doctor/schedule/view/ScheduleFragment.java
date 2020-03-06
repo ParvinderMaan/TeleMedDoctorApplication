@@ -92,8 +92,6 @@ public class ScheduleFragment extends Fragment {
         mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
     }
 
-
-
     private void initView(View v) {
         ibtnClose = v.findViewById(R.id.ibtn_close);
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
@@ -254,7 +252,6 @@ public class ScheduleFragment extends Fragment {
                         if (infoObj.getAvailableScheduleList() != null) {
                             ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
                             fragment.updateUi(infoObj.getAvailableScheduleList());
-
                         }
                     }
 
@@ -334,7 +331,6 @@ public class ScheduleFragment extends Fragment {
             case 2:
                 mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
                 break;
-
 
         }
 

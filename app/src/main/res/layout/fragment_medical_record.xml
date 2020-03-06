@@ -39,15 +39,23 @@
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_cross_blue" />
     </RelativeLayout>
+            <include
+                android:id="@+id/progress_bar"
+                layout="@layout/layout_progress_bar" />
 
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
     <!--    main layout-->
     <TextView
         android:id="@+id/tv_patient_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jordan G."
+        android:ellipsize="end"
         android:layout_below="@+id/ll_header"
         android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:textColor="@color/colorRed"
         android:textSize="@dimen/_18sdp"
         android:textStyle="bold" />
@@ -59,8 +67,8 @@
         style="@style/DividerStyle"/>
 
     <LinearLayout
-        android:padding="@dimen/_5sdp"
         android:id="@+id/ll_middle"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_below="@+id/view_divider_one"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -69,25 +77,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/_5sdp"
             android:baselineAligned="false">
-
             <LinearLayout
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="vertical">
-
                 <TextView
+                    android:id="@+id/tv_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="29"
                     android:textColor="@color/colorRed"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,11 +109,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Male"
@@ -124,12 +138,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/rounded_background_ix"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="291"
@@ -154,13 +173,17 @@
                 android:background="@drawable/rounded_background_ix"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="290"
@@ -182,11 +205,7 @@
         </LinearLayout>
     </LinearLayout>
 
-
-
-
     <View
-
         android:layout_below="@+id/ll_middle"
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/view_divider_two"
@@ -207,65 +226,7 @@
           android:layout_height="wrap_content">
           <TextView
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Allergies"
-              android:layout_marginStart="@dimen/_20sdp"
-              android:textColor="@color/colorRed"
-              android:textSize="@dimen/_14sdp"
-              android:textStyle="bold" />
-
-          <View
-
-              android:layout_marginTop="@dimen/_10sdp"
-              android:background="@color/colorRed"
-              style="@style/DividerStyle"/>
-          <RelativeLayout
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:paddingTop="@dimen/_5sdp"
-              android:paddingBottom="@dimen/_5sdp"
-              android:layout_height="wrap_content">
-
-              <TextView
-                  android:id="@+id/tv_title"
-                  android:layout_alignParentStart="true"
-                  android:text="Drug"
-                  android:layout_marginStart="@dimen/_10sdp"
-                  android:textColor="@color/colorRed"
-                  android:textSize="@dimen/_14sdp"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
-
-
-              <TextView
-                  android:layout_alignParentEnd="true"
-                  android:text="Reaction"
-                  android:layout_marginEnd="@dimen/_10sdp"
-                  android:textColor="@color/colorRed"
-                  android:textSize="@dimen/_14sdp"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
-
-
-          </RelativeLayout>
-
-          <androidx.recyclerview.widget.RecyclerView
-              android:id="@+id/rv_patient_drug"
-              android:layout_width="match_parent"
-              tools:itemCount="2"
-              tools:listitem="@layout/list_item_drug_allergy"
-              android:nestedScrollingEnabled="false"
-              android:layout_height="wrap_content"/>
-          <View
-
-              android:layout_below="@+id/ll_middle"
-              android:layout_marginTop="@dimen/_10sdp"
-              android:background="@color/colorBlue"
-              style="@style/DividerStyle"/>
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               android:text="Medical History"
               android:layout_marginTop="@dimen/_10sdp"
               android:layout_marginStart="@dimen/_10sdp"
@@ -274,7 +235,6 @@
               android:textStyle="bold" />
 
           <View
-
               android:layout_marginTop="@dimen/_10sdp"
               android:background="@color/colorRed"
               style="@style/DividerStyle"/>
@@ -288,7 +248,6 @@
               android:nestedScrollingEnabled="false"
               android:layout_height="wrap_content"/>
           <View
-
               android:layout_below="@+id/ll_middle"
               android:layout_marginTop="@dimen/_10sdp"
               android:background="@color/colorBlue"
@@ -305,27 +264,18 @@
               android:textStyle="bold" />
 
           <View
-
               android:layout_marginTop="@dimen/_10sdp"
               android:background="@color/colorRed"
               style="@style/DividerStyle"/>
-
 
           <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_current_medication"
               android:layout_width="match_parent"
               tools:itemCount="5"
-
               tools:listitem="@layout/list_item_drug_allergy"
               android:nestedScrollingEnabled="false"
               android:layout_height="wrap_content"/>
       </LinearLayout>
-
-
-
     </androidx.core.widget.NestedScrollView>
-
    </LinearLayout>
-
-
 </RelativeLayout>

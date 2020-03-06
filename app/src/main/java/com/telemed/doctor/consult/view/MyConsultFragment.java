@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -334,46 +332,25 @@ public class MyConsultFragment extends Fragment {
 private AppointmentUpcomingAdapter.OnItemClickListener mUpcomOnItemClickListener=new AppointmentUpcomingAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, UpcomingAppointment model) {
+            mViewModel.fetchVideoCallDetail(mHeaderMap,model.getAppointmentId());
+/*
+                if (mFragmentListener != null) {
+                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
+                }
 
-//                if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
-//                }
-//
-//            for now
-//              if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallFragment", model);
-//                }
-
-                mViewModel.fetchVideoCallDetail(mHeaderMap,model.getAppointmentId());
-
+            for now
+              if (mFragmentListener != null) {
+                    mFragmentListener.showFragment("VideoCallFragment", model);
+                }
+*/
 
         }
 
         @Override
-        public void onItemClickMore(String tag, int pos) {
-
-//
-////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
-////                        UpcomingOptionsBottomSheetFragment.newInstance();
-////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
-////                        mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
-
-//               switch (tag){
-//
-//
-//                   case "TAG_CHAT":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
-//                       break;
-//                   case "TAG_GALLERY":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
-//
-//                       break;
-//                   case "TAG_MEDICAL_RECORD":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
-//
-//                       break;
-//               }
-
+        public void onItemClickMedicalRecord(UpcomingAppointment model, int pos) {
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("MedicalRecordFragment", model);
+            }
         }
     };
 

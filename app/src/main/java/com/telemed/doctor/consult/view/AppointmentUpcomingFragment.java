@@ -16,11 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.telemed.doctor.R;
@@ -29,6 +27,7 @@ import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointment;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
 import com.telemed.doctor.helper.SharedPrefHelper;
+import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.consult.viewmodel.AppointmentUpcomingViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -280,12 +279,14 @@ public class AppointmentUpcomingFragment extends Fragment {
 //            for now
 //              if (mFragmentListener != null) {
 //                    mFragmentListener.showFragment("VideoCallFragment", model);
-//                }
+//              }
         }
 
         @Override
-        public void onItemClickMore(String tag, int pos) {
-
+        public void onItemClickMedicalRecord(UpcomingAppointment model, int pos) {
+//            if (mFragmentListener != null) {
+//                    mFragmentListener.showFragment("MedicalRecordFragment", model);
+//                }
 //
 ////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
 ////                        UpcomingOptionsBottomSheetFragment.newInstance();
@@ -322,8 +323,6 @@ public class AppointmentUpcomingFragment extends Fragment {
         in.setSearchQuery(mSearchQuery); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchUpcomingNextAppointments(mHeaderMap,in);
-
-
     };
 
     @Override

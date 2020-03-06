@@ -1,9 +1,5 @@
 package com.telemed.doctor.consult.view;
 
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +18,8 @@ import com.telemed.doctor.network.WebUrl;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -140,7 +132,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
     // inner interfaces
     public interface OnItemClickListener {
         void onItemClick(int position, UpcomingAppointment model);
-        void onItemClickMore(String tag, int pos);
+        void onItemClickMedicalRecord(UpcomingAppointment model, int pos);
 
     }
     public interface OnReloadClickListener {
@@ -165,7 +157,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
         private TextView tvDayOfWeek;
         private TextView tvCallSpan;
         private TextView tvEstimateTime;
-        private TextView tvMore;
+        private TextView tvMedicalRecord;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -175,7 +167,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
             tvDayOfWeek = itemView.findViewById(R.id.tv_day_of_week);
             tvCallSpan = itemView.findViewById(R.id.tv_call_span);
             tvEstimateTime = itemView.findViewById(R.id.tv_estimate_time);
-            tvMore = itemView.findViewById(R.id.tv_more);
+            tvMedicalRecord = itemView.findViewById(R.id.tv_medical_record);
 
 
         }
@@ -225,14 +217,14 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
                 tvCallSpan.append(endTime);
             }
 
-//          tvAddress=itemView.findViewById(R.id.tv_address);
-            itemView.setOnClickListener(v -> {
-                listener.onItemClick(getAdapterPosition(), model);
+            tvEstimateTime.setOnClickListener(v -> {
+                if(tvEstimateTime.getText().toString().equals("Join Call"))
+                     listener.onItemClick(getAdapterPosition(), model);
             });
-//            tvMore.setOnClickListener(v -> {
-//                listener.onItemClickMore("", 1);
-//            });
-//
+            tvMedicalRecord.setOnClickListener(v -> {
+                listener.onItemClickMedicalRecord(model, getAdapterPosition());
+            });
+
 
 
             tvDayOfWeek.setText(model.getDayOfWeek()!=null?""+model.getDayOfWeek().substring(0,3).toUpperCase():"");

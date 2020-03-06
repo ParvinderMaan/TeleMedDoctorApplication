@@ -57,7 +57,7 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
                 break;
             case "MedicalRecordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, MedicalRecordFragment.newInstance())
+                        .add(R.id.fl_container, MedicalRecordFragment.newInstance((Object)payload))
                         .commit();
                 break;
 

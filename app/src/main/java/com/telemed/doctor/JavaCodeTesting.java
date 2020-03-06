@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.HttpException;
 import retrofit2.Response;
@@ -29,79 +30,24 @@ import retrofit2.Response;
  */
 public class JavaCodeTesting {
     private final static String TAG = "RESULT ------------>";
+    private static SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
 
     public static void main(String[] args) throws ParseException {
-        Calendar minDateSelect = Calendar.getInstance();
-        minDateSelect.set(minDateSelect.get(Calendar.YEAR), minDateSelect.get(Calendar.MONTH), minDateSelect.getActualMinimum(Calendar.DATE));
-
-        Calendar maxDateSelect = Calendar.getInstance();
-        maxDateSelect.set(maxDateSelect.get(Calendar.YEAR), maxDateSelect.get(Calendar.MONTH), maxDateSelect.getActualMaximum(Calendar.DATE));
-
-
-        Calendar calendarObj = Calendar.getInstance();
-        Date todayDate=new Date(calendarObj.getTimeInMillis());
-        Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
-        System.out.println("All Dates---------------------->");
-        while (i.hasNext()) {
-            Date date = i.next();
-
-
-        }
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        System.out.println(tz.getDisplayName());
+        format.setTimeZone(tz);
+        Date d1 = format.parse("2020-03-06 01:00:00");
+        System.out.println("PARSED DATE UTC -->"+""+d1);
 
 
 
-
-
-
-
-//        Iterator<Date> ii = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
-//
-//
-//
-//        System.out.println("<----------------------------->");
-//        while (ii.hasNext()) {
-//            Date date = ii.next();
-////            if (date.after(calendarObj.getTime())) {
-////                System.out.println("AFTER DATE -->"+date);
-////            } else {
-////                System.out.println("BEFORE DATE -->"+date);
-////            }
-////            if(calendarObj.getTime().compareTo(date) > 0) {
-//////                System.out.println("AFTER DATE -->"+date);
-//////            } else if(calendarObj.getTime().compareTo(date) < 0) {
-//////                System.out.println("BEFORE DATE -->"+date);
-//////            } else if(calendarObj.getTime().compareTo(date) == 0) {
-//////                System.out.println("------------TODAY---------"+date);
-//////            }
-//
-//            // Compare the dates
-//            if (date.after(calendarObj.getTime())) {
-//
-//                // When Date d1 > Date d2
-//                System.out.println("Date1 is after Date2"+date);
-//            }
-//
-//            else if (date.before(calendarObj.getTime())) {
-//
-//                // When Date d1 < Date d2
-//                System.out.println("Date1 is before Date2"+date);
-//            }
-//
-//            else if (date.equals(calendarObj.getTime())) {
-//
-//                // When Date d1 = Date d2
-//                System.out.println("Date1 is equal to Date2"+date);
-//            }
-//
-//        }
-
-
+        TimeZone tzz = TimeZone.getDefault();
+        System.out.println(tzz.getDisplayName());
+        format.setTimeZone(tzz);
+        Date d2 = format.parse("2020-03-06 01:00:00");
+        System.out.println("PARSED DATE IST -->"+""+d2);
 
     }
 
-    public static String formatDateZ(Date oldDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
-    }
+
 }

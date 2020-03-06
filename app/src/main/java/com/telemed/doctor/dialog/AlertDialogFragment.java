@@ -32,13 +32,15 @@ public class AlertDialogFragment extends DialogFragment {
         setCancelable(false);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyleII);
         builder.setTitle(getResources().getString(R.string.app_name));
-        builder.setMessage("Are you sure you would like to proceed ?");
+        builder.setMessage("Are you sure you would like to delete ?");
         builder.setPositiveButton("YES", (dialog, which) -> {
-            TAG = "YES";dismiss();
+            TAG = "YES";
+            dismiss();
         });
 
         builder.setNegativeButton("NO", (dialog, which) -> {
-            TAG = "NO";dismiss();
+            TAG = "NO";
+            dismiss();
         });
         return builder.create();
     }
@@ -48,10 +50,7 @@ public class AlertDialogFragment extends DialogFragment {
         super.onDetach();
 
     }
-
-
-
-
+    
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
