@@ -349,7 +349,7 @@ private AppointmentUpcomingAdapter.OnItemClickListener mUpcomOnItemClickListener
         @Override
         public void onItemClickMedicalRecord(UpcomingAppointment model, int pos) {
             if (mFragmentListener != null) {
-                mFragmentListener.showFragment("MedicalRecordFragment", model);
+                mFragmentListener.showFragment("MedicalRecordFragment", model.getUserId());
             }
         }
     };

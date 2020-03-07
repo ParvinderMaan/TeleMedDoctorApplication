@@ -112,7 +112,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         });
         edtSearchView = v.findViewById(R.id.edt_search_view);
         edtSearchView.setOnTypingModified((view, isTyping) -> {
-            currentPage=1;
+            currentPage=1;isLastPage = false;isListLoading = false;  // re-initialize !!!
 
             if (!isTyping) {
             //  Log.e(TAG, "User stopped typing.");
@@ -131,7 +131,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            currentPage=1;
+            currentPage=1; isLastPage = false;isListLoading = false;  // re-initialize !!!
             AppointmentRequest in=new AppointmentRequest();
             in.setPageNumber(currentPage);
             in.setPageSize(PAGE_SIZE);
@@ -262,7 +262,7 @@ public class AppointmentUpcomingFragment extends Fragment {
                 if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                         && firstVisibleItemPosition >= 0
                         && totalItemCount >= PAGE_SIZE) {
-                    loadMoreItems();
+                          loadMoreItems();
                 }
             }
         }
@@ -271,7 +271,6 @@ public class AppointmentUpcomingFragment extends Fragment {
     private AppointmentUpcomingAdapter.OnItemClickListener mOnItemClickListener=new AppointmentUpcomingAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, UpcomingAppointment model) {
-
 //                if (mFragmentListener != null) {
 //                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
 //                }
@@ -284,30 +283,9 @@ public class AppointmentUpcomingFragment extends Fragment {
 
         @Override
         public void onItemClickMedicalRecord(UpcomingAppointment model, int pos) {
-//            if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("MedicalRecordFragment", model);
-//                }
-//
-////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
-////                        UpcomingOptionsBottomSheetFragment.newInstance();
-////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
-////                        mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
-
-//               switch (tag){
-//
-//
-//                   case "TAG_CHAT":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
-//                       break;
-//                   case "TAG_GALLERY":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
-//
-//                       break;
-//                   case "TAG_MEDICAL_RECORD":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
-//
-//                       break;
-//               }
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("MedicalRecordFragment", model.getUserId());
+            }
 
         }
     };

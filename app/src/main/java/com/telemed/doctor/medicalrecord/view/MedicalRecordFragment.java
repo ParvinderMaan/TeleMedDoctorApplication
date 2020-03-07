@@ -1,4 +1,4 @@
-package com.telemed.doctor.medicalrecord;
+package com.telemed.doctor.medicalrecord.view;
 
 
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -22,28 +22,30 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.helper.SharedPrefHelper;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.model.MedicalHistory;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
 import com.telemed.doctor.medicalrecord.viewmodel.MedicalRecordViewModel;
+import com.telemed.doctor.schedule.model.PatientDetailResponse;
+import com.telemed.doctor.schedule.model.PatientProfileInfo;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.util.HashMap;
-
-import static com.telemed.doctor.network.Status.SUCCESS;
 
 public class MedicalRecordFragment extends Fragment {
     private RecyclerView rvPatientDrug,rvMedicalHistory,rvCurrentMedication;
     private ImageButton ibtnClose;
     private HomeFragmentSelectedListener mFragmentListener;
     private TextView tvPatientName, tvAge, tvGender, tvHeight, tvWeight;
+    private TextView tvPastMedicalHistory,tvSurgicalMedicalHistory,tvAllergyHistory,tvFamilyHistory;
     private MedicalRecordViewModel mViewModel;
     private CustomAlertTextView tvAlertView;
     private ProgressBar progressBar;
     private HashMap<String, String> mHeaderMap;
     private String mAccessToken;
     private String mPatientId;
+    private AppCompatCheckBox cboxSmokingI, cboxSmokingII, cboxSmokingIII, cboxAlcoholI,
+            cboxAlcoholII, cboxAlcoholIII, cboxDrugI, cboxDrugII;
 
     public static MedicalRecordFragment newInstance(Object payload) {
         MedicalRecordFragment fragment=new MedicalRecordFragment();
@@ -75,7 +77,9 @@ public class MedicalRecordFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_medical_record, container, false);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        return localInflater.inflate(R.layout.fragment_medical_record, container, false);
 
     }
 
@@ -85,10 +89,11 @@ public class MedicalRecordFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         initView(v);
         initObserver();
-        initDrugRecyclerView(v);
-        initMedicalHistoryRecyclerView(v);
-      // initCurrentMedicationRecyclerView(v);
-         mViewModel.fetchMedicalRecord(mHeaderMap,mPatientId);
+       // initDrugRecyclerView(v);
+    //    initMedicalHistoryRecyclerView(v);
+        // initCurrentMedicationRecyclerView(v);
+        mViewModel.fetchPatientDetail(mHeaderMap,mPatientId);
+        mViewModel.fetchMedicalRecord(mHeaderMap,mPatientId);
     }
 
 
@@ -99,6 +104,28 @@ public class MedicalRecordFragment extends Fragment {
                             progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
 
+
+            mViewModel.getResultantPatientDetail().observe(getViewLifecycleOwner(), response -> {
+
+                switch (response.getStatus()) {
+                    case SUCCESS:
+                        if (response.getData() != null) {
+                            PatientDetailResponse.Data infoObj = response.getData().getData();
+                            if (infoObj.getProfileInfo() != null) {
+                                setView(infoObj.getProfileInfo());
+                            }
+                        }
+
+                        break;
+
+                    case FAILURE:
+                        if (response.getErrorMsg() != null) {
+                            tvAlertView.showTopAlert(response.getErrorMsg());
+
+                        }
+                        break;
+                }
+            });
 //            mViewModel.getUpComingAppointments()
 //                    .observe(getViewLifecycleOwner(), lstOfAppointments -> {
 //                        if(lstOfAppointments.isEmpty()) {
@@ -127,6 +154,7 @@ public class MedicalRecordFragment extends Fragment {
                             MedicalRecordResponse.Data infoObj = response.getData().getData(); // adding Additional Info
                             if(infoObj.getHistory()!=null ){
                                // mViewModel.setUpComingAppointmentList(infoObj.getDataList());
+                                updateUi(infoObj.getHistory());
                             }
                         }
                         break;
@@ -147,10 +175,64 @@ public class MedicalRecordFragment extends Fragment {
 
         }
 
+    private void updateUi(MedicalHistory history) {
+
+        tvPastMedicalHistory.setText(history.getPastHistory()!=null?history.getPastHistory():"");
+        tvSurgicalMedicalHistory.setText(history.getSurgicalHistory()!=null?history.getSurgicalHistory():"");
+        tvAllergyHistory.setText(history.getAllergy()!=null?history.getAllergy():"");
+        tvFamilyHistory.setText(history.getFamilyHistory()!=null?history.getFamilyHistory():"");
+
+
+        switch (history.getSmoking()){
+
+            case "1":
+                cboxSmokingI.setChecked(true);
+                break;
+            case "2":
+                cboxSmokingII.setChecked(true);
+                break;
+            case "3":
+                cboxSmokingIII.setChecked(true);
+                break;
+
+        }
+
+        switch (history.getAlcohol()){
+
+            case "1":
+                cboxAlcoholI.setChecked(true);
+                break;
+            case "2":
+                cboxAlcoholII.setChecked(true);
+                break;
+            case "3":
+                cboxAlcoholIII.setChecked(true);
+                break;
+
+        }
+
+
+        switch (history.getDrugUse()){
+            case "1":
+              cboxDrugI.setChecked(true);
+                break;
+            case "2":
+                cboxDrugII.setChecked(true);
+                break;
+        }
+
+
+
+
+
+    }
+
 
     private void initView(View v) {
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
@@ -164,16 +246,34 @@ public class MedicalRecordFragment extends Fragment {
         tvGender=v.findViewById(R.id.tv_gender);
         tvHeight=v.findViewById(R.id.tv_height);
         tvWeight=v.findViewById(R.id.tv_weight);
+
+        tvPastMedicalHistory=v.findViewById(R.id.tv_past_medical_history);
+        tvSurgicalMedicalHistory=v.findViewById(R.id.tv_surgical_medical_history);
+        tvAllergyHistory=v.findViewById(R.id.tv_allergy_history);
+        tvFamilyHistory=v.findViewById(R.id.tv_family_history);
+
+        cboxSmokingI=v.findViewById(R.id.cbox_smoking_i);
+        cboxSmokingII=v.findViewById(R.id.cbox_smoking_ii);
+        cboxSmokingIII=v.findViewById(R.id.cbox_smoking_iii);
+        cboxAlcoholI=v.findViewById(R.id.cbox__alcohol_i);
+        cboxAlcoholII=v.findViewById(R.id.cbox_alcohol_ii);
+        cboxAlcoholIII=v.findViewById(R.id.cbox_alcohol_iii);
+        cboxDrugI=v.findViewById(R.id.cbox_drug_i);
+        cboxDrugII=v.findViewById(R.id.cbox_drug_ii);
+
+
+
+
     }
 
-    private void initCurrentMedicationRecyclerView(View v) {
-        rvCurrentMedication =v.findViewById(R.id.rv_current_medication);
-        rvCurrentMedication.setHasFixedSize(true);
-        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
-        rvCurrentMedication.setLayoutManager(mLinearLayoutManager);
-
-        CurrentMedicationAdapter mAdapter=new CurrentMedicationAdapter();
-        rvCurrentMedication.setAdapter(mAdapter);
+//    private void initCurrentMedicationRecyclerView(View v) {
+//        rvCurrentMedication =v.findViewById(R.id.rv_current_medication);
+//        rvCurrentMedication.setHasFixedSize(true);
+//        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
+//        rvCurrentMedication.setLayoutManager(mLinearLayoutManager);
+//
+//        CurrentMedicationAdapter mAdapter=new CurrentMedicationAdapter();
+//        rvCurrentMedication.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClickDelete(int position) {
@@ -189,17 +289,17 @@ public class MedicalRecordFragment extends Fragment {
 
 
 
-        ViewCompat.setNestedScrollingEnabled(rvCurrentMedication, false);
-    }
+//        ViewCompat.setNestedScrollingEnabled(rvCurrentMedication, false);
+//    }
 
     private void initMedicalHistoryRecyclerView(View v) {
-        rvMedicalHistory =v.findViewById(R.id.rv_medical_history);
-        rvMedicalHistory.setHasFixedSize(true);
-        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
-        rvMedicalHistory.setLayoutManager(mLinearLayoutManager);
-
-        MedicalHistoryAdapter mAdapter=new MedicalHistoryAdapter();
-        rvMedicalHistory.setAdapter(mAdapter);
+//        rvMedicalHistory =v.findViewById(R.id.rv_medical_history);
+//        rvMedicalHistory.setHasFixedSize(true);
+//        LinearLayoutManager mLinearLayoutManager=new LinearLayoutManager(getActivity());
+//        rvMedicalHistory.setLayoutManager(mLinearLayoutManager);
+//
+//        MedicalHistoryAdapter mAdapter=new MedicalHistoryAdapter();
+//        rvMedicalHistory.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new AppointmentUpcomingAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClickDelete(int position) {
@@ -211,7 +311,7 @@ public class MedicalRecordFragment extends Fragment {
 //            }
 //        });
 
-        ViewCompat.setNestedScrollingEnabled(rvMedicalHistory, false);
+//        ViewCompat.setNestedScrollingEnabled(rvMedicalHistory, false);
 
     }
 
@@ -242,12 +342,11 @@ public class MedicalRecordFragment extends Fragment {
 
     }
 
-    private void updateUi(MedicalHistory data){
-        tvPatientName.setText("");
-        tvAge.setText("");
-        tvGender.setText("");
-        tvHeight.setText("");
-        tvWeight.setText("");
-
+    private void setView(PatientProfileInfo info){
+        tvPatientName.setText(info.getFirstName() != null && info.getLastName() != null ? info.getFirstName() + " " + info.getLastName() : "");
+        tvAge.setText(info.getAge() != null ? info.getAge() : "");
+        tvGender.setText(info.getGender() != null ? info.getGender() : "");
+        tvHeight.setText(info.getHeight() != null ? "" + info.getHeight() : "");
+        tvWeight.setText(info.getWeight() != null ? "" + info.getWeight() : "");
     }
 }

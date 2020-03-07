@@ -25,7 +25,7 @@ import com.telemed.doctor.consult.view.AppointmentUpcomingFragment;
 import com.telemed.doctor.consult.view.MyConsultFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
-import com.telemed.doctor.medicalrecord.MedicalRecordFragment;
+import com.telemed.doctor.medicalrecord.view.MedicalRecordFragment;
 import com.telemed.doctor.dialog.SignOutDialogFragment;
 import com.telemed.doctor.notification.NotificationFragment;
 import com.telemed.doctor.profile.view.ChangeEmailFragment;

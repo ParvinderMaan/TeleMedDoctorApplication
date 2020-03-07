@@ -17,9 +17,11 @@ import com.telemed.doctor.medicalrecord.model.MedicalHistory;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
+import com.telemed.doctor.schedule.model.PatientDetailResponse;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +35,7 @@ public class MedicalRecordViewModel extends AndroidViewModel {
     //@use Dagger instead
     private final WebService mWebService;
     private final MutableLiveData<List<MedicalHistory>> lstOfMedicalHistory;
+    private MutableLiveData<ApiResponse<PatientDetailResponse>> resultantPatientDetail;
 
     public MutableLiveData<List<MedicalHistory>> getMedicalHistory() {
         return lstOfMedicalHistory;
@@ -49,6 +52,9 @@ public class MedicalRecordViewModel extends AndroidViewModel {
         lstOfMedicalHistory.setValue(appointmentList);
 
     }
+    public MutableLiveData<ApiResponse<PatientDetailResponse>> getResultantPatientDetail() {
+        return resultantPatientDetail;
+    }
 
     public MedicalRecordViewModel(@NonNull Application application) {
         super(application);
@@ -57,6 +63,8 @@ public class MedicalRecordViewModel extends AndroidViewModel {
         resultMedicalRecord=new MutableLiveData<>();
         lstOfMedicalHistory=new MutableLiveData<>();
         isViewEnabled=new MutableLiveData<>();
+        resultantPatientDetail= new MutableLiveData<>();
+
     }
 
     public void fetchMedicalRecord(HashMap<String, String> headerMap, String patientId) {
@@ -105,5 +113,43 @@ public class MedicalRecordViewModel extends AndroidViewModel {
 
 
 
+    public void fetchPatientDetail(Map<String, String> map, String  patientId) {
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+
+        mWebService.fetchPatientDetail(map,patientId).enqueue(new Callback<PatientDetailResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PatientDetailResponse> call, @NonNull Response<PatientDetailResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    PatientDetailResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+                        resultantPatientDetail.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultantPatientDetail.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantPatientDetail.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PatientDetailResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantPatientDetail.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+    }
 
 }

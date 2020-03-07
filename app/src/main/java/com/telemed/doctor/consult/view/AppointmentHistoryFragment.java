@@ -76,10 +76,9 @@ public class AppointmentHistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return inflater.inflate(R.layout.fragment_appointment_history, container, false);
+        return localInflater.inflate(R.layout.fragment_appointment_history, container, false);
     }
 
 
@@ -93,7 +92,7 @@ public class AppointmentHistoryFragment extends Fragment {
 
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
-        in.setPageSize(20);
+        in.setPageSize(PAGE_SIZE);
         in.setSearchQuery("");
         in.setFilterBy(""); // no need there
 
@@ -113,7 +112,7 @@ public class AppointmentHistoryFragment extends Fragment {
 
         edtSearchView = v.findViewById(R.id.edt_search_view);
         edtSearchView.setOnTypingModified((view, isTyping) -> {
-            currentPage=1;
+            currentPage=1;isLastPage = false;isListLoading = false;  // re-initialize !!!
 
             if (!isTyping) {
                 //  Log.e(TAG, "User stopped typing.");
@@ -132,7 +131,7 @@ public class AppointmentHistoryFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            currentPage=1;
+            currentPage=1;isLastPage = false;isListLoading = false;  // re-initialize !!!
             AppointmentRequest in=new AppointmentRequest();
             in.setPageNumber(currentPage);
             in.setPageSize(PAGE_SIZE);
@@ -157,13 +156,11 @@ public class AppointmentHistoryFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dividerDrawable);
         rvAppointmentsHistory.addItemDecoration(dividerItemDecoration);
 
-
     }
 
     private void initObserver() {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> swipeRefreshLayout.setRefreshing(isLoading));
-
 
         mViewModel.isLastPage()
                 .observe(getViewLifecycleOwner(), status -> {
@@ -179,7 +176,6 @@ public class AppointmentHistoryFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), status -> {
                     this.isLastPage=status;
                 });
-
 
         mViewModel.getPastAppointments()
                 .observe(getViewLifecycleOwner(), lstOfAppointments -> {
@@ -268,40 +264,10 @@ public class AppointmentHistoryFragment extends Fragment {
         @Override
         public void onItemClick(int position, PastAppointment model) {
 
-//                if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallTriggerFragment", model);
-//                }
-//
-//            for now
-//              if (mFragmentListener != null) {
-//                    mFragmentListener.showFragment("VideoCallFragment", model);
-//                }
         }
 
         @Override
         public void onItemClickMore(String tag, int pos) {
-
-//
-////                UpcomingOptionsBottomSheetFragment mUpcomingOptionsBottomSheetFragment =
-////                UpcomingOptionsBottomSheetFragment.newInstance();
-////                mUpcomingOptionsBottomSheetFragment.showNow(getChildFragmentManager(),
-////                mUpcomingOptionsBottomSheetFragment.getTag());  // latest changes
-
-//               switch (tag){
-//
-//
-//                   case "TAG_CHAT":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showChatFragment();
-//                       break;
-//                   case "TAG_GALLERY":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showPatientGalleryFragment();
-//
-//                       break;
-//                   case "TAG_MEDICAL_RECORD":
-//                       if(getActivity() !=null) ((HomeActivity)getActivity()).showMedicalRecordFragment();
-//
-//                       break;
-//               }
 
         }
     };
