@@ -1,4 +1,4 @@
-package com.telemed.doctor.signin;
+package com.telemed.doctor.signin.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
@@ -9,10 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
-import com.telemed.doctor.network.ServiceGenerator;
 import com.telemed.doctor.network.WebService;
+import com.telemed.doctor.signin.model.SignInRequest;
+import com.telemed.doctor.signin.model.SignInResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +42,7 @@ public class SignInViewModel extends AndroidViewModel {
 
 
 
-    void attemptSignIn() {
+    public void attemptSignIn() {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
 //        Log.e(TAG,in.toString());
@@ -91,7 +91,7 @@ public class SignInViewModel extends AndroidViewModel {
 
 
 
-    MutableLiveData<Boolean> getViewEnabled() {
+    public MutableLiveData<Boolean> getViewEnabled() {
         return isViewEnabled;
     }
 

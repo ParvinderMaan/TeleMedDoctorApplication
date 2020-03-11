@@ -14,9 +14,6 @@ import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.profile.model.ChangeEmailRequest;
 import com.telemed.doctor.profile.model.ChangeEmailResponse;
-import com.telemed.doctor.signin.SignInRequest;
-import com.telemed.doctor.signin.SignInResponse;
-import com.telemed.doctor.signin.SignInViewModel;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -11,9 +11,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,18 +25,10 @@ import android.widget.TextView;
 import com.telemed.doctor.R;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
-import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.profile.model.ChangeEmailRequest;
 import com.telemed.doctor.profile.viewmodel.ChangeEmailViewModel;
-import com.telemed.doctor.signin.SignInFragment;
-import com.telemed.doctor.signin.SignInRequest;
-import com.telemed.doctor.signin.SignInViewModel;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
-import com.telemed.doctor.signup.view.SignUpIIIFragment;
 import com.telemed.doctor.util.CustomAlertTextView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChangeEmailFragment extends Fragment {
 

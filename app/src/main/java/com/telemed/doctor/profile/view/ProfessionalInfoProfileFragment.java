@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ public class ProfessionalInfoProfileFragment extends Fragment {
     private ProfessionalInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
     private String selectorState[]={"Edit","Save"};
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public ProfessionalInfoProfileFragment() {
         // Required empty public constructor
@@ -83,9 +85,6 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getResultantUpdateProfInfo().observe(getViewLifecycleOwner(), response -> {
-            mViewModel.setEditableView(false); //newly added ..
-            mViewModel.setEnableView(true);
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -107,13 +106,13 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading ->
+//                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+        swipeRefreshLayout.setRefreshing(isLoading));
 
 
         mViewModel.getEditableView()
-                .observe(getViewLifecycleOwner(), isEnable -> {
-                    enableView(isEnable);
-                });
+                .observe(getViewLifecycleOwner(), this::enableView);
 
 
         mViewModel.getEnableView().observe(getViewLifecycleOwner(), isEnable -> {
@@ -136,6 +135,10 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         progressBar = v.findViewById(R.id.progress_bar);
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+
     }
 
     private void setView(ProfessionalInfoResponse.ProfessionalDetail info) {
@@ -232,6 +235,10 @@ public class ProfessionalInfoProfileFragment extends Fragment {
                     break;
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            mViewModel.fetchProfessionalInfo();
+
+        });
     }
 
 
@@ -242,6 +249,7 @@ public class ProfessionalInfoProfileFragment extends Fragment {
         edtOmdWhere.setEnabled(isEnable);
         edtDeaNo.setEnabled(isEnable);
         edtNpiNo.setEnabled(isEnable);
+
 
         if(isEnable){
             edtMedicalDegree.setSelection(edtMedicalDegree.getText()!=null?edtMedicalDegree.getText().length():0);

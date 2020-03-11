@@ -1,4 +1,4 @@
-package com.telemed.doctor.signin;
+package com.telemed.doctor.signin.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -146,9 +146,9 @@ public class AppointmentConfirmIFragment extends Fragment {
         });
 
         btnMedicalRecord.setOnClickListener(v1 -> {
-            if (mFragmentListener != null)
-                mFragmentListener.showFragment("MedicalRecordFragment", null);
-
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("MedicalRecordFragment", mTimeSlotModel.getPatientId());
+            }
         });
 
 

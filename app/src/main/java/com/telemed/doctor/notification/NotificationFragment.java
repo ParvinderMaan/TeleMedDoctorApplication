@@ -45,12 +45,11 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.FragmentThemeOne);
+        final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_notification, container, false);
 
@@ -82,9 +81,9 @@ public class NotificationFragment extends Fragment {
     private void initRecyclerView(View v) {
         rvNotification = v.findViewById(R.id.rv_notification);
         rvNotification.setHasFixedSize(true);
-        rvNotification.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvNotification.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        NotificationAdapter mAdapter = new NotificationAdapter(getActivity());
+        NotificationAdapter mAdapter = new NotificationAdapter(requireActivity());
         rvNotification.setAdapter(mAdapter);
         //   mAdapter.setOnClickListener(() -> { });
 

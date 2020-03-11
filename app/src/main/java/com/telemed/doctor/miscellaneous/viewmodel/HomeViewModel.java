@@ -51,7 +51,6 @@ public class HomeViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body()!=null) {
                     SignOutResponse result = response.body();
                     if(result.getStatus()){
-                        mHelper.clear(); // clearing sharedPref
                         resultant.setValue(new ApiResponse<>(SUCCESS, result, null));
                     }else {
                         resultant.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));

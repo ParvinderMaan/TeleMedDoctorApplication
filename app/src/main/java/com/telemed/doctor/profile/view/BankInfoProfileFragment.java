@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Selection;
 import android.text.TextUtils;
@@ -35,6 +36,7 @@ public class BankInfoProfileFragment extends Fragment {
     private BankInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
     private String selectorState[]={"Edit","Save"};
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public BankInfoProfileFragment() {
         // Required empty public constructor
@@ -89,6 +91,12 @@ public class BankInfoProfileFragment extends Fragment {
                     break;
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+
+            mViewModel.fetchBankInfo();
+
+        });
     }
 
     private void initObserver() {
@@ -113,9 +121,6 @@ public class BankInfoProfileFragment extends Fragment {
 
 
         mViewModel.getUpdateResultant().observe(getViewLifecycleOwner(), response -> {
-            mViewModel.setEditableView(false); //newly added ..
-            mViewModel.setEnableView(true);
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -137,13 +142,12 @@ public class BankInfoProfileFragment extends Fragment {
 
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading ->
-                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+//                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+        swipeRefreshLayout.setRefreshing(isLoading));
 
 
         mViewModel.getEditableView()
-                .observe(getViewLifecycleOwner(), isEnable -> {
-                    enableView(isEnable);
-                });
+                .observe(getViewLifecycleOwner(), this::enableView);
 
 
         mViewModel.getEnableView().observe(getViewLifecycleOwner(), isEnable -> {
@@ -168,6 +172,10 @@ public class BankInfoProfileFragment extends Fragment {
         progressBar=v.findViewById(R.id.progress_bar);
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
+
     }
 
 

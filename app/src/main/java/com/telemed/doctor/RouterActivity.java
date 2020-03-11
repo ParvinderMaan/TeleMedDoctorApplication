@@ -1,33 +1,24 @@
 package com.telemed.doctor;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.telemed.doctor.base.BaseActivity;
-import com.telemed.doctor.base.BaseFragment;
-import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
-import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.dialog.AbortDialogFragment;
-import com.telemed.doctor.network.ServiceGenerator;
-import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.password.view.ForgotPasswordFragment;
 import com.telemed.doctor.password.view.OneTimePasswordFragment;
 import com.telemed.doctor.password.view.ResetPasswordFragment;
-import com.telemed.doctor.signin.SignInFragment;
+import com.telemed.doctor.signin.view.SignInFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.signup.view.SignUpIFragment;
 import com.telemed.doctor.signup.view.SignUpIIFragment;
@@ -35,8 +26,6 @@ import com.telemed.doctor.signup.view.SignUpIIIFragment;
 import com.telemed.doctor.signup.view.SignUpIVFragment;
 import com.telemed.doctor.signup.view.SignUpVFragment;
 import com.telemed.doctor.splash.SplashFragment;
-
-import java.util.ArrayList;
 
 
 public class RouterActivity extends BaseActivity implements RouterFragmentSelectedListener {
@@ -164,8 +153,11 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         getSupportFragmentManager().popBackStackImmediate();
     }
 
+    // 1  --> finish
+    // 2 ---> pop
+    // 3,4,5...---> Abort Signup
     @Override
-    public void onBackPressed() {      // 1  --> finish //2 --->pop   3,4,5... ---> AbortSignup
+    public void onBackPressed() {
 
         switch (getActiveFragmentTag()) {
             case "SignInFragment":

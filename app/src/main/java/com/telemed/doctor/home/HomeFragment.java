@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
     private HomeFragmentSelectedListener mFragmentListener;
     private HomeViewModel mViewModel;
     private String mFirstName;
+    private SharedPrefHelper mHelper;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -49,8 +50,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPrefHelper mHelper = ((TeleMedApplication) requireActivity().getApplicationContext()).getSharedPrefInstance();
-        mFirstName=mHelper.read(SharedPrefHelper.KEY_FIRST_NAME, "");
+         mHelper = ((TeleMedApplication) requireActivity().getApplicationContext()).getSharedPrefInstance();
+         mFirstName=mHelper.read(SharedPrefHelper.KEY_FIRST_NAME, "");
     }
 
     @Override
@@ -157,6 +158,7 @@ public class HomeFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
+                            mHelper.clear(); // clearing sharedPref
                             mFragmentListener.startActivity("RouterActivity", null);
                         }
                     }
@@ -166,6 +168,7 @@ public class HomeFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
 //                        tvAlertView.showTopAlert(response.getErrorMsg()); // hack !!!
                         if (mFragmentListener != null){
+                            mHelper.clear(); // clearing sharedPref
                             mFragmentListener.startActivity("RouterActivity", null);
                         }
                     }

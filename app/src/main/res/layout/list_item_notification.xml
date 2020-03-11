@@ -1,90 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorRed"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/content"
-        android:gravity="center"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_patient_pic"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:src="@drawable/img_patient"
+        app:civ_border_color="@color/colorWhite"
+        app:civ_border_width="@dimen/_1sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+
+    <TextView
+        android:id="@+id/tv_up_coming_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lines="3"
+        android:text="You have an appointment with new patient at 2am on Sunday .Be ready for the best service of the clients"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_patient_pic"
+        app:layout_constraintTop_toTopOf="@+id/iv_patient_pic" />
+
+    <TextView
+        android:id="@+id/tv_upcoming_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="4 hours ago"
+        android:textColor="@color/colorLightWhite"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_up_coming_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_up_coming_name" />
+
+
+    <!--    <ImageView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:visibility="invisible"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginEnd="@dimen/_4sdp"-->
+    <!--        app:srcCompat="@drawable/ic_arrow_right_white" />-->
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/colorWhite"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_patient_pic"
+        app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:background="@color/colorRed"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_patient_pic"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/img_patient"
-            app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="@dimen/_1sdp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_up_coming_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/_4sdp"
-                android:includeFontPadding="false"
-                android:lines="3"
-                android:text="You have an appointment with new patient at 2am on Sunday .Be ready for the best service of the clients"
-                android:textColor="@color/colorWhite"
-                android:textSize="14sp"
-                android:ellipsize="end"
-                android:textStyle="normal" />
-
-            <TextView
-                android:id="@+id/tv_upcoming_time"
-                android:layout_width="match_parent"
-                android:includeFontPadding="false"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/_4sdp"
-                android:gravity="center_vertical"
-                android:text="4 hours ago"
-                android:paddingBottom="@dimen/_4sdp"
-                android:textColor="@color/colorLightWhite"
-                android:textSize="10sp" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-<!--    <ImageView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:visibility="invisible"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_marginEnd="@dimen/_4sdp"-->
-<!--        app:srcCompat="@drawable/ic_arrow_right_white" />-->
-
-    <RelativeLayout
-        android:id="@+id/rl_divider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/content">
-
-        <View
-            android:layout_marginStart="@dimen/_60sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/colorWhite"
-            />
-
-    </RelativeLayout>
-</LinearLayout>
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="iv_patient_pic" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

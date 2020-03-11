@@ -59,6 +59,7 @@
         <com.telemed.doctor.util.CustomTypingEditText
             android:id="@+id/edt_search_view"
             android:maxLines="1"
+            android:hint="Search"
             android:imeOptions="actionDone"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"

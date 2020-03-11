@@ -1,4 +1,4 @@
-package com.telemed.doctor.signin;
+package com.telemed.doctor.signin.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

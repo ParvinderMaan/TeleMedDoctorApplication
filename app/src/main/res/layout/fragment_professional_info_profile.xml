@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".profile.view.ProfessionalInfoProfileFragment"
+    android:layout_height="match_parent">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:focusableInTouchMode="true"
     android:background="@color/colorBlue"
-    tools:context=".profile.view.ProfessionalInfoProfileFragment">
+    >
     <!--parent -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +28,7 @@
         <!--            child-->
         <include
             android:id="@+id/progress_bar"
+            android:visibility="gone"
             layout="@layout/layout_progress_bar" />
         <!--            child-->
         <!--            child-->
@@ -342,4 +348,4 @@
 <!--        </RelativeLayout>-->
     </LinearLayout>
 </ScrollView>
-
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

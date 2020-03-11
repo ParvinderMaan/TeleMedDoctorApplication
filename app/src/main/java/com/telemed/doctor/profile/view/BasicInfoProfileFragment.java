@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import com.telemed.doctor.profile.model.BasicInfoRequest;
 import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.model.ProfileUpdateResponse;
 import com.telemed.doctor.profile.viewmodel.BasicInfoProfileViewModel;
+import com.telemed.doctor.schedule.view.ScheduleFragment;
 
 import java.util.HashMap;
 
@@ -49,6 +51,7 @@ public class BasicInfoProfileFragment extends Fragment {
     private HomeFragmentSelectedListener mFragmentListener;
     private String mLanguageOne, mLanguageTwo, mCountry, mState, mCity, mAddress, mEmail, mPhoneNo;
     private int languageOneId, languageTwoId, countryId, stateId;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public BasicInfoProfileFragment() {
         // Required empty public constructor
@@ -61,6 +64,7 @@ public class BasicInfoProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
+
     }
 
     @Override
@@ -167,6 +171,10 @@ public class BasicInfoProfileFragment extends Fragment {
 
                     break;
             }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            mViewModel.fetchBasicInfo();
         });
     }
 
@@ -292,9 +300,6 @@ public class BasicInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getUpdateResultant().observe(getViewLifecycleOwner(), response -> {
-            mViewModel.setEditableView(false); //newly added ..
-            //  mViewModel.setEnableView(true);
-
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -315,16 +320,15 @@ public class BasicInfoProfileFragment extends Fragment {
         });
 
         mViewModel.getEditableView()
-                .observe(getViewLifecycleOwner(), isEnable -> {
-                    enableView(isEnable);
-                });
+                .observe(getViewLifecycleOwner(), this::enableView);
 
 
         mViewModel.getBasicDetail().observe(getViewLifecycleOwner(), this::setView);
 
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading ->
-                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+//                        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                          swipeRefreshLayout.setRefreshing(isLoading));
 
 
     }
@@ -393,9 +397,11 @@ public class BasicInfoProfileFragment extends Fragment {
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN);
 
-        btnEditSave.setOnClickListener(vv -> {
+        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
 
-        });
+
+
 
     }
 }

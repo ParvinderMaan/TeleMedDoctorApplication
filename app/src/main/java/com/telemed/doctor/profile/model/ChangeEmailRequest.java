@@ -2,7 +2,6 @@ package com.telemed.doctor.profile.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.telemed.doctor.signin.SignInRequest;
 
 public class ChangeEmailRequest {
 

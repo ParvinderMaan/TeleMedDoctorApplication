@@ -112,6 +112,7 @@ public class BankInfoProfileViewModel extends AndroidViewModel {
             public void onResponse(@NonNull Call<ProfileUpdateResponse> call, @NonNull Response<ProfileUpdateResponse> response) {
                 isLoading.setValue(false);
                 mEnableView.setValue(true);
+                mEditableView.setValue(false);
 
                 if (response.isSuccessful() && response.body()!=null) {
                     ProfileUpdateResponse result = response.body();
@@ -135,6 +136,7 @@ public class BankInfoProfileViewModel extends AndroidViewModel {
             public void onFailure(@NonNull Call<ProfileUpdateResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
                 mEnableView.setValue(true);
+                mEditableView.setValue(false);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantUpdateBankInfo.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }

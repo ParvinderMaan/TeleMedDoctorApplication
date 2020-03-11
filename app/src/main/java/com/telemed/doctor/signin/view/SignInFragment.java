@@ -1,4 +1,4 @@
-package com.telemed.doctor.signin;
+package com.telemed.doctor.signin.view;
 
 
 import android.app.Activity;
@@ -23,12 +23,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
+import com.telemed.doctor.signin.viewmodel.SignInViewModel;
+import com.telemed.doctor.signin.model.SignInRequest;
+import com.telemed.doctor.signin.model.SignInResponse;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 

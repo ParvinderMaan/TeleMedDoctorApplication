@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".profile.view.BankInfoProfileFragment"
+    android:layout_height="match_parent">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlue"
     android:overScrollMode="never"
     android:fillViewport="true"
-    android:focusableInTouchMode="true"
-    tools:context=".profile.view.BankInfoProfileFragment">
+    android:focusableInTouchMode="true">
     <!--parent -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +26,7 @@
         <!--            child-->
         <include
             android:id="@+id/progress_bar"
+            android:visibility="gone"
             layout="@layout/layout_progress_bar" />
         <!--            child-->
         <androidx.appcompat.widget.AppCompatEditText
@@ -259,4 +264,4 @@
 
 
 </ScrollView>
-
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

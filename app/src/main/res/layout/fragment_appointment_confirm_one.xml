@@ -69,6 +69,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="@dimen/_66sdp"
                 android:id="@+id/civ_profile_pic"
+                tools:src="@tools:sample/avatars"
                 android:layout_height="@dimen/_66sdp"
                 app:civ_border_color="@color/colorBlue"
                 app:civ_border_width="@dimen/_1sdp" />
@@ -99,8 +100,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:text="John Wick"
                         android:ellipsize="end"
+                        tools:text="@tools:sample/full_names"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -110,7 +111,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:text="Miami, FL"
+                        tools:text="@tools:sample/cities"
+                        android:ellipsize="end"
+
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
@@ -127,7 +130,7 @@
                         android:id="@+id/tv_review_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
+                        android:text="-"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -204,7 +207,7 @@
                         android:id="@+id/tv_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="29"
+                        android:text="-"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -228,7 +231,7 @@
                         android:id="@+id/tv_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male"
+                        android:text="-"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -256,7 +259,7 @@
                         android:id="@+id/tv_height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="291"
+                        android:text="-"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -282,7 +285,7 @@
                         android:id="@+id/tv_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="290"
+                        android:text="-"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
@@ -320,8 +323,8 @@
           <Button
               android:id="@+id/btn_medical_record"
               android:layout_width="wrap_content"
-              android:textColor="@color/colorWhite"
               android:textStyle="bold"
+              android:textColor="@drawable/selector_text_white"
               android:paddingStart="@dimen/_20sdp"
               android:paddingEnd="@dimen/_20sdp"
               android:textAllCaps="false"
@@ -341,7 +344,7 @@
               android:id="@+id/tv_start_time"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="10.30am"
+              tools:text="@tools:sample/date/hhmm"
               android:textStyle="bold"
               android:textColor="@color/colorBlue"
               android:textSize="@dimen/_10sdp" />
