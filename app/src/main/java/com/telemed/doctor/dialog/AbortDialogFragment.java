@@ -32,7 +32,7 @@ public class AbortDialogFragment  extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setCancelable(false);
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyleII);
         builder.setTitle("Abort Registration");
         builder.setMessage("Are you sure you would like to abort signup ?");
         builder.setPositiveButton("YES", (dialog, which) -> {

@@ -65,8 +65,8 @@ public class SignUpIIFragment extends BaseFragment {
     private CustomAlertTextView tvAlertView;
 
     private RouterFragmentSelectedListener mFragmentListener;
-    private ProgressBar progressBar;
-    private AppCompatEditText edtDocName, edtDocSurname, edtDob, edtBirthCity, edtBirthCountry, edtNationality, edtSpeciality,
+    private ProgressBar progressBar;            // edtBirthCity, edtBirthCountry,
+    private AppCompatEditText edtDocName, edtDocSurname, edtDob,edtNationality, edtSpeciality,
             edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail, edtGender, edtCountry, edtState, edtCity;
     private String mDocName, mDocSurname, mDob, mBirthCity, mBirthCountry, mNationality, mSpeciality, mLanguageOne, mLanguageTwo, mAddr,
             mEmail, mGender, mCountry, mState, mCity;
@@ -175,8 +175,8 @@ public class SignUpIIFragment extends BaseFragment {
         edtDocName.setEnabled(isView);
         edtDocSurname.setEnabled(isView);
         edtDob.setEnabled(isView);
-        edtBirthCity.setEnabled(isView);
-        edtBirthCountry.setEnabled(isView);
+//        edtBirthCity.setEnabled(isView);
+//        edtBirthCountry.setEnabled(isView);
         edtNationality.setEnabled(isView);
         edtSpeciality.setEnabled(isView);
         edtLanguageOne.setEnabled(isView);
@@ -194,8 +194,8 @@ public class SignUpIIFragment extends BaseFragment {
         btnContinue.setOnClickListener(mClickListener);
         tvCancel.setOnClickListener(mClickListener);
         edtDob.setOnClickListener(mClickListener);
-        edtBirthCity.setOnClickListener(mClickListener);
-        edtBirthCountry.setOnClickListener(mClickListener);
+//        edtBirthCity.setOnClickListener(mClickListener);
+//        edtBirthCountry.setOnClickListener(mClickListener);
         edtNationality.setOnClickListener(mClickListener);
         edtSpeciality.setOnClickListener(mClickListener);
         edtLanguageOne.setOnClickListener(mClickListener);
@@ -216,8 +216,8 @@ public class SignUpIIFragment extends BaseFragment {
         edtDocName = v.findViewById(R.id.edt_doc_name);
         edtDocSurname = v.findViewById(R.id.edt_doc_surname);
         edtDob = v.findViewById(R.id.edt_dob);
-        edtBirthCity = v.findViewById(R.id.edt_birth_city);
-        edtBirthCountry = v.findViewById(R.id.edt_birth_country);
+//        edtBirthCity = v.findViewById(R.id.edt_birth_city);
+//        edtBirthCountry = v.findViewById(R.id.edt_birth_country);
         edtNationality = v.findViewById(R.id.edt_nationality);
         edtSpeciality = v.findViewById(R.id.edt_speciality);
         edtLanguageOne = v.findViewById(R.id.edt_language_one);
@@ -258,17 +258,7 @@ public class SignUpIIFragment extends BaseFragment {
                 showDatePicker();
                 break;
 
-            case R.id.edt_state:
-                String countryId= String.valueOf((Integer) edtCountry.getTag());
-                Intent in = new Intent(getActivity(), ChooseOptionActivity.class);
-                in.putExtra("KEY_", "TAG_STATE");
-                in.putExtra("KEY_COUNTRY_ID",countryId);
-                startActivityForResult(in, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
-
-                break;
 
             case R.id.btn_continue:
 
@@ -277,8 +267,8 @@ public class SignUpIIFragment extends BaseFragment {
                             .setFirstName(mDocName)
                             .setLastName(mDocSurname)
                             .setDateOfBirth(mDob)
-                            .setBirthCity(mBirthCity)
-                            .setBirthCountry(mBirthCountry)
+//                            .setBirthCity(mBirthCity)
+//                            .setBirthCountry(mBirthCountry)
                             .setNationalityId((Integer) edtNationality.getTag())
                             .setGenderId((Integer) edtGender.getTag())
                             .setSpecialityId((Integer) edtSpeciality.getTag())
@@ -301,7 +291,17 @@ public class SignUpIIFragment extends BaseFragment {
 
                 break;
 
+            case R.id.edt_state:
+                String countryId= String.valueOf((Integer) edtCountry.getTag());
+                Intent in = new Intent(getActivity(), ChooseOptionActivity.class);
+                in.putExtra("KEY_", "TAG_STATE");
+                in.putExtra("KEY_COUNTRY_ID",countryId);
+                startActivityForResult(in, REQUEST_CODE_SELECT);
+                if(getActivity()!=null)
+                    getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
+
+                break;
 
 
             case R.id.edt_nationality:
@@ -392,8 +392,8 @@ public class SignUpIIFragment extends BaseFragment {
         mDocName = edtDocName.getText().toString();
         mDocSurname = edtDocSurname.getText().toString();
         mDob = edtDob.getText().toString();
-        mBirthCity = edtBirthCity.getText().toString();
-        mBirthCountry = edtBirthCountry.getText().toString();
+//        mBirthCity = edtBirthCity.getText().toString();
+//        mBirthCountry = edtBirthCountry.getText().toString();
         mNationality = edtNationality.getText().toString();
         mSpeciality = edtSpeciality.getText().toString();
         mLanguageOne = edtLanguageOne.getText().toString();
@@ -446,15 +446,15 @@ public class SignUpIIFragment extends BaseFragment {
             return false;
         }
 
-        if (TextUtils.isEmpty(mBirthCity)) {
-            edtBirthCity.setError("Enter city of birth");
-            return false;
-        }
+//        if (TextUtils.isEmpty(mBirthCity)) {
+//            edtBirthCity.setError("Enter city of birth");
+//            return false;
+//        }
 
-        if (TextUtils.isEmpty(mBirthCountry)) {
-            edtBirthCountry.setError("Enter birth country");
-            return false;
-        }
+//        if (TextUtils.isEmpty(mBirthCountry)) {
+//            edtBirthCountry.setError("Enter birth country");
+//            return false;
+//        }
 
         if (TextUtils.isEmpty(mNationality)) {
             edtNationality.setError("Enter nationality");
@@ -563,7 +563,7 @@ public class SignUpIIFragment extends BaseFragment {
 
             switch (type) {
                 case "TAG_NATIONALITY":
-                     item = data.getStringExtra( "KEY_NAME");
+                    item = data.getStringExtra( "KEY_NAME");
                     itemId= data.getIntExtra("KEY_ID",0);
                     edtNationality.setText(item);
                     edtNationality.setTag(itemId);
@@ -664,8 +664,8 @@ public class SignUpIIFragment extends BaseFragment {
         btnContinue.setOnClickListener(null);
         tvCancel.setOnClickListener(null);
         edtDob.setOnClickListener(null);
-        edtBirthCity.setOnClickListener(null);
-        edtBirthCountry.setOnClickListener(null);
+//        edtBirthCity.setOnClickListener(null);
+//        edtBirthCountry.setOnClickListener(null);
         edtNationality.setOnClickListener(null);
         edtSpeciality.setOnClickListener(null);
         edtLanguageOne.setOnClickListener(null);

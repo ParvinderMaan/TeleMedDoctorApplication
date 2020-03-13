@@ -41,8 +41,8 @@ import java.util.HashMap;
 
 public class BasicInfoProfileFragment extends Fragment {
 
-    private static int REQUEST_CODE_SELECT = 121;
-    private AppCompatEditText edtDocName, edtDocSurname, edtDob, edtBirthCity, edtBirthCountry, edtSpeciality,
+    private static int REQUEST_CODE_SELECT = 121;                 //edtBirthCity, //edtBirthCountry
+    private AppCompatEditText edtDocName, edtDocSurname, edtDob,  edtSpeciality,
             edtLanguageOne, edtLanguageTwo, edtAddr, edtEmail, edtNationality, edtCountry, edtState, edtCity, edtPhoneNo;
     private BasicInfoProfileViewModel mViewModel;
     private ProgressBar progressBar;
@@ -340,8 +340,8 @@ public class BasicInfoProfileFragment extends Fragment {
         edtDocName.setText(info.getFirstName() != null ? info.getFirstName() : "");
         edtDocSurname.setText(info.getLastName() != null ? info.getLastName() : "");
         edtDob.setText(info.getDateOfBirth() != null ? info.getDateOfBirth() : "");
-        edtBirthCity.setText(info.getBirthCity() != null ? info.getBirthCity() : "");
-        edtBirthCountry.setText(info.getBirthCountry() != null ? info.getBirthCountry() : "");
+//        edtBirthCity.setText(info.getBirthCity() != null ? info.getBirthCity() : "");
+//        edtBirthCountry.setText(info.getBirthCountry() != null ? info.getBirthCountry() : "");
         edtSpeciality.setText(info.getSpeciality() != null ? info.getSpeciality() : "");
         edtLanguageOne.setText(info.getPrimaryLanguage() != null ? info.getPrimaryLanguage() : "");
         edtLanguageTwo.setText(info.getSecondaryLanguage() != null ? info.getSecondaryLanguage() : "");
@@ -377,8 +377,8 @@ public class BasicInfoProfileFragment extends Fragment {
         edtDocName = v.findViewById(R.id.edt_doc_name);
         edtDocSurname = v.findViewById(R.id.edt_doc_surname);
         edtDob = v.findViewById(R.id.edt_dob);
-        edtBirthCity = v.findViewById(R.id.edt_birth_city);
-        edtBirthCountry = v.findViewById(R.id.edt_birth_country);
+//        edtBirthCity = v.findViewById(R.id.edt_birth_city);
+//        edtBirthCountry = v.findViewById(R.id.edt_birth_country);
         edtSpeciality = v.findViewById(R.id.edt_speciality);
         edtLanguageOne = v.findViewById(R.id.edt_language_one);
         edtLanguageTwo = v.findViewById(R.id.edt_language_two);

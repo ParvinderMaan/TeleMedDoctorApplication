@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.base.BaseFragment;
+import com.telemed.doctor.base.BaseTextWatcher;
 import com.telemed.doctor.helper.Validator;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 import com.telemed.doctor.signin.viewmodel.SignInViewModel;
@@ -48,6 +52,7 @@ public class SignInFragment extends BaseFragment {
     private RouterFragmentSelectedListener mFragmentListener;
     private String mUserEmail, mUserPassword;
     private CustomAlertTextView tvAlertView;
+    private AppCompatTextView tvEmail;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -90,6 +95,7 @@ public class SignInFragment extends BaseFragment {
                 });
 
 
+
         mViewModel.getResultant().observe(getViewLifecycleOwner(), response -> {
 
             switch (response.getStatus()) {
@@ -103,7 +109,6 @@ public class SignInFragment extends BaseFragment {
                         if (mFragmentListener != null)
                             routeNavigationFragment(infoObj);
                     }
-
                     break;
 
                 case FAILURE:
@@ -164,6 +169,8 @@ public class SignInFragment extends BaseFragment {
         progressBar.setVisibility(View.INVISIBLE);
         tvAlertView = v.findViewById(R.id.tv_alert);
 
+//        tvEmail = v.findViewById(R.id.tv_email);
+
     }
 
     private void initListener() {
@@ -173,6 +180,25 @@ public class SignInFragment extends BaseFragment {
 
         edtUsrEmail.setOnEditorActionListener(mEditorActionListener);
         edtUsrPassword.setOnEditorActionListener(mEditorActionListener);
+
+
+
+//        edtUsrEmail.addTextChangedListener(new BaseTextWatcher() {
+//            @Override
+//            public void onTextChanged(int start, int before, int count, CharSequence s) {
+//                if(s.length()==0){
+//                    tvEmail.setText("");
+//                    return;
+//                }
+//                if (!Validator.isEmailValid(String.valueOf(s))) {
+//                    tvEmail.setText("Invalid email");
+//                }else {
+//                    tvEmail.setText("");
+//                }
+//            }
+//        });
+
+
     }
 
 

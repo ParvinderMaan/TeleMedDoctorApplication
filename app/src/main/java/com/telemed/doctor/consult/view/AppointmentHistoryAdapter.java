@@ -304,17 +304,6 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
 
             }
 
-            if(model.getAppointmentDate()!=null && model.getStartTime()!=null && model.getEndTime()!=null){
-                String appointmentDate  = model.getAppointmentDate();
-                String startTime  = model.getStartTime();
-                String endTime  = model.getEndTime();
-                tvDateTime.setText(appointmentDate);
-                tvDateTime.append("\n");
-//              tvDateTime.append(startTime+" - "+endTime);
-                tvDateTime.append("1:00 AM"+" - "+"1:30 AM"); // temp??
-            }
-
-
             if (model.getStateName() != null && model.getCountryName() != null) {
                 String stateName = model.getStateName();
                 stateName = stateName.substring(0, 1).toUpperCase() + stateName.substring(1).toLowerCase();
@@ -326,10 +315,13 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
             }
 
 
-            if (model.getStartTime() != null && model.getEndTime() != null) {
+            if (model.getAppointmentDate()!=null && model.getStartTime() != null && model.getEndTime() != null) {
+                String appointmentDate  = model.getAppointmentDate();
                 String startTime = model.getStartTime();
                 String endTime = model.getEndTime();
-                tvDateTime.setText(startTime);
+                tvDateTime.setText(appointmentDate);
+                tvDateTime.append("\n");
+                tvDateTime.append(startTime);
                 tvDateTime.append("-");
                 tvDateTime.append(endTime);
             }

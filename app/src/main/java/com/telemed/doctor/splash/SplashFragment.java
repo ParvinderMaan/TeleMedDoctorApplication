@@ -19,14 +19,17 @@ import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
+import java.lang.ref.WeakReference;
+
 import static com.telemed.doctor.helper.SharedPrefHelper.KEY_SIGN_IN;
 
 
 public class SplashFragment extends BaseFragment {
-    private static final int SPLASH_TIME_OUT = 5000;
+    private static final int SPLASH_TIME_OUT = 3000;
     private RouterFragmentSelectedListener mFragmentListener;
     private SharedPrefHelper mSharedPrefHelper;
     private boolean isUserSignIn;
+    private WeakHandler mWeakHandler;
 
     public static SplashFragment newInstance() {
         return new SplashFragment();
@@ -37,7 +40,6 @@ public class SplashFragment extends BaseFragment {
         super.onAttach(context);
         mFragmentListener = (RouterFragmentSelectedListener) context;
         mSharedPrefHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
-
     }
 
     @Override
@@ -54,35 +56,34 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mHandler.sendEmptyMessageDelayed(1, SPLASH_TIME_OUT);
+        mWeakHandler=new WeakHandler(this);
+        mWeakHandler.sendEmptyMessageDelayed(1, SPLASH_TIME_OUT);
+
     }
 
+    static class WeakHandler extends Handler {
+        private WeakReference<SplashFragment> fragment;
 
+         WeakHandler(SplashFragment fragment) {
+            this.fragment = new WeakReference<>(fragment);
+        }
 
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
+            if (fragment.get().mFragmentListener != null) {
 
-
-            if (mFragmentListener != null) {
-
-                if (!isUserSignIn) {
-                    mFragmentListener.showFragment("SignInFragment", null);
+                if (!fragment.get().isUserSignIn) {
+                    fragment.get().mFragmentListener.showFragment("SignInFragment", null);
                 } else {
-                    mFragmentListener.startActivity("HomeActivity", null);
+                    fragment.get().mFragmentListener.startActivity("HomeActivity", null);
                 }
-
             }
-
         }
-    };
-
+    }
 
     @Override
     public void onDestroyView() {
-        mHandler.removeMessages(1);
+        mWeakHandler.removeMessages(1);
         super.onDestroyView();
     }
 

@@ -101,7 +101,7 @@ public class ChooseOptionActivity extends BaseActivity {
                         mViewModel.setLanguageList(result.getLanguages());
                         mViewModel.setSpecialityList(result.getSpeciliaties());
                         mViewModel.setCountryList(result.getCountries());
-
+                        mViewModel.setNationalityList(result.getNationalities());
                     }
 
                     break;
@@ -248,7 +248,7 @@ public class ChooseOptionActivity extends BaseActivity {
             case "TAG_NATIONALITY":
                 tvHeader.setText(getResources().getString(R.string.title_select_nationality));
                 rvOptionz.setAdapter(mNationalityAdapter);
-                mViewModel.getCountries().observe(this, mCountryObserver);
+                mViewModel.getNationalities().observe(this, mNationalityObserver);
                 mViewModel.fetchDoctorDrills();
 
                 break;
@@ -325,12 +325,23 @@ public class ChooseOptionActivity extends BaseActivity {
         @Override
         public void onChanged(List<Country> countries) {
             if(!countries.isEmpty()) {
-                mNationalityAdapter.addAll(countries);
                 mCountryAdapter.addAll(countries);
             }
 
         }
     };
+    private Observer<List<Country>> mNationalityObserver=new Observer<List<Country>>() {
+        @Override
+        public void onChanged(List<Country> countries) {
+            if(!countries.isEmpty()) {
+                mNationalityAdapter.addAll(countries);
+            }
+
+        }
+    };
+
+
+
 
     private Observer<List<State>> mStateObserver=new Observer<List<State>>() {
         @Override

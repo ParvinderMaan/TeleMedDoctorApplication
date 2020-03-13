@@ -47,7 +47,7 @@ public class ChooseOptionViewModel extends AndroidViewModel {
 
 
 
-    private MutableLiveData<List<Country>> listOfCountry;
+    private MutableLiveData<List<Country>> listOfCountry,lstOfNationality;
     private MutableLiveData<Boolean> isLoading;
 
 
@@ -59,6 +59,8 @@ public class ChooseOptionViewModel extends AndroidViewModel {
         return resultantState;
     }
 
+
+
     public ChooseOptionViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
@@ -66,6 +68,7 @@ public class ChooseOptionViewModel extends AndroidViewModel {
         listOfLanguage= new MutableLiveData<>() ;
         listOfSpeciality = new MutableLiveData<>();
         listOfCountry = new MutableLiveData<>();
+        lstOfNationality = new MutableLiveData<>();
         listOfState= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         resultant=new MutableLiveData<>();
@@ -124,6 +127,14 @@ public class ChooseOptionViewModel extends AndroidViewModel {
     public LiveData<List<State>> getState() {
         return listOfState;
 
+    }
+
+    public MutableLiveData<List<Country>> getNationalities() {
+        return lstOfNationality;
+    }
+
+    public void setNationalityList(List<Country> lstOfNationality) {
+        this.lstOfNationality.setValue(lstOfNationality);
     }
 
     public void fetchStateFromCountry(String countryId){

@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment {
         tvNotification.setOnClickListener(mOnClickListener);
         tvSetting.setOnClickListener(mOnClickListener);
         tvSignOut.setOnClickListener(mOnClickListener);
+
     }
 
     private View.OnClickListener mOnClickListener = v -> {

@@ -88,6 +88,18 @@ public class OptionResponse {
             this.countries = countries;
         }
 
+
+        public List<Country> getNationalities() {
+            return nationalities;
+        }
+
+        public void setNationalities(List<Country> nationalities) {
+            this.nationalities = nationalities;
+        }
+
+        @SerializedName("nationalities")
+        @Expose
+        private List<Country> nationalities = null;
     }
 
 }
