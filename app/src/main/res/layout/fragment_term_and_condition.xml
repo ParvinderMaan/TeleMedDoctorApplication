@@ -22,13 +22,24 @@
 
         <TextView
             android:id="@+id/tv_header"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:layout_toStartOf="@+id/ibtn_back"
             android:layout_height="wrap_content"
             android:text="Terms and Conditions"
             android:layout_centerVertical="true"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibtn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back_white" />
 
         <ImageButton
             android:id="@+id/ibtn_close"

@@ -42,7 +42,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
     private DayWiseAvailabiltyViewModel mViewModel;
     private RecyclerView rvTimeSlot;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private HomeFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
     private CustomAlertTextView tvAlertView;
@@ -125,9 +125,18 @@ public class DayWiseAvailabilityFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment));
 
+
+
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
-            if(mFragmentListener!=null) mFragmentListener.popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
+        });
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
         });
 
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import com.google.firebase.FirebaseApp;
 import com.telemed.doctor.helper.Common;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ServiceGenerator;
@@ -24,9 +25,9 @@ public class TeleMedApplication extends Application  {     //implements Lifecycl
     @Override
     public void onCreate() {
         super.onCreate();
+
         currentApplication = this;
      //  ProcessLifecycleOwner.get().getLifecycle().addObserver(this); // no need
-
     }
 
     // region Helper Methods

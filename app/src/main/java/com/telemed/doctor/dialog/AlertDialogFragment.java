@@ -20,11 +20,22 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 public class AlertDialogFragment extends DialogFragment {
     private  String TAG;
     private AlertDialogListener alertDialogListener;
+    private String suffix;
 
-    public static AlertDialogFragment newInstance() {
-        return new AlertDialogFragment();
+    public static AlertDialogFragment newInstance(String suffix) {
+        AlertDialogFragment fragment=new AlertDialogFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("KEY_",suffix);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments()!=null)
+            suffix=getArguments().getString("KEY_");
+    }
 
     @NonNull
     @Override
@@ -32,7 +43,7 @@ public class AlertDialogFragment extends DialogFragment {
         setCancelable(false);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyleII);
         builder.setTitle(getResources().getString(R.string.app_name));
-        builder.setMessage("Are you sure you would like to delete ?");
+        builder.setMessage("Are you sure you would like to "+suffix+" ?");
         builder.setPositiveButton("YES", (dialog, which) -> {
             TAG = "YES";
             dismiss();
@@ -62,6 +73,7 @@ public class AlertDialogFragment extends DialogFragment {
                 break;
             case "NO":
                 // nothing
+                alertDialogListener.onClickNo();
                 break;
 
         }
@@ -74,6 +86,7 @@ public class AlertDialogFragment extends DialogFragment {
 
     public interface AlertDialogListener {
         void  onClickYes();
+        void  onClickNo();
 
     }
 

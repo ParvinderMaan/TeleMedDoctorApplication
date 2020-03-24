@@ -24,20 +24,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:targetApi="n">
         <activity
             android:name=".SecondaryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme"/>
-         <activity
-         android:name=".TestingActivity"
-         android:screenOrientation="portrait">
+<!--         <activity-->
+<!--         android:name=".TestingActivity"-->
+<!--         android:screenOrientation="portrait">-->
 <!--             <intent-filter>-->
 <!--                 <action android:name="android.intent.action.MAIN" />-->
 <!--                 <category android:name="android.intent.category.LAUNCHER" />-->
 <!--             </intent-filter>-->
-
-         </activity>
+<!--         </activity>-->
         <activity
             android:name=".RouterActivity"
             android:screenOrientation="portrait"
@@ -49,6 +49,7 @@
         </activity>
         <activity
             android:name=".home.HomeActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme" />
         <activity
@@ -56,11 +57,11 @@
             android:screenOrientation="portrait" /> <!-- FileChooser Activity -->
         <activity
             android:name=".profile.view.ChooseOptionActivity"
-            android:screenOrientation="portrait" /> <!-- Crop Activity -->
+            android:screenOrientation="portrait" />  <!-- Menu Chooser Activity -->
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/CropActivityTheme" />
+            android:theme="@style/CropActivityTheme" />  <!-- Crop Activity -->
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -73,6 +74,31 @@
                 android:resource="@xml/provider_path"
                 tools:replace="android:resource" />
         </provider>
+
+
+        <service
+            android:name=".notification.TeleMedFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>
+    <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+         See README(https://goo.gl/l4GJaQ) for more. -->
+<!--<meta-data-->
+<!--android:name="com.google.firebase.messaging.default_notification_icon"-->
+<!--android:resource="@drawable/ic_stat_ic_notification" />-->
+<!--    &lt;!&ndash; Set color used with incoming notification messages. This is used when no color is set for the incoming-->
+<!--         notification message. See README(https://goo.gl/6BKBk7) for more. &ndash;&gt;-->
+<!--<meta-data-->
+<!--android:name="com.google.firebase.messaging.default_notification_color"-->
+<!--android:resource="@color/colorAccent" />-->
+
+<!--<meta-data-->
+<!--android:name="com.google.firebase.messaging.default_notification_channel_id"-->
+<!--android:value="@string/default_notification_channel_id" />-->

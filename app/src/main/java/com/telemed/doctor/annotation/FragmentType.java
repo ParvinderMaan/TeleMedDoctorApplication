@@ -1,11 +1,11 @@
-package com.telemed.doctor.enumeration;
+package com.telemed.doctor.annotation;
 
 import androidx.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.telemed.doctor.enumeration.FragmentType.SPLASH_FRAGMENT;
+import static com.telemed.doctor.annotation.FragmentType.SPLASH_FRAGMENT;
 
 // NOT USED YET !!!!!!!!!!!!!!!
 //  !!!!!!!!!!!!!!!!!!!!

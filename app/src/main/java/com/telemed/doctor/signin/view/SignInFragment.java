@@ -10,11 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +28,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.telemed.doctor.R;
+import com.telemed.doctor.RouterActivity;
 import com.telemed.doctor.base.BaseFragment;
 import com.telemed.doctor.base.BaseTextWatcher;
 import com.telemed.doctor.helper.Validator;
@@ -40,9 +49,9 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 
 public class SignInFragment extends BaseFragment {
+    private final String TAG = SignInFragment.class.getSimpleName();
     private final String DEVICE_TYPE = "android"; // ios
     private final String DISCRIMINATOR_TYPE = "Doctor"; // Patient
-
     private AppCompatEditText edtUsrEmail, edtUsrPassword;
     private TextView tvSignUp, tvForgotPassword;
     private RelativeLayout rlRoot;
@@ -50,9 +59,8 @@ public class SignInFragment extends BaseFragment {
     private SignInViewModel mViewModel;
     private ProgressBar progressBar;
     private RouterFragmentSelectedListener mFragmentListener;
-    private String mUserEmail, mUserPassword;
+    private String mUserEmail, mUserPassword,mDeviceToken;
     private CustomAlertTextView tvAlertView;
-    private AppCompatTextView tvEmail;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -62,7 +70,16 @@ public class SignInFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (RouterFragmentSelectedListener) context;
+
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +95,7 @@ public class SignInFragment extends BaseFragment {
         initView(v);
         initListener();
         initObserver();
+
     }
 
     private void initObserver() {
@@ -121,37 +139,41 @@ public class SignInFragment extends BaseFragment {
 
         });
 
+        mViewModel.getDeviceToken().observe(getViewLifecycleOwner(), token -> {
+            mDeviceToken=token;
+        });
+
     }
 
     private void routeNavigationFragment(SignInResponse.Data infoObj) {
-        UserInfoWrapper infoWrapper = new UserInfoWrapper();
-        infoWrapper.setAccessToken(infoObj.getAccessToken());
-        infoWrapper.setEmail(infoObj.getEmail());
-        infoWrapper.setEmailConfirmed(infoObj.getEmailConfirmed());
-        infoWrapper.setLastScreenId(infoObj.getLastScreenId());
-        infoWrapper.setFirstName(infoObj.getFirstName());
-        infoWrapper.setLastName(infoObj.getLastName());
-        infoWrapper.setProfilePic(infoObj.getProfilePic());
+        UserInfoWrapper info= new UserInfoWrapper();
+        info.setAccessToken(infoObj.getAccessToken());
+        info.setEmail(infoObj.getEmail());
+        info.setEmailConfirmed(infoObj.getEmailConfirmed());
+        info.setLastScreenId(infoObj.getLastScreenId());
+        info.setFirstName(infoObj.getFirstName());
+        info.setLastName(infoObj.getLastName());
+        info.setProfilePic(infoObj.getProfilePic());
 
         switch (infoObj.getLastScreenId()) {
 
             case 1: // ---> 2
-                mFragmentListener.showFragment("OneTimePasswordFragment", infoWrapper);
+                mFragmentListener.showFragment("OneTimePasswordFragment", info);
                 break;
             case 2: // ---> 3
-                mFragmentListener.showFragment("SignUpIIFragment", infoWrapper);
+                mFragmentListener.showFragment("SignUpIIFragment", info);
                 break;
             case 3:  // ---> 4
-                mFragmentListener.showFragment("SignUpIIIFragment", infoWrapper);
+                mFragmentListener.showFragment("SignUpIIIFragment", info);
                 break;
             case 4:  // ---> 5
-                mFragmentListener.showFragment("SignUpIVFragment", infoWrapper);
+                mFragmentListener.showFragment("SignUpIVFragment", info);
                 break;
             case 5:  // ---> 6
-                mFragmentListener.showFragment("SignUpVFragment", infoWrapper);
+                mFragmentListener.showFragment("SignUpVFragment", info);
                 break;
             default:  // ---> default
-                mFragmentListener.startActivity("HomeActivity", infoWrapper);
+                mFragmentListener.startActivity("HomeActivity", info);
 
         }
 
@@ -169,8 +191,6 @@ public class SignInFragment extends BaseFragment {
         progressBar.setVisibility(View.INVISIBLE);
         tvAlertView = v.findViewById(R.id.tv_alert);
 
-//        tvEmail = v.findViewById(R.id.tv_email);
-
     }
 
     private void initListener() {
@@ -180,24 +200,6 @@ public class SignInFragment extends BaseFragment {
 
         edtUsrEmail.setOnEditorActionListener(mEditorActionListener);
         edtUsrPassword.setOnEditorActionListener(mEditorActionListener);
-
-
-
-//        edtUsrEmail.addTextChangedListener(new BaseTextWatcher() {
-//            @Override
-//            public void onTextChanged(int start, int before, int count, CharSequence s) {
-//                if(s.length()==0){
-//                    tvEmail.setText("");
-//                    return;
-//                }
-//                if (!Validator.isEmailValid(String.valueOf(s))) {
-//                    tvEmail.setText("Invalid email");
-//                }else {
-//                    tvEmail.setText("");
-//                }
-//            }
-//        });
-
 
     }
 
@@ -220,18 +222,21 @@ public class SignInFragment extends BaseFragment {
 
             case R.id.btn_sign_in:
                 attemptSignIn();
+
+
                 break;
         }
     };
 
     private void attemptSignIn() {
+     //   Log.e(TAG,mDeviceToken);
 
         if (isFormValid()) {
             SignInRequest in = new SignInRequest.Builder()
                     .setEmail(mUserEmail)
                     .setPassword(mUserPassword)
                     .setDeviceType(DEVICE_TYPE)
-                    .setDeviceId("12345")
+                    .setDeviceId(mDeviceToken)
                     .setDiscriminator(DISCRIMINATOR_TYPE)
                     .build();
             mViewModel.setSignInInfo(in);
@@ -307,27 +312,6 @@ public class SignInFragment extends BaseFragment {
         }
     };
 
-    private void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null && activity.getCurrentFocus() != null) {
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-        }
-
-
-        /*
-
-
-        {
-    "status": true,
-    "message": "Please Confirm Your Email to continue.",
-    "data": {
-        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2ZDA1M2VhZC05OTA5LTQwZDAtODgwYy02YzViODk4YzZiNzUiLCJyb2xlIjoiRG9jdG9yIiwiRGV2aWNlSWQiOiJ0ZXN0IERldmljZUlEIiwibmJmIjoxNTc2MDQ2OTUzLCJleHAiOjE1NzYxMzMzNTMsImlhdCI6MTU3NjA0Njk1M30.AE8wPmMKk-m7PduK3U-tr-EL65OUNzo0jT6GDiSQJbQ",
-        "lastScreenId": 1,
-        "emailConfirmed": false
-       }
-      }
-         */
-    }
 
     @Override
     public void onDestroyView() {
@@ -342,4 +326,7 @@ public class SignInFragment extends BaseFragment {
         edtUsrEmail.setOnEditorActionListener(null);
         edtUsrPassword.setOnEditorActionListener(null);
     }
+
+
+
 }

@@ -2,6 +2,7 @@ package com.telemed.doctor.schedule.view;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,14 +38,19 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class ScheduleFragment extends Fragment {
     private final String TAG = ScheduleFragment.class.getSimpleName();
     private Button btnSynchronizeSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private ScheduleViewModel mViewModel;
     private String mAccessToken;
     private HashMap<String, String> mHeaderMap;
@@ -55,6 +61,7 @@ public class ScheduleFragment extends Fragment {
     private MonthPagerAdapter mMonthPagerAdapter;
     private ViewPager vpPager;
     private SychronizeScheduleDialogFragment mScheduleDialogFragment;
+    private SharedPrefHelper mHelper;
 
     public static ScheduleFragment newInstance() {
         return new ScheduleFragment();
@@ -63,7 +70,7 @@ public class ScheduleFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
-        SharedPrefHelper mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
+        mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
         mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
     }
 
@@ -94,6 +101,9 @@ public class ScheduleFragment extends Fragment {
 
     private void initView(View v) {
         ibtnClose = v.findViewById(R.id.ibtn_close);
+        ibtnBack= v.findViewById(R.id.ibtn_back);
+        ibtnBack.setVisibility(View.INVISIBLE);
+
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
 
         progressBar = v.findViewById(R.id.progress_bar);
@@ -120,6 +130,7 @@ public class ScheduleFragment extends Fragment {
             }
 
         });
+
         btnSynchronizeSchedule.setOnClickListener(v -> {
             mViewModel.setDialogVisiblility(true);
         });
@@ -263,6 +274,11 @@ public class ScheduleFragment extends Fragment {
                         ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
                         fragment.hideRefreshing();
                     }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
+                }
+
                     break;
             }
         });
@@ -286,6 +302,10 @@ public class ScheduleFragment extends Fragment {
                         ScheduleIIMonthFragment fragment = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(1);
                         fragment.hideRefreshing();
                     }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
+                    }
                     break;
             }
         });
@@ -307,6 +327,10 @@ public class ScheduleFragment extends Fragment {
                         tvAlertView.showTopAlert(response.getErrorMsg());
                         ScheduleIIIMonthFragment fragment = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(2);
                         fragment.hideRefreshing();
+                    }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
                     }
                     break;
             }
@@ -389,5 +413,155 @@ public class ScheduleFragment extends Fragment {
     }
 
 
+    public static class BlueColorDecorator implements DayViewDecorator {
 
+
+        private String date;
+
+        private Resources resource;
+
+        public BlueColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //            Log.e("BlueColorDecorator", "" + date);
+            return this.date.equals(date);
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setDaysDisabled(true);
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iii));
+        }
+    }
+
+    //  Disable dates decorator
+    public static class DisableDateDecorator implements DayViewDecorator {
+
+        private String date;
+
+
+        private Resources resource;
+
+        public DisableDateDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //            Log.e("DisableDateDecorator", "" + date);
+            return this.date.equals(date);
+        }
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setDaysDisabled(true);
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iii));
+
+        }
+
+    }
+
+    public static class RedColorDecorator implements DayViewDecorator {
+        private String date;
+
+        private Resources resource;
+
+        public RedColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //            Log.e("RedColorDecorator", "" + date);
+            return this.date.equals(date);
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iv));
+
+        }
+    }
+
+    public static class WhiteColorDecorator implements DayViewDecorator {
+
+        private String date;
+        private Resources resource;
+
+        public WhiteColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //      Log.e("WhiteColorDecorator", "" + date);
+            return this.date.equals(date);
+
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(resource.getColor(R.color.colorBlue)));
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_vi));
+
+        }
+    }
+
+    public static String formatDateZ(Date oldDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        return dateFormat.format(oldDate);
+    }
+
+    public static String formatDateII(String oldDate)  {
+        DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date freshDate = null;
+        try {
+            freshDate = sdFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdFormat.format(freshDate);
+    }
+
+    public static Date formatDateIY(String oldDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date date = null;
+        try {
+            date = dateFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static String formatDate(String oldDate)  {
+        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date freshDate = null;
+        try {
+            freshDate = sdFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdFormat.format(freshDate);
+    }
+
+    public static  String getMonthName(int i) {
+        String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+
+        return monthName[i];
+    }
 }

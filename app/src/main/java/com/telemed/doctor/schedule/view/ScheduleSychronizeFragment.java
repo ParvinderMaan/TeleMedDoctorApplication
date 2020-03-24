@@ -2,6 +2,7 @@ package com.telemed.doctor.schedule.view;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.helper.SharedPrefHelper;
@@ -32,7 +37,12 @@ import com.telemed.doctor.util.CustomAlertTextView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class ScheduleSychronizeFragment extends Fragment {
@@ -42,7 +52,7 @@ public class ScheduleSychronizeFragment extends Fragment {
     private HashMap<String, String> mHeaderMap;
     private ProgressBar progressBar;
     private CustomAlertTextView tvAlertView;
-    private ImageButton ibtnClose,ibtnPrevious, ibtNext;
+    private ImageButton ibtnClose,ibtnBack,ibtnPrevious, ibtNext;
     private TextView tvMonthName;
     private ViewPager vpPager;
     private MonthPagerAdapter mMonthPagerAdapter;
@@ -89,6 +99,13 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     private void initView(View v) {
         ibtnClose = v.findViewById(R.id.ibtn_close);
+
+        ibtnClose=v.findViewById(R.id.ibtn_close);
+
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+
+
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
 
         progressBar = v.findViewById(R.id.progress_bar);
@@ -112,13 +129,15 @@ public class ScheduleSychronizeFragment extends Fragment {
     }
 
     private void initListener() {
-        ibtnClose.setOnClickListener(v -> {
-            if (mFragmentListener != null) {
-                mFragmentListener.popTopMostFragment();
-            }
-
+        ibtnClose.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
         });
 
+        ibtnBack.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
+        });
         ibtnPrevious.setOnClickListener(v -> {
             switch (vpPager.getCurrentItem()) {
                 case 0:
@@ -333,4 +352,164 @@ public class ScheduleSychronizeFragment extends Fragment {
     void refreshPreviousUi(){
         if(mFragmentListener!=null) mFragmentListener.refreshFragment("ScheduleFragment");
     }
+
+
+     static class BlueColorDecorator implements DayViewDecorator {
+
+        private String date;
+        private Resources resource;
+
+        public BlueColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //      Log.e("BlueColorDecorator", "" + date);
+            return this.date.equals(date);
+
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iii));
+        }
+    }
+
+    //  Disable dates decorator
+     static class DisableDateDecorator implements DayViewDecorator {
+
+        private String date;
+
+        private Resources resource;
+
+        public DisableDateDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //            Log.e("DisableDateDecorator", "" + date);
+            return this.date.equals(date);
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setDaysDisabled(true);
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iii));
+
+        }
+
+    }
+
+     static class RedColorDecorator implements DayViewDecorator {
+        private String date;
+
+        private Resources resource;
+
+        public RedColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //            Log.e("RedColorDecorator", "" + date);
+            return this.date.equals(date);
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_iv));
+
+        }
+    }
+
+     static class WhiteColorDecorator implements DayViewDecorator {
+
+
+        private String date;
+
+        private Resources resource;
+
+        public WhiteColorDecorator(String date,Resources resource) {
+            this.date = date;
+            this.resource = resource;
+        }
+
+        @Override
+        public boolean shouldDecorate(final CalendarDay day) {
+            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
+    //      Log.e("WhiteColorDecorator", "" + date);
+            return this.date.equals(date);
+
+
+        }
+
+        @Override
+        public void decorate(final DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(resource.getColor(R.color.colorBlue)));
+            view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_vi));
+
+        }
+    }
+
+     static String getMonthName(int i) {
+        String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+        return monthName[i];
+    }
+
+    static String formatDateZ(Date oldDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        String strDate = dateFormat.format(oldDate);
+        return strDate;
+    }
+
+    static Date formatDateII(String oldDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date date = null;
+        try {
+            date = dateFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    static String formatDateIII(String inputText) {
+        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+
+
+        Date date = null;
+        try {
+            date = inputFormat.parse(inputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String outputText = outputFormat.format(date);
+        return outputText;
+    }
+
+    static String formatDate(String oldDate) {
+        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date freshDate = null;
+        try {
+            freshDate = sdFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdFormat.format(freshDate);
+    }
+
 }

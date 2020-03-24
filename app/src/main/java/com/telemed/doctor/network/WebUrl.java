@@ -40,6 +40,7 @@ public interface WebUrl {
 
 
     String RESET_PASSWORD = "Auth/ResetPassword";
+    String CHANGE_PASSWORD ="Auth/ChangePassword" ;
 
     // profile
     String CHANGE_EMAIL = "Auth/ChangeEmail";
@@ -74,5 +75,18 @@ public interface WebUrl {
    // calling
     String FETCH_CALL_SESSION="ConferenceMedia/GetCallSession";
     String FETCH_MEDICAL_RECORD="MedicalHistory/GetPatientMedicalHistory";
+
+   // notification
+    String FETCH_NOTIFICATION = "Notification/GetNotifications";
+    String DELETE_NOTIFICATION="Notification/DeleteNotifications";
+    String READ_NOTIFICATION="Notification/ReadNotification";
+
+    //user setting
+    String FETCH_USER_SETTING="Content/GetUserSettings";
+    String ALTER_USER_SETTING="Content/UpdateUserSettings";
+
+    //Welcome
+    String WELCOME_INFO="Notification/DoctorDashboardInfo";
+
 
 }

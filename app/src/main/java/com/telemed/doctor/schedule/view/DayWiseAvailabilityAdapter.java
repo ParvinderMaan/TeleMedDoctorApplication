@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.appointment.AppointmentStatus;
 import com.telemed.doctor.schedule.model.TimeSlotModel;
 
 import java.util.ArrayList;

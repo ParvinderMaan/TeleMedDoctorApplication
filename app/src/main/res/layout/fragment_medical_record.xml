@@ -39,6 +39,15 @@
                 android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/ibtn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/ibtn_close"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_back_blue" />
+
+            <ImageButton
                 android:id="@+id/ibtn_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

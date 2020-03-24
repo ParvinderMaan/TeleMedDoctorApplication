@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +47,7 @@ public class SplashFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isUserSignIn = mSharedPrefHelper.read(KEY_SIGN_IN, false);
+
     }
 
     @Override
@@ -58,6 +60,10 @@ public class SplashFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mWeakHandler=new WeakHandler(this);
         mWeakHandler.sendEmptyMessageDelayed(1, SPLASH_TIME_OUT);
+
+        /*
+           check googleplay services .....
+         */
 
     }
 
@@ -83,7 +89,7 @@ public class SplashFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mWeakHandler.removeMessages(1);
+        if(mWeakHandler!=null) mWeakHandler.removeMessages(1);
         super.onDestroyView();
     }
 

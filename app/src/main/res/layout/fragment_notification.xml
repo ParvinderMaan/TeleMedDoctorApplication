@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorRed"
     android:clickable="true"
     android:focusable="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
+    <include
+        android:id="@+id/progress_bar"
+        android:visibility="invisible"
+        layout="@layout/layout_progress_bar" />
+
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/rl_header"
@@ -24,58 +34,69 @@
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notification"
             android:layout_centerVertical="true"
+            android:text="Notification"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/ibtn_close"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_cross_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-           />
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cross_blue" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_divider"
-        android:layout_below="@+id/rl_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/rl_divider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/rl_header">-->
 
-        <View
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorWhite" />
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginStart="@dimen/_10sdp"-->
+<!--            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--            android:background="@color/colorWhite"-->
+<!--            android:visibility="visible" />-->
 
-    </RelativeLayout>
-<!--      body layout -->
+<!--    </RelativeLayout>-->
+    <!--      body layout -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_notification"
-        android:overScrollMode="never"
-        android:layout_below="@+id/rl_divider"
         android:layout_width="match_parent"
-        tools:itemCount="10"
-        tools:listitem="@layout/list_item_notification"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_header"
+        android:overScrollMode="never"
+        tools:itemCount="5"
+        tools:listitem="@layout/list_item_notification" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbtn_delete_all"
-        android:background="@color/colorBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/screen_end_padding"
         android:layout_marginBottom="@dimen/screen_bottom_margin"
+        android:background="@color/colorBlue"
+        android:visibility="invisible"
         app:srcCompat="@drawable/ic_delete" />
+
+    <TextView
+        android:id="@+id/tv_empty_view"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Notification"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp" />
+
 </RelativeLayout>
 
-<!--    https://www.flaticon.com/free-icon/trash_263067-->
+    <!--    https://www.flaticon.com/free-icon/trash_263067-->

@@ -44,7 +44,7 @@ public class AppointmentUpcomingFragment extends Fragment {
     private AppointmentUpcomingViewModel mViewModel;
     private RecyclerView rvAppointmentsUpcoming;
     private AppointmentUpcomingAdapter mAdapter;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private HomeFragmentSelectedListener mFragmentListener;
     private String mAccessToken;
     private HashMap<String, String> mHeaderMap;
@@ -108,8 +108,16 @@ public class AppointmentUpcomingFragment extends Fragment {
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
+        });
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
         });
+
+
         edtSearchView = v.findViewById(R.id.edt_search_view);
         edtSearchView.setOnTypingModified((view, isTyping) -> {
             currentPage=1;isLastPage = false;isListLoading = false;  // re-initialize !!!
@@ -131,7 +139,7 @@ public class AppointmentUpcomingFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            currentPage=1; isLastPage = false;isListLoading = false;  // re-initialize !!!
+            currentPage=1; isLastPage = false;isListLoading = false;mSearchQuery="";  // re-initialize !!!
             AppointmentRequest in=new AppointmentRequest();
             in.setPageNumber(currentPage);
             in.setPageSize(PAGE_SIZE);

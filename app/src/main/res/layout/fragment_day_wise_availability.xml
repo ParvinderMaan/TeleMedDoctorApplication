@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorWhite"
@@ -23,12 +24,22 @@
         <TextView
             android:id="@+id/tv_header"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
+            android:layout_toStartOf="@+id/ibtn_back"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Time Slots"
             android:textColor="@color/colorBlue"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibtn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back_blue" />
 
         <ImageButton
             android:id="@+id/ibtn_close"
@@ -72,7 +83,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="@dimen/_5sdp"
-
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
         android:clipToPadding="false"
@@ -99,11 +109,10 @@
              android:layout_toEndOf="@+id/tv_open_"
              android:padding="@dimen/_2sdp"
              android:layout_marginStart="@dimen/_10sdp"
-             android:layout_marginBottom="@dimen/_10sdp"
-
+             android:layout_marginBottom="@dimen/_15sdp"
              android:text="Open for Appointments"
              android:textColor="@color/colorBlue"
-             android:textSize="20sp"
+             android:textSize="12sp"
              android:textStyle="bold" />
 
          <TextView
@@ -114,10 +123,9 @@
              android:layout_below="@+id/tv_open"
              android:text="New Id Appointments"
              android:textColor="@color/colorBlue"
-             android:textSize="20sp"
+             android:textSize="12sp"
              android:layout_marginStart="@dimen/_10sdp"
-             android:layout_marginBottom="@dimen/_10sdp"
-
+             android:layout_marginBottom="@dimen/_15sdp"
              android:textStyle="bold"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"/>
@@ -130,7 +138,7 @@
              android:layout_toEndOf="@+id/tv_confirm_"
              android:text="Confirm Appointments"
              android:textColor="@color/colorBlue"
-             android:textSize="20sp"
+             android:textSize="12sp"
              android:textStyle="bold"
              android:layout_marginStart="@dimen/_10sdp"
              android:layout_marginBottom="@dimen/_10sdp"
@@ -140,9 +148,8 @@
 
          <TextView
              android:id="@+id/tv_open_"
-             android:text="O"
+             android:text=""
              android:layout_marginTop="@dimen/_10sdp"
-
              android:layout_marginStart="@dimen/_20sdp"
              android:padding="@dimen/_2sdp"
              android:background="@drawable/rounded_background_x"
@@ -159,7 +166,6 @@
          <TextView
              android:id="@+id/tv_new_"
              android:layout_below="@+id/tv_open"
-             android:text="N"
              android:padding="@dimen/_2sdp"
              android:layout_marginStart="@dimen/_20sdp"
              android:background="@drawable/rounded_background_xi"
@@ -175,7 +181,6 @@
          <TextView
              android:id="@+id/tv_confirm_"
              android:layout_below="@+id/tv_new"
-             android:text="C"
              android:layout_marginBottom="@dimen/_10sdp"
              android:padding="@dimen/_2sdp"
              android:layout_marginStart="@dimen/_20sdp"

@@ -20,14 +20,24 @@
             android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/ibtn_close"
+            android:layout_toStartOf="@+id/ibtn_back"
             android:paddingStart="@dimen/screen_start_padding"
+            android:ellipsize="end"
             android:paddingTop="@dimen/screen_top_padding"
             android:paddingBottom="@dimen/screen_bottom_padding"
             android:text="@string/title_upcoming_appointment"
             android:textColor="@color/colorWhite"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibtn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back_white" />
 
         <ImageButton
             android:id="@+id/ibtn_close"

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/cl_root"
     android:background="@color/colorRed"
     android:orientation="vertical">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_patient_pic"
+        android:id="@+id/iv_noti_image"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_margin="@dimen/_10sdp"
@@ -22,7 +24,7 @@
 
 
     <TextView
-        android:id="@+id/tv_up_coming_name"
+        android:id="@+id/tv_notif_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
@@ -30,24 +32,24 @@
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:lines="3"
-        android:text="You have an appointment with new patient at 2am on Sunday .Be ready for the best service of the clients"
+        android:text="You have an appointment with new patient at 2am on Sunday .Be ready for the best service of the clients "
         android:textColor="@color/colorWhite"
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_patient_pic"
-        app:layout_constraintTop_toTopOf="@+id/iv_patient_pic" />
+        app:layout_constraintStart_toEndOf="@+id/iv_noti_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_noti_image" />
 
     <TextView
-        android:id="@+id/tv_upcoming_time"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="4 hours ago"
         android:textColor="@color/colorLightWhite"
         android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_up_coming_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_up_coming_name" />
+        app:layout_constraintStart_toStartOf="@+id/tv_notif_message"
+        app:layout_constraintTop_toBottomOf="@+id/tv_notif_message" />
 
 
     <!--    <ImageView-->
@@ -62,12 +64,12 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/colorWhite"
         android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_patient_pic"
+        app:layout_constraintStart_toEndOf="@+id/iv_noti_image"
         app:layout_constraintTop_toBottomOf="@+id/barrier" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -75,6 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="iv_patient_pic" />
+        app:constraint_referenced_ids="iv_noti_image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

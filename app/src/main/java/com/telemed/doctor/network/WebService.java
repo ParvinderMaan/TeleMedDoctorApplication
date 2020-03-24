@@ -6,7 +6,14 @@ import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
+import com.telemed.doctor.home.WelcomeInfoResponse;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
+import com.telemed.doctor.notification.model.DeleteNotificationResponse;
+import com.telemed.doctor.notification.model.NotificationRequest;
+import com.telemed.doctor.notification.model.NotificationResponse;
+import com.telemed.doctor.notification.model.ReadNotificationResponse;
+import com.telemed.doctor.password.model.ChangePasswordRequest;
+import com.telemed.doctor.password.model.ChangePasswordResponse;
 import com.telemed.doctor.schedule.model.PatientDetailResponse;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
@@ -38,6 +45,8 @@ import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 import com.telemed.doctor.schedule.model.DeleteWeekScheduleResponse;
+import com.telemed.doctor.setting.UserSettingRequest;
+import com.telemed.doctor.setting.UserSettingResponse;
 import com.telemed.doctor.signin.model.SignInRequest;
 import com.telemed.doctor.signin.model.SignInResponse;
 import com.telemed.doctor.signup.model.AllDocumentResponse;
@@ -54,6 +63,7 @@ import com.telemed.doctor.signup.model.SignUpIVResponse;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 import com.telemed.doctor.videocall.model.VideoCallDetailResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -74,7 +84,7 @@ import retrofit2.http.Query;
 
 public interface WebService {
 
-  // signup
+    // signup
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.SIGN_UP_I)
     Call<SignUpIResponse> attemptSignUpOne(@Body SignUpIRequest in);
@@ -85,7 +95,7 @@ public interface WebService {
 
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.VERIFY_RESETEMAIL)
-    Call<OTPResponse> attemptResetEmail(@HeaderMap Map<String, String> headers , @Body OTPRequest in);
+    Call<OTPResponse> attemptResetEmail(@HeaderMap Map<String, String> headers, @Body OTPRequest in);
 
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.RESEND_OTP)
@@ -126,7 +136,7 @@ public interface WebService {
 
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.CHANGE_EMAIL)
-    Call<ChangeEmailResponse> attemptChangeEmail(@HeaderMap Map<String, String> headers,@Body ChangeEmailRequest in);
+    Call<ChangeEmailResponse> attemptChangeEmail(@HeaderMap Map<String, String> headers, @Body ChangeEmailRequest in);
 
 
     @POST(WebUrl.SIGN_OUT)
@@ -134,8 +144,6 @@ public interface WebService {
 
     @GET(WebUrl.FETCH_ALL_DOC)
     Call<AllDocumentResponse> fetchAllDocument(@HeaderMap Map<String, String> token);
-
-
 
 
     @Multipart
@@ -150,6 +158,10 @@ public interface WebService {
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.FORGOT_PASSWORD)
     Call<ForgotPasswordResponse> attemptForgotPassword(@Body JsonObject in);
+
+    @Headers({WebUrl.CONTENT_HEADER})
+    @POST(WebUrl.CHANGE_PASSWORD)
+    Call<ChangePasswordResponse> attemptChangePassword(@HeaderMap Map<String, String> token,@Body ChangePasswordRequest in);
 
 
     // profile
@@ -184,7 +196,6 @@ public interface WebService {
                                                   @Part MultipartBody.Part imgFile);  // fileData
 
 
-
     @Headers({WebUrl.CONTENT_HEADER})
     @POST(WebUrl.RESET_PASSWORD)
     Call<ResetPasswordResponse> attemptResetPassword(@Body ResetPasswordRequest in);
@@ -205,7 +216,7 @@ public interface WebService {
     Call<WeekScheduleResponse> fetchWeekSchedules(@HeaderMap Map<String, String> token);
 
     @DELETE(WebUrl.DELETE_WEEK_SCHEDULE)
-    Call <DeleteWeekScheduleResponse> deleteWeekSchedule(@Query("Id") int scheduleId,@HeaderMap Map<String, String> token);
+    Call<DeleteWeekScheduleResponse> deleteWeekSchedule(@Query("Id") int scheduleId, @HeaderMap Map<String, String> token);
 
 
     @GET(WebUrl.FETCH_MONTHLY_SCHEDULES)
@@ -219,7 +230,7 @@ public interface WebService {
     Call<DayScheduleAlterationResponse> createDaySchedule(@HeaderMap Map<String, String> headers, @Body DayScheduleRequest in);
 
     @DELETE(WebUrl.DELETE_DAY_SCHEDULE)
-    Call <DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
+    Call<DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
 
     @GET(WebUrl.FETCH_PATIENT_DETAIL)
     Call<PatientDetailResponse> fetchPatientDetail(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
@@ -234,9 +245,25 @@ public interface WebService {
     @GET(WebUrl.FETCH_MEDICAL_RECORD)
     Call<MedicalRecordResponse> fetchMedicalRecord(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
 
+    @POST(WebUrl.FETCH_NOTIFICATION)
+    Call<NotificationResponse> fetchNotifications(@HeaderMap HashMap<String, String> headerMap, @Body NotificationRequest in);
+
+    @POST(WebUrl.DELETE_NOTIFICATION)
+    Call<DeleteNotificationResponse> deleteNotifications(@HeaderMap HashMap<String, String> headerMap);
 
 
+    @POST(WebUrl.READ_NOTIFICATION)
+    Call<ReadNotificationResponse> readNotification(@HeaderMap HashMap<String, String> headerMap,@Query("NotificationId") Integer notificationId);
 
+    @GET(WebUrl.FETCH_USER_SETTING)
+    Call<UserSettingResponse> fetchUserSettings(@HeaderMap Map<String, String> token);
+
+    @POST(WebUrl.ALTER_USER_SETTING)
+    Call<UserSettingResponse> updateUserSettings(@HeaderMap Map<String, String> mHeaderMap,@Body UserSettingRequest in);
+
+
+    @GET(WebUrl.WELCOME_INFO)
+    Call<WelcomeInfoResponse> fetchWelcomeInfo(@HeaderMap Map<String, String> token);
 
 
 }

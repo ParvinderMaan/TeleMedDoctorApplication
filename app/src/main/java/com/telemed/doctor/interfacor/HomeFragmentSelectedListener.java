@@ -8,6 +8,8 @@ public interface HomeFragmentSelectedListener {
     void showDialog(String tag);
     void startActivity(String tag, Object object);
     void refreshFragment(String tag);
+    void hideSoftKeyboard();
+
     void signOut();
 
 }

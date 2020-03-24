@@ -52,7 +52,7 @@ public class SignUpSuccessDialogFragment extends DialogFragment {
             dismiss();
         });
 
-//        builder.setNegativeButton("NO", (dialog, which) -> {
+//        build.setNegativeButton("NO", (dialog, which) -> {
 //            TAG = "NO";
 //            dismiss();
 //        });

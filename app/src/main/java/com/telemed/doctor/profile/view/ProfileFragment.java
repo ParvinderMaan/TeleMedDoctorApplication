@@ -149,7 +149,11 @@ public class ProfileFragment extends Fragment {
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
 //                        tvAlertView.showTopAlert(response.getErrorMsg());
-                        Toast.makeText(getActivity(), response.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), response.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
                     }
                     break;
 

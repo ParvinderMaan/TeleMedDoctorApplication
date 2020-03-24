@@ -2,12 +2,10 @@ package com.telemed.doctor.schedule.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -47,6 +44,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import static com.telemed.doctor.schedule.view.ScheduleSychronizeFragment.formatDate;
+import static com.telemed.doctor.schedule.view.ScheduleSychronizeFragment.formatDateII;
+import static com.telemed.doctor.schedule.view.ScheduleSychronizeFragment.formatDateIII;
 
 // month one..
 public class ScheduleSychronizeIFragment extends Fragment {
@@ -125,17 +126,22 @@ public class ScheduleSychronizeIFragment extends Fragment {
         mViewModel.getDeleteDialogVisibility()
                 .observe(getViewLifecycleOwner(), isVisibile -> {
                     if(isVisibile){
-                        mDeleteDialogFragment = AlertDialogFragment.newInstance();
+                        mDeleteDialogFragment = AlertDialogFragment.newInstance("delete");
                         mDeleteDialogFragment.show(getChildFragmentManager(), "TAG");
-                        mDeleteDialogFragment.setOnAlertDialogListener(() -> {
-                            DayScheduleRequest in=new DayScheduleRequest();
-                            in.setId(0);
-                            in.setAvailableDate(formatDateIII(dateSelected));
-                            in.setFromTime("00:00");
-                            in.setToTime("00:00");
-                            in.setIsAvailable(false);
-                            mDeleteDialogFragment.dismiss();
-                            mViewModel.deleteWeekSchedule(mHeaderMap,in); // id
+                        mDeleteDialogFragment.setOnAlertDialogListener(new AlertDialogFragment.AlertDialogListener() {
+                            @Override
+                            public void onClickYes() {
+                                    DayScheduleRequest in=new DayScheduleRequest();
+                                    in.setId(0);
+                                    in.setAvailableDate(formatDateIII(dateSelected));
+                                    in.setFromTime("00:00");
+                                    in.setToTime("00:00");
+                                    in.setIsAvailable(false);
+                                    mDeleteDialogFragment.dismiss();
+                                    mViewModel.deleteWeekSchedule(mHeaderMap,in); // id
+                            }
+                            @Override
+                            public void onClickNo() { }
                         });
                     }else {
                         mDeleteDialogFragment.dismiss();
@@ -151,7 +157,7 @@ public class ScheduleSychronizeIFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
-                        WhiteColorDecorator decorator=new WhiteColorDecorator(mDayDecoratorDateSelected);
+                        ScheduleSychronizeFragment.WhiteColorDecorator decorator=new ScheduleSychronizeFragment.WhiteColorDecorator(mDayDecoratorDateSelected,getResources());
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
                         calViewSchedule.addDecorator(decorator);
                         ((ScheduleSychronizeFragment)requireParentFragment()).refreshPreviousUi();
@@ -176,7 +182,7 @@ public class ScheduleSychronizeIFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
-                        BlueColorDecorator decorator=new BlueColorDecorator(mDayDecoratorDateSelected);
+                        ScheduleSychronizeFragment.BlueColorDecorator decorator=new ScheduleSychronizeFragment.BlueColorDecorator(mDayDecoratorDateSelected,getResources());
                         calViewSchedule.removeDecorator(mHashMapDD.get(mDayDecoratorDateSelected));
                         calViewSchedule.addDecorator(decorator);
                         mHashMapDD.put(mDayDecoratorDateSelected,decorator);
@@ -206,7 +212,7 @@ public class ScheduleSychronizeIFragment extends Fragment {
                     if (!lstOfSchedules.isEmpty()) {
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();
                         for (int i = 0; i < lstOfSchedules.size(); i++) {
-                            Date date = formatDateII(lstOfSchedules.get(i).getDate());
+                            Date date = ScheduleSychronizeFragment.formatDateII(lstOfSchedules.get(i).getDate());
                             if (date.before(calendarObj.getTime())) {
                                 // remove ....
                             } else {
@@ -222,9 +228,9 @@ public class ScheduleSychronizeIFragment extends Fragment {
                             String freshDate = formatDate(item.getDate());
 
                             if (item.getAnyPendingAppointment()) {
-                                mHashMapDD.put(freshDate, new RedColorDecorator(freshDate));
+                                mHashMapDD.put(freshDate, new ScheduleSychronizeFragment.RedColorDecorator(freshDate,getResources()));
                             } else {
-                                mHashMapDD.put(freshDate, new WhiteColorDecorator(freshDate));
+                                mHashMapDD.put(freshDate, new ScheduleSychronizeFragment.WhiteColorDecorator(freshDate,getResources()));
                             }
                         }
 
@@ -259,23 +265,23 @@ public class ScheduleSychronizeIFragment extends Fragment {
         maxDateSelect.set(maxDateSelect.get(Calendar.YEAR), maxDateSelect.get(Calendar.MONTH), maxDateSelect.getActualMaximum(Calendar.DATE));
 
         Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
-        setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
-        ((ScheduleSychronizeFragment)requireParentFragment()).setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
+        setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
+        ((ScheduleSychronizeFragment)requireParentFragment()).setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
 
         calendarObj = Calendar.getInstance();
-        calendarObj.add(Calendar.DAY_OF_MONTH, -1);
+       //calendarObj.add(Calendar.DAY_OF_MONTH, -1);
 
         Iterator<Date> i = new DateIterator(minDateSelect.getTime(), maxDateSelect.getTime());
         while (i.hasNext()) {
             Date date = i.next();
 //            Log.e(TAG, "all dates: " + date);
             String dateee = null;
-            dateee = formatDateZ(date);
+            dateee = ScheduleSychronizeFragment.formatDateZ(date);
             if (date.before(calendarObj.getTime())) {
-                 mHashMapDD.put(dateee, new DisableDateDecorator(dateee));
+                 mHashMapDD.put(dateee, new ScheduleSychronizeFragment.DisableDateDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: before" + dateee);
             } else {
-                mHashMapDD.put(dateee, new BlueColorDecorator(dateee));
+                mHashMapDD.put(dateee, new ScheduleSychronizeFragment.BlueColorDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: after" + dateee);
             }
         }
@@ -287,13 +293,13 @@ public class ScheduleSychronizeIFragment extends Fragment {
 
                 if (mHashMapDD.containsKey(dateSelected)) {
                     mDayDecoratorDateSelected=dateSelected;
-                    if(mHashMapDD.get(dateSelected) instanceof RedColorDecorator){
+                    if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.RedColorDecorator){
                         /// delete.......
                         mViewModel.setDeleteDialogVisibility(true);
-                    }else if(mHashMapDD.get(dateSelected) instanceof WhiteColorDecorator){
+                    }else if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.WhiteColorDecorator){
                         /// delete.......
                         mViewModel.setDeleteDialogVisibility(true);
-                    }else if(mHashMapDD.get(dateSelected) instanceof BlueColorDecorator){
+                    }else if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.BlueColorDecorator){
                         /// create.......
                         showTimePicker();
                     }
@@ -340,166 +346,9 @@ public class ScheduleSychronizeIFragment extends Fragment {
 
 
 
-    private String getMonthName(int i) {
-        String[] monthName = {"January", "February",
-                "March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
-        return monthName[i];
-    }
-
-
-    public String formatDateZ(Date oldDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
-    }
-
-    public Date formatDateII(String oldDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date date = null;
-        try {
-            date = dateFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-
-    //  Disable dates decorator
-    private class DisableDateDecorator implements DayViewDecorator {
-
-        private String date;
-
-        public DisableDateDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("DisableDateDecorator", "" + date);
-            return this.date.equals(date);
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
-
-        }
-
-    }
-
-    private class BlueColorDecorator implements DayViewDecorator {
-
-        private String date;
-
-        public BlueColorDecorator(String date) {
-            this.date = date;
-        }
-
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("BlueColorDecorator", "" + date);
-            return this.date.equals(date);
-
-//            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("BlueColorDecorator",""+date);
-//
-
-
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-//            view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
-        }
-    }
-
-
-    private class RedColorDecorator implements DayViewDecorator {
-        private String date;
-
-        public RedColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("RedColorDecorator", "" + date);
-            return this.date.equals(date);
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iv));
-
-        }
-    }
-
-    private class WhiteColorDecorator implements DayViewDecorator {
-
-
-        private String date;
-
-        public WhiteColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("WhiteColorDecorator", "" + date);
-
-
-            return this.date.equals(date);
-
-
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorBlue)));
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
-
-        }
-    }
-
-
-    private String formatDateIII(String inputText) {
-        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-
-
-        Date date = null;
-        try {
-            date = inputFormat.parse(inputText);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String outputText = outputFormat.format(date);
-        return outputText;
-    }
 
 
 
-
-    public String formatDate(String oldDate) {
-        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date freshDate = null;
-        try {
-            freshDate = sdFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return sdFormat.format(freshDate);
-    }
 
     public void refreshUi() {
         if(swipeRefreshLayout.isRefreshing()){

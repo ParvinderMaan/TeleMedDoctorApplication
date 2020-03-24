@@ -47,7 +47,7 @@ public class AppointmentHistoryFragment extends Fragment {
     private HashMap<String, String> mHeaderMap;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CustomAlertTextView tvAlertView;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private LinearLayoutManager mLinearLayoutManager;
     private boolean isLastPage = false;
     private boolean isListLoading = false;
@@ -93,7 +93,7 @@ public class AppointmentHistoryFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
         in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery("");
+        in.setSearchQuery(mSearchQuery);
         in.setFilterBy(""); // no need there
 
         mViewModel.fetchPastAppointments(mHeaderMap,in);
@@ -106,6 +106,12 @@ public class AppointmentHistoryFragment extends Fragment {
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
+        });
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
         });
@@ -131,11 +137,11 @@ public class AppointmentHistoryFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBlue);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            currentPage=1;isLastPage = false;isListLoading = false;  // re-initialize !!!
+            currentPage=1;isLastPage = false;isListLoading = false; mSearchQuery=""; // re-initialize !!!
             AppointmentRequest in=new AppointmentRequest();
             in.setPageNumber(currentPage);
             in.setPageSize(PAGE_SIZE);
-            in.setSearchQuery("");
+            in.setSearchQuery(mSearchQuery);
             in.setFilterBy(""); // no need there
             mViewModel.fetchPastAppointments(mHeaderMap,in);
         });
@@ -289,7 +295,7 @@ public class AppointmentHistoryFragment extends Fragment {
         AppointmentRequest in=new AppointmentRequest();
         in.setPageNumber(currentPage);
         in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(""); // no need there
+        in.setSearchQuery(mSearchQuery); // no need there
         in.setFilterBy("");  // no need there
         mViewModel.fetchPastNextAppointments(mHeaderMap,in);
 

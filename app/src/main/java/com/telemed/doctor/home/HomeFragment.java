@@ -6,15 +6,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringDef;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -28,7 +32,8 @@ import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
     private final String TAG=HomeFragment.class.getSimpleName();
-    private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard,tvNotification, tvSetting, tvSignOut,tvDocWelcome;
+    private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard,tvNotification,
+            tvSetting, tvSignOut,tvDocWelcome,  tvPendingAppmntCount, tvUpcomingAppmntCount, tvNotificationCount;
     private Button btnMySchedule;
     private CustomAlertTextView tvAlertView;
     private ProgressBar progressBar;
@@ -36,23 +41,30 @@ public class HomeFragment extends Fragment {
     private HomeViewModel mViewModel;
     private String mFirstName;
     private SharedPrefHelper mHelper;
+    private String mAccessToken;
+    private HashMap<String, String> mHeaderMap;
+    private SwipeRefreshLayout swipeLayout;
+    private ScrollView svParent,svChild;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
+        mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
+        mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
+        mFirstName=mHelper.read(SharedPrefHelper.KEY_FIRST_NAME, "");
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         mHelper = ((TeleMedApplication) requireActivity().getApplicationContext()).getSharedPrefInstance();
-         mFirstName=mHelper.read(SharedPrefHelper.KEY_FIRST_NAME, "");
+        mHeaderMap = new HashMap<>();
+        mHeaderMap.put("content-type", "application/json");
+        mHeaderMap.put("Authorization","Bearer "+mAccessToken);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,9 +80,14 @@ public class HomeFragment extends Fragment {
         initObserver();
         String welcomeTxt = getResources().getString(R.string.title_one) + " " + mFirstName + ".";
         tvDocWelcome.setText(welcomeTxt);
+        mViewModel.fetchWelcomeInfoFirst(mHeaderMap);
     }
 
     private void initView(View v) {
+//        svParent=v.findViewById(R.id.sv_parent);
+//        svChild=v.findViewById(R.id.sv_child);
+
+
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         tvDocWelcome = v.findViewById(R.id.tv_doc_welcome);
         btnMySchedule = v.findViewById(R.id.btn_my_schedule);
@@ -86,6 +103,14 @@ public class HomeFragment extends Fragment {
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(getResources().getColor(R.color.colorBlue), android.graphics.PorterDuff.Mode.SRC_IN);
 
+
+        tvPendingAppmntCount= v.findViewById(R.id.tv_pending_appmnt_count);
+        tvUpcomingAppmntCount= v.findViewById(R.id.tv_upcoming_appmnt_count);
+        tvNotificationCount= v.findViewById(R.id.tv_notification_count);
+
+
+        swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.colorBlue);
     }
     private void initListener() {
         btnMySchedule.setOnClickListener(mOnClickListener);
@@ -95,6 +120,11 @@ public class HomeFragment extends Fragment {
         tvNotification.setOnClickListener(mOnClickListener);
         tvSetting.setOnClickListener(mOnClickListener);
         tvSignOut.setOnClickListener(mOnClickListener);
+
+        swipeLayout.setOnRefreshListener(() -> mViewModel.fetchWelcomeInfoNext(mHeaderMap));
+
+
+
 
     }
 
@@ -149,7 +179,13 @@ public class HomeFragment extends Fragment {
     private void initObserver() {
 
         mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
+                .observe(getViewLifecycleOwner(), isLoading -> {
+                progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE); });
+
+        mViewModel.getRefreshing()
+                .observe(getViewLifecycleOwner(), isRefreshing -> {
+                    swipeLayout.setRefreshing(isRefreshing);
+                });
 
         mViewModel.getViewEnabled()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
@@ -167,7 +203,6 @@ public class HomeFragment extends Fragment {
 
                 case FAILURE:
                     if (response.getErrorMsg() != null) {
-//                        tvAlertView.showTopAlert(response.getErrorMsg()); // hack !!!
                         if (mFragmentListener != null){
                             mHelper.clear(); // clearing sharedPref
                             mFragmentListener.startActivity("RouterActivity", null);
@@ -177,6 +212,59 @@ public class HomeFragment extends Fragment {
             }
 
         });
+
+        mViewModel.getResultantWelcomeInfoFirst().observe(this, response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        refreshUi(response.getData().getData());
+                    }
+                    break;
+
+                case FAILURE:
+                        if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                            mHelper.clear(); // clearing sharedPref
+                            mFragmentListener.startActivity("RouterActivity", null);
+                        }
+            }
+        });
+
+        mViewModel.getResultantWelcomeInfoNext().observe(this, response -> {
+            switch (response.getStatus()) {
+                case SUCCESS:
+                    if (response.getData() != null) {
+                        refreshUi(response.getData().getData());
+                    }
+                    break;
+
+                case FAILURE:
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
+                    }
+            }
+        });
+    }
+
+    private void refreshUi(WelcomeInfoResponse.Data data) {
+        if(data.getDashboardInfo().getPendingAppointmentsCount()!=null &&
+                data.getDashboardInfo().getPendingAppointmentsCount()!=0){
+            tvPendingAppmntCount.setVisibility(View.VISIBLE);
+            tvPendingAppmntCount.setText(String.valueOf(data.getDashboardInfo().getPendingAppointmentsCount()));
+        }else  tvPendingAppmntCount.setVisibility(View.INVISIBLE);
+
+        if(data.getDashboardInfo().getUpcomingAppointmentsCount()!=null &&
+                data.getDashboardInfo().getUpcomingAppointmentsCount()!=0){
+            tvUpcomingAppmntCount.setVisibility(View.VISIBLE);
+            tvUpcomingAppmntCount.setText(String.valueOf(data.getDashboardInfo().getUpcomingAppointmentsCount()));
+        }else  tvUpcomingAppmntCount.setVisibility(View.INVISIBLE);
+
+        if(data.getDashboardInfo().getNotificationsCount()!=null &&
+                data.getDashboardInfo().getNotificationsCount()!=0){
+            tvNotificationCount.setVisibility(View.VISIBLE);
+            tvNotificationCount.setText(String.valueOf(data.getDashboardInfo().getNotificationsCount()));
+        }else  tvNotificationCount.setVisibility(View.INVISIBLE);
+
     }
 
     private void resetEnableView(Boolean isView) {

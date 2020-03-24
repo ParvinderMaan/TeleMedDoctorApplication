@@ -1,4 +1,4 @@
-package com.telemed.doctor.appointment;
+package com.telemed.doctor.annotation;
 
 
 import androidx.annotation.IntDef;

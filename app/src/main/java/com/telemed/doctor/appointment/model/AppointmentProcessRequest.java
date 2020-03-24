@@ -2,7 +2,7 @@ package com.telemed.doctor.appointment.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.telemed.doctor.appointment.AppointmentStatus;
+import com.telemed.doctor.annotation.AppointmentStatus;
 
 public class AppointmentProcessRequest {
 

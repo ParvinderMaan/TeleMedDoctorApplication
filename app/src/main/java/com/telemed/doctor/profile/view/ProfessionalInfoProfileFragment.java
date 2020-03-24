@@ -78,6 +78,7 @@ public class ProfessionalInfoProfileFragment extends Fragment {
                         // tvAlertView.showTopAlert(response.getErrorMsg());
                         // handle later...
                     }
+
                     break;
             }
 

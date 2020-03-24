@@ -34,7 +34,7 @@ import java.util.HashMap;
 
 public class MedicalRecordFragment extends Fragment {
     private RecyclerView rvPatientDrug,rvMedicalHistory,rvCurrentMedication;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private HomeFragmentSelectedListener mFragmentListener;
     private TextView tvPatientName, tvAge, tvGender, tvHeight, tvWeight;
     private TextView tvPastMedicalHistory,tvSurgicalMedicalHistory,tvAllergyHistory,tvFamilyHistory;
@@ -234,12 +234,21 @@ public class MedicalRecordFragment extends Fragment {
 
         progressBar.setVisibility(View.INVISIBLE);
 
+
+
         ibtnClose=v.findViewById(R.id.ibtn_close);
+
         ibtnClose.setOnClickListener(v1 -> {
-            if(mFragmentListener!=null){
-                mFragmentListener.popTopMostFragment();
-            }
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
         });
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
+        });
+
 
         tvPatientName=v.findViewById(R.id.tv_patient_name);
         tvAge=v.findViewById(R.id.tv_age);

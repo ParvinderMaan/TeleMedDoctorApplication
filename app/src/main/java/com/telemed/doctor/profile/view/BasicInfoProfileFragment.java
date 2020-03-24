@@ -292,6 +292,7 @@ public class BasicInfoProfileFragment extends Fragment {
                         // tvAlertView.showTopAlert(response.getErrorMsg());
                         // handle later...
                     }
+
                     break;
 
             }
@@ -314,6 +315,7 @@ public class BasicInfoProfileFragment extends Fragment {
                         // tvAlertView.showTopAlert(response.getErrorMsg());
                         // handle later...
                     }
+
                     break;
             }
 

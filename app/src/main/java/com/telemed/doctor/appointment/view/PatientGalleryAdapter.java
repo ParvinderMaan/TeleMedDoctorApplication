@@ -1,4 +1,4 @@
-package com.telemed.doctor.appointment;
+package com.telemed.doctor.appointment.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -54,6 +54,7 @@ public class MyConsultFragment extends Fragment {
     private AppointmentHistoryAdapter mPastAppointmentAdapter;
     private View viewUpcomingAppointmentTitle,viewLastAppointmentTitle;
     private TextView tvEmptyView;
+    private SharedPrefHelper mHelper;
 
     public static MyConsultFragment newInstance() {
         return new MyConsultFragment();
@@ -62,9 +63,11 @@ public class MyConsultFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentListener = (HomeFragmentSelectedListener) context;
-        SharedPrefHelper mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
+        mHelper = ((TeleMedApplication) context.getApplicationContext()).getSharedPrefInstance();
         mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -205,6 +208,10 @@ public class MyConsultFragment extends Fragment {
                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorBlue));
                         tvAlertView.showTopAlert(response.getErrorMsg());
                     }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
+                    }
                     break;
 
             }
@@ -227,6 +234,10 @@ public class MyConsultFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorBlue));
                         tvAlertView.showTopAlert(response.getErrorMsg());
+                    }
+                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                        mHelper.clear(); // clearing sharedPref
+                        mFragmentListener.startActivity("RouterActivity", null);
                     }
                     break;
             }

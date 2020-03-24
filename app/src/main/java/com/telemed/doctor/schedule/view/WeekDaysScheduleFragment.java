@@ -44,7 +44,7 @@ public class WeekDaysScheduleFragment extends Fragment {
     private WeekDaysScheduleViewModel mViewModel;
     private RecyclerView rvSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private FloatingActionButton fbtnAddSchedule;
     private int sun = 0, mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0;
     private List<Integer> arrDaySelected=new ArrayList<>();
@@ -103,7 +103,14 @@ public class WeekDaysScheduleFragment extends Fragment {
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
-            if(mFragmentListener!=null) mFragmentListener.popTopMostFragment();
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
+        });
+
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTopMostFragment();
         });
 
         progressBar = v.findViewById(R.id.progress_bar);

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.telemed.doctor.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
@@ -30,6 +31,11 @@ public class SignInViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
     private MutableLiveData<SignInRequest> mSignInRequest;
+    private MutableLiveData<String> mDeviceToken;
+
+    public MutableLiveData<String> getDeviceToken() {
+        return mDeviceToken;
+    }
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
@@ -38,8 +44,23 @@ public class SignInViewModel extends AndroidViewModel {
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
         mSignInRequest =new MutableLiveData<>();
+        mDeviceToken=new MutableLiveData<>();
+        intializeDeviceToken();
     }
 
+    private void intializeDeviceToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult()!=null) {
+                            // Get new Instance ID token
+                            mDeviceToken.setValue(task.getResult().getToken());
+                        }else {
+                            Log.e(TAG, "getInstanceId failed", task.getException());
+                            mDeviceToken.setValue("12345");
+                        }
+                    });
+
+    }
 
 
     public void attemptSignIn() {

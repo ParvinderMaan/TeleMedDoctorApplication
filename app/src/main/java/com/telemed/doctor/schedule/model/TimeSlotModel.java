@@ -11,6 +11,21 @@ public class TimeSlotModel implements Parcelable {
     @SerializedName("doctorId")
     @Expose
     private String doctorId;
+
+    @Override
+    public String toString() {
+        return "TimeSlotModel{" +
+                "doctorId='" + doctorId + '\'' +
+                ", patientId='" + patientId + '\'' +
+                ", patientName='" + patientName + '\'' +
+                ", appointmentDate='" + appointmentDate + '\'' +
+                ", slotFrom='" + slotFrom + '\'' +
+                ", slotTo='" + slotTo + '\'' +
+                ", appointmentStatus=" + appointmentStatus +
+                ", appointmentId=" + appointmentId +
+                '}';
+    }
+
     @SerializedName("patientId")
     @Expose
     private String patientId;

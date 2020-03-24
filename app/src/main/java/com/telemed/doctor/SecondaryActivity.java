@@ -61,11 +61,6 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
                         .commit();
                 break;
 
-
-
-
-
-
         }
     }
 
@@ -85,6 +80,11 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
 
     @Override
     public void refreshFragment(String tag) {
+
+    }
+
+    @Override
+    public void hideSoftKeyboard() {
 
     }
 

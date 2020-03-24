@@ -1,15 +1,31 @@
 package com.telemed.doctor;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
 import com.telemed.doctor.home.HomeActivity;
@@ -39,8 +55,8 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         hideStatusBar();
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_router);
 
             // case 0  -----> fresh launch
@@ -57,6 +73,8 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             }
 
 
+
+
     }
 
     @Override
@@ -66,7 +84,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
-                         .commit(); // commitAllowingStateLoss
+                         .commitAllowingStateLoss(); // commitAllowingStateLoss
 //                       .addToBackStack("SplashFragment")
 
                 break;
@@ -280,6 +298,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         }
         return super.dispatchTouchEvent(ev);
     }
+
 
 
 

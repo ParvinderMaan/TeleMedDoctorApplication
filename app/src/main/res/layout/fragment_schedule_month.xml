@@ -10,7 +10,6 @@
     android:layout_below="@+id/btn_synchronize_schedule"
     android:orientation="vertical"
     tools:context=".schedule.view.ScheduleIMonthFragment">
-
     <ScrollView
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
@@ -23,6 +22,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/_10sdp"
             android:paddingBottom="@dimen/_10sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
             android:theme="@style/CalenderViewCustom"
             app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
             app:mcv_leftArrow="@drawable/ic_arrow_left_blue"

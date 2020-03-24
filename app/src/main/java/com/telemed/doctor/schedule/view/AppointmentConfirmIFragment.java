@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.appointment.AppointmentStatus;
+import com.telemed.doctor.annotation.AppointmentStatus;
 import com.telemed.doctor.appointment.model.AppointmentProcessRequest;
 import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.helper.SharedPrefHelper;
@@ -46,7 +46,7 @@ public class AppointmentConfirmIFragment extends Fragment {
     private HomeFragmentSelectedListener mFragmentListener;
     private TextView tvPatientName, tvAddress, tvReviewCount, tvAge, tvGender, tvHeight,
             tvWeight, tvStartTime, tvConfirmAppointment, tvDenyAppointment, tvCancelAppointment;
-    private ImageButton ibtnClose;
+    private ImageButton ibtnClose,ibtnBack;
     private Button btnMedicalRecord;
     private AppointmentConfirmIViewModel mViewModel;
     private ProgressBar progressBar;
@@ -77,7 +77,7 @@ public class AppointmentConfirmIFragment extends Fragment {
         // collect our intent
         if (getArguments() != null) {
             mTimeSlotModel = getArguments().getParcelable("KEY_");
-            // Log.e(TAG, mTimeSlotModel.toString());
+             Log.e(TAG, mTimeSlotModel.toString());
         }
 
         mHeaderMap = new HashMap<>();
@@ -152,18 +152,24 @@ public class AppointmentConfirmIFragment extends Fragment {
         });
 
 
-        ibtnClose.setOnClickListener(v12 -> {
+
+        ibtnClose.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.popTillFragment("HomeFragment",0);
+        });
+
+        ibtnBack.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
         });
-
-
     }
 
     private void initView(View v) {
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         ibtnClose = v.findViewById(R.id.ibtn_close);
+        ibtnBack=v.findViewById(R.id.ibtn_back);
+
         tvConfirmAppointment = v.findViewById(R.id.tv_confirm);
         btnMedicalRecord = v.findViewById(R.id.btn_medical_record);
         tvPatientName = v.findViewById(R.id.tv_patient_name);
@@ -178,6 +184,7 @@ public class AppointmentConfirmIFragment extends Fragment {
         tvConfirmAppointment = v.findViewById(R.id.tv_confirm_appointment);
         tvDenyAppointment = v.findViewById(R.id.tv_deny_appointment);
         tvCancelAppointment = v.findViewById(R.id.tv_cancel_appointment);
+
 
     }
 

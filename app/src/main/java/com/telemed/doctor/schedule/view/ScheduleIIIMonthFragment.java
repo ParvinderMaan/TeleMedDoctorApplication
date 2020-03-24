@@ -2,7 +2,6 @@ package com.telemed.doctor.schedule.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -42,6 +40,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDate;
+import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDateII;
+import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDateIY;
+import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDateZ;
 
 
 public class ScheduleIIIMonthFragment extends Fragment {
@@ -132,10 +135,10 @@ public class ScheduleIIIMonthFragment extends Fragment {
             String dateee = null;
             dateee = formatDateZ(date);
             if (date.before(calendarObj.getTime())) {
-                lstOfDisableDays.add(new DisableDateDecorator(dateee));
+                lstOfDisableDays.add(new ScheduleFragment.DisableDateDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: before" + dateee);
             } else {
-                lstOfEnableDays.add(new BlueColorDecorator(dateee));
+                lstOfEnableDays.add(new ScheduleFragment.BlueColorDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: after" + dateee);
             }
         }
@@ -150,7 +153,7 @@ public class ScheduleIIIMonthFragment extends Fragment {
 
 
         Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
-        setMonthName(getMonthName(minDateSelect.get(Calendar.MONTH)));
+        setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
         calViewSchedule.setTopbarVisible(false);
 
         calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -172,33 +175,11 @@ public class ScheduleIIIMonthFragment extends Fragment {
         });
     }
 
-    private String getMonthName(int i) {
-        String[] monthName = {"January", "February",
-                "March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
-
-        return monthName[i];
-    }
 
 
 
-    public String formatDateZ(Date oldDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
-    }
 
-    public String formatDateII(String oldDate)  {
-        DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        Date freshDate = null;
-        try {
-            freshDate = sdFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return sdFormat.format(freshDate);
-    }
+
 
     public void updateUi(List<AllMonthSchedule> availableScheduleList) {
         mViewModel.setScheduleList(availableScheduleList);
@@ -213,94 +194,6 @@ public class ScheduleIIIMonthFragment extends Fragment {
 
     }
 
-    private class BlueColorDecorator implements DayViewDecorator {
-
-
-        private String date;
-
-        public BlueColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("BlueColorDecorator", "" + date);
-            return this.date.equals(date);
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
-        }
-    }
-    private class RedColorDecorator implements DayViewDecorator {
-        private String date;
-
-        public RedColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("RedColorDecorator", "" + date);
-            return this.date.equals(date);
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iv));
-
-        }
-    }
-    private class DisableDateDecorator implements DayViewDecorator {
-
-        private String date;
-
-        public DisableDateDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("DisableDateDecorator", "" + date);
-            return this.date.equals(date);
-        }
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.setDaysDisabled(true);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_iii));
-
-        }
-
-    }
-    private class WhiteColorDecorator implements DayViewDecorator {
-        private String date;
-
-        public WhiteColorDecorator(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public boolean shouldDecorate(final CalendarDay day) {
-            String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-//            Log.e("WhiteColorDecorator", "" + date);
-            return this.date.equals(date);
-
-        }
-
-        @Override
-        public void decorate(final DayViewFacade view) {
-            view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorBlue)));
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_circle_vi));
-
-        }
-
-
-    }
 
 
     private void initObserver() {
@@ -332,9 +225,9 @@ public class ScheduleIIIMonthFragment extends Fragment {
                         for(AllMonthSchedule item:lstOfSchedulesTemp){
                             String freshDate = formatDate(item.getDate());
                             if(item.getAnyPendingAppointment()){
-                                listOfDayDecoration.add(new RedColorDecorator(freshDate));
+                                listOfDayDecoration.add(new ScheduleFragment.RedColorDecorator(freshDate,getResources()));
                             }else {
-                                listOfDayDecoration.add(new WhiteColorDecorator(freshDate));
+                                listOfDayDecoration.add(new ScheduleFragment.WhiteColorDecorator(freshDate,getResources()));
                             }
                         }
                         calViewSchedule.addDecorators(listOfDayDecoration);
@@ -346,17 +239,6 @@ public class ScheduleIIIMonthFragment extends Fragment {
     }
 
     private void resetEnableView(Boolean isView) { }
-
-    public String formatDate(String oldDate)  {
-        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date freshDate = null;
-        try {
-            freshDate = sdFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return sdFormat.format(freshDate);
-    }
 
 
 
@@ -371,15 +253,6 @@ public class ScheduleIIIMonthFragment extends Fragment {
     }
 
 
-    public Date formatDateIY(String oldDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date date = null;
-        try {
-            date = dateFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
+
 
 }
