@@ -7,13 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
-import com.telemed.doctor.schedule.model.DayScheduleAlterationResponse;
-import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.model.MonthlyScheduleResponse;
 
 import java.util.List;

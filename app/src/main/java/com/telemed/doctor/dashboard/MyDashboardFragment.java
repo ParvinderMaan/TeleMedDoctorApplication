@@ -2,8 +2,6 @@ package com.telemed.doctor.dashboard;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,9 +18,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 import java.util.ArrayList;

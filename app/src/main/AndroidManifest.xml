@@ -48,12 +48,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".home.view.HomeActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme" />
         <activity
-            android:name=".filepicker.FilePickerActivity"
+            android:name=".util.FilePickerActivity"
             android:screenOrientation="portrait" /> <!-- FileChooser Activity -->
         <activity
             android:name=".profile.view.ChooseOptionActivity"

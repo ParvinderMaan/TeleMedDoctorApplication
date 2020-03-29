@@ -1,7 +1,7 @@
 package com.telemed.doctor.base;
 
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 
 import retrofit2.Call;
 import retrofit2.Callback;

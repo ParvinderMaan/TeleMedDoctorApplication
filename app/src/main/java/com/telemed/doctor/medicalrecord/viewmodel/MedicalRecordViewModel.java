@@ -7,12 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.consult.model.AppointmentRequest;
-import com.telemed.doctor.consult.model.UpcomingAppointment;
-import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
-import com.telemed.doctor.consult.viewmodel.AppointmentUpcomingViewModel;
 import com.telemed.doctor.medicalrecord.model.MedicalHistory;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
 import com.telemed.doctor.network.ApiResponse;

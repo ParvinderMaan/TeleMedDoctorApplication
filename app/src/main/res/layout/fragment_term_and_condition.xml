@@ -7,7 +7,7 @@
     android:background="@color/colorBlue"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".miscellaneous.TermAndConditionFragment">
+    tools:context=".miscellaneous.view.TermAndConditionFragment">
 
     <!--    header layout-->
     <RelativeLayout

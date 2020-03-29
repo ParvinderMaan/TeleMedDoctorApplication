@@ -1,5 +1,6 @@
 package com.telemed.doctor.consult.view;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,6 +220,7 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
 
             tvEstimateTime.setOnClickListener(v -> {
                 if(tvEstimateTime.getText().toString().equals("Join Call"))
+
                      listener.onItemClick(getAdapterPosition(), model);
             });
             tvMedicalRecord.setOnClickListener(v -> {
@@ -252,9 +254,12 @@ public class AppointmentUpcomingAdapter extends RecyclerView.Adapter<RecyclerVie
             }else if(totMinutes==0){    // =0
                 tvEstimateTime.setText("Join Call");
                 tvEstimateTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                tvEstimateTime.setBackgroundResource(R.drawable.rounded_background_xvii);
             }else {                   // -ve
                 tvEstimateTime.setText("Join Call");
                 tvEstimateTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                tvEstimateTime.setBackgroundResource(R.drawable.rounded_background_xvii);
+
             }
 
 //-----------------------------------------------------------------------------------------------------------------

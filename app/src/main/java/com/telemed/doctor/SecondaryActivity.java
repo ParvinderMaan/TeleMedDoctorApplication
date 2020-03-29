@@ -7,7 +7,6 @@ import android.view.WindowManager;
 
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.view.MedicalRecordFragment;
-import com.telemed.doctor.videocall.AppointmentSummaryFragment;
 
 public class SecondaryActivity extends AppCompatActivity implements HomeFragmentSelectedListener {
 

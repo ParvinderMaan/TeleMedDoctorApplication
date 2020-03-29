@@ -90,9 +90,9 @@ public abstract class VideoCallGestureDetector implements GestureDetector.OnGest
         /*
 
          */
-    abstract boolean onSingleTap(MotionEvent e);
+    public abstract boolean onSingleTap(MotionEvent e);
 
-    void setGestureEnable(boolean isGestureEnable){
+    public void setGestureEnable(boolean isGestureEnable){
         this.isGestureEnable=isGestureEnable;
     }
 }

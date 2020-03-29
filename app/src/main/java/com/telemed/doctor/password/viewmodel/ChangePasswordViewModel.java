@@ -7,14 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.password.model.ChangePasswordRequest;
 import com.telemed.doctor.password.model.ChangePasswordResponse;
-import com.telemed.doctor.password.model.ResetPasswordRequest;
-import com.telemed.doctor.password.model.ResetPasswordResponse;
 
 import java.util.Map;
 

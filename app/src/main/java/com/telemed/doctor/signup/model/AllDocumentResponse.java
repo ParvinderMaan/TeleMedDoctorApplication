@@ -43,6 +43,12 @@ public class AllDocumentResponse {
 
     public static class Data {
 
+
+        @SerializedName("otherDocList")
+        @Expose
+        private ImportantDocument otherDocList;
+
+
         @SerializedName("documentList")
         @Expose
         private List<DocumentInfo> documentList = null;
@@ -55,6 +61,40 @@ public class AllDocumentResponse {
             this.documentList = documentList;
         }
 
+        public ImportantDocument getOtherDocList() {
+            return otherDocList;
+        }
+
+        public void setOtherDocList(ImportantDocument otherDocList) {
+            this.otherDocList = otherDocList;
+        }
+
+    }
+
+    public static class ImportantDocument {
+
+        @SerializedName("cv")
+        @Expose
+        private String cv;
+        @SerializedName("govtIssueId")
+        @Expose
+        private String govtIssueId;
+
+        public String getCv() {
+            return cv;
+        }
+
+        public void setCv(String cv) {
+            this.cv = cv;
+        }
+
+        public String getGovtIssueId() {
+            return govtIssueId;
+        }
+
+        public void setGovtIssueId(String govtIssueId) {
+            this.govtIssueId = govtIssueId;
+        }
     }
 
 

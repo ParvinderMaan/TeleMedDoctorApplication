@@ -8,18 +8,7 @@ public class MedicalHistory {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("pastHistory")
-    @Expose
-    private String pastHistory;
-    @SerializedName("surgicalHistory")
-    @Expose
-    private String surgicalHistory;
-    @SerializedName("allergy")
-    @Expose
-    private String allergy;
-    @SerializedName("familyHistory")
-    @Expose
-    private String familyHistory;
+
     @SerializedName("smoking")
     @Expose
     private String smoking;
@@ -42,38 +31,6 @@ public class MedicalHistory {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getPastHistory() {
-        return pastHistory;
-    }
-
-    public void setPastHistory(String pastHistory) {
-        this.pastHistory = pastHistory;
-    }
-
-    public String getSurgicalHistory() {
-        return surgicalHistory;
-    }
-
-    public void setSurgicalHistory(String surgicalHistory) {
-        this.surgicalHistory = surgicalHistory;
-    }
-
-    public String getAllergy() {
-        return allergy;
-    }
-
-    public void setAllergy(String allergy) {
-        this.allergy = allergy;
-    }
-
-    public String getFamilyHistory() {
-        return familyHistory;
-    }
-
-    public void setFamilyHistory(String familyHistory) {
-        this.familyHistory = familyHistory;
     }
 
     public String getSmoking() {
@@ -115,4 +72,8 @@ public class MedicalHistory {
     public void setUpdateOn(String updateOn) {
         this.updateOn = updateOn;
     }
+
+
+
+
 }

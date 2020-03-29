@@ -13,7 +13,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.home.view.HomeActivity;
 /*
   written by Parvinder Maan
  */

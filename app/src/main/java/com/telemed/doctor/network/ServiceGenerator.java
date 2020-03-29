@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.telemed.doctor.BuildConfig;
-import com.telemed.doctor.NoConnectivityException;
+import com.telemed.doctor.exception.NoConnectivityException;
 import com.telemed.doctor.TeleMedApplication;
 
 import java.io.File;

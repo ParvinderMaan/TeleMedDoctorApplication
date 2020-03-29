@@ -278,17 +278,18 @@
             app:layout_constraintTop_toBottomOf="@+id/lv_medical_history" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tv_past_medical_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:drawableRight="@drawable/ic_arrow_right_red"
+            android:paddingBottom="@dimen/_15sdp"
             android:text="Past medical history"
             android:textColor="@color/colorRed"
             android:textSize="14sp"
+
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -302,53 +303,29 @@
             android:background="@color/colorRed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-        <TextView
-            android:id="@+id/tv_past_medical_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_background_ix"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:text=""
-            android:textColor="@color/colorBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_three" />
-
-
-        <View
-            android:id="@+id/view_12"
-            style="@style/DividerStyle"
-            android:layout_height="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_past_medical_history" />
 
 
+
+
+
         <TextView
-            android:id="@+id/textView999"
+            android:id="@+id/tv_surgical_medical_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:text="Surgical medical history"
             android:textColor="@color/colorRed"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:drawableRight="@drawable/ic_arrow_right_red"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_12" />
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_three" />
 
         <View
             android:id="@+id/view_divider_threeee"
@@ -358,54 +335,29 @@
             android:background="@color/colorRed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView999" />
-
-
-        <TextView
-            android:id="@+id/tv_surgical_medical_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:paddingStart="@dimen/_10sdp"
-
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_background_ix"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:text=""
-            android:textColor="@color/colorBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_threeee" />
-
-
-        <View
-            android:id="@+id/v_____123"
-            style="@style/DividerStyle"
-            android:layout_height="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_surgical_medical_history" />
 
+
+
+
+
         <TextView
-            android:id="@+id/textView99"
+            android:id="@+id/tv_allergy_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:text="Allergy"
             android:textColor="@color/colorRed"
+            android:drawableRight="@drawable/ic_arrow_right_red"
+
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v_____123" />
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_threeee" />
 
         <View
             android:id="@+id/view_divider_threeeerr"
@@ -415,51 +367,26 @@
             android:background="@color/colorRed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView99" />
-
-        <TextView
-            android:id="@+id/tv_allergy_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_background_ix"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:text=""
-            android:textColor="@color/colorBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_threeeerr" />
-
-        <View
-            android:id="@+id/v_____1233"
-            style="@style/DividerStyle"
-            android:layout_height="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_allergy_history" />
 
+
+
         <TextView
-            android:id="@+id/textView909"
+            android:id="@+id/tv_family_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:text="Family history"
             android:textColor="@color/colorRed"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:drawableRight="@drawable/ic_arrow_right_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v_____1233" />
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_threeeerr" />
 
         <View
             android:id="@+id/view_divider_threey"
@@ -469,24 +396,23 @@
             android:background="@color/colorRed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView909" />
-
+            app:layout_constraintTop_toBottomOf="@+id/tv_family_history" />
 
         <TextView
-            android:id="@+id/tv_family_history"
+            android:id="@+id/textView99999"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_background_ix"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:text=""
-            android:paddingStart="@dimen/_10sdp"
-            android:textColor="@color/colorBlue"
-            android:textSize="20sp"
+            android:text="Select all that apply"
+            android:textColor="@color/colorRed"
+            android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_divider_threey" />
 
         <View
@@ -497,7 +423,7 @@
             android:background="@color/colorBlue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_family_history" />
+            app:layout_constraintTop_toBottomOf="@+id/textView99999" />
 
 
         <TextView

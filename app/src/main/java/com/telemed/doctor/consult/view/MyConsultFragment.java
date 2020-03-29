@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -162,29 +163,32 @@ public class MyConsultFragment extends Fragment {
                     if(lstOfAppointments.isEmpty()) {
                         viewUpcomingAppointmentTitle.setVisibility(View.GONE);
                         tvUpcomingAppointmentTitle.setVisibility(View.GONE);
-                        tvEmptyView.setVisibility(View.VISIBLE);
+
 
                     }else {
                         viewUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
                         tvUpcomingAppointmentTitle.setVisibility(View.VISIBLE);
-                        tvEmptyView.setVisibility(View.GONE);
+
                     }
                     mUpComingAppointmentAdapter.clearAll();
                     mUpComingAppointmentAdapter.addAll(lstOfAppointments);
 
                 });
 
+//        mViewModel.getResultEmptyView().observe(getViewLifecycleOwner(), aBoolean -> {
+//            tvEmptyView.setVisibility(aBoolean?View.VISIBLE:View.GONE);
+//        });
 
         mViewModel.getPastAppointments()
                 .observe(getViewLifecycleOwner(), lstOfAppointments -> {
                     if(lstOfAppointments.isEmpty()){
                         tvLastAppointmentTitle.setVisibility(View.GONE);
                         viewLastAppointmentTitle.setVisibility(View.GONE);
-                        tvEmptyView.setVisibility(View.VISIBLE);
+
                     } else{
                         tvLastAppointmentTitle.setVisibility(View.VISIBLE);
                         viewLastAppointmentTitle.setVisibility(View.VISIBLE);
-                        tvEmptyView.setVisibility(View.GONE);
+
                     }
                     mPastAppointmentAdapter.clearAll();
                     mPastAppointmentAdapter.addAll(lstOfAppointments);

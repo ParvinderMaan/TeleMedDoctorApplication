@@ -113,9 +113,9 @@ public class ProfileFragment extends Fragment {
         });
 
         tvViewDocument.setOnClickListener(v -> {
-
             if (mFragmentListener != null)
                 mFragmentListener.showFragment("ProfileDocumentFragment",null);
+
         });
     }
 

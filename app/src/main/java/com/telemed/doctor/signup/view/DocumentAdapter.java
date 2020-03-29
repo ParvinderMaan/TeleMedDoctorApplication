@@ -42,7 +42,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     public void updateSingle(int updateIndex, Integer id) {
         DocumentInfo info=list.get(updateIndex);
         info.setId(id);
-        info.setStatus(2);
+        info.setStatus(3);
         list.set(updateIndex, info);
         notifyItemChanged(updateIndex);
     }
@@ -65,9 +65,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
     public void addAll(List<DocumentInfo> documentList) {
         for(int i=0;i<documentList.size();i++){
-           documentList.get(i).setStatus(2);
+           documentList.get(i).setStatus(3); // means already uploaded...
         }
-
 
          for(int i=0;i<documentList.size();i++){
              addView(documentList.get(i));
@@ -75,33 +74,39 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
     }
 
+    public void update(int updateIndex, String expiryDate) {
+        DocumentInfo x = list.get(updateIndex);
+        x.setExpiryDate(expiryDate);
+        x.setStatus(2);
+        list.set(updateIndex, x);
+        notifyItemChanged(updateIndex);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageButton ibtnAction;
-        private final TextView tvDocName;
+        private final TextView tvDocName,tvDocExpiryDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvDocName = itemView.findViewById(R.id.tv_doc_name);
             ibtnAction = itemView.findViewById(R.id.ibtn_action);
+            tvDocExpiryDate = itemView.findViewById(R.id.tv_doc_expiry_date);
+
         }
 
         public void bind(final DocumentInfo model, final OnItemClickListener listener) {
-            tvDocName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemTextClick(getLayoutPosition(),model);
-
-                }
-            });
+            tvDocName.setOnClickListener(v -> {
+                if(listener!=null)listener.onItemTextTitleClick(getAdapterPosition(), model); });
 
             ibtnAction.setOnClickListener(v -> {
-                if(model.getStatus()==1) {
-                    listener.onItemActionClick(getLayoutPosition(), model, "UPLOAD");
-                }
-                if(model.getStatus()==2){
-                    listener.onItemActionClick(getLayoutPosition(), model, "DELETE");
-                }
+                if(listener!=null)listener.onItemActionUploadClick(getAdapterPosition(), model); });
 
+            tvDocExpiryDate.setOnClickListener(v -> {
+                if(listener!=null)listener.onItemDatePickerActionClick(getAdapterPosition(), model); });
+
+            itemView.setOnLongClickListener(v -> {
+                if(listener!=null) listener.onItemActionDeleteClick(getAdapterPosition(), model);
+                return true;
             });
 
 
@@ -109,20 +114,38 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
                 case 0:
                     ibtnAction.setVisibility(View.INVISIBLE); // no icon
-                    tvDocName.setText("Add document or pdf");
+                    tvDocName.setClickable(true);
+                    tvDocExpiryDate.setClickable(false);
                     break;
                 case 1:
-                    ibtnAction.setVisibility(View.VISIBLE);
-                    ibtnAction.setImageResource(R.drawable.ic_upload); // about to upload icon
-                    tvDocName.setText("File added");
+                    ibtnAction.setVisibility(View.INVISIBLE); // no icon
+                    tvDocName.setClickable(true);
+                    tvDocExpiryDate.setClickable(true);
+                    tvDocExpiryDate.setText(model.getExpiryDate()!=null?model.getExpiryDate():"");
+                    tvDocName.setText(model.getDocumentName()!=null?model.getDocumentName():"File added");
                     break;
                 case 2:
                     ibtnAction.setVisibility(View.VISIBLE);
-                    ibtnAction.setImageResource(R.drawable.ic_delete); // about to removeView icon
-                    tvDocName.setText("File uploaded");
-                    tvDocName.setEnabled(false);  // to avoid fetching file
+                    tvDocName.setClickable(true);
+                    tvDocExpiryDate.setClickable(true);
+                    ibtnAction.setImageResource(R.drawable.ic_upload); // about to upload icon
+                    ibtnAction.setClickable(true);
+                    tvDocExpiryDate.setText(model.getExpiryDate()!=null?model.getExpiryDate():"");
+                    tvDocName.setText(model.getDocumentName()!=null?model.getDocumentName():"File added");
+                    break;
+
+                case 3:
+                    ibtnAction.setVisibility(View.VISIBLE);
+                    tvDocName.setClickable(false);
+                    tvDocExpiryDate.setClickable(false);
+                    ibtnAction.setClickable(false);
+                    ibtnAction.setImageResource(R.drawable.ic_success); // about to removeView icon
+                    tvDocExpiryDate.setText(model.getExpiryDate()!=null?model.getExpiryDate():"");
+                    tvDocName.setText(model.getDocumentName()!=null?model.getDocumentName():"File uploaded");
                     break;
             }
+
+
 
         }
     }
@@ -151,8 +174,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemTextClick(int position, DocumentInfo info);
-        void onItemActionClick(int position, DocumentInfo info, String type);
+        void onItemTextTitleClick(int position, DocumentInfo info);
+        void onItemActionUploadClick(int position, DocumentInfo info);
+        void onItemActionDeleteClick(int position, DocumentInfo info);
+        void onItemDatePickerActionClick(int adapterPosition, DocumentInfo model);
     }
 
 }

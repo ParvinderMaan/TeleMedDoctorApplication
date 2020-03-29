@@ -6,7 +6,8 @@ import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
-import com.telemed.doctor.home.WelcomeInfoResponse;
+import com.telemed.doctor.home.model.WelcomeInfoResponse;
+import com.telemed.doctor.medicalrecord.model.MedicalDetailResponse;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
 import com.telemed.doctor.notification.model.DeleteNotificationResponse;
 import com.telemed.doctor.notification.model.NotificationRequest;
@@ -45,11 +46,12 @@ import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 import com.telemed.doctor.schedule.model.DeleteWeekScheduleResponse;
-import com.telemed.doctor.setting.UserSettingRequest;
-import com.telemed.doctor.setting.UserSettingResponse;
+import com.telemed.doctor.setting.model.UserSettingRequest;
+import com.telemed.doctor.setting.model.UserSettingResponse;
 import com.telemed.doctor.signin.model.SignInRequest;
 import com.telemed.doctor.signin.model.SignInResponse;
 import com.telemed.doctor.signup.model.AllDocumentResponse;
+import com.telemed.doctor.signup.model.CvFileUploadResponse;
 import com.telemed.doctor.signup.model.FileDeleteResponse;
 import com.telemed.doctor.signup.model.FileUploadResponse;
 import com.telemed.doctor.signup.model.SignUpIIIRequest;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -149,7 +152,7 @@ public interface WebService {
     @Multipart
     @POST(WebUrl.UPLOAD_FILE)
     Call<FileUploadResponse> attemptUploadFile(@HeaderMap Map<String, String> token,
-                                               @Part MultipartBody.Part docFile);  // fileData
+                                               @Part MultipartBody.Part docFile,@Part("expiryDate") RequestBody dateOfExpiry);  // fileData
 
     @POST(WebUrl.DELETE_FILE)
     Call<FileDeleteResponse> attemptDeleteFile(@HeaderMap Map<String, String> token, @Query("DocumentId") Integer id);
@@ -245,6 +248,10 @@ public interface WebService {
     @GET(WebUrl.FETCH_MEDICAL_RECORD)
     Call<MedicalRecordResponse> fetchMedicalRecord(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
 
+
+    @GET(WebUrl.FETCH_MEDICAL_DETAIL)
+    Call<MedicalDetailResponse> fetchMedicalDetails(@HeaderMap Map<String, String> token, @Query("userId") String patientId, @Query("Type") String historyType);
+
     @POST(WebUrl.FETCH_NOTIFICATION)
     Call<NotificationResponse> fetchNotifications(@HeaderMap HashMap<String, String> headerMap, @Body NotificationRequest in);
 
@@ -266,5 +273,18 @@ public interface WebService {
     Call<WelcomeInfoResponse> fetchWelcomeInfo(@HeaderMap Map<String, String> token);
 
 
+
+
+
+    @Multipart
+    @POST(WebUrl.UPLOAD_CV)
+    Call<CvFileUploadResponse> attemptCVUploadFile(@HeaderMap Map<String, String> token,
+                                                   @Part MultipartBody.Part imgFile);  // fileData
+
+
+    @Multipart
+    @POST(WebUrl.UPLOAD_CV)
+    Call<CvFileUploadResponse> attemptGovtRegisteredUploadFile(@HeaderMap Map<String, String> token,
+                                                   @Part MultipartBody.Part imgFile, @Part("GovtIssueId") RequestBody info);  // fileData
 }
 

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@color/colorWhite"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".medicalrecord.view.MedicalDetailFragment">
+    <!--    header layout-->
+    <RelativeLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_start_padding"
+        android:paddingTop="@dimen/screen_top_padding"
+        android:paddingEnd="@dimen/screen_end_padding"
+        android:paddingBottom="@dimen/screen_bottom_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Medical Record"
+            android:textColor="@color/colorRed"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/ibtn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back_blue" />
+
+        <ImageButton
+            android:id="@+id/ibtn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cross_blue" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--    main layout-->
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/rv_medical_detail"
+         android:layout_below="@+id/ll_header"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty_view"
+        android:text="No History"
+        android:textColor="@color/colorRed"
+       android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

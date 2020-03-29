@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@color/colorGrey"
-    tools:context=".videocall.VideoCallFragment">
+    tools:context=".videocall.view.VideoCallFragment">
     <!--     subscriber layout 0-->
     <FrameLayout
         android:id="@+id/subscriber_container"

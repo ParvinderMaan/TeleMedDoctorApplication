@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 

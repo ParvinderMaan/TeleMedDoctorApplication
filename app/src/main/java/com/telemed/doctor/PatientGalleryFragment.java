@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.telemed.doctor.appointment.view.PatientGalleryAdapter;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 
 

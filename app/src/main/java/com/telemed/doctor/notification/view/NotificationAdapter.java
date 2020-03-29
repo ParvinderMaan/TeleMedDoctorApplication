@@ -294,10 +294,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             if (model.getTimeInMinutes()!=null ) {
-                Integer remainingMinutes  = model.getTimeInMinutes();
-                tvTime.setText(""+remainingMinutes +" "+"minutes ago");
-            }
+                int totMinutes  = model.getTimeInMinutes();
+             //   tvTime.setText(""+totMinutes +" "+"minutes ago");
 
+
+            if(totMinutes>=1440){  // days
+                int totDays=totMinutes/1440;
+                tvTime.setText(""+totDays +" "+"days ago");
+            }else {
+                if(totMinutes>=60){      // hours
+                    int totHours=totMinutes/60;
+                    tvTime.setText(""+totHours +" "+"hours ago");
+                }else {            // mins
+                    tvTime.setText(""+totMinutes +" "+"minutes ago");
+                }
+            }
+            }
         }
     }
     static class FooterViewHolder extends RecyclerView.ViewHolder {

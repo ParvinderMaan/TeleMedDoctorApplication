@@ -37,6 +37,8 @@ public interface WebUrl {
     String FETCH_ALL_DOC="Auth/DoctorDocumentList";
     String UPLOAD_FILE = "Auth/AddDoctorDocument";
     String DELETE_FILE = "Auth/DeleteDoctorDocument";
+    String UPLOAD_CV="Auth/UpdateDoctorCVGovtIssueRecord";
+
 
 
     String RESET_PASSWORD = "Auth/ResetPassword";
@@ -75,6 +77,7 @@ public interface WebUrl {
    // calling
     String FETCH_CALL_SESSION="ConferenceMedia/GetCallSession";
     String FETCH_MEDICAL_RECORD="MedicalHistory/GetPatientMedicalHistory";
+    String FETCH_MEDICAL_DETAIL="MedicalHistory/GetMedicalHistoryByPatient";
 
    // notification
     String FETCH_NOTIFICATION = "Notification/GetNotifications";

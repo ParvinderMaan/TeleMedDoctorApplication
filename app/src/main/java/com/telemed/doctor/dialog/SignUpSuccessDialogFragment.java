@@ -45,7 +45,7 @@ public class SignUpSuccessDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setCancelable(false);
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialogStyleII);
         builder.setTitle(getResources().getString(R.string.app_name));
         builder.setMessage(mMessage);
         builder.setPositiveButton("OK", (dialog, which) -> {

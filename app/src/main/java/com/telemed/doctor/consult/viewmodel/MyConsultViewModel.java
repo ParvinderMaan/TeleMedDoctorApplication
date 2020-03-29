@@ -4,30 +4,22 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
-import com.telemed.doctor.consult.model.Appointment;
-import com.telemed.doctor.consult.model.AppointmentListResponse;
 import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.PastAppointment;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.UpcomingAppointment;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
-import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
-import com.telemed.doctor.profile.model.AlterProfilePicResponse;
 import com.telemed.doctor.videocall.model.VideoCallDetailResponse;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +49,8 @@ public class MyConsultViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<UpcomingAppointmentResponse>> resultUpComingAppointment;
     private MutableLiveData<ApiResponse<PastAppointmentResponse>> resultPastAppointment;
     private MutableLiveData<ApiResponse<VideoCallDetailResponse>> resultVideoCallDetail;
+    private MediatorLiveData<Boolean> resultEmptyView;
+
 
     public MutableLiveData<ApiResponse<VideoCallDetailResponse>> getResultVideoCallDetail() {
         return resultVideoCallDetail;
@@ -70,6 +64,8 @@ public class MyConsultViewModel extends AndroidViewModel {
         return resultPastAppointment;
     }
 
+
+
     public MyConsultViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
@@ -81,6 +77,7 @@ public class MyConsultViewModel extends AndroidViewModel {
         lstOfUpComingAppointment=new MutableLiveData<>();
         lstOfPastAppointment=new MutableLiveData<>();
         resultVideoCallDetail=new MutableLiveData<>();
+
     }
 
 
@@ -206,4 +203,10 @@ public class MyConsultViewModel extends AndroidViewModel {
 
 
     }
+
+
+
+
+
+
 }

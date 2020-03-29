@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:lines="1"
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:textColor="@color/colorRed"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:textAlignment="viewStart"
+            android:text="Mother with dailbitic" />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:textColor="@color/colorRed"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:paddingStart="@dimen/_5sdp"
+            android:textAlignment="viewStart"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="10/10/2020" />
+        <View
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/colorRed" />
+    </LinearLayout>
+
+
+
+
+
+

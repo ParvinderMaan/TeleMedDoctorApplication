@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telemed.doctor.R;
-import com.telemed.doctor.home.HomeActivity;
+import com.telemed.doctor.home.view.HomeActivity;
 import com.telemed.doctor.util.DividerItemDecoration;
 
 

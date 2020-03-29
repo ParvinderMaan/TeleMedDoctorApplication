@@ -27,7 +27,6 @@ import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointment;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
 import com.telemed.doctor.helper.SharedPrefHelper;
-import com.telemed.doctor.home.HomeActivity;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.consult.viewmodel.AppointmentUpcomingViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
@@ -151,7 +150,6 @@ public class AppointmentUpcomingFragment extends Fragment {
 
     private void initUpcomingRecyclerView(View v) {
         rvAppointmentsUpcoming = v.findViewById(R.id.rv_upcoming_appointment);
-        rvAppointmentsUpcoming.setHasFixedSize(false);
         mLinearLayoutManager = new LinearLayoutManager(requireActivity());
         rvAppointmentsUpcoming.setLayoutManager(mLinearLayoutManager);
         rvAppointmentsUpcoming.setAdapter(mAdapter);

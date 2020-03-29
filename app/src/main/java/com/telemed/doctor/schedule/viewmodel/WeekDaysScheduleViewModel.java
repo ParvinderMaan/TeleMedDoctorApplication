@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;

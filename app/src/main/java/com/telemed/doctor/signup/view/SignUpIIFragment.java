@@ -116,8 +116,8 @@ public class SignUpIIFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SignUpIIViewModel.class);
+        super.onViewCreated(v, savedInstanceState);
         initView(v);
         initListener();
         initObserver();
@@ -297,8 +297,8 @@ public class SignUpIIFragment extends BaseFragment {
                 in.putExtra("KEY_", "TAG_STATE");
                 in.putExtra("KEY_COUNTRY_ID",countryId);
                 startActivityForResult(in, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                    getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
 
                 break;
@@ -308,8 +308,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent inz = new Intent(getActivity(), ChooseOptionActivity.class);
                 inz.putExtra("KEY_", "TAG_NATIONALITY");
                 startActivityForResult(inz, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 
@@ -317,8 +317,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent iz = new Intent(getActivity(), ChooseOptionActivity.class);
                 iz.putExtra("KEY_", (String) "TAG_SPECIALITY");
                 startActivityForResult(iz, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 
@@ -326,8 +326,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent ii = new Intent(getActivity(), ChooseOptionActivity.class);
                 ii.putExtra("KEY_", "TAG_LANGUAGE_ONE");
                 startActivityForResult(ii, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 
@@ -335,8 +335,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent iii = new Intent(getActivity(), ChooseOptionActivity.class);
                 iii.putExtra("KEY_", "TAG_LANGUAGE_TWO");
                 startActivityForResult(iii, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 
@@ -344,8 +344,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent iv = new Intent(getActivity(), ChooseOptionActivity.class);
                 iv.putExtra("KEY_", "TAG_GENDER");
                 startActivityForResult(iv, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 
@@ -354,8 +354,8 @@ public class SignUpIIFragment extends BaseFragment {
                 Intent v1 = new Intent(getActivity(), ChooseOptionActivity.class);
                 v1.putExtra("KEY_", "TAG_COUNTRY");
                 startActivityForResult(v1, REQUEST_CODE_SELECT);
-                if(getActivity()!=null)
-                getActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                if(requireActivity()!=null)
+                    requireActivity().overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
                 break;
 

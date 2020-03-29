@@ -7,23 +7,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.telemed.doctor.ErrorHandler;
+import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
 import com.telemed.doctor.signup.model.AllDocumentResponse;
-import com.telemed.doctor.signup.model.DocumentInfo;
+import com.telemed.doctor.signup.model.CvFileUploadResponse;
 import com.telemed.doctor.signup.model.FileDeleteResponse;
 import com.telemed.doctor.signup.model.FileUploadResponse;
 import com.telemed.doctor.signup.model.SignUpVResponse;
 
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 import static com.telemed.doctor.network.Status.FAILURE;
 import static com.telemed.doctor.network.Status.SUCCESS;
@@ -35,6 +36,7 @@ public class SignUpVViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<SignUpVResponse>> resultantSignUp;
     private MutableLiveData<ApiResponse<FileUploadResponse>> resultantFileUpload;
     private MutableLiveData<ApiResponse<FileDeleteResponse>> resultantFileDelete;
+    private MutableLiveData<ApiResponse<CvFileUploadResponse>> resultantCvFileUpload,resultantGovtIdFileUpload;
 
 
 
@@ -54,6 +56,8 @@ public class SignUpVViewModel extends AndroidViewModel {
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
         resultantAllDocument=new MutableLiveData<>();
+        resultantCvFileUpload=new MutableLiveData<>();
+        resultantGovtIdFileUpload=new MutableLiveData<>();
 
     }
 
@@ -114,10 +118,10 @@ public class SignUpVViewModel extends AndroidViewModel {
     }
 
 
-    public void attemptFileUpload(Map<String, String> token, MultipartBody.Part docFile,int viewIndex) {
+    public void attemptFileUpload(Map<String, String> token, MultipartBody.Part docFile,int viewIndex,RequestBody dateOfExpiry) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-        mWebService.attemptUploadFile(token,docFile).enqueue(new Callback<FileUploadResponse>() {
+        mWebService.attemptUploadFile(token,docFile,dateOfExpiry).enqueue(new Callback<FileUploadResponse>() {
             @Override
             public void onResponse(@NonNull Call<FileUploadResponse> call, @NonNull Response<FileUploadResponse> response) {
                 isLoading.setValue(false);
@@ -192,6 +196,14 @@ public class SignUpVViewModel extends AndroidViewModel {
         return resultantFileUpload;
     }
 
+    public MutableLiveData<ApiResponse<CvFileUploadResponse>> getResultantCvFileUpload() {
+        return resultantCvFileUpload;
+    }
+
+    public MutableLiveData<ApiResponse<CvFileUploadResponse>> getResultantGovtIdFileUpload() {
+        return resultantGovtIdFileUpload;
+    }
+
     public void fetchAllDocuments(Map<String, String> map){
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
@@ -239,5 +251,81 @@ public class SignUpVViewModel extends AndroidViewModel {
     }
 
 
+
+    public void attemptCVFileUpload(Map<String, String> token, MultipartBody.Part docFile) {
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+        mWebService.attemptCVUploadFile(token,docFile).enqueue(new Callback<CvFileUploadResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CvFileUploadResponse> call, @NonNull Response<CvFileUploadResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    CvFileUploadResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+
+                        resultantCvFileUpload.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultantCvFileUpload.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantCvFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CvFileUploadResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantCvFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+    }
+
+
+
+    public void attemptGovtRegisteredUploadFile(Map<String, String> token, MultipartBody.Part docFile,RequestBody info) {
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+        mWebService.attemptGovtRegisteredUploadFile(token,docFile,info).enqueue(new Callback<CvFileUploadResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CvFileUploadResponse> call, @NonNull Response<CvFileUploadResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body()!=null) {
+                    CvFileUploadResponse result = response.body();
+                    Log.e(TAG,result.toString());
+                    if(result.getStatus()){
+
+                        resultantGovtIdFileUpload.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    }else {
+                        resultantGovtIdFileUpload.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                }else{
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultantGovtIdFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CvFileUploadResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultantGovtIdFileUpload.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+    }
 
 }

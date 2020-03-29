@@ -70,7 +70,7 @@
         android:layout_below="@+id/ll_header"
         android:layout_centerHorizontal="true"
         android:animateLayoutChanges="true"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/rounded_background_i"
         android:drawablePadding="@dimen/_10sdp"
@@ -156,7 +156,7 @@
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="118dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/custom_circle_vi"
             android:gravity="center"
@@ -170,7 +170,7 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="119dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/custom_circle_iii"
             android:gravity="center"
@@ -184,7 +184,7 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="119dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/custom_circle_iv"
             android:gravity="center"

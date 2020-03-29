@@ -15,6 +15,25 @@ public class UserInfoWrapper implements Parcelable {
     private String lastName;
     private String profilePic;
     private String oldPassword;
+    private String patientId;
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private String type;
 
     public Integer getLastScreenId() {
         return lastScreenId;
@@ -103,27 +122,31 @@ public class UserInfoWrapper implements Parcelable {
         dest.writeString(this.email);
         dest.writeValue(this.otpCode);
         dest.writeString(this.accessToken);
-        dest.writeValue(this.emailConfirmed);
         dest.writeValue(this.lastScreenId);
-        dest.writeString(this.lastName);
+        dest.writeValue(this.emailConfirmed);
         dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
         dest.writeString(this.profilePic);
         dest.writeString(this.oldPassword);
+        dest.writeString(this.patientId);
+        dest.writeString(this.type);
     }
 
     protected UserInfoWrapper(Parcel in) {
         this.email = in.readString();
         this.otpCode = (Integer) in.readValue(Integer.class.getClassLoader());
         this.accessToken = in.readString();
-        this.emailConfirmed = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.lastScreenId = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.lastName = in.readString();
+        this.emailConfirmed = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.firstName = in.readString();
+        this.lastName = in.readString();
         this.profilePic = in.readString();
         this.oldPassword = in.readString();
+        this.patientId = in.readString();
+        this.type = in.readString();
     }
 
-    public static final Parcelable.Creator<UserInfoWrapper> CREATOR = new Parcelable.Creator<UserInfoWrapper>() {
+    public static final Creator<UserInfoWrapper> CREATOR = new Creator<UserInfoWrapper>() {
         @Override
         public UserInfoWrapper createFromParcel(Parcel source) {
             return new UserInfoWrapper(source);
