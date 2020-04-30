@@ -11,7 +11,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,16 +35,11 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.network.WebUrl;
 import com.telemed.doctor.profile.model.AlterProfilePicResponse;
-import com.telemed.doctor.profile.model.BasicInfoResponse;
 import com.telemed.doctor.profile.viewmodel.ProfileViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -153,7 +147,7 @@ public class ProfileFragment extends Fragment {
                     }
                     if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
+                        mFragmentListener.startActivity("RouterActivity", null, null);
                     }
                     break;
 

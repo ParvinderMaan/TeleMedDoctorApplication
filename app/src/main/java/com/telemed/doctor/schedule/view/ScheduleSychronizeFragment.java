@@ -47,7 +47,7 @@ import java.util.Locale;
 
 public class ScheduleSychronizeFragment extends Fragment {
     private final String TAG = ScheduleSychronizeFragment.class.getSimpleName();
-    private Button btnSynchronizeSchedule;
+    private Button btnSynchronizeSchedule,btnDeleteAvailability;
     private ScheduleSychronizeViewModel mViewModel;
     private HashMap<String, String> mHeaderMap;
     private ProgressBar progressBar;
@@ -76,23 +76,27 @@ public class ScheduleSychronizeFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
+
+        mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
+
+        mViewModel = ViewModelProviders.of(this).get(ScheduleSychronizeViewModel.class);
+        mViewModel.fetchMonthlySchedules(mHeaderMap, 0); // 0,1,2
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_schedule, container, false);
+        return localInflater.inflate(R.layout.fragment_sychronize_schedule, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ScheduleSychronizeViewModel.class);
         initView(v);
         initListener();
         initObserver();
-        mViewModel.fetchMonthlySchedules(mHeaderMap, 0); // 0,1,2
 
     }
 
@@ -107,15 +111,16 @@ public class ScheduleSychronizeFragment extends Fragment {
 
 
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
+        btnDeleteAvailability = v.findViewById(R.id.btn_delete_availability);
+
 
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         progressBar.setVisibility(View.INVISIBLE);
 
-        btnSynchronizeSchedule.setVisibility(View.INVISIBLE);
+      //  btnSynchronizeSchedule.setVisibility(View.INVISIBLE);
 
         vpPager = (ViewPager) v.findViewById(R.id.view_pager);
-        mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
         vpPager.setAdapter(mMonthPagerAdapter);
         vpPager.setOffscreenPageLimit(2);
 
@@ -124,7 +129,8 @@ public class ScheduleSychronizeFragment extends Fragment {
         ibtNext = v.findViewById(R.id.ibtn_next);
 
         TextView tvHeader = v.findViewById(R.id.tv_header);
-     //   tvHeader.setText("Sychronize Schedule");
+      //  tvHeader.setText("My Availability");
+
 
     }
 
@@ -138,6 +144,18 @@ public class ScheduleSychronizeFragment extends Fragment {
             if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
         });
+
+        btnDeleteAvailability.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("DeleteAvailabilityFragment", null);
+        });
+
+        btnSynchronizeSchedule.setOnClickListener(v1 -> {
+            if (mFragmentListener != null)
+                mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
+        });
+
+
         ibtnPrevious.setOnClickListener(v -> {
             switch (vpPager.getCurrentItem()) {
                 case 0:

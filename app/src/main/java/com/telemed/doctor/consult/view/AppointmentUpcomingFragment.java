@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -74,11 +75,17 @@ public class AppointmentUpcomingFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization","Bearer "+mAccessToken);
+        mViewModel = ViewModelProviders.of(this).get(AppointmentUpcomingViewModel.class);
+        AppointmentRequest in=new AppointmentRequest();
+        in.setPageNumber(currentPage);
+        in.setPageSize(PAGE_SIZE);
+        in.setSearchQuery(mSearchQuery); // no need there
+        in.setFilterBy("");  // no need there
+        mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(requireActivity(), R.style.FragmentThemeOne);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_appointment_upcoming, container, false);
@@ -88,18 +95,9 @@ public class AppointmentUpcomingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AppointmentUpcomingViewModel.class);
         initView(v);
         initUpcomingRecyclerView(v);
         initObserver();
-
-        AppointmentRequest in=new AppointmentRequest();
-        in.setPageNumber(currentPage);
-        in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(mSearchQuery); // no need there
-        in.setFilterBy("");  // no need there
-        mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
-
     }
 
     private void initView(View v){
@@ -313,6 +311,5 @@ public class AppointmentUpcomingFragment extends Fragment {
     public void onDestroyView() {
         rvAppointmentsUpcoming.removeOnScrollListener(mOnScrollListener);
         super.onDestroyView();
-
     }
 }

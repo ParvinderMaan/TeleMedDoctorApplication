@@ -9,14 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -24,7 +22,6 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.home.model.WelcomeInfoResponse;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.miscellaneous.viewmodel.HomeViewModel;
-import com.telemed.doctor.util.CustomAlertTextView;
 
 import java.util.HashMap;
 
@@ -34,7 +31,6 @@ public class HomeFragment extends Fragment {
     private AppCompatTextView tvMyProfile, tvMyConsults, tvMyDashboard,tvNotification,
             tvSetting, tvSignOut,tvDocWelcome,  tvPendingAppmntCount, tvUpcomingAppmntCount, tvNotificationCount;
     private Button btnMySchedule;
-    private CustomAlertTextView tvAlertView;
     private ProgressBar progressBar;
     private HomeFragmentSelectedListener mFragmentListener;
     private HomeViewModel mViewModel;
@@ -42,8 +38,6 @@ public class HomeFragment extends Fragment {
     private SharedPrefHelper mHelper;
     private String mAccessToken;
     private HashMap<String, String> mHeaderMap;
-    private SwipeRefreshLayout swipeLayout;
-    private ScrollView svParent,svChild;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -79,15 +73,11 @@ public class HomeFragment extends Fragment {
         initObserver();
         String welcomeTxt = getResources().getString(R.string.title_one) + " " + mFirstName + ".";
         tvDocWelcome.setText(welcomeTxt);
-        mViewModel.fetchWelcomeInfoFirst(mHeaderMap);
+        mViewModel.fetchWelcomeInfo(mHeaderMap);
     }
 
+
     private void initView(View v) {
-//        svParent=v.findViewById(R.id.sv_parent);
-//        svChild=v.findViewById(R.id.sv_child);
-
-
-        tvAlertView = v.findViewById(R.id.tv_alert_view);
         tvDocWelcome = v.findViewById(R.id.tv_doc_welcome);
         btnMySchedule = v.findViewById(R.id.btn_my_schedule);
         tvMyProfile = v.findViewById(R.id.tv_my_profile);
@@ -107,27 +97,18 @@ public class HomeFragment extends Fragment {
         tvUpcomingAppmntCount= v.findViewById(R.id.tv_upcoming_appmnt_count);
         tvNotificationCount= v.findViewById(R.id.tv_notification_count);
 
-
-        swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
-        swipeLayout.setColorSchemeResources(R.color.colorBlue);
     }
     private void initListener() {
-        btnMySchedule.setOnClickListener(mOnClickListener);
-        tvMyProfile.setOnClickListener(mOnClickListener);
-        tvMyConsults.setOnClickListener(mOnClickListener);
-        tvMyDashboard.setOnClickListener(mOnClickListener);
-        tvNotification.setOnClickListener(mOnClickListener);
-        tvSetting.setOnClickListener(mOnClickListener);
-        tvSignOut.setOnClickListener(mOnClickListener);
-
-        swipeLayout.setOnRefreshListener(() -> mViewModel.fetchWelcomeInfoNext(mHeaderMap));
-
-
-
-
+        btnMySchedule.setOnClickListener(mClickListener);
+        tvMyProfile.setOnClickListener(mClickListener);
+        tvMyConsults.setOnClickListener(mClickListener);
+        tvMyDashboard.setOnClickListener(mClickListener);
+        tvNotification.setOnClickListener(mClickListener);
+        tvSetting.setOnClickListener(mClickListener);
+        tvSignOut.setOnClickListener(mClickListener);
     }
 
-    private View.OnClickListener mOnClickListener = v -> {
+    private View.OnClickListener mClickListener = v -> {
         switch (v.getId()) {
             case R.id.tv_my_profile:
                 if (mFragmentListener != null)
@@ -176,26 +157,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void initObserver() {
-
-        mViewModel.getProgress()
-                .observe(getViewLifecycleOwner(), isLoading -> {
-                progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE); });
-
-        mViewModel.getRefreshing()
-                .observe(getViewLifecycleOwner(), isRefreshing -> {
-                    swipeLayout.setRefreshing(isRefreshing);
-                });
+//        mViewModel.getProgress()
+//                .observe(getViewLifecycleOwner(), isLoading -> {
+//                progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE); });
 
         mViewModel.getViewEnabled()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
 
-        mViewModel.getSignOutResultant().observe(this, response -> {
+        mViewModel.getSignOutResultant().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
                         if (mFragmentListener != null){
                             mHelper.clear(); // clearing sharedPref
-                            mFragmentListener.startActivity("RouterActivity", null);
+                            mFragmentListener.startActivity("RouterActivity", null, null);
                         }
                     }
                     break;
@@ -204,7 +179,7 @@ public class HomeFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         if (mFragmentListener != null){
                             mHelper.clear(); // clearing sharedPref
-                            mFragmentListener.startActivity("RouterActivity", null);
+                            mFragmentListener.startActivity("RouterActivity",null , null);
                         }
                     }
                     break;
@@ -212,7 +187,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        mViewModel.getResultantWelcomeInfoFirst().observe(this, response -> {
+        mViewModel.getResultantWelcomeInfoFirst().observe(getViewLifecycleOwner(), response -> {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
@@ -223,26 +198,11 @@ public class HomeFragment extends Fragment {
                 case FAILURE:
                         if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
                             mHelper.clear(); // clearing sharedPref
-                            mFragmentListener.startActivity("RouterActivity", null);
+                            mFragmentListener.startActivity("RouterActivity", null, null);
                         }
             }
         });
 
-        mViewModel.getResultantWelcomeInfoNext().observe(this, response -> {
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        refreshUi(response.getData().getData());
-                    }
-                    break;
-
-                case FAILURE:
-                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
-                        mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
-                    }
-            }
-        });
     }
 
     private void refreshUi(WelcomeInfoResponse.Data data) {
@@ -278,6 +238,11 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+         removeListener();
+        super.onDestroyView();
+    }
+
+    private void removeListener() {
         btnMySchedule.setOnClickListener(null);
         tvMyProfile.setOnClickListener(null);
         tvMyConsults.setOnClickListener(null);
@@ -285,6 +250,5 @@ public class HomeFragment extends Fragment {
         tvNotification.setOnClickListener(null);
         tvSetting.setOnClickListener(null);
         tvSignOut.setOnClickListener(null);
-        super.onDestroyView();
     }
 }

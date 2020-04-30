@@ -31,9 +31,9 @@ public class ScheduleViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<MonthlyScheduleResponse>> resultAllScheduleIIIMonth;
 
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<Boolean> isDialogVisible;
+   // private MutableLiveData<Boolean> isDialogVisible;
     private MutableLiveData<Boolean> isViewEnabled;
-    private MutableLiveData<Map<String, String>> headerMap;
+  //  private MutableLiveData<Map<String, String>> headerMap;
 
     public String getTAG() {
         return TAG;
@@ -46,9 +46,9 @@ public class ScheduleViewModel extends AndroidViewModel {
         resultAllScheduleIIMonth=new MutableLiveData<>();
         resultAllScheduleIIIMonth=new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isDialogVisible=new MutableLiveData<>();
+   //     isDialogVisible=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
-        headerMap=new MutableLiveData<>();
+     //   headerMap=new MutableLiveData<>();
         //---------------------------
 
 
@@ -207,11 +207,11 @@ public class ScheduleViewModel extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<Boolean> getDialogVisiblility() {
-        return isDialogVisible;
-    }
+//    public MutableLiveData<Boolean> getDialogVisiblility() {
+//        return isDialogVisible;
+//    }
 
-    public void setDialogVisiblility(Boolean isDialogVisible) {
-        this.isDialogVisible.setValue(isDialogVisible);
-    }
+//    public void setDialogVisiblility(Boolean isDialogVisible) {
+//        this.isDialogVisible.setValue(isDialogVisible);
+//    }
 }

@@ -37,16 +37,10 @@ public class AppointmentSummaryFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
-
-         v.findViewById(R.id.btn_finish).setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-
+         v.findViewById(R.id.btn_finish).setOnClickListener(v1 -> {
 //                 if (mFragmentListener != null)
 //                     mFragmentListener.showFragment("PatientRatingFragment", null);
-
-                 ((SecondaryActivity)requireActivity()).showFragmentPatientRating();
-             }
+             ((SecondaryActivity)requireActivity()).showFragmentPatientRating();
          });
 
     }

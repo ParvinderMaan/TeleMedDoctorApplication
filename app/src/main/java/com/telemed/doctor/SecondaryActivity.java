@@ -2,11 +2,16 @@ package com.telemed.doctor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.WindowManager;
 
+import com.telemed.doctor.document.DoctorDocumentFragment;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.medicalrecord.view.MedicalRecordFragment;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 
 public class SecondaryActivity extends AppCompatActivity implements HomeFragmentSelectedListener {
 
@@ -17,9 +22,10 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
         setContentView(R.layout.activity_secondary);
 
         if(getIntent()!=null){
-            String tag = getIntent().getStringExtra("TAG_FRAGMENT");
-            if(tag!=null)
-            showFragment(tag, null);
+            String showFragment = getIntent().getStringExtra("TAG_FRAGMENT");
+            Object info = getIntent().getParcelableExtra("TAG_DATA");
+            if(showFragment!=null)
+            showFragment(showFragment, info);
         }
 
     }
@@ -35,10 +41,9 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
                         .commit();
                 break;
 
-
             case "DoctorDocumentFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, DoctorDocumentFragment.newInstance())
+                        .add(R.id.fl_container, DoctorDocumentFragment.newInstance(payload))
                         .commit();
                 break;
 
@@ -75,7 +80,23 @@ public class SecondaryActivity extends AppCompatActivity implements HomeFragment
     public void showDialog(String tag) { }
 
     @Override
-    public void startActivity(String tag, Object object) { }
+    public void startActivity(String showActivity, String showFragment, Object payload) {
+
+
+
+        switch (showActivity) {
+
+            case "SecondaryActivity":
+                Intent intent3 = new Intent(this, SecondaryActivity.class);
+                Bundle bb = new Bundle();
+                bb.putString("TAG_FRAGMENT", showFragment);
+                bb.putParcelable("TAG_DATA", (UserInfoWrapper)payload);
+                intent3.putExtras(bb);
+                startActivity(intent3);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                break;
+        }
+    }
 
     @Override
     public void refreshFragment(String tag) {

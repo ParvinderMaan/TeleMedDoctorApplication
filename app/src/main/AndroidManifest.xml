@@ -28,6 +28,7 @@
         tools:targetApi="n">
         <activity
             android:name=".SecondaryActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme"/>
 <!--         <activity-->

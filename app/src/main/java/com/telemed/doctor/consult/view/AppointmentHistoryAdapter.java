@@ -2,6 +2,8 @@ package com.telemed.doctor.consult.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -10,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -223,7 +226,7 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
     // inner interfaces
     public interface OnItemClickListener {
         void onItemClick(int position, PastAppointment model);
-        void onItemClickMore(String tag, int pos);
+        void onItemMoreClick(PastAppointment model, MenuItem item);
     }
     public interface OnReloadClickListener {
         void onReloadClick();
@@ -270,8 +273,16 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View v) {
 
-                //    listener.onItemMoreClick(getLayoutPosition());
-
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(),ibtnMore);
+                    Menu menu = popupMenu.getMenu();
+                    menu.add(0, 1, 0, "Show/Edit Medical History");
+                    menu.add(0, 2, 0, "Show/Edit Rating");
+                    menu.add(0, 3, 0, "Show Medical Record");
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        listener.onItemMoreClick(model,item);
+                        return false;
+                    });
+                    popupMenu.show();
 
 
                 }
@@ -325,6 +336,8 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 tvDateTime.append("-");
                 tvDateTime.append(endTime);
             }
+
+
         }
     }
     static class FooterViewHolder extends RecyclerView.ViewHolder {

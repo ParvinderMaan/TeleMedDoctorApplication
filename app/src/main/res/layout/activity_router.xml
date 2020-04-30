@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.fragment.app.FragmentContainerView
     android:id="@+id/fl_container"
     android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,4 +8,4 @@
     android:layout_height="match_parent"
     tools:context=".RouterActivity">
 
-</FrameLayout>
+</androidx.fragment.app.FragmentContainerView>

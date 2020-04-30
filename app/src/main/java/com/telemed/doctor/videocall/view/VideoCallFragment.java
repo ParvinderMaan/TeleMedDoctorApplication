@@ -22,6 +22,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import com.squareup.picasso.Picasso;
 import com.telemed.doctor.R;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.network.WebUrl;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.videocall.VideoCallGestureDetector;
 import com.telemed.doctor.videocall.model.VideoCallDetail;
@@ -94,6 +96,7 @@ public class VideoCallFragment extends Fragment {
     private VideoCallGestureDetector mVideoCallGestureDetector;
     //--------------------------------------------------------------------------------------------------
     private String mUsrProfilePic, mUsrName;
+    private VideoCallDetail objInfo;
 
     public static VideoCallFragment newInstance(Object payload) {
         VideoCallFragment fragment = new VideoCallFragment();
@@ -113,7 +116,7 @@ public class VideoCallFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // collect our intent
         if (getArguments() != null) {
-            VideoCallDetail objInfo = getArguments().getParcelable("KEY_");
+             objInfo = getArguments().getParcelable("KEY_");
             if (objInfo != null) API_KEY = String.valueOf(objInfo.getOpenTokApiKey());
             if (objInfo != null) SESSION_ID = objInfo.getSessionId();
             if (objInfo != null) TOKEN = objInfo.getToken();
@@ -286,98 +289,95 @@ public class VideoCallFragment extends Fragment {
             switch (v.getId()) {
 
                 case R.id.ibtn_gallery:
-                    ObjectAnimator scaleAnimX = ObjectAnimator.ofFloat(ibtnGallery, "scaleX", 0.2f, 1f);
-                    scaleAnimX.setDuration(300);
-                    scaleAnimX.setInterpolator(OVERSHOOT_INTERPOLATOR);
-                    scaleAnimX.start();
-                    ObjectAnimator scaleAnimY = ObjectAnimator.ofFloat(ibtnGallery, "scaleY", 0.2f, 1f);
-                    scaleAnimY.setDuration(300);
-                    scaleAnimY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+                    if (mFragmentListener != null)
+                     mFragmentListener.startActivity("SecondaryActivity","PatientGalleryFragment",null);
 
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(scaleAnimX).with(scaleAnimY);
-                    animatorSet.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            ibtnGallery.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ibtnGallery.setEnabled(true);
-                            if (mFragmentListener != null)
-                                mFragmentListener.startActivity("SecondaryActivity", "PatientGalleryFragment");
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-                        }
-                    });
-                    animatorSet.start();
+//                    ObjectAnimator scaleAnimX = ObjectAnimator.ofFloat(ibtnGallery, "scaleX", 0.2f, 1f);
+//                    scaleAnimX.setDuration(300);
+//                    scaleAnimX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//                    scaleAnimX.start();
+//                    ObjectAnimator scaleAnimY = ObjectAnimator.ofFloat(ibtnGallery, "scaleY", 0.2f, 1f);
+//                    scaleAnimY.setDuration(300);
+//                    scaleAnimY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//
+//                    AnimatorSet animatorSet = new AnimatorSet();
+//                    animatorSet.play(scaleAnimX).with(scaleAnimY);
+//                    animatorSet.addListener(new Animator.AnimatorListener() {
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//                            ibtnGallery.setEnabled(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            ibtnGallery.setEnabled(true);
+//                            if (mFragmentListener != null)
+//                                mFragmentListener.startActivity("SecondaryActivity","PatientGalleryFragment",null);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//                        }
+//                    });
+//                    animatorSet.start();
 
                     break;
                 case R.id.ibtn_document:
-                    ObjectAnimator scaleAnimXXX = ObjectAnimator.ofFloat(ibtnDocument, "scaleX", 0.1f, 1f);
-                    scaleAnimXXX.setDuration(300);
-                    scaleAnimXXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
-                    scaleAnimXXX.start();
-                    ObjectAnimator scaleAnimYYY = ObjectAnimator.ofFloat(ibtnDocument, "scaleY", 0.1f, 1f);
-                    scaleAnimYYY.setDuration(300);
-                    scaleAnimYYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
-
-                    AnimatorSet animatorSettt = new AnimatorSet();
-                    animatorSettt.play(scaleAnimXXX).with(scaleAnimYYY);
-                    animatorSettt.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            ibtnDocument.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ibtnDocument.setEnabled(true);
-                            if (mFragmentListener != null)
-                                mFragmentListener.startActivity("SecondaryActivity", "DoctorDocumentFragment");
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-                        }
-                    });
-                    animatorSettt.start();
+                    if (mFragmentListener != null && objInfo!=null){
+                                UserInfoWrapper in=new UserInfoWrapper();
+                                in.setPatientId(objInfo.getPatientId());
+                                in.setAppointmentId(objInfo.getAppointmentId());
+                                mFragmentListener.startActivity("SecondaryActivity","DoctorDocumentFragment",in);
+                            }
+//                    ObjectAnimator scaleAnimXXX = ObjectAnimator.ofFloat(ibtnDocument, "scaleX", 0.1f, 1f);
+//                    scaleAnimXXX.setDuration(300);
+//                    scaleAnimXXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//                    scaleAnimXXX.start();
+//                    ObjectAnimator scaleAnimYYY = ObjectAnimator.ofFloat(ibtnDocument, "scaleY", 0.1f, 1f);
+//                    scaleAnimYYY.setDuration(300);
+//                    scaleAnimYYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//
+//                    AnimatorSet animatorSettt = new AnimatorSet();
+//                    animatorSettt.play(scaleAnimXXX).with(scaleAnimYYY);
+//                    animatorSettt.addListener(new Animator.AnimatorListener() {
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//                            ibtnDocument.setEnabled(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            ibtnDocument.setEnabled(true);
+//
+//                            if (mFragmentListener != null && objInfo!=null){
+//                                UserInfoWrapper in=new UserInfoWrapper();
+//                                in.setPatientId(objInfo.getPatientId());
+//                                in.setAppointmentId(objInfo.getAppointmentId());
+//                                mFragmentListener.startActivity("SecondaryActivity","DoctorDocumentFragment",in);
+//                            }
+//
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//                        }
+//                    });
+//                    animatorSettt.start();
 
                     break;
                 case R.id.ibtn_call_control:
                     if (mSession == null) return;
 
-                    ObjectAnimator scaleAnimO = ObjectAnimator.ofFloat(ibtnCallControl, "scaleX", 0.1f, 1f);
-                    scaleAnimO.setDuration(300);
-                    scaleAnimO.setInterpolator(OVERSHOOT_INTERPOLATOR);
-                    scaleAnimO.start();
-                    ObjectAnimator scaleAnimOO = ObjectAnimator.ofFloat(ibtnCallControl, "scaleY", 0.1f, 1f);
-                    scaleAnimOO.setDuration(300);
-                    scaleAnimOO.setInterpolator(OVERSHOOT_INTERPOLATOR);
-
-                    AnimatorSet animatorSetO = new AnimatorSet();
-                    animatorSetO.play(scaleAnimO).with(scaleAnimOO);
-                    animatorSetO.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            ibtnCallControl.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ibtnCallControl.setEnabled(true);
-                            // by default NO_CALL
+                    // by default NO_CALL
                             if (((Integer) ibtnCallControl.getTag()) == 0 && mViewModel.getPermGrantedStatusValue()) {
                                 mViewModel.setProgress(true);
                                 mSession.connect(TOKEN);
@@ -388,52 +388,74 @@ public class VideoCallFragment extends Fragment {
                                 mSession.disconnect();
                                 ibtnCallControl.setTag(0);
                                 ibtnCallControl.setImageResource(R.drawable.ic_start_call);
-                                if (mFragmentListener != null) {
+                                if (mFragmentListener != null && objInfo != null) {
+                                    UserInfoWrapper in = new UserInfoWrapper();
+                                    in.setPatientId(objInfo.getPatientId());
+                                    in.setAppointmentId(objInfo.getAppointmentId());
                                     mFragmentListener.popTopMostFragment();
-                                    mFragmentListener.startActivity("SecondaryActivity", "AppointmentSummaryFragment");
+                                    mFragmentListener.startActivity("SecondaryActivity", "DoctorDocumentFragment", in);
                                 }
-
-
                             }
 
-                        }
+//                    ObjectAnimator scaleAnimO = ObjectAnimator.ofFloat(ibtnCallControl, "scaleX", 0.1f, 1f);
+//                    scaleAnimO.setDuration(300);
+//                    scaleAnimO.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//                    scaleAnimO.start();
+//                    ObjectAnimator scaleAnimOO = ObjectAnimator.ofFloat(ibtnCallControl, "scaleY", 0.1f, 1f);
+//                    scaleAnimOO.setDuration(300);
+//                    scaleAnimOO.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//
+//                    AnimatorSet animatorSetO = new AnimatorSet();
+//                    animatorSetO.play(scaleAnimO).with(scaleAnimOO);
+//                    animatorSetO.addListener(new Animator.AnimatorListener() {
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//                            ibtnCallControl.setEnabled(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            ibtnCallControl.setEnabled(true);
+//                            // by default NO_CALL
+//                            if (((Integer) ibtnCallControl.getTag()) == 0 && mViewModel.getPermGrantedStatusValue()) {
+//                                mViewModel.setProgress(true);
+//                                mSession.connect(TOKEN);
+//                                ibtnCallControl.setTag(1);
+//                                ibtnCallControl.setImageResource(R.drawable.ic_end_call);
+//                            } else {
+//                                mViewModel.setProgress(false);
+//                                mSession.disconnect();
+//                                ibtnCallControl.setTag(0);
+//                                ibtnCallControl.setImageResource(R.drawable.ic_start_call);
+//                                if (mFragmentListener != null && objInfo!=null) {
+//                                    UserInfoWrapper in=new UserInfoWrapper();
+//                                    in.setPatientId(objInfo.getPatientId());
+//                                    in.setAppointmentId(objInfo.getAppointmentId());
+//                                    mFragmentListener.popTopMostFragment();
+//                                    mFragmentListener.startActivity("SecondaryActivity","DoctorDocumentFragment",in);
+//                                }
+//
+//
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//                        }
+//                    });
+//                    animatorSetO.start();
 
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-                        }
-                    });
-                    animatorSetO.start();
-
-//                    if(mFragmentListener !=null)
-//                        mFragmentListener.showFragment("AppointmentSummaryFragment");
 
                     break;
                 case R.id.ibtn_mute_control:
                     if (mPublisher == null) return;
-                    ObjectAnimator scaleAnimXX = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleX", 0.2f, 1f);
-                    scaleAnimXX.setDuration(300);
-                    scaleAnimXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
-                    scaleAnimXX.start();
-                    ObjectAnimator scaleAnimYY = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleY", 0.2f, 1f);
-                    scaleAnimYY.setDuration(300);
-                    scaleAnimYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
 
-                    AnimatorSet animatorSett = new AnimatorSet();
-                    animatorSett.play(scaleAnimXX).with(scaleAnimYY);
-                    animatorSett.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            ibtnMuteControl.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ibtnMuteControl.setEnabled(true);
-                            // by default UN_MUTE
+                         // by default UN_MUTE
                             if (mPublisher.getPublishAudio()) {
                                 mPublisher.setPublishAudio(false);
                                 ibtnMuteControl.setImageResource(R.drawable.ic_mute);
@@ -441,20 +463,47 @@ public class VideoCallFragment extends Fragment {
                                 mPublisher.setPublishAudio(true);
                                 ibtnMuteControl.setImageResource(R.drawable.ic_unmute);
                             }
-
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-                    animatorSett.start();
+//                    ObjectAnimator scaleAnimXX = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleX", 0.2f, 1f);
+//                    scaleAnimXX.setDuration(300);
+//                    scaleAnimXX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//                    scaleAnimXX.start();
+//                    ObjectAnimator scaleAnimYY = ObjectAnimator.ofFloat(ibtnMuteControl, "scaleY", 0.2f, 1f);
+//                    scaleAnimYY.setDuration(300);
+//                    scaleAnimYY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+//
+//                    AnimatorSet animatorSett = new AnimatorSet();
+//                    animatorSett.play(scaleAnimXX).with(scaleAnimYY);
+//                    animatorSett.addListener(new Animator.AnimatorListener() {
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//                            ibtnMuteControl.setEnabled(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            ibtnMuteControl.setEnabled(true);
+//                            // by default UN_MUTE
+//                            if (mPublisher.getPublishAudio()) {
+//                                mPublisher.setPublishAudio(false);
+//                                ibtnMuteControl.setImageResource(R.drawable.ic_mute);
+//                            } else {
+//                                mPublisher.setPublishAudio(true);
+//                                ibtnMuteControl.setImageResource(R.drawable.ic_unmute);
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//
+//                        }
+//                    });
+//                    animatorSett.start();
 
                     break;
                 case R.id.publisher_container:
@@ -466,7 +515,7 @@ public class VideoCallFragment extends Fragment {
                 case R.id.btn_device_setting:
                     if (mFragmentListener != null) {
                         mViewModel.setDeviceSettingVisited(true);
-                        mFragmentListener.startActivity("DeviceSettingActivity", null); // show Application Setting
+                        mFragmentListener.startActivity("DeviceSettingActivity", null, null); // show Application Setting
                     }
                     break;
             }

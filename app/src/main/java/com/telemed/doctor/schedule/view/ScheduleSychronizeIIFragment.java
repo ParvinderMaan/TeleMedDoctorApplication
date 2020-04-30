@@ -114,9 +114,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
 
     public void updateUi(List<AllMonthSchedule> availableScheduleList) {
         mViewModel.setScheduleList(availableScheduleList);
-
     }
-
 
 
     private void initObserver() {

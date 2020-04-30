@@ -31,8 +31,6 @@ public class AppointmentHistoryViewModel extends AndroidViewModel {
     private final WebService mWebService;
     private final MutableLiveData<List<PastAppointment>> lstOfPastAppointment;
 
-
-
     public MutableLiveData<List<PastAppointment>> getPastAppointments() {
         return lstOfPastAppointment;
     }
@@ -141,10 +139,7 @@ public class AppointmentHistoryViewModel extends AndroidViewModel {
             }
         });
 
-
     }
-
-
 
 
     public MutableLiveData<Boolean> getProgress() {
@@ -158,6 +153,8 @@ public class AppointmentHistoryViewModel extends AndroidViewModel {
     public void setPastAppointmentList(List<PastAppointment> appointmentList) {
         lstOfPastAppointment.setValue(appointmentList);
     }
+
+
 
     public void setListLoading(Boolean isListLoading) {
         this.isListLoading.setValue(isListLoading);

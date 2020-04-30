@@ -12,8 +12,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.SOURCE)
 public @interface NotificationType {
     String ADMIN_NOTE="6";  // general msg from admin !
-    String NEW_APPOINTMENT_REQUEST="1"; //new  appnt by patient
-    String CANCELLED_APPOINTMENT="2";  //cancelled appnt by patient
+    String NEW_APPOINTMENT_REQUEST="2"; //new  appnt by patient
+    String CANCELLED_APPOINTMENT="3";  //cancelled appnt by patient
     String CHAT_MESSAGE_REVIEVED="5"; // chat msg recieved !
     String PATIENT_WAITING="8";    // during call if doctor is not present...
     String CALL_REMIND_ALERT="9"; // a few minutes before the start of the call!

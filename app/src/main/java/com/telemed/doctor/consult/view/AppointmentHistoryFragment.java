@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -29,6 +31,7 @@ import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 import com.telemed.doctor.consult.viewmodel.AppointmentHistoryViewModel;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.util.CustomTypingEditText;
 import com.telemed.doctor.util.DividerItemDecoration;
@@ -38,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 public class AppointmentHistoryFragment extends Fragment {
+    private final String TAG=AppointmentHistoryFragment.class.getSimpleName();
     private static final int PAGE_SIZE = 5;
     private AppointmentHistoryViewModel mViewModel;
     private RecyclerView rvAppointmentsHistory;
@@ -71,6 +75,14 @@ public class AppointmentHistoryFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization","Bearer "+mAccessToken);
+        mViewModel = ViewModelProviders.of(this).get(AppointmentHistoryViewModel.class);
+        AppointmentRequest in=new AppointmentRequest();
+        in.setPageNumber(currentPage);
+        in.setPageSize(PAGE_SIZE);
+        in.setSearchQuery(mSearchQuery);
+        in.setFilterBy(""); // no need there
+        mViewModel.fetchPastAppointments(mHeaderMap,in);
+       // Toast.makeText(requireActivity(), "onCreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -85,21 +97,9 @@ public class AppointmentHistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AppointmentHistoryViewModel.class);
         initView(v);
         initHistoryRecyclerView(v);
         initObserver();
-
-        AppointmentRequest in=new AppointmentRequest();
-        in.setPageNumber(currentPage);
-        in.setPageSize(PAGE_SIZE);
-        in.setSearchQuery(mSearchQuery);
-        in.setFilterBy(""); // no need there
-
-        mViewModel.fetchPastAppointments(mHeaderMap,in);
-
-
-
     }
 
     private void initView(View v) {
@@ -273,9 +273,29 @@ public class AppointmentHistoryFragment extends Fragment {
         }
 
         @Override
-        public void onItemClickMore(String tag, int pos) {
+        public void onItemMoreClick(PastAppointment model, MenuItem item) {
+            if (item.getItemId()==1){
+                if (mFragmentListener != null ) {
+                    UserInfoWrapper in = new UserInfoWrapper();
+                    in.setPatientId(model.getUserId());
+                    in.setAppointmentId(model.getAppointmentId());
+                    mFragmentListener.showFragment("DoctorDocumentFragment", in);
+                }
+            }
+            if (item.getItemId()==2){
+                if (mFragmentListener != null ) {
+                    mFragmentListener.showFragment("PatientRatingFragment", null);
+                }
+            }
 
+            if (item.getItemId()==3){
+                if (mFragmentListener != null ) {
+                    mFragmentListener.showFragment("MedicalRecordFragment", null);
+                }
+            }
         }
+
+
     };
 
     private void loadMoreItems() {

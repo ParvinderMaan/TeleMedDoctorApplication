@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:id="@+id/view_flipper"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:background="@color/colorBlue">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:id="@+id/view_flipper"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom"
+android:background="@color/colorBlue">
 
 
-    <include
-        android:id="@+id/cl_start_time"
-        layout="@layout/layout_start_time_picker"/>
+<include
+    android:id="@+id/cl_start_time"
+    layout="@layout/layout_start_time_picker"/>
 
-    <include
-        android:id="@+id/cl_end_time"
-        layout="@layout/layout_end_time_picker"/>
+<include
+    android:id="@+id/cl_end_time"
+    layout="@layout/layout_end_time_picker"/>
 
 
 </ViewFlipper>

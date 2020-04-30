@@ -65,6 +65,41 @@ public class SignInResponse {
         @Expose
         private String profilePic;
 
+        @SerializedName("timeZoneId")
+        @Expose
+        private Integer timeZoneId;
+
+        public Integer getTimeZoneId() {
+            return timeZoneId;
+        }
+
+        public void setTimeZoneId(Integer timeZoneId) {
+            this.timeZoneId = timeZoneId;
+        }
+
+        public String getTimeZone() {
+            return timeZone;
+        }
+
+        public void setTimeZone(String timeZone) {
+            this.timeZone = timeZone;
+        }
+
+        public String getTimeZoneCode() {
+            return timeZoneCode;
+        }
+
+        public void setTimeZoneCode(String timeZoneCode) {
+            this.timeZoneCode = timeZoneCode;
+        }
+
+        @SerializedName("timeZone")
+        @Expose
+        private String timeZone;
+        @SerializedName("timeZoneCode")
+        @Expose
+        private String timeZoneCode;
+
         public String getProfilePic() {
             return profilePic;
         }
@@ -133,9 +168,12 @@ public class SignInResponse {
             dest.writeString(this.accessToken);
             dest.writeValue(this.lastScreenId);
             dest.writeValue(this.emailConfirmed);
-            dest.writeValue(this.firstName);
-            dest.writeValue(this.lastName);
-            dest.writeValue(this.profilePic);
+            dest.writeString(this.firstName);
+            dest.writeString(this.lastName);
+            dest.writeString(this.profilePic);
+            dest.writeValue(this.timeZoneId);
+            dest.writeString(this.timeZone);
+            dest.writeString(this.timeZoneCode);
         }
 
         public Data() {
@@ -147,8 +185,11 @@ public class SignInResponse {
             this.lastScreenId = (Integer) in.readValue(Integer.class.getClassLoader());
             this.emailConfirmed = (Boolean) in.readValue(Boolean.class.getClassLoader());
             this.firstName = in.readString();
-            this.lastName =in.readString();
+            this.lastName = in.readString();
             this.profilePic = in.readString();
+            this.timeZoneId = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.timeZone = in.readString();
+            this.timeZoneCode = in.readString();
         }
 
         public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {

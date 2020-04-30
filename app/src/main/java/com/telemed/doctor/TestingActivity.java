@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.telemed.doctor.base.BaseActivity;
+import com.telemed.doctor.notification.NotificationBuilder;
 import com.telemed.doctor.profile.model.Country;
 
 import java.util.List;

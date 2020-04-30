@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     android:clickable="true"
@@ -86,6 +86,8 @@
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
         android:clipToPadding="false"
+        tools:itemCount="5"
+        tools:listitem="@layout/list_item_day_wise_availability"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"

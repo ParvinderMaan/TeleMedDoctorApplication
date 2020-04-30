@@ -6,6 +6,8 @@ import com.telemed.doctor.appointment.model.AppointmentProcessResponse;
 import com.telemed.doctor.consult.model.PastAppointmentResponse;
 import com.telemed.doctor.consult.model.AppointmentRequest;
 import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
+import com.telemed.doctor.document.model.MedicalHistoryRequest;
+import com.telemed.doctor.document.model.MedicalHistoryResponse;
 import com.telemed.doctor.home.model.WelcomeInfoResponse;
 import com.telemed.doctor.medicalrecord.model.MedicalDetailResponse;
 import com.telemed.doctor.medicalrecord.model.MedicalRecordResponse;
@@ -97,7 +99,7 @@ public interface WebService {
     Call<VerificationResponse> attemptVerifyUser(@Body VerficationRequest in);
 
     @Headers({WebUrl.CONTENT_HEADER})
-    @POST(WebUrl.VERIFY_RESETEMAIL)
+    @POST(WebUrl.VERIFY_RESET_EMAIL)
     Call<OTPResponse> attemptResetEmail(@HeaderMap Map<String, String> headers, @Body OTPRequest in);
 
     @Headers({WebUrl.CONTENT_HEADER})
@@ -273,18 +275,27 @@ public interface WebService {
     Call<WelcomeInfoResponse> fetchWelcomeInfo(@HeaderMap Map<String, String> token);
 
 
-
-
-
     @Multipart
     @POST(WebUrl.UPLOAD_CV)
     Call<CvFileUploadResponse> attemptCVUploadFile(@HeaderMap Map<String, String> token,
                                                    @Part MultipartBody.Part imgFile);  // fileData
 
-
     @Multipart
     @POST(WebUrl.UPLOAD_CV)
     Call<CvFileUploadResponse> attemptGovtRegisteredUploadFile(@HeaderMap Map<String, String> token,
-                                                   @Part MultipartBody.Part imgFile, @Part("GovtIssueId") RequestBody info);  // fileData
+                                                               @Part MultipartBody.Part imgFile, @Part("GovtIssueId") RequestBody info);  // fileData
+
+
+    @GET(WebUrl.FETCH_PAST_MEDICAL_HISTORY)
+    Call<MedicalHistoryResponse> fetchPastMedicalHistory(@HeaderMap Map<String, String> token,@Query("AppointmentId") Integer appointmentId);
+
+
+
+    @POST(WebUrl.ADD_PAST_MEDICAL_HISTORY)
+    Call<MedicalHistoryResponse> addPastMedicalHistory(@HeaderMap Map<String, String> mHeaderMap, @Body MedicalHistoryRequest in);
+
+
+    @POST(WebUrl.UPDATE_PAST_MEDICAL_HISTORY)
+    Call<MedicalHistoryResponse> updatePastMedicalHistory(@HeaderMap Map<String, String> mHeaderMap,@Body MedicalHistoryRequest in);
 }
 

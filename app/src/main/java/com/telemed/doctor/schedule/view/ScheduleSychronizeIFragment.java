@@ -266,7 +266,13 @@ public class ScheduleSychronizeIFragment extends Fragment {
 
         Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
         setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
-        ((ScheduleSychronizeFragment)requireParentFragment()).setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
+
+        if(requireParentFragment() instanceof ScheduleSychronizeFragment){
+            ((ScheduleSychronizeFragment)requireParentFragment()).setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
+        }
+        if(requireParentFragment() instanceof DeleteAvailabilityFragment){
+            ((DeleteAvailabilityFragment)requireParentFragment()).setMonthName(ScheduleSychronizeFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
+        }
 
         calendarObj = Calendar.getInstance();
        //calendarObj.add(Calendar.DAY_OF_MONTH, -1);

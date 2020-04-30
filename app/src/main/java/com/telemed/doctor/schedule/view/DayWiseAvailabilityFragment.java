@@ -39,7 +39,6 @@ import java.util.Locale;
 
 public class DayWiseAvailabilityFragment extends Fragment {
     private final String TAG= DayWiseAvailabilityFragment.class.getSimpleName();
-
     private DayWiseAvailabiltyViewModel mViewModel;
     private RecyclerView rvTimeSlot;
     private ImageButton ibtnClose,ibtnBack;
@@ -221,10 +220,10 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
 
     public void refreshUi() {
-        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
+     //   mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
         // it means we have to change previous fragment too !!! checky...
-        if(mFragmentListener!=null){
-            mFragmentListener.refreshFragment("ScheduleFragment");
-        }
+//        if(mFragmentListener!=null){
+//            mFragmentListener.refreshFragment("ScheduleFragment");
+//        }
     }
 }

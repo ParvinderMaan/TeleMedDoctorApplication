@@ -53,4 +53,14 @@
         android:id="@+id/pb_file_pick"
         layout="@layout/layout_progress_bar"/>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty_view"
+        android:text="No file exist"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorBlue"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </RelativeLayout>

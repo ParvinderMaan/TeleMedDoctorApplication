@@ -1,14 +1,17 @@
 package com.telemed.doctor;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.telemed.doctor.base.BaseActivity;
 import com.telemed.doctor.dialog.SignUpSuccessDialogFragment;
@@ -30,12 +33,8 @@ import com.telemed.doctor.splash.SplashFragment;
 
 public class RouterActivity extends BaseActivity implements RouterFragmentSelectedListener {
     private final String TAG = RouterActivity.class.getSimpleName();
-
     // to support vector icon for lower versions
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
+    static { AppCompatDelegate.setCompatVectorFromResourcesEnabled(true); }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
         switch (tag) {
             case "SplashFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
+                         .add(R.id.fl_container, SplashFragment.newInstance(), "SplashFragment")
                          .commitAllowingStateLoss(); // commitAllowingStateLoss
 //                       .addToBackStack("SplashFragment")
 
@@ -160,10 +159,9 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     // 3,4,5...---> Abort Signup
     @Override
     public void onBackPressed() {
-
-        switch (getActiveFragmentTag()) {
+        switch (getTopFragmentName()) {
             case "SignInFragment":
-                finish();
+                onBackPressDoubleClick();
                 break;
 
             case "SignUpIFragment":
@@ -203,6 +201,28 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
 
 
     }
+    private void onBackPressDoubleClick() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Click back again to exit", Toast.LENGTH_SHORT).show();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+                handler.removeCallbacks(this);
+            }
+        }, 2000);
+
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void popTillFragment(String tag, int flag) {
@@ -225,7 +245,6 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     @Override
     public void startActivity(String tag, Object payload) {
         if (tag.equals("HomeActivity")) {
-
             Intent in=new Intent(this, HomeActivity.class);
             in.putExtra("KEY_",((UserInfoWrapper) payload));
             startActivity(in);
@@ -256,7 +275,7 @@ public class RouterActivity extends BaseActivity implements RouterFragmentSelect
     }
 
 
-    public String getActiveFragmentTag() {
+    public String getTopFragmentName() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return "";
         }

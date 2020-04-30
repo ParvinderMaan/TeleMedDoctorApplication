@@ -43,6 +43,7 @@ public class FilePickerActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private NormalFilePickAdapter mAdapter;
     private ProgressBar mProgressBar;
+    private TextView tvEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +98,20 @@ public class FilePickerActivity extends BaseActivity {
                 list.get(index).setSelected(true);
             }
         }
-
         mAdapter.refresh(list);
+
+        if(list.isEmpty()){
+           tvEmptyView.setVisibility(View.VISIBLE);
+        }else {
+            tvEmptyView.setVisibility(View.GONE);
+        }
+
     }
 
     private void initView() {
-        mProgressBar = (ProgressBar) findViewById(R.id.pb_file_pick);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_file_pick);
+        tvEmptyView = findViewById(R.id.tv_empty_view);
+        mProgressBar = findViewById(R.id.pb_file_pick);
+        mRecyclerView = findViewById(R.id.rv_file_pick);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerListItemDecoration(this,

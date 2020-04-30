@@ -19,9 +19,8 @@ import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
 public class PatientRatingFragment extends Fragment {
      private ImageButton ibtnRatingStarOne, ibtnRatingStarTwo, ibtnRatingStarThree,
              ibtnRatingStarFour, ibtnRatingStarFive;
-     private RatingBar mRatingBar;
      private ImageButton ibtnClose;
-    private HomeFragmentSelectedListener mFragmentListener;
+     private HomeFragmentSelectedListener mFragmentListener;
 
     public  static PatientRatingFragment newInstance() {
        return new PatientRatingFragment();
@@ -40,17 +39,14 @@ public class PatientRatingFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
-          initView(v);
-
-
-
+        initView(v);
 
         ibtnClose=v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
-//            if(mFragmentListener!=null){
-//                mFragmentListener.popTillFragment("MyConsultFragment",0);
-//            }
-                  requireActivity().finish();
+            if(mFragmentListener!=null){
+                mFragmentListener.popTopMostFragment();
+            }
+                 // requireActivity().finish();
         });
     }
 

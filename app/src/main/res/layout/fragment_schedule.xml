@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
@@ -14,13 +13,12 @@
     <!--    header layout-->
     <RelativeLayout
         android:id="@+id/ll_header"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingTop="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_header"
@@ -30,10 +28,14 @@
             android:text="@string/title_my_schedule"
             android:textColor="@color/colorBlue"
             android:textSize="25sp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/ibtn_back"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -47,54 +49,48 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_cross_blue" />
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar" />
+
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
-    <!-- middle layout-->
 
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/layout_progress_bar" />
 
-    <include
-        android:id="@+id/tv_alert_view"
-        layout="@layout/layout_top_alert_box" />
-    <!--    body -->
-
-    <Button
-        android:id="@+id/btn_synchronize_schedule"
+    <TextView
+        android:id="@+id/tv_cal_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_header"
-        android:layout_centerHorizontal="true"
-        android:animateLayoutChanges="true"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Select a day to check consultations"
+        android:textColor="@color/colorBlue"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/rounded_background_i"
-        android:drawablePadding="@dimen/_10sdp"
-        android:minHeight="0dp"
-        android:paddingStart="@dimen/_15sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_15sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:text="Synchronize Schedule"
-        android:textAllCaps="false"
-        android:textColor="@drawable/selector_text_blue"
-        android:textStyle="bold"
-        app:drawableRightCompat="@drawable/ic_arrow_right" />
+        app:layout_constraintBottom_toTopOf="@+id/ll_body"
+        app:layout_constraintEnd_toEndOf="@+id/ll_body"
+        app:layout_constraintStart_toStartOf="@+id/ll_body" />
+
+    <!--    body -->
 
     <LinearLayout
         android:id="@+id/ll_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_synchronize_schedule"
+        android:layout_below="@+id/ll_header"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/rounded_background_ii"
-        android:orientation="vertical">
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/rounded_background_xiii"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <RelativeLayout
             android:id="@+id/rl_calandar_header"
             android:layout_width="match_parent"
@@ -119,7 +115,7 @@
                 android:layout_toEndOf="@+id/ibtn_previous"
                 android:text="----"
                 android:textAlignment="center"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorLightWhite" />
 
             <ImageButton
                 android:id="@+id/ibtn_next"
@@ -130,29 +126,29 @@
                 android:src="@drawable/ic_arrow_right_blue" />
 
             <View
-                android:layout_below="@+id/tv_month_name"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_width="match_parent"
-                android:background="@color/colorGrey"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_below="@+id/tv_month_name"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@color/colorGrey" />
         </RelativeLayout>
 
         <!--    calendar layout -->
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_300sdp" />
+            android:layout_height="@dimen/_280sdp" />
     </LinearLayout>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlue"
-        android:orientation="horizontal">
+        android:background="@color/colorBlue">
 
         <TextView
             android:id="@+id/textView11"
@@ -188,7 +184,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/custom_circle_iv"
             android:gravity="center"
-            android:text="New Request"
+            android:text="Consults"
             android:textColor="@color/colorLightWhite"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -197,5 +193,31 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_synchronize_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_body"
+        android:layout_centerHorizontal="true"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/rounded_background_i"
+        android:drawablePadding="@dimen/_10sdp"
+        android:minHeight="0dp"
+        android:elevation="@dimen/_5sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:text="Update My Availability"
+        android:textAllCaps="false"
+        android:textColor="@drawable/selector_text_blue"
+        android:textStyle="bold"
+        app:drawableRightCompat="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_body"
+        app:layout_constraintEnd_toEndOf="@+id/ll_body"
+        app:layout_constraintStart_toStartOf="@+id/ll_body"
+        app:layout_constraintTop_toBottomOf="@+id/ll_body" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 <!--    app:mcv_selectionColor="@android:color/transparent"-->

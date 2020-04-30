@@ -21,6 +21,7 @@ import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.RouterFragmentSelectedListener;
 
 import java.lang.ref.WeakReference;
+import java.util.TimeZone;
 
 import static com.telemed.doctor.helper.SharedPrefHelper.KEY_SIGN_IN;
 
@@ -31,6 +32,7 @@ public class SplashFragment extends BaseFragment {
     private SharedPrefHelper mSharedPrefHelper;
     private boolean isUserSignIn;
     private WeakHandler mWeakHandler;
+    private SplashViewModel mViewModel;
 
     public static SplashFragment newInstance() {
         return new SplashFragment();
@@ -57,13 +59,25 @@ public class SplashFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(SplashViewModel.class);
         super.onViewCreated(view, savedInstanceState);
         mWeakHandler=new WeakHandler(this);
         mWeakHandler.sendEmptyMessageDelayed(1, SPLASH_TIME_OUT);
-
+        initObsever();
         /*
-           check googleplay services .....
+               check googleplay services .....
          */
+    }
+
+    private void initObsever() {
+
+        mViewModel.getShowActivity()
+                .observe(getViewLifecycleOwner(),
+                        showActivity -> mFragmentListener.startActivity(showActivity, null));
+
+        mViewModel.getShowFragment()
+                .observe(getViewLifecycleOwner(),
+                        showFragment ->mFragmentListener.showFragment(showFragment, null));
 
     }
 
@@ -79,9 +93,11 @@ public class SplashFragment extends BaseFragment {
             if (fragment.get().mFragmentListener != null) {
 
                 if (!fragment.get().isUserSignIn) {
-                    fragment.get().mFragmentListener.showFragment("SignInFragment", null);
+//                    fragment.get().mFragmentListener.showFragment("SignInFragment", null);
+                    fragment.get().mViewModel.showFragment("SignInFragment");
                 } else {
-                    fragment.get().mFragmentListener.startActivity("HomeActivity", null);
+//                    fragment.get().mFragmentListener.startActivity("HomeActivity", null);
+                    fragment.get().mViewModel.showActivity("HomeActivity");
                 }
             }
         }

@@ -7,20 +7,24 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
@@ -32,6 +36,8 @@ import com.telemed.doctor.consult.model.UpcomingAppointmentResponse;
 import com.telemed.doctor.consult.viewmodel.MyConsultViewModel;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.setting.model.UserSettingRequest;
+import com.telemed.doctor.signup.model.UserInfoWrapper;
 import com.telemed.doctor.util.CustomAlertTextView;
 import com.telemed.doctor.util.DividerItemDecoration;
 import com.telemed.doctor.videocall.model.VideoCallDetail;
@@ -78,7 +84,14 @@ public class MyConsultFragment extends Fragment {
         mHeaderMap.put("Authorization","Bearer "+mAccessToken);
         mUpComingAppointmentAdapter = new AppointmentUpcomingAdapter();
         mPastAppointmentAdapter = new AppointmentHistoryAdapter();
-
+        mViewModel = ViewModelProviders.of(this).get(MyConsultViewModel.class);
+        AppointmentRequest in=new AppointmentRequest();
+        in.setPageNumber(1);
+        in.setPageSize(3);
+        in.setSearchQuery("");  // no need there
+        in.setFilterBy(""); // no need there
+        mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
+        mViewModel.fetchPastAppointments(mHeaderMap,in);
     }
 
 
@@ -91,20 +104,17 @@ public class MyConsultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MyConsultViewModel.class);
         initView(v);
         initUpcomingRecyclerView(v);
         initHistoryAppointmentRecyclerView(v);
         initObserver();
 
-        AppointmentRequest in=new AppointmentRequest();
-        in.setPageNumber(1);
-        in.setPageSize(3);
-        in.setSearchQuery("");  // no need there
-        in.setFilterBy(""); // no need there
-        mViewModel.fetchUpcomingAppointments(mHeaderMap,in);
-        mViewModel.fetchPastAppointments(mHeaderMap,in);
-        
+
+
+//        Toast.makeText(requireActivity(), TAG+" onViewCreated ", Toast.LENGTH_SHORT).show();
+//        Log.e(TAG,mViewModel.toString());
+
+
     }
 
     private void initView(View v) {
@@ -214,7 +224,7 @@ public class MyConsultFragment extends Fragment {
                     }
                     if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
+                        mFragmentListener.startActivity("RouterActivity", null, null);
                     }
                     break;
 
@@ -241,7 +251,7 @@ public class MyConsultFragment extends Fragment {
                     }
                     if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
+                        mFragmentListener.startActivity("RouterActivity", null, null);
                     }
                     break;
             }
@@ -375,11 +385,35 @@ private AppointmentHistoryAdapter.OnItemClickListener mHisOnItemClickListener=ne
 
         }
 
-        @Override
-        public void onItemClickMore(String tag, int pos) {
-
+    @Override
+    public void onItemMoreClick(PastAppointment model, MenuItem item) {
+        if (item.getItemId()==1){
+            if (mFragmentListener != null ) {
+                UserInfoWrapper in = new UserInfoWrapper();
+                in.setPatientId(model.getUserId());
+                in.setAppointmentId(model.getAppointmentId());
+                mFragmentListener.showFragment("DoctorDocumentFragment", in);
+            }
         }
-    };
+        if (item.getItemId()==2){
+            if (mFragmentListener != null ) {
+                mFragmentListener.showFragment("PatientRatingFragment", null);
+            }
+        }
+
+        if (item.getItemId()==3){
+            if (mFragmentListener != null ) {
+                mFragmentListener.showFragment("MedicalRecordFragment", model.getUserId());
+            }
+        }
+    }
+
+};
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
 
 

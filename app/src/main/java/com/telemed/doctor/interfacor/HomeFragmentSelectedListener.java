@@ -6,7 +6,7 @@ public interface HomeFragmentSelectedListener {
     void popTillFragment(String tag, int flag);
     void popTopMostFragment();
     void showDialog(String tag);
-    void startActivity(String tag, Object object);
+    void startActivity(String showActivity, String showFragment, Object payload);
     void refreshFragment(String tag);
     void hideSoftKeyboard();
 

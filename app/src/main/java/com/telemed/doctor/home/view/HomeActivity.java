@@ -8,10 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.telemed.doctor.DoctorDocumentFragment;
+import com.telemed.doctor.document.DoctorDocumentFragment;
 import com.telemed.doctor.PatientRatingFragment;
 import com.telemed.doctor.R;
 import com.telemed.doctor.RouterActivity;
@@ -34,7 +35,9 @@ import com.telemed.doctor.profile.view.OneTimeFragment;
 import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.appointment.view.AppointmentConfirmIFragment;
+import com.telemed.doctor.schedule.model.TimeSlotModel;
 import com.telemed.doctor.schedule.view.DayWiseAvailabilityFragment;
+import com.telemed.doctor.schedule.view.DeleteAvailabilityFragment;
 import com.telemed.doctor.schedule.view.ScheduleFragment;
 import com.telemed.doctor.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
@@ -49,14 +52,10 @@ import com.telemed.doctor.AppointmentSummaryFragment;
 import com.telemed.doctor.videocall.view.VideoCallFragment;
 import com.telemed.doctor.videocall.VideoCallTriggerFragment;
 
-//, LifecycleObserver, LifecycleOwner
 public class HomeActivity extends BaseActivity implements HomeFragmentSelectedListener {
-
+    private final String TAG= HomeActivity.class.getSimpleName();
     // to support vector icon for lower versions
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
+    static { AppCompatDelegate.setCompatVectorFromResourcesEnabled(true); }
     private CustomAlertTextView tvAlertView;
     private String mAccessToken;
 
@@ -65,7 +64,18 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-//        Toast.makeText(getApplicationContext(), "onNewIntent callled..", Toast.LENGTH_SHORT).show();
+     // Toast.makeText(getApplicationContext(), "onNewIntent callled.."+intent.getStringExtra("KEY_WHICH_FRAGMENT"), Toast.LENGTH_SHORT).show();
+
+        if (intent != null && intent.getParcelableExtra("KEY_") != null) {
+//            Bundle bundle = getIntent().getBundleExtra("KEY_");
+            TimeSlotModel model=intent.getParcelableExtra("KEY_");
+            Log.e(TAG,model.toString());
+            String showFragmentName=getIntent().getStringExtra("KEY_WHICH_FRAGMENT");
+            switch (showFragmentName){
+                case "AppointmentConfirmIFragment": showFragment("AppointmentConfirmIFragment",model);
+            }
+        }
+
     }
 
     @Override
@@ -73,19 +83,16 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         super.onCreate(savedInstanceState);
         hideStatusBar();
         setContentView(R.layout.activity_home);
-      // getLifecycle().addObserver(this);
 //-------------------------------------------------------------------------------------------------
         registerReceiver(mBroadcastReceiver, intentFilter);
 //-------------------------------------------------------------------------------------------------
 
-
 //-------------------------------------------------------------------------------------------------
         tvAlertView = findViewById(R.id.tv_alert_view);
 //-------------------------------------------------------------------------------------------------
-        if(getIntent()!=null){
+        if (getIntent() != null) {
 
-
-            if (getIntent().getParcelableExtra("KEY_")!=null) {   // fresh --->
+            if (getIntent().getParcelableExtra("KEY_") != null) {   // fresh --->
                 UserInfoWrapper infoWrap = getIntent().getParcelableExtra("KEY_");
                 mAccessToken = infoWrap.getAccessToken();
                 String firstName = infoWrap.getFirstName();
@@ -99,58 +106,43 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 mHelper.write(SharedPrefHelper.KEY_SIGN_IN, true);
 //-------------------------------------------------------------------------------------------------
                 showFragment("HomeFragment", null);
-              //  Toast.makeText(getApplicationContext(), "fresh login..", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "fresh login..", Toast.LENGTH_SHORT).show();
 //-------------------------------------------------------------------------------------------------
                 return;
-            }  // alive with notification
-            else if (getIntent().getStringExtra("KEY_WHICH_FRAGMENT")!=null) {
+            }  // alive it with notification
+            else if (getIntent().getStringExtra("KEY_WHICH_FRAGMENT") != null) {
                // Toast.makeText(getApplicationContext(), "NEW FUNCTIONALITY callled..", Toast.LENGTH_SHORT).show();
                 showFragment("HomeFragment", null);
-              //  showFragment("DayWiseAvailabilityFragment",(Object) "2020-03-28");
+                //  showFragment("DayWiseAvailabilityFragment",(Object) "2020-03-28");
+//                String fragmentName=getIntent().getStringExtra("KEY_WHICH_FRAGMENT");
+//                switch (fragmentName){
+//                    case "AppointmentConfirmIFragment":
+//                        showFragment("HomeFragment", null);
+//                        TimeSlotModel model=getIntent().getParcelableExtra("KEY_");
+//                        showFragment("AppointmentConfirmIFragment",model);
+//                        break;
+//                    default:
+//                        showFragment("HomeFragment", null);
+//                }
+
                 return;
             }
             else {   // already login--->
                 SharedPrefHelper mHelper = ((TeleMedApplication) getApplicationContext()).getSharedPrefInstance();
                 mAccessToken = mHelper.read(SharedPrefHelper.KEY_ACCESS_TOKEN, "");
                 showFragment("HomeFragment", null);
-              //  Toast.makeText(getApplicationContext(), "already login ..", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), "already login .."+getIntent().getStringExtra("KEY_WHICH_FRAGMENT"), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
-
-
-//-------------------------------------------------------------------------------------------------
-//            getSupportFragmentManager().beginTransaction()
-//                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-//                    .add(R.id.fl_container, HomeFragment.newInstance(), "HomeFragment")
-//                    .add(R.id.fl_container, ScheduleFragment.newInstance(),"ScheduleFragment")
-//                    .add(R.id.fl_container, DayWiseAvailabilityFragment.newInstance((Object) "2020-03-28"), "DayWiseAvailabilityFragment")
-//                    .addToBackStack("DayWiseAvailabilityFragment")
-//                    .commit();
-//-------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
 
     // Note : take care of Toolbar presence
     protected void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-//-------------------------------------------------------------------------------------------------
 
     @Override
     public void onBackPressed() {
@@ -172,12 +164,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Click back again to exit", Toast.LENGTH_SHORT).show();
 
-        Handler handler=new Handler();
+        Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
                 handler.removeCallbacks(this);
             }
         }, 2000);
@@ -185,16 +177,13 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     }
     boolean doubleBackToExitPressedOnce = false;
 
-
-
-    //-------------------------------------------------------------------------------------------------
-
     @Override
     public void showFragment(String tag, Object payload) {
         switch (tag) {
             case "HomeFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fl_container, HomeFragment.newInstance(), "HomeFragment")
+//                      .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, HomeFragment.newInstance(), "HomeFragment")
                         .addToBackStack("HomeFragment")
                         .commit();
                 break;
@@ -202,7 +191,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ProfileFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ProfileFragment.newInstance(),"ProfileFragment")
+                        .add(R.id.fl_container, ProfileFragment.newInstance(), "ProfileFragment")
                         .addToBackStack("ProfileFragment")
                         .commit();
                 break;
@@ -210,7 +199,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "MyConsultFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MyConsultFragment.newInstance(),"MyConsultFragment")
+                        .replace(R.id.fl_container, MyConsultFragment.newInstance(), "MyConsultFragment")
                         .addToBackStack("MyConsultFragment")
                         .commit();
                 break;
@@ -218,7 +207,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "MyDashboardFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MyDashboardFragment.newInstance(),"MyDashboardFragment")
+                        .add(R.id.fl_container, MyDashboardFragment.newInstance(), "MyDashboardFragment")
                         .addToBackStack("MyDashboardFragment")
                         .commit();
                 break;
@@ -226,7 +215,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "NotificationFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, NotificationFragment.newInstance(),"NotificationFragment")
+                        .add(R.id.fl_container, NotificationFragment.newInstance(), "NotificationFragment")
                         .addToBackStack("NotificationFragment")
                         .commit();
                 break;
@@ -234,7 +223,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "SettingFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, SettingFragment.newInstance(),"SettingFragment")
+                        .add(R.id.fl_container, SettingFragment.newInstance(), "SettingFragment")
                         .addToBackStack("SettingFragment")
                         .commit();
                 break;
@@ -242,26 +231,23 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ScheduleFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ScheduleFragment.newInstance(),"ScheduleFragment")
+                        .replace(R.id.fl_container, ScheduleFragment.newInstance(), "ScheduleFragment")
                         .addToBackStack("ScheduleFragment")
                         .commit();
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.fl_container, MyScheduleDemoFragment.newInstance())
-//                        .addToBackStack("MyScheduleDemoFragment")
-//                        .commit();
+
                 break;
 
             case "VideoCallTriggerFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, VideoCallTriggerFragment.newInstance(),"VideoCallTriggerFragment")
+                        .add(R.id.fl_container, VideoCallTriggerFragment.newInstance(), "VideoCallTriggerFragment")
                         .addToBackStack("VideoCallTriggerFragment")
                         .commit();
                 break;
             case "VideoCallFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, VideoCallFragment.newInstance((Object)payload),"VideoCallFragment")
+                        .add(R.id.fl_container, VideoCallFragment.newInstance((Object) payload), "VideoCallFragment")
                         .addToBackStack("VideoCallFragment")
                         .commit();
                 break;
@@ -269,7 +255,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "TermAndConditionFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, TermAndConditionFragment.newInstance(),"TermAndConditionFragment")
+                        .add(R.id.fl_container, TermAndConditionFragment.newInstance(), "TermAndConditionFragment")
                         .addToBackStack("TermAndConditionFragment")
                         .commit();
                 break;
@@ -277,7 +263,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ChangePasswordFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ChangePasswordFragment.newInstance(),"ChangePasswordFragment")
+                        .add(R.id.fl_container, ChangePasswordFragment.newInstance(), "ChangePasswordFragment")
                         .addToBackStack("ChangePasswordFragment")
                         .commit();
                 break;
@@ -285,7 +271,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "AppointmentConfirmIFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, AppointmentConfirmIFragment.newInstance((Object)payload),"AppointmentConfirmIFragment")
+                        .replace(R.id.fl_container, AppointmentConfirmIFragment.newInstance((Object) payload), "AppointmentConfirmIFragment")
                         .addToBackStack("AppointmentConfirmIFragment")
                         .commit();
                 break;
@@ -293,7 +279,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "PatientGalleryFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, PatientGalleryFragment.newInstance(),"PatientGalleryFragment")
+                        .add(R.id.fl_container, PatientGalleryFragment.newInstance(), "PatientGalleryFragment")
                         .addToBackStack("PatientGalleryFragment")
                         .commit();
                 break;
@@ -301,7 +287,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ChatFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ChatFragment.newInstance(),"ChatFragment")
+                        .add(R.id.fl_container, ChatFragment.newInstance(), "ChatFragment")
                         .addToBackStack("ChatFragment")
                         .commit();
                 break;
@@ -309,7 +295,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "DoctorDocumentFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, DoctorDocumentFragment.newInstance(),"DoctorDocumentFragment")
+                        .add(R.id.fl_container, DoctorDocumentFragment.newInstance(payload), "DoctorDocumentFragment")
                         .addToBackStack("DoctorDocumentFragment")
                         .commit();
                 break;
@@ -317,7 +303,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "ScheduleSychronizeFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ScheduleSychronizeFragment.newInstance(),"ScheduleSychronizeFragment")
+                        .replace(R.id.fl_container, ScheduleSychronizeFragment.newInstance(), "ScheduleSychronizeFragment")
                         .addToBackStack("ScheduleSychronizeFragment")
                         .commit();
                 break;
@@ -325,7 +311,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "AppointmentSummaryFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, AppointmentSummaryFragment.newInstance(),"AppointmentSummaryFragment")
+                        .add(R.id.fl_container, AppointmentSummaryFragment.newInstance(), "AppointmentSummaryFragment")
                         .addToBackStack("AppointmentSummaryFragment")
                         .commit();
                 break;
@@ -333,14 +319,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "PatientRatingFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, PatientRatingFragment.newInstance(),"PatientRatingFragment")
+                        .add(R.id.fl_container, PatientRatingFragment.newInstance(), "PatientRatingFragment")
                         .addToBackStack("PatientRatingFragment")
                         .commit();
                 break;
             case "MedicalRecordFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MedicalRecordFragment.newInstance((Object)payload),"MedicalRecordFragment")
+                        .add(R.id.fl_container, MedicalRecordFragment.newInstance((Object) payload), "MedicalRecordFragment")
                         .addToBackStack("MedicalRecordFragment")
                         .commit();
                 break;
@@ -348,14 +334,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "MedicalDetailFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, MedicalDetailFragment.newInstance((Object)payload),"MedicalDetailFragment")
+                        .add(R.id.fl_container, MedicalDetailFragment.newInstance((Object) payload), "MedicalDetailFragment")
                         .addToBackStack("MedicalDetailFragment")
                         .commit();
                 break;
             case "ProfileDocumentFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ProfileDocumentFragment.newInstance(),"ProfileDocumentFragment")
+                        .add(R.id.fl_container, ProfileDocumentFragment.newInstance(), "ProfileDocumentFragment")
                         .addToBackStack("ProfileDocumentFragment")
                         .commit();
 
@@ -363,14 +349,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
             case "UpdateEmailFragment":
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .add(R.id.fl_container, ChangeEmailFragment.newInstance((Object)payload),"UpdateEmailFragment")
+                        .add(R.id.fl_container, ChangeEmailFragment.newInstance((Object) payload), "UpdateEmailFragment")
                         .addToBackStack("UpdateEmailFragment")
                         .commit();
                 break;
 
             case "OneTimeFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, OneTimeFragment.newInstance((Object) payload), "OneTimeFragment")
                         .addToBackStack("OneTimeFragment")
                         .commit();
@@ -378,8 +364,8 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "DayWiseAvailabilityFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, DayWiseAvailabilityFragment.newInstance((Object) payload), "DayWiseAvailabilityFragment")
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, DayWiseAvailabilityFragment.newInstance((Object) payload), "DayWiseAvailabilityFragment")
                         .addToBackStack("DayWiseAvailabilityFragment")
                         .commit();
                 break;
@@ -387,8 +373,8 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "WeekDaysScheduleFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                        .add(R.id.fl_container, WeekDaysScheduleFragment.newInstance((Object) payload), "WeekDaysScheduleFragment")
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, WeekDaysScheduleFragment.newInstance((Object) payload), "WeekDaysScheduleFragment")
                         .addToBackStack("WeekDaysScheduleFragment")
                         .commit();
                 break;
@@ -396,7 +382,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentUpcomingFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, AppointmentUpcomingFragment.newInstance((Object) payload), "AppointmentUpcomingFragment")
                         .addToBackStack("AppointmentUpcomingFragment")
                         .commit();
@@ -404,9 +390,18 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentHistoryFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, AppointmentHistoryFragment.newInstance((Object) payload), "AppointmentHistoryFragment")
                         .addToBackStack("AppointmentHistoryFragment")
+                        .commit();
+                break;
+
+
+            case "DeleteAvailabilityFragment":
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, DeleteAvailabilityFragment.newInstance(), "DeleteAvailabilityFragment")
+                        .addToBackStack("DeleteAvailabilityFragment")
                         .commit();
                 break;
 
@@ -417,14 +412,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     @Override
     public void popTillFragment(String tag, int flag) {
         getSupportFragmentManager().popBackStack(tag, flag);
-
     }
 
 
     @Override
     public void popTopMostFragment() {
-        getSupportFragmentManager().popBackStackImmediate();
-
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override
@@ -436,33 +429,35 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     }
 
     @Override
-    public void startActivity(String tag, Object object) {
-//    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    public void startActivity(String showActivity, String showFragment, Object payload) {
 
-        if (tag.equals("RouterActivity")) {
-            Intent intent = new Intent(this, RouterActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("KEY_SIGN_OUT", 1);
-            intent.putExtras(b);
-            startActivity(intent);
-            finish();
-
-        } else if (tag.equals("DeviceSettingActivity")) {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Uri uri = Uri.fromParts("package", getPackageName(), null);
-            intent.setData(uri);
-            startActivity(intent);
-
-        } else if (tag.equals("SecondaryActivity")) {
-            String whichFragment = (String) object;
-            Intent intent = new Intent(this, SecondaryActivity.class);
-            Bundle b = new Bundle();
-            b.putString("TAG_FRAGMENT", whichFragment);
-            intent.putExtras(b);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+        switch (showActivity) {
+            case "RouterActivity":
+                Intent intent = new Intent(this, RouterActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("KEY_SIGN_OUT", 1);
+                intent.putExtras(b);
+                startActivity(intent);
+                finish();
+                break;
+            case "DeviceSettingActivity":
+                Intent intent2 = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent2.setData(uri);
+                startActivity(intent2);
+                break;
+            case "SecondaryActivity":
+                Intent intent3 = new Intent(this, SecondaryActivity.class);
+                Bundle bb = new Bundle();
+                bb.putString("TAG_FRAGMENT", showFragment);
+                bb.putParcelable("TAG_DATA", (UserInfoWrapper)payload);
+                intent3.putExtras(bb);
+                startActivity(intent3);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                break;
         }
+
     }
 
     @Override
@@ -493,11 +488,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
 
             case "ScheduleFragment": {
-                ScheduleFragment fragment = (ScheduleFragment) getSupportFragmentManager().findFragmentByTag("ScheduleFragment");
+                ScheduleFragment fragment = (ScheduleFragment) getSupportFragmentManager()
+                        .findFragmentByTag("ScheduleFragment");
                 if (fragment != null)
                     fragment.refreshUi();
             }
-                break;
+            break;
 
             case "VideoCallTriggerFragment":
 
@@ -556,11 +552,12 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
 
             case "DayWiseAvailabilityFragment": {
-                DayWiseAvailabilityFragment fragment = (DayWiseAvailabilityFragment) getSupportFragmentManager().findFragmentByTag("DayWiseAvailabilityFragment");
+                DayWiseAvailabilityFragment fragment = (DayWiseAvailabilityFragment) getSupportFragmentManager()
+                        .findFragmentByTag("DayWiseAvailabilityFragment");
                 if (fragment != null)
                     fragment.refreshUi();
             }
-                break;
+            break;
 
 
             case "WeekDaysScheduleFragment":
@@ -582,22 +579,17 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
     }
 
     @Override
-    public void hideSoftKeyboard() {
-
-
-    }
+    public void hideSoftKeyboard() { }
 
     @Override
     public void signOut() {
-
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment");
         if (fragment != null && fragment.isVisible()) {
             fragment.attemptSignOut(mAccessToken);
         }
     }
-//-------------------------------------------------------------------------------------------------
 
-    // broadcaster reciever to detect internet throughout the activity
+    // detect internet throughout
     private final IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
     private InternetBroadcastReceiver mBroadcastReceiver = new InternetBroadcastReceiver() {
         @Override
@@ -612,41 +604,13 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
         }
     };
-//-------------------------------------------------------------------------------------------------
-
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-//    void start() {
-//        Toast.makeText(getApplicationContext(), "onStartEvent", Toast.LENGTH_SHORT).show();
-//
-//
-//    }
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-//    void stop(){
-//        Toast.makeText(getApplicationContext(), "onStopEvent", Toast.LENGTH_SHORT).show();
-//
-//    }
-//
-//    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-//    void destroy(){
-//        Toast.makeText(getApplicationContext(), "destroyEvent", Toast.LENGTH_SHORT).show();
-//
-//
-//    }
-
-
-
 
 
     @Override
     protected void onDestroy() {
-//-------------------------------------------------------------------------------------------------
-       if(mBroadcastReceiver!=null){
-           unregisterReceiver(mBroadcastReceiver);
-       }
-
-//-------------------------------------------------------------------------------------------------
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+        }
         super.onDestroy();
     }
 }

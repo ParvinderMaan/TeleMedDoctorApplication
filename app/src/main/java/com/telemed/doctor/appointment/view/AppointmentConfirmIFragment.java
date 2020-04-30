@@ -104,8 +104,9 @@ public class AppointmentConfirmIFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AppointmentConfirmIViewModel.class);
+        super.onViewCreated(v, savedInstanceState);
+
 
         initView(v);
         initListener();
@@ -243,9 +244,9 @@ public class AppointmentConfirmIFragment extends Fragment {
                             tvConfirmAppointment.setVisibility(View.GONE);
                             tvCancelAppointment.setVisibility(View.VISIBLE);
                             tvDenyAppointment.setVisibility(View.GONE);
-                            if(mFragmentListener!=null){
-                                mFragmentListener.refreshFragment("DayWiseAvailabilityFragment");
-                            }
+//                            if(mFragmentListener!=null){
+//                                mFragmentListener.refreshFragment("DayWiseAvailabilityFragment");
+//                            }        by me @26 April !!
                         }
                     }
 

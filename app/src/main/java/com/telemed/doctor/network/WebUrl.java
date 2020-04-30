@@ -16,6 +16,9 @@ public interface WebUrl {
 
     // child urls
     String SIGN_IN ="Auth/Login";
+    String SIGN_OUT ="Auth/Logout";
+
+    // sing up..
     String SIGN_UP_I ="Auth/RegisterDoctor";
     String SIGN_UP_II ="Auth/AddDoctorPersonalInfo";
     String SIGN_UP_III ="Auth/AddDoctorProfessionalInfo";
@@ -23,11 +26,13 @@ public interface WebUrl {
     String SIGN_UP_V ="Auth/DoctorFinalRegistration";
     String SIGN_UP_VI ="Auth/RegisterDoctor";
 
+    // password
     String FORGOT_PASSWORD="Auth/ForgotPassword";
-    String SIGN_OUT ="Auth/Logout";
+    String RESET_PASSWORD = "Auth/ResetPassword";
+    String CHANGE_PASSWORD ="Auth/ChangePassword";
 
 
-    String VERIFY_RESETEMAIL = "Auth/ResetEmail";
+    String VERIFY_RESET_EMAIL = "Auth/ResetEmail";
 
     String VERIFY_USER = "Auth/VerifyUser";
     String RESEND_OTP = "Auth/ResendCode";
@@ -38,11 +43,6 @@ public interface WebUrl {
     String UPLOAD_FILE = "Auth/AddDoctorDocument";
     String DELETE_FILE = "Auth/DeleteDoctorDocument";
     String UPLOAD_CV="Auth/UpdateDoctorCVGovtIssueRecord";
-
-
-
-    String RESET_PASSWORD = "Auth/ResetPassword";
-    String CHANGE_PASSWORD ="Auth/ChangePassword" ;
 
     // profile
     String CHANGE_EMAIL = "Auth/ChangeEmail";
@@ -55,7 +55,7 @@ public interface WebUrl {
     String UPDATE_PROFESSIONAL_PROFILE_INFO="Doctor/UpdateDoctorProfessionalInfo";
     String UPDATE_BASIC_PROFILE_INFO = "Doctor/UpdateDoctorPersonalInfo";
 
-
+    // my consult
     String FETCH_UPCOMING_APPOINTMENT="Doctor/GetNewDoctorUpcomingAppointments";
     String FETCH_PAST_APPOINTMENT="Doctor/GetNewDoctorPastAppointments";
 
@@ -90,6 +90,12 @@ public interface WebUrl {
 
     //Welcome
     String WELCOME_INFO="Notification/DoctorDashboardInfo";
+
+    //past medical history..
+    String FETCH_PAST_MEDICAL_HISTORY= "MedicalHistory/GetPastMedicalHistory";
+    String ADD_PAST_MEDICAL_HISTORY= "MedicalHistory/AddPastMedicalHistory";
+    String UPDATE_PAST_MEDICAL_HISTORY= "MedicalHistory/UpdatePastMedicalHistory";
+
 
 
 }

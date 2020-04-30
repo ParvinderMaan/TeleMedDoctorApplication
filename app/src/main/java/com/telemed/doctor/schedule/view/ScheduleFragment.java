@@ -50,7 +50,7 @@ public class ScheduleFragment extends Fragment {
     private final String TAG = ScheduleFragment.class.getSimpleName();
     private Button btnSynchronizeSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
-    private ImageButton ibtnClose,ibtnBack;
+    private ImageButton ibtnClose, ibtnBack;
     private ScheduleViewModel mViewModel;
     private String mAccessToken;
     private HashMap<String, String> mHeaderMap;
@@ -80,6 +80,11 @@ public class ScheduleFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
+        mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
+        mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+        mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
+
+
     }
 
     @Override
@@ -92,35 +97,29 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         initView(v);
         initListener();
         initObserver();
-        mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
     }
 
     private void initView(View v) {
         ibtnClose = v.findViewById(R.id.ibtn_close);
-        ibtnBack= v.findViewById(R.id.ibtn_back);
+        ibtnBack = v.findViewById(R.id.ibtn_back);
         ibtnBack.setVisibility(View.INVISIBLE);
-
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
 
         progressBar = v.findViewById(R.id.progress_bar);
         tvAlertView = v.findViewById(R.id.tv_alert_view);
-
         progressBar.setVisibility(View.INVISIBLE);
 
 
         vpPager = (ViewPager) v.findViewById(R.id.view_pager);
-        mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
         vpPager.setAdapter(mMonthPagerAdapter);
-        vpPager.setOffscreenPageLimit(2);
+        //  vpPager.setOffscreenPageLimit(2);
 
         ibtnPrevious = v.findViewById(R.id.ibtn_previous);
         tvMonthName = v.findViewById(R.id.tv_month_name);
         ibtNext = v.findViewById(R.id.ibtn_next);
-
     }
 
     private void initListener() {
@@ -128,12 +127,15 @@ public class ScheduleFragment extends Fragment {
             if (mFragmentListener != null) {
                 mFragmentListener.popTopMostFragment();
             }
-
         });
 
         btnSynchronizeSchedule.setOnClickListener(v -> {
-            mViewModel.setDialogVisiblility(true);
+            if (mFragmentListener != null) {
+                mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
+            }
         });
+
+
         ibtnPrevious.setOnClickListener(v -> {
             switch (vpPager.getCurrentItem()) {
                 case 0:
@@ -169,7 +171,8 @@ public class ScheduleFragment extends Fragment {
         });
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -194,8 +197,10 @@ public class ScheduleFragment extends Fragment {
 
                 }
             }
+
             @Override
-            public void onPageScrollStateChanged(int state) { }
+            public void onPageScrollStateChanged(int state) {
+            }
         });
     }
 
@@ -223,32 +228,32 @@ public class ScheduleFragment extends Fragment {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-        mViewModel.getDialogVisiblility()
-                .observe(getViewLifecycleOwner(), isVisible -> {
-                    if (isVisible) {
-                        mScheduleDialogFragment = SychronizeScheduleDialogFragment.newInstance();
-                        mScheduleDialogFragment.setOnScheduleDialogListener(new SychronizeScheduleDialogFragment.SychronizeScheduleDialogListener() {
-                            @Override
-                            public void onClickWeekWise() {
-                                if (mFragmentListener != null)
-                                    mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
-                            }
-
-                            @Override
-                            public void onClickDateWise() {
-                                if (mFragmentListener != null) {
-                                    mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
-                                }
-                            }
-                        });
-
-                        mScheduleDialogFragment.show(getChildFragmentManager(), "TAG");
-                    } else {
-                        mScheduleDialogFragment.setOnScheduleDialogListener(null);
-                        mScheduleDialogFragment.dismiss();
-                    }
-
-                });
+//        mViewModel.getDialogVisiblility()
+//                .observe(getViewLifecycleOwner(), isVisible -> {
+//                    if (isVisible) {
+//                        mScheduleDialogFragment = SychronizeScheduleDialogFragment.newInstance();
+//                        mScheduleDialogFragment.setOnScheduleDialogListener(new SychronizeScheduleDialogFragment.SychronizeScheduleDialogListener() {
+//                            @Override
+//                            public void onClickWeekWise() {
+//                                if (mFragmentListener != null)
+//                                    mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
+//                            }
+//
+//                            @Override
+//                            public void onClickDateWise() {
+//                                if (mFragmentListener != null) {
+//                                    mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
+//                                }
+//                            }
+//                        });
+//
+//                        mScheduleDialogFragment.show(getChildFragmentManager(), "TAG");
+//                    } else {
+//                        mScheduleDialogFragment.setOnScheduleDialogListener(null);
+//                        mScheduleDialogFragment.dismiss();
+//                    }
+//
+//                });
 
         mViewModel.getEnableView()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
@@ -274,10 +279,10 @@ public class ScheduleFragment extends Fragment {
                         ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
                         fragment.hideRefreshing();
                     }
-                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                    if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
-                }
+                        mFragmentListener.startActivity("RouterActivity", null, null);
+                    }
 
                     break;
             }
@@ -302,9 +307,9 @@ public class ScheduleFragment extends Fragment {
                         ScheduleIIMonthFragment fragment = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(1);
                         fragment.hideRefreshing();
                     }
-                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                    if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
+                        mFragmentListener.startActivity("RouterActivity", null, null);
                     }
                     break;
             }
@@ -328,9 +333,9 @@ public class ScheduleFragment extends Fragment {
                         ScheduleIIIMonthFragment fragment = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(2);
                         fragment.hideRefreshing();
                     }
-                    if(response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")){
+                    if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
                         mHelper.clear(); // clearing sharedPref
-                        mFragmentListener.startActivity("RouterActivity", null);
+                        mFragmentListener.startActivity("RouterActivity", null, null);
                     }
                     break;
             }
@@ -339,24 +344,25 @@ public class ScheduleFragment extends Fragment {
 
     }
 
-    private void resetEnableView(Boolean isView) { }
+    private void resetEnableView(Boolean isView) {
+    }
 
     public void refreshUi() { // 0,1,2
 
-        switch (vpPager.getCurrentItem()){
-            case 0:
-                mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
-                break;
-
-            case 1:
-                mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
-                break;
-
-            case 2:
-                mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
-                break;
-
-        }
+//        switch (vpPager.getCurrentItem()){
+//            case 0:
+//                mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+//                break;
+//
+//            case 1:
+//                mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
+//                break;
+//
+//            case 2:
+//                mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
+//                break;
+//
+//        }
 
 
     }
@@ -364,6 +370,7 @@ public class ScheduleFragment extends Fragment {
     static class MonthPagerAdapter extends FragmentStatePagerAdapter {
         private static int NUM_ITEMS = 3;
         private SparseArray<Fragment> registeredFragments = new SparseArray<>();
+
         public MonthPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
@@ -398,7 +405,7 @@ public class ScheduleFragment extends Fragment {
 
 
         @Override
-        public void destroyItem(@NotNull ViewGroup container, int position,@NotNull Object object) {
+        public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
@@ -408,7 +415,7 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    public void fetchMonthlySchedules(int monthIndex){
+    public void fetchMonthlySchedules(int monthIndex) {
         mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex);
     }
 
@@ -420,7 +427,7 @@ public class ScheduleFragment extends Fragment {
 
         private Resources resource;
 
-        public BlueColorDecorator(String date,Resources resource) {
+        public BlueColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -428,7 +435,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //            Log.e("BlueColorDecorator", "" + date);
+            //            Log.e("BlueColorDecorator", "" + date);
             return this.date.equals(date);
         }
 
@@ -447,7 +454,7 @@ public class ScheduleFragment extends Fragment {
 
         private Resources resource;
 
-        public DisableDateDecorator(String date,Resources resource) {
+        public DisableDateDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -455,9 +462,10 @@ public class ScheduleFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //            Log.e("DisableDateDecorator", "" + date);
+            //            Log.e("DisableDateDecorator", "" + date);
             return this.date.equals(date);
         }
+
         @Override
         public void decorate(final DayViewFacade view) {
             view.setDaysDisabled(true);
@@ -472,7 +480,7 @@ public class ScheduleFragment extends Fragment {
 
         private Resources resource;
 
-        public RedColorDecorator(String date,Resources resource) {
+        public RedColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -481,7 +489,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //            Log.e("RedColorDecorator", "" + date);
+            //            Log.e("RedColorDecorator", "" + date);
             return this.date.equals(date);
         }
 
@@ -497,7 +505,7 @@ public class ScheduleFragment extends Fragment {
         private String date;
         private Resources resource;
 
-        public WhiteColorDecorator(String date,Resources resource) {
+        public WhiteColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -505,7 +513,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //      Log.e("WhiteColorDecorator", "" + date);
+            //      Log.e("WhiteColorDecorator", "" + date);
             return this.date.equals(date);
 
         }
@@ -523,7 +531,7 @@ public class ScheduleFragment extends Fragment {
         return dateFormat.format(oldDate);
     }
 
-    public static String formatDateII(String oldDate)  {
+    public static String formatDateII(String oldDate) {
         DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date freshDate = null;
         try {
@@ -545,7 +553,7 @@ public class ScheduleFragment extends Fragment {
         return date;
     }
 
-    public static String formatDate(String oldDate)  {
+    public static String formatDate(String oldDate) {
         DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
         Date freshDate = null;
         try {
@@ -556,7 +564,7 @@ public class ScheduleFragment extends Fragment {
         return sdFormat.format(freshDate);
     }
 
-    public static  String getMonthName(int i) {
+    public static String getMonthName(int i) {
         String[] monthName = {"January", "February",
                 "March", "April", "May", "June", "July",
                 "August", "September", "October", "November",

@@ -28,10 +28,10 @@ public class HomeViewModel extends AndroidViewModel {
     private final WebService mWebService;
     private final SharedPrefHelper mHelper;
     private MutableLiveData<ApiResponse<SignOutResponse>> resultant;
-    private MutableLiveData<ApiResponse<WelcomeInfoResponse>> resultantWelcomeInfoFirst,resultantWelcomeInfoNext;
-
-    private MutableLiveData<Boolean> isLoading,isRefreshing;
+    private MutableLiveData<ApiResponse<WelcomeInfoResponse>> resultantWelcomeInfoFirst;
+    private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
          mWebService = ((TeleMedApplication) application).getRetrofitInstance();
@@ -39,9 +39,7 @@ public class HomeViewModel extends AndroidViewModel {
 
         resultant = new MutableLiveData<>();
         resultantWelcomeInfoFirst = new MutableLiveData<>();
-        resultantWelcomeInfoNext=new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
-        isRefreshing=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
     }
 
@@ -49,9 +47,7 @@ public class HomeViewModel extends AndroidViewModel {
         return resultantWelcomeInfoFirst;
     }
 
-    public MutableLiveData<ApiResponse<WelcomeInfoResponse>> getResultantWelcomeInfoNext() {
-        return resultantWelcomeInfoNext;
-    }
+
 
 
     public void attemptSignOut(Map<String, String> in) {
@@ -95,9 +91,7 @@ public class HomeViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    public MutableLiveData<Boolean> getRefreshing() {
-        return isRefreshing;
-    }
+
 
 
     public MutableLiveData<Boolean> getViewEnabled() {
@@ -106,12 +100,10 @@ public class HomeViewModel extends AndroidViewModel {
 
 
 
-    public void fetchWelcomeInfoFirst(Map<String, String> in) {
-        this.isLoading.setValue(true);
+    public void fetchWelcomeInfo(Map<String, String> in) {
         mWebService.fetchWelcomeInfo(in).enqueue(new Callback<WelcomeInfoResponse>() {
             @Override
             public void onResponse(@NonNull Call<WelcomeInfoResponse> call, @NonNull Response<WelcomeInfoResponse> response) {
-                isLoading.setValue(false);
                 if (response.isSuccessful() && response.body()!=null) {
                     WelcomeInfoResponse result = response.body();
                     if(result.getStatus()){
@@ -128,7 +120,6 @@ public class HomeViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call<WelcomeInfoResponse> call, @NonNull Throwable error) {
-                isLoading.setValue(false);
                 String errorMsg = ErrorHandler.reportError(error);
                 resultantWelcomeInfoFirst.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
@@ -136,40 +127,5 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     }
-
-
-    public void fetchWelcomeInfoNext(Map<String, String> in) {
-        this.isRefreshing.setValue(true);
-        mWebService.fetchWelcomeInfo(in).enqueue(new Callback<WelcomeInfoResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<WelcomeInfoResponse> call, @NonNull Response<WelcomeInfoResponse> response) {
-                isRefreshing.setValue(false);
-                if (response.isSuccessful() && response.body()!=null) {
-                    WelcomeInfoResponse result = response.body();
-                    if(result.getStatus()){
-                        resultantWelcomeInfoNext.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    }else {
-                        resultantWelcomeInfoNext.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
-                }else{
-                    String errorMsg = ErrorHandler.reportError(response.code());
-                    resultantWelcomeInfoNext.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<WelcomeInfoResponse> call, @NonNull Throwable error) {
-                isRefreshing.setValue(false);
-                String errorMsg = ErrorHandler.reportError(error);
-                resultantWelcomeInfoNext.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-            }
-        });
-
-
-    }
-
-
-
 
 }

@@ -16,6 +16,15 @@ public class UserInfoWrapper implements Parcelable {
     private String profilePic;
     private String oldPassword;
     private String patientId;
+    private Integer appointmentId;
+
+    public Integer getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 
     public String getPatientId() {
         return patientId;
@@ -129,6 +138,7 @@ public class UserInfoWrapper implements Parcelable {
         dest.writeString(this.profilePic);
         dest.writeString(this.oldPassword);
         dest.writeString(this.patientId);
+        dest.writeValue(this.appointmentId);
         dest.writeString(this.type);
     }
 
@@ -143,10 +153,11 @@ public class UserInfoWrapper implements Parcelable {
         this.profilePic = in.readString();
         this.oldPassword = in.readString();
         this.patientId = in.readString();
+        this.appointmentId = (Integer) in.readValue(Integer.class.getClassLoader());
         this.type = in.readString();
     }
 
-    public static final Creator<UserInfoWrapper> CREATOR = new Creator<UserInfoWrapper>() {
+    public static final Parcelable.Creator<UserInfoWrapper> CREATOR = new Parcelable.Creator<UserInfoWrapper>() {
         @Override
         public UserInfoWrapper createFromParcel(Parcel source) {
             return new UserInfoWrapper(source);
