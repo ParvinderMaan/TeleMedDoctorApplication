@@ -139,7 +139,7 @@ tools:context=".schedule.view.DeleteAvailabilityFragment">
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_280sdp" />
+        android:layout_height="@dimen/_300sdp" />
 </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,7 +196,7 @@ tools:context=".schedule.view.DeleteAvailabilityFragment">
 
 
 <Button
-    android:id="@+id/btn_synchronize_schedule"
+    android:id="@+id/btn_availability"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/ll_body"
@@ -233,6 +233,6 @@ tools:context=".schedule.view.DeleteAvailabilityFragment">
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="@+id/ll_body"
         app:layout_constraintStart_toStartOf="@+id/ll_body"
-        app:layout_constraintTop_toBottomOf="@+id/btn_synchronize_schedule" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_availability" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

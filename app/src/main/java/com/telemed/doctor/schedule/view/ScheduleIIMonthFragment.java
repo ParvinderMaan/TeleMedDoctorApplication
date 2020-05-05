@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,7 +129,6 @@ public class ScheduleIIMonthFragment extends Fragment {
             if (date.before(calendarObj.getTime())) {
                 lstOfDisableDays.add(new ScheduleFragment.DisableDateDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: before" + dateee);
-
             } else {
                 lstOfEnableDays.add(new ScheduleFragment.BlueColorDecorator(dateee,getResources()));
 //                Log.e(TAG, "all dates: after" + dateee);
@@ -144,7 +144,6 @@ public class ScheduleIIMonthFragment extends Fragment {
                 .commit();
 
 
-        setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
         calViewSchedule.setTopbarVisible(false);
 
         calViewSchedule.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -177,7 +176,7 @@ public class ScheduleIIMonthFragment extends Fragment {
 
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();
                         for (int i = 0; i < lstOfSchedules.size(); i++) {
-                            Date date = formatDateIY(lstOfSchedules.get(i).getDate());
+                            Date date = formatDateIY(lstOfSchedules.get(i).getDateValue());
                             if (date.before(calendarObj.getTime())) {
                                 // remove ....
                             } else {
@@ -194,7 +193,7 @@ public class ScheduleIIMonthFragment extends Fragment {
                         listOfDayDecoration.addAll(lstOfDisableDays);
                         listOfDayDecoration.addAll(lstOfEnableDays);
                         for(AllMonthSchedule item:lstOfSchedulesTemp){
-                            String freshDate = formatDate(item.getDate());
+                            String freshDate = formatDate(item.getDateValue());
                             if(item.getAnyPendingAppointment()){
                                 listOfDayDecoration.add(new ScheduleFragment.RedColorDecorator(freshDate,getResources()));
                             }else {
@@ -203,6 +202,12 @@ public class ScheduleIIMonthFragment extends Fragment {
                         }
                         calViewSchedule.addDecorators(listOfDayDecoration);
 
+                    }else {
+                        listOfDayDecoration.clear();
+                        calViewSchedule.removeDecorators();
+                        listOfDayDecoration.addAll(lstOfDisableDays);
+                        listOfDayDecoration.addAll(lstOfEnableDays);
+                        calViewSchedule.addDecorators(listOfDayDecoration);
                     }
 
                 });
@@ -220,22 +225,6 @@ public class ScheduleIIMonthFragment extends Fragment {
         mViewModel.setScheduleList(availableScheduleList);
 
     }
-
-
-
-
-
-
-    private String monthName;
-
-    public String getMonthName() {
-        return monthName;
-    }
-
-    public void setMonthName(String monthName) {
-        this.monthName = monthName;
-    }
-
 
 
 

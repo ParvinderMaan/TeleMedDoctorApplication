@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    tools:context=".schedule.view.CreateAvailabilityFragment">
+    <!--    header layout-->
+    <RelativeLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="Add TimeSlot"
+            android:textColor="@color/colorBlue"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ibtn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_toStartOf="@+id/ibtn_close"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back_blue" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ibtn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cross_blue" />
+
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar" />
+
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_header"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="13 January"
+        android:textColor="@color/colorRed"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_header" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_time_"
+        android:drawablePadding="@dimen/_2sdp"
+        android:gravity="center"
+        android:text="Start Time"
+        android:textColor="@color/colorBlue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_start_time"
+        app:layout_constraintEnd_toEndOf="@+id/tv_start_time"
+        app:layout_constraintStart_toStartOf="@+id/tv_start_time" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_time_"
+        android:drawablePadding="@dimen/_2sdp"
+        android:gravity="center"
+        android:text="End Time"
+        android:textColor="@color/colorBlue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_end_time"
+        app:layout_constraintEnd_toEndOf="@+id/tv_end_time"
+        app:layout_constraintStart_toStartOf="@+id/tv_end_time" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="-- : --"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorRed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_end_time"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".4" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_2sdp"
+        android:gravity="center"
+        android:text="-- : --"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/colorRed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_start_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".4" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/rounded_background_xiii"
+        android:minHeight="0dp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="Select Time"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_end_time"
+        app:layout_constraintStart_toStartOf="@+id/tv_start_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_start_time" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_end_time"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/rounded_background_xiii"
+        android:minHeight="0dp"
+
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="End Time"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_end_time"
+        app:layout_constraintStart_toStartOf="@+id/tv_end_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_end_time" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_xiii"
+        android:minHeight="0dp"
+        android:paddingStart="@dimen/_40sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_40sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_start_time" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

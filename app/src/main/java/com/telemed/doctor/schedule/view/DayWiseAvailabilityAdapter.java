@@ -68,7 +68,7 @@ public class DayWiseAvailabilityAdapter extends RecyclerView.Adapter<DayWiseAvai
                 }
             });
 
-              tvTimeSlot.setText(model.getSlotFrom()+" - "+model.getSlotTo());
+              tvTimeSlot.setText(model.getTimeFrom()+" - "+model.getTimeTo());
 /*
 public enum AppointmentStatus
         {
@@ -96,7 +96,7 @@ public enum AppointmentStatus
                       tvTimeSlot.setTextColor(Color.parseColor("#FFFFFF"));
                       tvPatientName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvFirmName.setTextColor(Color.parseColor("#FFFFFF"));
-                      tvPatientName.setText(model.getPatientName());
+                      tvPatientName.setText("Patient Name");  //model.getPatientName()
                       tvFirmName.setText("Infinity Doctor");
                       break;
                   case 3:
@@ -106,7 +106,7 @@ public enum AppointmentStatus
                       tvTimeSlot.setTextColor(Color.parseColor("#FFFFFF"));
                       tvPatientName.setTextColor(Color.parseColor("#FFFFFF"));
                       tvFirmName.setTextColor(Color.parseColor("#FFFFFF"));
-                      tvPatientName.setText(model.getPatientName());
+                      tvPatientName.setText("Patient Name"); //model.getPatientName()
                       tvFirmName.setText("Infinity Doctor");
                       break;
               }

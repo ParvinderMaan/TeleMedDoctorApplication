@@ -45,7 +45,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
     private HomeFragmentSelectedListener mFragmentListener;
     private ProgressBar progressBar;
     private CustomAlertTextView tvAlertView;
-    private TextView tvTimeSlot;
+    private TextView tvTimeSlot,tvEmptyView;
     private DayWiseAvailabilityAdapter mAdapter;
     private String mDateOfAppointment;
     private HashMap<String, String> mHeaderMap;
@@ -74,13 +74,17 @@ public class DayWiseAvailabilityFragment extends Fragment {
         // collect our intent
         if (getArguments() != null) {
              mDateOfAppointment = getArguments().getString("KEY_");
-            Log.e(TAG, mDateOfAppointment);
+           // Log.e(TAG, mDateOfAppointment);
         }
 
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
 
+        mAdapter = new DayWiseAvailabilityAdapter();
+
+        mViewModel = ViewModelProviders.of(this).get(DayWiseAvailabiltyViewModel.class);
+        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);    // appointment id ,patient name missing ???
 
     }
 
@@ -94,7 +98,6 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(DayWiseAvailabiltyViewModel.class);
         super.onViewCreated(v, savedInstanceState);
         initView(v);
         initRecyclerView(v);
@@ -103,11 +106,8 @@ public class DayWiseAvailabilityFragment extends Fragment {
         try {
             tvTimeSlot.setText(convert(mDateOfAppointment));
         } catch (ParseException e) {
-         //   e.printStackTrace();
             tvTimeSlot.setText(mDateOfAppointment);
         }
-
-        mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
 
     }
 
@@ -117,7 +117,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
         tvAlertView = v.findViewById(R.id.tv_alert_view);
 
         tvTimeSlot = v.findViewById(R.id.tv_time_slot);
-
+        tvEmptyView = v.findViewById(R.id.tv_empty_view);
         progressBar.setVisibility(View.INVISIBLE); // not used here
 
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
@@ -138,16 +138,14 @@ public class DayWiseAvailabilityFragment extends Fragment {
                 mFragmentListener.popTopMostFragment();
         });
 
-
     }
 
 
 
     private void initRecyclerView(View v) {
         rvTimeSlot=v.findViewById(R.id.rv_time_slot);
-        mAdapter = new DayWiseAvailabilityAdapter();
         mAdapter.setOnItemClickListener((position, model) -> {
-          Log.e(TAG,model.toString());
+//          Log.e(TAG,model.toString());
             if(mFragmentListener!=null) {
                 mFragmentListener.showFragment("AppointmentConfirmIFragment",model);
             }
@@ -196,6 +194,9 @@ public class DayWiseAvailabilityFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
                     if (!lstOfSchedules.isEmpty()) {
                         mAdapter.setItems(lstOfSchedules);
+                        tvEmptyView.setVisibility(View.INVISIBLE);
+                    }else {
+                        tvEmptyView.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -208,7 +209,7 @@ public class DayWiseAvailabilityFragment extends Fragment {
 
 
 
-    public  String convert(String dateString) throws ParseException {
+    public static String convert(String dateString) throws ParseException {
         // System.out.println("Given date is " + dateString);
 
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
@@ -219,11 +220,5 @@ public class DayWiseAvailabilityFragment extends Fragment {
     }
 
 
-    public void refreshUi() {
-     //   mViewModel.fetchScheduleTimeSlots(mHeaderMap,mDateOfAppointment);
-        // it means we have to change previous fragment too !!! checky...
-//        if(mFragmentListener!=null){
-//            mFragmentListener.refreshFragment("ScheduleFragment");
-//        }
-    }
+
 }

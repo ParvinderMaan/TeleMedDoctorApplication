@@ -36,8 +36,10 @@ import com.telemed.doctor.profile.view.ProfileDocumentFragment;
 import com.telemed.doctor.profile.view.ProfileFragment;
 import com.telemed.doctor.appointment.view.AppointmentConfirmIFragment;
 import com.telemed.doctor.schedule.model.TimeSlotModel;
+import com.telemed.doctor.schedule.view.CreateAvailabilityFragment;
 import com.telemed.doctor.schedule.view.DayWiseAvailabilityFragment;
 import com.telemed.doctor.schedule.view.DeleteAvailabilityFragment;
+import com.telemed.doctor.schedule.view.EditAvailabilityFragment;
 import com.telemed.doctor.schedule.view.ScheduleFragment;
 import com.telemed.doctor.PatientGalleryFragment;
 import com.telemed.doctor.dashboard.MyDashboardFragment;
@@ -190,7 +192,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "ProfileFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, ProfileFragment.newInstance(), "ProfileFragment")
                         .addToBackStack("ProfileFragment")
                         .commit();
@@ -198,7 +200,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "MyConsultFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, MyConsultFragment.newInstance(), "MyConsultFragment")
                         .addToBackStack("MyConsultFragment")
                         .commit();
@@ -206,7 +208,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "MyDashboardFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, MyDashboardFragment.newInstance(), "MyDashboardFragment")
                         .addToBackStack("MyDashboardFragment")
                         .commit();
@@ -214,7 +216,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "NotificationFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, NotificationFragment.newInstance(), "NotificationFragment")
                         .addToBackStack("NotificationFragment")
                         .commit();
@@ -222,7 +224,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "SettingFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, SettingFragment.newInstance(), "SettingFragment")
                         .addToBackStack("SettingFragment")
                         .commit();
@@ -239,14 +241,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "VideoCallTriggerFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, VideoCallTriggerFragment.newInstance(), "VideoCallTriggerFragment")
                         .addToBackStack("VideoCallTriggerFragment")
                         .commit();
                 break;
             case "VideoCallFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, VideoCallFragment.newInstance((Object) payload), "VideoCallFragment")
                         .addToBackStack("VideoCallFragment")
                         .commit();
@@ -254,7 +256,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "TermAndConditionFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, TermAndConditionFragment.newInstance(), "TermAndConditionFragment")
                         .addToBackStack("TermAndConditionFragment")
                         .commit();
@@ -262,7 +264,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "ChangePasswordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, ChangePasswordFragment.newInstance(), "ChangePasswordFragment")
                         .addToBackStack("ChangePasswordFragment")
                         .commit();
@@ -270,7 +272,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentConfirmIFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, AppointmentConfirmIFragment.newInstance((Object) payload), "AppointmentConfirmIFragment")
                         .addToBackStack("AppointmentConfirmIFragment")
                         .commit();
@@ -278,7 +280,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "PatientGalleryFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, PatientGalleryFragment.newInstance(), "PatientGalleryFragment")
                         .addToBackStack("PatientGalleryFragment")
                         .commit();
@@ -286,7 +288,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "ChatFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, ChatFragment.newInstance(), "ChatFragment")
                         .addToBackStack("ChatFragment")
                         .commit();
@@ -294,7 +296,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "DoctorDocumentFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, DoctorDocumentFragment.newInstance(payload), "DoctorDocumentFragment")
                         .addToBackStack("DoctorDocumentFragment")
                         .commit();
@@ -302,7 +304,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "ScheduleSychronizeFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                     //   .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, ScheduleSychronizeFragment.newInstance(), "ScheduleSychronizeFragment")
                         .addToBackStack("ScheduleSychronizeFragment")
                         .commit();
@@ -310,7 +312,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentSummaryFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                     //   .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, AppointmentSummaryFragment.newInstance(), "AppointmentSummaryFragment")
                         .addToBackStack("AppointmentSummaryFragment")
                         .commit();
@@ -318,14 +320,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "PatientRatingFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                     //   .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, PatientRatingFragment.newInstance(), "PatientRatingFragment")
                         .addToBackStack("PatientRatingFragment")
                         .commit();
                 break;
             case "MedicalRecordFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                     //   .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, MedicalRecordFragment.newInstance((Object) payload), "MedicalRecordFragment")
                         .addToBackStack("MedicalRecordFragment")
                         .commit();
@@ -333,14 +335,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "MedicalDetailFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, MedicalDetailFragment.newInstance((Object) payload), "MedicalDetailFragment")
                         .addToBackStack("MedicalDetailFragment")
                         .commit();
                 break;
             case "ProfileDocumentFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, ProfileDocumentFragment.newInstance(), "ProfileDocumentFragment")
                         .addToBackStack("ProfileDocumentFragment")
                         .commit();
@@ -348,7 +350,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
             case "UpdateEmailFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, ChangeEmailFragment.newInstance((Object) payload), "UpdateEmailFragment")
                         .addToBackStack("UpdateEmailFragment")
                         .commit();
@@ -356,7 +358,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "OneTimeFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, OneTimeFragment.newInstance((Object) payload), "OneTimeFragment")
                         .addToBackStack("OneTimeFragment")
                         .commit();
@@ -364,7 +366,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "DayWiseAvailabilityFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                       // .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, DayWiseAvailabilityFragment.newInstance((Object) payload), "DayWiseAvailabilityFragment")
                         .addToBackStack("DayWiseAvailabilityFragment")
                         .commit();
@@ -373,7 +375,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "WeekDaysScheduleFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, WeekDaysScheduleFragment.newInstance((Object) payload), "WeekDaysScheduleFragment")
                         .addToBackStack("WeekDaysScheduleFragment")
                         .commit();
@@ -382,7 +384,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentUpcomingFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, AppointmentUpcomingFragment.newInstance((Object) payload), "AppointmentUpcomingFragment")
                         .addToBackStack("AppointmentUpcomingFragment")
                         .commit();
@@ -390,7 +392,7 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "AppointmentHistoryFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .add(R.id.fl_container, AppointmentHistoryFragment.newInstance((Object) payload), "AppointmentHistoryFragment")
                         .addToBackStack("AppointmentHistoryFragment")
                         .commit();
@@ -399,9 +401,25 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
 
             case "DeleteAvailabilityFragment":
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.fl_container, DeleteAvailabilityFragment.newInstance(), "DeleteAvailabilityFragment")
                         .addToBackStack("DeleteAvailabilityFragment")
+                        .commit();
+                break;
+
+            case "CreateAvailabilityFragment":
+                getSupportFragmentManager().beginTransaction()
+                      //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, CreateAvailabilityFragment.newInstance((Object) payload), "CreateAvailabilityFragment")
+                        .addToBackStack("CreateAvailabilityFragment")
+                        .commit();
+                break;
+
+            case "EditAvailabilityFragment":
+                getSupportFragmentManager().beginTransaction()
+                     //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, EditAvailabilityFragment.newInstance((Object) payload), "EditAvailabilityFragment")
+                        .addToBackStack("EditAvailabilityFragment")
                         .commit();
                 break;
 
@@ -488,10 +506,9 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
 
             case "ScheduleFragment": {
-                ScheduleFragment fragment = (ScheduleFragment) getSupportFragmentManager()
-                        .findFragmentByTag("ScheduleFragment");
-                if (fragment != null)
-                    fragment.refreshUi();
+//                ScheduleFragment fragment = (ScheduleFragment) getSupportFragmentManager().findFragmentByTag("ScheduleFragment");
+//                if (fragment != null)
+//                    fragment.refreshUi();
             }
             break;
 
@@ -552,10 +569,10 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                 break;
 
             case "DayWiseAvailabilityFragment": {
-                DayWiseAvailabilityFragment fragment = (DayWiseAvailabilityFragment) getSupportFragmentManager()
-                        .findFragmentByTag("DayWiseAvailabilityFragment");
-                if (fragment != null)
-                    fragment.refreshUi();
+//                DayWiseAvailabilityFragment fragment = (DayWiseAvailabilityFragment) getSupportFragmentManager()
+//                        .findFragmentByTag("DayWiseAvailabilityFragment");
+//                if (fragment != null)
+//                    fragment.refreshUi();
             }
             break;
 

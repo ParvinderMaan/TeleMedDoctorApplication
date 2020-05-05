@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDate;
 import static com.telemed.doctor.schedule.view.ScheduleFragment.formatDateII;
@@ -53,17 +55,10 @@ public class ScheduleIMonthFragment extends Fragment {
     private HashMap<String, String> mHeaderMap;
     private String mAccessToken;
     private ScheduleIMonthViewModel mViewModel;
-    private String monthName;
     private Calendar calendarObj;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public String getMonthName() {
-        return monthName;
-    }
 
-    public void setMonthName(String monthName) {
-        this.monthName = monthName;
-    }
 
     public ScheduleIMonthFragment() {
         // Required empty public constructor
@@ -119,21 +114,22 @@ public class ScheduleIMonthFragment extends Fragment {
     private void initCalendarView(View v) {
         calViewSchedule = v.findViewById(R.id.calendar_view_schedule);
         LocalDate calendar = LocalDate.now();
-
         final LocalDate minDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
         final LocalDate maxDateOfCalendar = LocalDate.of(calendar.getYear(), calendar.getMonth(), minDateOfCalendar.lengthOfMonth());
 
         // Add dates on calendars
         Calendar minDateSelect = Calendar.getInstance();
+       // minDateSelect.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         minDateSelect.set(minDateSelect.get(Calendar.YEAR), minDateSelect.get(Calendar.MONTH), minDateSelect.getActualMinimum(Calendar.DATE));
 
         Calendar maxDateSelect = Calendar.getInstance();
+      //  maxDateSelect.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         maxDateSelect.set(maxDateSelect.get(Calendar.YEAR), maxDateSelect.get(Calendar.MONTH), maxDateSelect.getActualMaximum(Calendar.DATE));
 
 
-         Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
-         setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
-        ((ScheduleFragment)requireParentFragment()).setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
+      //   Log.e(TAG,"month name--->"+minDateSelect.get(Calendar.MONTH));
+//         setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH))); // not working..
+//        ((ScheduleFragment)requireParentFragment()).setMonthName(ScheduleFragment.getMonthName(minDateSelect.get(Calendar.MONTH)));
 
         calendarObj = Calendar.getInstance();
         calendarObj.add(Calendar.DAY_OF_MONTH, -1);
@@ -190,14 +186,7 @@ public class ScheduleIMonthFragment extends Fragment {
 
 
 
-
-
-
-
-
-
     private void initObserver() {
-
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
                     if(swipeRefreshLayout.isRefreshing()){
@@ -208,7 +197,7 @@ public class ScheduleIMonthFragment extends Fragment {
 
                         List<AllMonthSchedule> lstOfSchedulesTemp = new ArrayList<>();
                         for (int i = 0; i < lstOfSchedules.size(); i++) {
-                            Date date = formatDateIY(lstOfSchedules.get(i).getDate());
+                            Date date = formatDateIY(lstOfSchedules.get(i).getDateValue());
                             if (date.before(calendarObj.getTime())) {
                                 // remove ....
                             } else {
@@ -224,7 +213,7 @@ public class ScheduleIMonthFragment extends Fragment {
                         listOfDayDecoration.addAll(lstOfDisableDays);
                         listOfDayDecoration.addAll(lstOfEnableDays);
                         for(AllMonthSchedule item:lstOfSchedulesTemp){
-                            String freshDate = formatDate(item.getDate());
+                            String freshDate = formatDate(item.getDateValue());
 
                             if(item.getAnyPendingAppointment()){
                                 listOfDayDecoration.add(new ScheduleFragment.RedColorDecorator(freshDate,getResources()));
@@ -233,18 +222,16 @@ public class ScheduleIMonthFragment extends Fragment {
                             }
                         }
                         calViewSchedule.addDecorators(listOfDayDecoration);
+                    }else {
+                        listOfDayDecoration.clear();
+                        calViewSchedule.removeDecorators();
+                        listOfDayDecoration.addAll(lstOfDisableDays);
+                        listOfDayDecoration.addAll(lstOfEnableDays);
+                        calViewSchedule.addDecorators(listOfDayDecoration);
                     }
                 });
 
-
     }
-
-
-
-
-
-
-
 
 
 

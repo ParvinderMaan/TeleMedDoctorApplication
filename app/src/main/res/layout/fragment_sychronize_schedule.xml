@@ -67,14 +67,13 @@
         android:id="@+id/tv_cal_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select a day to check consultations"
+        android:text="Select a day to edit availability for consultations"
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toEndOf="@+id/ll_body"
         app:layout_constraintStart_toStartOf="@+id/ll_body"
         app:layout_constraintTop_toBottomOf="@+id/ll_header" />
 
     <!--    body -->
-
     <LinearLayout
         android:id="@+id/ll_body"
         android:layout_marginTop="@dimen/_10sdp"
@@ -247,5 +246,5 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_delete_availability" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    app:mcv_selectionColor="@android:color/transparent"-->
+<!--    app:mcv_selectionColor="@android:color/transparent"-->
 

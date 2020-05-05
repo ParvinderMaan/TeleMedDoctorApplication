@@ -1,3 +1,4 @@
+
 package com.telemed.doctor.schedule.view;
 
 import android.graphics.Color;
@@ -66,7 +67,6 @@ public class WeekDayScheduleAdapter extends RecyclerView.Adapter<WeekDaySchedule
     public void addItem(Map<Integer, AllWeekSchedule> itemMap) {
 
 
-
     }
 
 
@@ -91,7 +91,7 @@ public class WeekDayScheduleAdapter extends RecyclerView.Adapter<WeekDaySchedule
 
         public void bind(AllWeekSchedule item, OnItemClickListener onItemClickListener) {
 
-            tvTime.setText(item.getFromTime()!=null && item.getToTime()!=null ?item.getFromTime()+" - "+item.getToTime():"");
+            tvTime.setText(item.getFromTime() != null && item.getToTime() != null ? item.getFromTime() + " - " + item.getToTime() : "");
 
             if (item.getWeekDays() != null && !item.getWeekDays().isEmpty()) {
                 List<AllWeekSchedule.WeekDay> lstOfWeek = item.getWeekDays();
@@ -134,14 +134,14 @@ public class WeekDayScheduleAdapter extends RecyclerView.Adapter<WeekDaySchedule
             }
 
 
-                ibtnDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(onItemClickListener!=null){
-                           onItemClickListener.onItemClickDelete(item, getAdapterPosition());
-                        }
+            ibtnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClickDelete(item, getAdapterPosition());
                     }
-                });
+                }
+            });
 
 
         }

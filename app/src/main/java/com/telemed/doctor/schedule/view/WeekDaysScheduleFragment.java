@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,12 +25,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.TimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.interfacor.HomeFragmentSelectedListener;
+import com.telemed.doctor.schedule.model.WeekDaySchedule;
 import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 import com.telemed.doctor.schedule.viewmodel.WeekDaysScheduleViewModel;
@@ -42,26 +45,19 @@ import java.util.List;
 
 public class WeekDaysScheduleFragment extends Fragment {
     private WeekDaysScheduleViewModel mViewModel;
-    private RecyclerView rvSchedule;
     private HomeFragmentSelectedListener mFragmentListener;
-    private ImageButton ibtnClose,ibtnBack;
-    private FloatingActionButton fbtnAddSchedule;
-    private int sun = 0, mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0;
-    private List<Integer> arrDaySelected=new ArrayList<>();
-    private String startTimeSelected,endTimeSelected;
+    private ImageButton ibtnClose, ibtnBack;
     private ProgressBar progressBar;
     private CustomAlertTextView tvAlertView;
     private String mAccessToken;
-    private WeekDayScheduleAdapter mAdapter;
-    private int itemToDeletePos;
     private HashMap<String, String> mHeaderMap;
-    private TextView tvEmptyView;
+    private MaterialCardView cvSunday, cvMonday, cvTuesday, cvWednesday, cvThursday, cvFriday, cvSaturday;
+    private TextView tvSunday, tvMonday, tvTuesday, tvWednesday, tvThursday, tvFriday, tvSaturday;
+    private TextView tvSundayTimeSlot, tvMondayTimeSlot, tvTuesdayTimeSlot, tvWednesdayTimeSlot, tvThursdayTimeSlot,
+            tvFridayTimeSlot, tvSaturdayTimeSlot;
 
     public static WeekDaysScheduleFragment newInstance(Object payload) {
         WeekDaysScheduleFragment fragment = new WeekDaysScheduleFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("KEY_", (UserInfoWrapper) payload); // SignUpIResponse.Data
-//        fragment.setArguments(bundle);
         return fragment;
 
     }
@@ -79,7 +75,7 @@ public class WeekDaysScheduleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
-        mHeaderMap.put("Authorization","Bearer "+mAccessToken);
+        mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
     }
 
     @Override
@@ -94,20 +90,23 @@ public class WeekDaysScheduleFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(WeekDaysScheduleViewModel.class);
-        initRecyclerView(v);
+        super.onViewCreated(v, savedInstanceState);
+        initView(v);
 
-        tvEmptyView=v.findViewById(R.id.tv_empty_view);
+      //  mViewModel.fetchWeekSchedules(mHeaderMap);
+        initObserver();
 
+    }
 
-        ibtnClose=v.findViewById(R.id.ibtn_close);
+    private void initView(View v) {
+        ibtnClose = v.findViewById(R.id.ibtn_close);
         ibtnClose.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
-                mFragmentListener.popTillFragment("HomeFragment",0);
+                mFragmentListener.popTillFragment("HomeFragment", 0);
         });
 
-        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack = v.findViewById(R.id.ibtn_back);
         ibtnBack.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
                 mFragmentListener.popTopMostFragment();
@@ -118,313 +117,40 @@ public class WeekDaysScheduleFragment extends Fragment {
 
         progressBar.setVisibility(View.INVISIBLE);
 
-        fbtnAddSchedule=v.findViewById(R.id.fbtn_add_schedule);
-        fbtnAddSchedule.setOnClickListener(v1 -> {
 
-           addScheduleAlert();
+        cvSunday = v.findViewById(R.id.cv_sunday);
+        cvMonday = v.findViewById(R.id.cv_monday);
+        cvTuesday = v.findViewById(R.id.cv_tuesday);
+        cvWednesday = v.findViewById(R.id.cv_wednesday);
+        cvThursday = v.findViewById(R.id.cv_thursday);
+        cvFriday = v.findViewById(R.id.cv_friday);
+        cvSaturday = v.findViewById(R.id.cv_saturday);
 
-        });
+        tvSunday = v.findViewById(R.id.tv_sunday);
+        tvMonday = v.findViewById(R.id.tv_monday);
+        tvTuesday = v.findViewById(R.id.tv_tuesday);
+        tvWednesday = v.findViewById(R.id.tv_wednesday);
+        tvThursday = v.findViewById(R.id.tv_thursday);
+        tvFriday = v.findViewById(R.id.tv_friday);
+        tvSaturday = v.findViewById(R.id.tv_saturday);
 
+        tvSundayTimeSlot = v.findViewById(R.id.tv_sunday_time_slot);
+        tvMondayTimeSlot = v.findViewById(R.id.tv_monday_time_slot);
+        tvTuesdayTimeSlot = v.findViewById(R.id.tv_tuesday_time_slot);
+        tvWednesdayTimeSlot = v.findViewById(R.id.tv_wednesday_time_slot);
+        tvThursdayTimeSlot = v.findViewById(R.id.tv_thursday_time_slot);
+        tvFridayTimeSlot = v.findViewById(R.id.tv_friday_time_slot);
+        tvSaturdayTimeSlot = v.findViewById(R.id.tv_saturday_time_slot);
 
-        initObserver();
-
-        mViewModel.fetchWeekSchedules(mHeaderMap);
+//        tvSundayTimeSlot.setVisibility(View.GONE);
+//        tvMondayTimeSlot.setVisibility(View.GONE);
+//        tvTuesdayTimeSlot.setVisibility(View.GONE);
+//        tvWednesdayTimeSlot.setVisibility(View.GONE);
+//        tvThursdayTimeSlot.setVisibility(View.GONE);
+//        tvFridayTimeSlot.setVisibility(View.GONE);
+//        tvSaturdayTimeSlot.setVisibility(View.GONE);
     }
 
-    private void initRecyclerView(View v) {
-        rvSchedule=v.findViewById(R.id.rv_schedule);
-        mAdapter = new WeekDayScheduleAdapter();
-        mAdapter.setOnItemClickListener((model, pos) -> {
-
-            itemToDeletePos=pos;
-            mViewModel.deleteWeekDaySchedule(mHeaderMap,model.getId());
-
-
-        });
-        rvSchedule.setHasFixedSize(true);
-        rvSchedule.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        rvSchedule.setAdapter(mAdapter);
-
-
-
-
-    }
-
-
-    private void addScheduleAlert() {
-
-        final Dialog dialog = new Dialog(requireActivity(), R.style.MyAlertDialogTheme);
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        dialog.setContentView(R.layout.dialog_add_schedule);
-        final TextView mTvSun = dialog.findViewById(R.id.tv_sun);
-        final TextView mTvMon = dialog.findViewById(R.id.tv_mon);
-        final TextView mTvTue = dialog.findViewById(R.id.tv_tue);
-        final TextView mTvWed = dialog.findViewById(R.id.tv_wed);
-        final TextView mTvThu = dialog.findViewById(R.id.tv_thu);
-        final TextView mTvFri = dialog.findViewById(R.id.tv_fri);
-        final TextView mTvSat = dialog.findViewById(R.id.tv_sat);
-
-        mTvSun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (sun==1) {
-                    sun = 0;
-                    mTvSun.setSelected(false);
-                    mTvSun.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    sun = 1;
-                    mTvSun.setSelected(true);
-                    mTvSun.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvMon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mon==1) {
-                    mon = 0;
-                    mTvMon.setSelected(false);
-                    mTvMon.setTextColor(getResources().getColor(R.color.colorBlue));
-
-                } else {
-                    mon = 1;
-                    mTvMon.setSelected(true);
-                    mTvMon.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvTue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (tue==1) {
-                    tue = 0;
-                    mTvTue.setSelected(false);
-                    mTvTue.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    tue = 1;
-                    mTvTue.setSelected(true);
-                    mTvTue.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvWed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (wed==1) {
-                    wed = 0;
-                    mTvWed.setSelected(false);
-                    mTvWed.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    wed = 1;
-                    mTvWed.setSelected(true);
-                    mTvWed.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvThu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (thu==1) {
-                    thu = 0;
-                    mTvThu.setSelected(false);
-                    mTvThu.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    thu = 1;
-                    mTvThu.setSelected(true);
-                    mTvThu.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvFri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (fri==1) {
-                    fri =0;
-                    mTvFri.setSelected(false);
-                    mTvFri.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    fri = 1;
-                    mTvFri.setSelected(true);
-                    mTvFri.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-        mTvSat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (sat==1) {
-                    sat = 0;
-                    mTvSat.setSelected(false);
-                    mTvSat.setTextColor(getResources().getColor(R.color.colorBlue));
-                } else {
-                    sat = 1;
-                    mTvSat.setSelected(true);
-                    mTvSat.setTextColor(getResources().getColor(R.color.colorWhite));
-                }
-
-
-            }
-        });
-
-        TextView tvDone = (TextView) dialog.findViewById(R.id.tv_done);
-        TextView tvSelectAll = (TextView) dialog.findViewById(R.id.tv_select_all);
-
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
-        tvDone.setOnClickListener(view -> {
-            arrDaySelected.clear();
-            if(sun==1){
-                arrDaySelected.add(1);
-            }
-            if(mon==1){
-                arrDaySelected.add(2);
-            }
-            if(tue==1){
-                arrDaySelected.add(3);
-            }
-            if(wed==1){
-                arrDaySelected.add(4);
-            }
-            if(thu==1){
-                arrDaySelected.add(5);
-            }
-            if(fri==1){
-                arrDaySelected.add(6);
-            }
-            if(sat==1){
-                arrDaySelected.add(7);
-            }
-
-
-//       arrDaySelected = new Integer[]{sun, mon, tue, wed, thu, fri, sat};
-            dialog.dismiss();
-//            getFromTime();
-            showStartTimePicker();
-        });
-        tvSelectAll.setOnClickListener(view -> {
-
-            sun=mon=tue=wed=thu=fri=sat=1;
-//            arrDaySelected = new String[]{sun,mon,tue,wed,thu,fri,sat};
-
-            mTvSun.setSelected(true);
-            mTvSun.setTextColor(getResources().getColor(R.color.colorWhite));
-
-            mTvMon.setSelected(true);
-            mTvMon.setTextColor(getResources().getColor(R.color.colorWhite));
-
-            mTvTue.setSelected(true);
-            mTvTue.setTextColor(getResources().getColor(R.color.colorWhite));
-
-            mTvWed.setSelected(true);
-            mTvWed.setTextColor(getResources().getColor(R.color.colorWhite));
-
-
-            mTvThu.setSelected(true);
-            mTvThu.setTextColor(getResources().getColor(R.color.colorWhite));
-
-
-            mTvFri .setSelected(true);
-            mTvFri.setTextColor(getResources().getColor(R.color.colorWhite));
-
-
-            mTvSat.setSelected(true);
-            mTvSat.setTextColor(getResources().getColor(R.color.colorWhite));
-        });
-
-        dialog.show();
-    }
-
-    private void getFromTime() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(getActivity(),R.style.PickerStyle, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String fromTime = selectedHour + ":" + selectedMinute;
-                Log.e("From: ", fromTime);
-                getToTime();
-                startTimeSelected=fromTime;
-            }
-        }, hour, minute, true);//Yes 24 hour time
-//      mTimePicker.setTitle("From");
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
-        mTimePicker.setCustomTitle(dialogView);
-        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
-        editText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        editText.setText("Starting Time :");
-        mTimePicker.show();
-
-
-    }
-
-    private void getToTime() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(requireActivity(),R.style.PickerStyle, (timePicker, selectedHour, selectedMinute) -> {
-            String to = selectedHour + ":" + selectedMinute;
-            Log.e("To: ", to);
-           // setUpRecyclerView();
-            endTimeSelected=to;
-
-              // to stop ...
-//            Calendar datetime = Calendar.getInstance();
-//            Calendar c = Calendar.getInstance();
-//            datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
-//            datetime.set(Calendar.MINUTE, selectedMinute);
-//            if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
-//                //it's after current
-//
-//
-//            } else {
-//                //it's before current'
-//                Toast.makeText(requireActivity(), "Invalid Time", Toast.LENGTH_LONG).show();
-//            }
-
-
-            WeekScheduleRequest in=new WeekScheduleRequest();
-            in.setRecSecId(0); // no need only distration
-            in.setFromTime(startTimeSelected);
-            in.setToTime(endTimeSelected);
-            in.setWeekDays(arrDaySelected);
-            mViewModel.createWeekDaySchedule(mHeaderMap,in);
-           //call apii....
-
-        }, hour, minute, true); // Yes 24 hour time
-        //      mTimePicker.setTitle("To");
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_title, null);
-        mTimePicker.setCustomTitle(dialogView);
-        TextView editText = (TextView) dialogView.findViewById(R.id.tv_title);
-        editText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        editText.setText("Ending Time :");
-        mTimePicker.show();
-
-    }
 
     private void initObserver() {
         mViewModel.getProgress()
@@ -438,11 +164,12 @@ public class WeekDaysScheduleFragment extends Fragment {
             switch (response.getStatus()) {
                 case SUCCESS:
                     if (response.getData() != null) {
-                        if (mFragmentListener != null){
+                        if (mFragmentListener != null) {
                             tvAlertView.showTopAlert(response.getData().getMessage());
                             tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                             mViewModel.fetchWeekSchedules(mHeaderMap);
-                            if(mFragmentListener !=null) mFragmentListener.refreshFragment("ScheduleFragment");
+                            if (mFragmentListener != null)
+                                mFragmentListener.refreshFragment("ScheduleFragment");
                         }
                     }
                     break;
@@ -463,8 +190,8 @@ public class WeekDaysScheduleFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         WeekScheduleResponse.Data infoObj = response.getData().getData();
-                        if(infoObj.getScheduleList()!=null ){
-                            mViewModel.setScheduleList(infoObj.getScheduleList());
+                        if (infoObj.getWeekDayTimeSlots() != null) {
+                            mViewModel.setScheduleList(infoObj.getWeekDayTimeSlots());
                         }
                     }
 
@@ -481,73 +208,152 @@ public class WeekDaysScheduleFragment extends Fragment {
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
-                    if(!lstOfSchedules.isEmpty()){
-                        mAdapter.setItems(lstOfSchedules);
-                        rvSchedule.setVisibility(View.VISIBLE);
-                        tvEmptyView.setVisibility(View.INVISIBLE);
-                    }else {
-                        rvSchedule.setVisibility(View.INVISIBLE);
-                        tvEmptyView.setVisibility(View.VISIBLE);
-                    }
+                    if (!lstOfSchedules.isEmpty()) {
+                        List<WeekDaySchedule> lstOfCustomWeekDays = new ArrayList<>();
+                        for (int i = 0; i < lstOfSchedules.size(); i++) {
+                            List<WeekScheduleResponse.WeekDayDetail> xxx = lstOfSchedules.get(i).getWeekDayDetail();
+                            List<WeekScheduleResponse.TimeSlot> yyy = lstOfSchedules.get(i).getTimeSlots();
+                            WeekDaySchedule aa = new WeekDaySchedule();
+                            aa.setTimeSlots(yyy);
+                            aa.setWeekDayDetail(xxx);
+                            lstOfCustomWeekDays.add(aa);
+                        }
 
+                        updateUi(lstOfCustomWeekDays);
+                    }
                 });
 
 
-        mViewModel.getResultantDeleteSchedule().observe(getViewLifecycleOwner(),response->{
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        if (mFragmentListener != null){
-                            tvAlertView.showTopAlert(response.getData().getMessage());
-                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                             mAdapter.deleteItem(itemToDeletePos);
-                            if(mFragmentListener !=null) mFragmentListener.refreshFragment("ScheduleFragment");
+//        mViewModel.getResultantDeleteSchedule().observe(getViewLifecycleOwner(),response->{
+//            switch (response.getStatus()) {
+//                case SUCCESS:
+//                    if (response.getData() != null) {
+//                        if (mFragmentListener != null){
+//                            tvAlertView.showTopAlert(response.getData().getMessage());
+//                            tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+//                            mAdapter.deleteItem(itemToDeletePos);
+//                            if(mFragmentListener !=null) mFragmentListener.refreshFragment("ScheduleFragment");
+//
+//
+//                            if(mAdapter.getItemCount()==0){
+//                                rvSchedule.setVisibility(View.INVISIBLE);
+//                                tvEmptyView.setVisibility(View.VISIBLE);
+//                            }else {
+//                                rvSchedule.setVisibility(View.VISIBLE);
+//                                tvEmptyView.setVisibility(View.INVISIBLE);
+//                            }
+//                        }
+//                    }
+//                    break;
+//
+//                case FAILURE:
+//                    if (response.getErrorMsg() != null) {
+//                        tvAlertView.showTopAlert(response.getErrorMsg());
+//
+//                    }
+//                    break;
+//            }
+//
+//        });
+    }
+
+    private void updateUi(List<WeekDaySchedule> lstOfCustomWeekDays) {
+
+        for (int i = 0; i < lstOfCustomWeekDays.size(); i++) {
+
+            List<WeekScheduleResponse.WeekDayDetail> aaa = lstOfCustomWeekDays.get(i).getWeekDayDetail();
+            for (int j = 0; j < aaa.size(); j++) {
+
+                switch (aaa.get(j).getWeekDay()) {
+                    case 1:
+                        tvSunday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvSunday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvSundayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+                        break;
+                    case 2:
+                        tvMonday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvMonday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvMondayTimeSlot .setTextColor(getResources().getColor(R.color.colorWhite));
+
+                        break;
+                    case 3:
+                        tvTuesday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvTuesday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvTuesdayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                        break;
+                    case 4:
+                        tvWednesday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvWednesday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvWednesdayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                        break;
+                    case 5:
+                        tvThursday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvThursday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvThursdayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                        break;
+                    case 6:
+                        tvFriday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvFriday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvFridayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
 
 
-                            if(mAdapter.getItemCount()==0){
-                                rvSchedule.setVisibility(View.INVISIBLE);
-                                tvEmptyView.setVisibility(View.VISIBLE);
-                            }else {
-                                rvSchedule.setVisibility(View.VISIBLE);
-                                tvEmptyView.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    }
-                    break;
+                        break;
+                    case 7:
+                        tvSaturday.setTextColor(getResources().getColor(R.color.colorWhite));
+                        cvSaturday.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+                        tvThursdayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+                        tvSaturdayTimeSlot.setTextColor(getResources().getColor(R.color.colorWhite));
+                        break;
 
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        tvAlertView.showTopAlert(response.getErrorMsg());
 
-                    }
-                    break;
+                }
+
+
             }
 
-        });
+
+        }
+
+
     }
 
     private void resetEnableView(Boolean isView) {
 
     }
+/*
+create weekday request:
 
+isDate=false
 
-    private void showStartTimePicker() {
-        TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
-        mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
-            //call api....
-            WeekScheduleRequest in=new WeekScheduleRequest();
-            in.setRecSecId(0); // no need only distration !!!!
-            in.setFromTime(startTime);
-            in.setToTime(endTime);
-            in.setWeekDays(arrDaySelected);
-            mViewModel.createWeekDaySchedule(mHeaderMap,in);
-        });
+{
+  "weekDays": [
+    1
+  ],
+  "availableDates": [
 
-        mDialogFragment.show(getChildFragmentManager(), "TAG");
-
+  ],
+  "isAvailable": true,
+  "timeSlots": [
+    {
+      "fromTime": "1:00",
+      "toTime": "5:00",
+      "timeDiff": 15
     }
+  ]
+}
 
 
+create weekday response :
 
+          {
+  "status": true,
+  "message": "Schedule has been Created Successfully!",
+  "data": {}
+}
+
+ */
 
 }

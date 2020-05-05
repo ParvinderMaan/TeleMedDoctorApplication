@@ -36,6 +36,7 @@ import com.telemed.doctor.schedule.viewmodel.ScheduleSychronizeViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 import org.jetbrains.annotations.NotNull;
+import org.threeten.bp.LocalDate;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -47,20 +48,73 @@ import java.util.Locale;
 
 public class ScheduleSychronizeFragment extends Fragment {
     private final String TAG = ScheduleSychronizeFragment.class.getSimpleName();
-    private Button btnSynchronizeSchedule,btnDeleteAvailability;
+    private Button btnSynchronizeSchedule, btnDeleteAvailability;
     private ScheduleSychronizeViewModel mViewModel;
     private HashMap<String, String> mHeaderMap;
     private ProgressBar progressBar;
     private CustomAlertTextView tvAlertView;
-    private ImageButton ibtnClose,ibtnBack,ibtnPrevious, ibtNext;
+    private ImageButton ibtnClose, ibtnBack, ibtnPrevious, ibtNext;
     private TextView tvMonthName;
     private ViewPager vpPager;
     private MonthPagerAdapter mMonthPagerAdapter;
     private HomeFragmentSelectedListener mFragmentListener;
     private String mAccessToken;
+    private int monthOne, monthTwo, monthThree;
+    private int yearOne, yearTwo, yearThree;
 
     public static ScheduleSychronizeFragment newInstance() {
         return new ScheduleSychronizeFragment();
+    }
+
+    static String getMonthName(int i) {
+        String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+        return monthName[i];
+    }
+
+    static String formatDateZ(Date oldDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        String strDate = dateFormat.format(oldDate);
+        return strDate;
+    }
+
+    static Date formatDateII(String oldDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date date = null;
+        try {
+            date = dateFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    static String formatDateIII(String inputText) {
+        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+
+
+        Date date = null;
+        try {
+            date = inputFormat.parse(inputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String outputText = outputFormat.format(date);
+        return outputText;
+    }
+
+    static String formatDate(String oldDate) {
+        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        Date freshDate = null;
+        try {
+            freshDate = sdFormat.parse(oldDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdFormat.format(freshDate);
     }
 
     public void onAttach(@NonNull Context context) {
@@ -79,8 +133,17 @@ public class ScheduleSychronizeFragment extends Fragment {
 
         mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
 
-        mViewModel = ViewModelProviders.of(this).get(ScheduleSychronizeViewModel.class);
-        mViewModel.fetchMonthlySchedules(mHeaderMap, 0); // 0,1,2
+
+        LocalDate calendar = LocalDate.now();
+        monthOne = calendar.getMonthValue();
+        yearOne = calendar.getYear();
+        final LocalDate twoCal = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue() + 1, 1);
+        monthTwo = twoCal.getMonthValue();
+        yearTwo = twoCal.getYear();
+        final LocalDate threeCal = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue() + 2, 1);
+        monthThree = threeCal.getMonthValue();
+        yearThree = threeCal.getYear();
+
 
     }
 
@@ -93,21 +156,29 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(ScheduleSychronizeViewModel.class);
         super.onViewCreated(v, savedInstanceState);
         initView(v);
         initListener();
         initObserver();
 
+        setMonthName(ScheduleSychronizeFragment.getMonthName(monthOne - 1));
+        switch (vpPager.getCurrentItem()) {
+            case 0:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthOne, yearOne);
+                break;
+            case 1:
+                mViewModel.fetchSecondMonthSchedule(mHeaderMap, monthTwo, yearTwo);
+                break;
+            case 2:
+                mViewModel.fetchThirdMonthSchedule(mHeaderMap, monthThree, yearThree);
+                break;
+        }
     }
-
 
     private void initView(View v) {
         ibtnClose = v.findViewById(R.id.ibtn_close);
-
-        ibtnClose=v.findViewById(R.id.ibtn_close);
-
-
-        ibtnBack=v.findViewById(R.id.ibtn_back);
+        ibtnBack = v.findViewById(R.id.ibtn_back);
 
 
         btnSynchronizeSchedule = v.findViewById(R.id.btn_synchronize_schedule);
@@ -118,18 +189,14 @@ public class ScheduleSychronizeFragment extends Fragment {
         tvAlertView = v.findViewById(R.id.tv_alert_view);
         progressBar.setVisibility(View.INVISIBLE);
 
-      //  btnSynchronizeSchedule.setVisibility(View.INVISIBLE);
 
-        vpPager = (ViewPager) v.findViewById(R.id.view_pager);
+        vpPager = v.findViewById(R.id.view_pager);
         vpPager.setAdapter(mMonthPagerAdapter);
-        vpPager.setOffscreenPageLimit(2);
+       // vpPager.setOffscreenPageLimit(2);
 
         ibtnPrevious = v.findViewById(R.id.ibtn_previous);
         tvMonthName = v.findViewById(R.id.tv_month_name);
         ibtNext = v.findViewById(R.id.ibtn_next);
-
-        TextView tvHeader = v.findViewById(R.id.tv_header);
-      //  tvHeader.setText("My Availability");
 
 
     }
@@ -137,7 +204,7 @@ public class ScheduleSychronizeFragment extends Fragment {
     private void initListener() {
         ibtnClose.setOnClickListener(v1 -> {
             if (mFragmentListener != null)
-                mFragmentListener.popTillFragment("HomeFragment",0);
+                mFragmentListener.popTillFragment("HomeFragment", 0);
         });
 
         ibtnBack.setOnClickListener(v1 -> {
@@ -188,43 +255,53 @@ public class ScheduleSychronizeFragment extends Fragment {
 
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        ScheduleSychronizeIFragment fragmentI= (ScheduleSychronizeIFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentI.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap,0);
+                        setMonthName(ScheduleFragment.getMonthName(monthOne - 1));
+                        mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthOne, yearOne);
                         break;
 
                     case 1:
-                        ScheduleSychronizeIIFragment fragmentII= (ScheduleSychronizeIIFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentII.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap,1);
+                        setMonthName(ScheduleFragment.getMonthName(monthTwo - 1));
+                        mViewModel.fetchSecondMonthSchedule(mHeaderMap, monthTwo, yearTwo);
                         break;
 
                     case 2:
-                        ScheduleSychronizeIIIFragment fragmentIII= (ScheduleSychronizeIIIFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentIII.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap,2);
+                        setMonthName(ScheduleFragment.getMonthName(monthThree - 1));
+                        mViewModel.fetchThirdMonthSchedule(mHeaderMap, monthThree, yearThree);
                         break;
 
                 }
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
 
     }
 
     public void fetchMonthlySchedules(int monthIndex) {
-        mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex); // 0,1,2
-    }
+        switch (monthIndex) {
+            case 0:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthOne, yearOne);
+                break;
+            case 1:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthTwo, yearTwo);
+                break;
+            case 2:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthThree, yearThree);
+                break;
 
+        }
+
+    }
 
     private void initObserver() {
         mViewModel.getProgress()
@@ -238,6 +315,7 @@ public class ScheduleSychronizeFragment extends Fragment {
                         MonthlyScheduleResponse.Data infoObj = response.getData().getData();
                         if (infoObj.getAvailableScheduleList() != null) {
                             ScheduleSychronizeIFragment fragment = (ScheduleSychronizeIFragment) mMonthPagerAdapter.getRegisteredFragment(0);
+                            if(fragment!=null && fragment.isVisible())
                             fragment.updateUi(infoObj.getAvailableScheduleList());
                         }
                     }
@@ -260,6 +338,7 @@ public class ScheduleSychronizeFragment extends Fragment {
                         MonthlyScheduleResponse.Data infoObj = response.getData().getData();
                         if (infoObj.getAvailableScheduleList() != null) {
                             ScheduleSychronizeIIFragment fragment = (ScheduleSychronizeIIFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                            if(fragment!=null && fragment.isVisible())
                             fragment.updateUi(infoObj.getAvailableScheduleList());
                         }
                     }
@@ -269,6 +348,7 @@ public class ScheduleSychronizeFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
                         ScheduleSychronizeIIFragment fragment = (ScheduleSychronizeIIFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                        if(fragment!=null && fragment.isVisible())
                         fragment.refreshUi();
                     }
                     break;
@@ -301,6 +381,28 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     }
 
+    void setMonthName(String monthName) {
+        tvMonthName.setText(monthName);
+
+    }
+
+    void showAlertView(String msg, String colorName) {
+        tvAlertView.setBackgroundColor(colorName.equals("GREEN") ? getResources().getColor(R.color.colorGreen)
+                : getResources().getColor(R.color.colorRed));
+        tvAlertView.showTopAlert(msg);
+
+
+    }
+
+    void showCreateAvailabilityFragment(String dateSelected) {
+        if (mFragmentListener != null)
+            mFragmentListener.showFragment("CreateAvailabilityFragment", dateSelected);
+    }
+
+    void showEditAvailabilityFragment(String dateSelected) {
+        if (mFragmentListener != null)
+            mFragmentListener.showFragment("EditAvailabilityFragment", dateSelected);
+    }
 
     static class MonthPagerAdapter extends FragmentStatePagerAdapter {
         private static int NUM_ITEMS = 3;
@@ -323,10 +425,14 @@ public class ScheduleSychronizeFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return ScheduleSychronizeIFragment.newInstance();
-                case 1: return ScheduleSychronizeIIFragment.newInstance();
-                case 2: return ScheduleSychronizeIIIFragment.newInstance();
-                default: return null;
+                case 0:
+                    return ScheduleSychronizeIFragment.newInstance();
+                case 1:
+                    return ScheduleSychronizeIIFragment.newInstance();
+                case 2:
+                    return ScheduleSychronizeIIIFragment.newInstance();
+                default:
+                    return null;
             }
         }
 
@@ -340,7 +446,7 @@ public class ScheduleSychronizeFragment extends Fragment {
 
         // Unregister when the item is inactive
         @Override
-        public void destroyItem(@NotNull ViewGroup container, int position,@NotNull Object object) {
+        public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
@@ -352,32 +458,12 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     }
 
-    void setMonthName(String monthName) {
-        tvMonthName.setText(monthName);
-
-    }
-
-
-    void showAlertView(String msg, String colorName){
-        tvAlertView.setBackgroundColor(colorName.equals("GREEN")?getResources().getColor(R.color.colorGreen)
-                :getResources().getColor(R.color.colorRed));
-        tvAlertView.showTopAlert(msg);
-
-
-    }
-
-
-    void refreshPreviousUi(){
-        if(mFragmentListener!=null) mFragmentListener.refreshFragment("ScheduleFragment");
-    }
-
-
-     static class BlueColorDecorator implements DayViewDecorator {
+    static class BlueColorDecorator implements DayViewDecorator {
 
         private String date;
         private Resources resource;
 
-        public BlueColorDecorator(String date,Resources resource) {
+        public BlueColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -386,7 +472,7 @@ public class ScheduleSychronizeFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //      Log.e("BlueColorDecorator", "" + date);
+            //      Log.e("BlueColorDecorator", "" + date);
             return this.date.equals(date);
 
         }
@@ -398,13 +484,13 @@ public class ScheduleSychronizeFragment extends Fragment {
     }
 
     //  Disable dates decorator
-     static class DisableDateDecorator implements DayViewDecorator {
+    static class DisableDateDecorator implements DayViewDecorator {
 
         private String date;
 
         private Resources resource;
 
-        public DisableDateDecorator(String date,Resources resource) {
+        public DisableDateDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -412,7 +498,7 @@ public class ScheduleSychronizeFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //            Log.e("DisableDateDecorator", "" + date);
+            //            Log.e("DisableDateDecorator", "" + date);
             return this.date.equals(date);
         }
 
@@ -425,12 +511,12 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     }
 
-     static class RedColorDecorator implements DayViewDecorator {
+    static class RedColorDecorator implements DayViewDecorator {
         private String date;
 
         private Resources resource;
 
-        public RedColorDecorator(String date,Resources resource) {
+        public RedColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -439,7 +525,7 @@ public class ScheduleSychronizeFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //            Log.e("RedColorDecorator", "" + date);
+            //            Log.e("RedColorDecorator", "" + date);
             return this.date.equals(date);
         }
 
@@ -450,14 +536,14 @@ public class ScheduleSychronizeFragment extends Fragment {
         }
     }
 
-     static class WhiteColorDecorator implements DayViewDecorator {
+    static class WhiteColorDecorator implements DayViewDecorator {
 
 
         private String date;
 
         private Resources resource;
 
-        public WhiteColorDecorator(String date,Resources resource) {
+        public WhiteColorDecorator(String date, Resources resource) {
             this.date = date;
             this.resource = resource;
         }
@@ -465,7 +551,7 @@ public class ScheduleSychronizeFragment extends Fragment {
         @Override
         public boolean shouldDecorate(final CalendarDay day) {
             String date = day.getYear() + "-" + day.getMonth() + "-" + day.getDay();
-    //      Log.e("WhiteColorDecorator", "" + date);
+            //      Log.e("WhiteColorDecorator", "" + date);
             return this.date.equals(date);
 
 
@@ -477,57 +563,6 @@ public class ScheduleSychronizeFragment extends Fragment {
             view.setBackgroundDrawable(resource.getDrawable(R.drawable.custom_circle_vi));
 
         }
-    }
-
-     static String getMonthName(int i) {
-        String[] monthName = {"January", "February",
-                "March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
-        return monthName[i];
-    }
-
-    static String formatDateZ(Date oldDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        String strDate = dateFormat.format(oldDate);
-        return strDate;
-    }
-
-    static Date formatDateII(String oldDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date date = null;
-        try {
-            date = dateFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-    static String formatDateIII(String inputText) {
-        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-
-
-        Date date = null;
-        try {
-            date = inputFormat.parse(inputText);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String outputText = outputFormat.format(date);
-        return outputText;
-    }
-
-    static String formatDate(String oldDate) {
-        DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-        Date freshDate = null;
-        try {
-            freshDate = sdFormat.parse(oldDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return sdFormat.format(freshDate);
     }
 
 }

@@ -37,6 +37,7 @@ import com.telemed.doctor.schedule.viewmodel.ScheduleViewModel;
 import com.telemed.doctor.util.CustomAlertTextView;
 
 import org.jetbrains.annotations.NotNull;
+import org.threeten.bp.LocalDate;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,8 +61,9 @@ public class ScheduleFragment extends Fragment {
     private CustomAlertTextView tvAlertView;
     private MonthPagerAdapter mMonthPagerAdapter;
     private ViewPager vpPager;
-    private SychronizeScheduleDialogFragment mScheduleDialogFragment;
     private SharedPrefHelper mHelper;
+    private int monthOne,monthTwo,monthThree;
+    private int yearOne,yearTwo,yearThree;
 
     public static ScheduleFragment newInstance() {
         return new ScheduleFragment();
@@ -80,10 +82,16 @@ public class ScheduleFragment extends Fragment {
         mHeaderMap = new HashMap<>();
         mHeaderMap.put("content-type", "application/json");
         mHeaderMap.put("Authorization", "Bearer " + mAccessToken);
-        mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
-        mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
         mMonthPagerAdapter = new MonthPagerAdapter(getChildFragmentManager());
-
+        LocalDate calendar = LocalDate.now();
+        monthOne=calendar.getMonthValue();
+        yearOne=calendar.getYear();
+        final LocalDate twoCal = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue()+1, 1);
+        monthTwo= twoCal.getMonthValue();
+        yearTwo= twoCal.getYear();
+        final LocalDate threeCal = LocalDate.of(calendar.getYear(), calendar.getMonth().getValue()+2, 1);
+        monthThree= threeCal.getMonthValue();
+        yearThree= threeCal.getYear();
 
     }
 
@@ -96,10 +104,24 @@ public class ScheduleFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         super.onViewCreated(v, savedInstanceState);
         initView(v);
         initListener();
         initObserver();
+
+        setMonthName(ScheduleFragment.getMonthName(monthOne-1));
+        switch (vpPager.getCurrentItem()) {
+            case 0:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap,monthOne,yearOne);
+                break;
+            case 1:
+                mViewModel.fetchSecondMonthSchedule(mHeaderMap, monthTwo, yearTwo);
+                break;
+            case 2:
+                mViewModel.fetchThirdMonthSchedule(mHeaderMap, monthThree, yearThree);
+                break;
+        }
     }
 
     private void initView(View v) {
@@ -113,13 +135,14 @@ public class ScheduleFragment extends Fragment {
         progressBar.setVisibility(View.INVISIBLE);
 
 
-        vpPager = (ViewPager) v.findViewById(R.id.view_pager);
+        vpPager = v.findViewById(R.id.view_pager);
         vpPager.setAdapter(mMonthPagerAdapter);
-        //  vpPager.setOffscreenPageLimit(2);
 
         ibtnPrevious = v.findViewById(R.id.ibtn_previous);
         tvMonthName = v.findViewById(R.id.tv_month_name);
         ibtNext = v.findViewById(R.id.ibtn_next);
+
+
     }
 
     private void initListener() {
@@ -178,21 +201,18 @@ public class ScheduleFragment extends Fragment {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        ScheduleIMonthFragment fragmentI = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentI.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
+                        setMonthName(ScheduleFragment.getMonthName(monthOne-1));
+                        mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthOne, yearOne);
                         break;
 
                     case 1:
-                        ScheduleIIMonthFragment fragmentII = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentII.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
+                        setMonthName(ScheduleFragment.getMonthName(monthTwo-1));
+                        mViewModel.fetchSecondMonthSchedule(mHeaderMap,monthTwo, yearTwo);
                         break;
 
                     case 2:
-                        ScheduleIIIMonthFragment fragmentIII = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(position);
-                        setMonthName(fragmentIII.getMonthName());
-                        mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
+                        setMonthName(ScheduleFragment.getMonthName(monthThree-1));
+                        mViewModel.fetchThirdMonthSchedule(mHeaderMap, monthThree, yearThree);
                         break;
 
                 }
@@ -205,14 +225,6 @@ public class ScheduleFragment extends Fragment {
     }
 
 
-    public void showProgress(boolean isLoading) {
-        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE);
-    }
-
-
-    public void showAlertMessage(String msg) {
-        tvAlertView.showTopAlert(msg);
-    }
 
     public void setMonthName(String monthName) {
         tvMonthName.setText(monthName);
@@ -228,36 +240,8 @@ public class ScheduleFragment extends Fragment {
         mViewModel.getProgress()
                 .observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE));
 
-//        mViewModel.getDialogVisiblility()
-//                .observe(getViewLifecycleOwner(), isVisible -> {
-//                    if (isVisible) {
-//                        mScheduleDialogFragment = SychronizeScheduleDialogFragment.newInstance();
-//                        mScheduleDialogFragment.setOnScheduleDialogListener(new SychronizeScheduleDialogFragment.SychronizeScheduleDialogListener() {
-//                            @Override
-//                            public void onClickWeekWise() {
-//                                if (mFragmentListener != null)
-//                                    mFragmentListener.showFragment("WeekDaysScheduleFragment", null);
-//                            }
-//
-//                            @Override
-//                            public void onClickDateWise() {
-//                                if (mFragmentListener != null) {
-//                                    mFragmentListener.showFragment("ScheduleSychronizeFragment", null);
-//                                }
-//                            }
-//                        });
-//
-//                        mScheduleDialogFragment.show(getChildFragmentManager(), "TAG");
-//                    } else {
-//                        mScheduleDialogFragment.setOnScheduleDialogListener(null);
-//                        mScheduleDialogFragment.dismiss();
-//                    }
-//
-//                });
-
         mViewModel.getEnableView()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
-
 
         mViewModel.getResultAllScheduleIMonth().observe(getViewLifecycleOwner(), response -> {
 
@@ -265,9 +249,10 @@ public class ScheduleFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         MonthlyScheduleResponse.Data infoObj = response.getData().getData();
-                        if (infoObj.getAvailableScheduleList() != null) {
+                        if (infoObj.getAvailableScheduleList() != null ) {
                             ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
-                            fragment.updateUi(infoObj.getAvailableScheduleList());
+                            if(fragment!=null && fragment.isVisible())
+                                fragment.updateUi(infoObj.getAvailableScheduleList());
                         }
                     }
 
@@ -277,6 +262,7 @@ public class ScheduleFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
                         ScheduleIMonthFragment fragment = (ScheduleIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(0);
+                        if(fragment!=null && fragment.isVisible())
                         fragment.hideRefreshing();
                     }
                     if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
@@ -296,6 +282,7 @@ public class ScheduleFragment extends Fragment {
                         MonthlyScheduleResponse.Data infoObj = response.getData().getData();
                         if (infoObj.getAvailableScheduleList() != null) {
                             ScheduleIIMonthFragment fragment = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                            if(fragment!=null && fragment.isVisible())
                             fragment.updateUi(infoObj.getAvailableScheduleList());
                         }
                     }
@@ -305,6 +292,7 @@ public class ScheduleFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
                         ScheduleIIMonthFragment fragment = (ScheduleIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(1);
+                        if(fragment!=null && fragment.isVisible())
                         fragment.hideRefreshing();
                     }
                     if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
@@ -322,6 +310,7 @@ public class ScheduleFragment extends Fragment {
                         MonthlyScheduleResponse.Data infoObj = response.getData().getData();
                         if (infoObj.getAvailableScheduleList() != null) {
                             ScheduleIIIMonthFragment fragment = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(2);
+                            if(fragment!=null && fragment.isVisible())
                             fragment.updateUi(infoObj.getAvailableScheduleList());
                         }
                     }
@@ -331,6 +320,7 @@ public class ScheduleFragment extends Fragment {
                     if (response.getErrorMsg() != null) {
                         tvAlertView.showTopAlert(response.getErrorMsg());
                         ScheduleIIIMonthFragment fragment = (ScheduleIIIMonthFragment) mMonthPagerAdapter.getRegisteredFragment(2);
+                        if(fragment!=null && fragment.isVisible())
                         fragment.hideRefreshing();
                     }
                     if (response.getErrorMsg() != null && response.getErrorMsg().equals("Unauthorised User")) {
@@ -347,25 +337,6 @@ public class ScheduleFragment extends Fragment {
     private void resetEnableView(Boolean isView) {
     }
 
-    public void refreshUi() { // 0,1,2
-
-//        switch (vpPager.getCurrentItem()){
-//            case 0:
-//                mViewModel.fetchMonthlySchedules(mHeaderMap, 0);
-//                break;
-//
-//            case 1:
-//                mViewModel.fetchMonthlySchedules(mHeaderMap, 1);
-//                break;
-//
-//            case 2:
-//                mViewModel.fetchMonthlySchedules(mHeaderMap, 2);
-//                break;
-//
-//        }
-
-
-    }
 
     static class MonthPagerAdapter extends FragmentStatePagerAdapter {
         private static int NUM_ITEMS = 3;
@@ -416,15 +387,22 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void fetchMonthlySchedules(int monthIndex) {
-        mViewModel.fetchMonthlySchedules(mHeaderMap, monthIndex);
+        switch (monthIndex){
+            case 0:
+                mViewModel.fetchFirstMonthSchedule(mHeaderMap, monthOne, yearOne);
+                break;
+            case 1:
+                mViewModel.fetchSecondMonthSchedule(mHeaderMap,monthTwo, yearTwo);
+                break;
+            case 2:
+                mViewModel.fetchThirdMonthSchedule(mHeaderMap, monthThree, yearThree);
+                break;
+        }
     }
 
 
     public static class BlueColorDecorator implements DayViewDecorator {
-
-
         private String date;
-
         private Resources resource;
 
         public BlueColorDecorator(String date, Resources resource) {

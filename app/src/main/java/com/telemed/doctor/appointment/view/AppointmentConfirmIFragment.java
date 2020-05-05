@@ -39,9 +39,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AppointmentConfirmIFragment extends Fragment {
     private final String TAG = DayWiseAvailabilityFragment.class.getSimpleName();
     private HomeFragmentSelectedListener mFragmentListener;
@@ -113,7 +111,7 @@ public class AppointmentConfirmIFragment extends Fragment {
         initObserver();
 
 
-        tvStartTime.setText(mTimeSlotModel != null && mTimeSlotModel.getSlotFrom() != null ? mTimeSlotModel.getSlotFrom() : "");
+        tvStartTime.setText(mTimeSlotModel != null && mTimeSlotModel.getTimeFrom() != null ? mTimeSlotModel.getTimeTo() : "");
         mViewModel.fetchPatientDetail(mHeaderMap, mTimeSlotModel.getPatientId());
         Log.e(TAG, mTimeSlotModel.toString());
 
@@ -135,25 +133,25 @@ public class AppointmentConfirmIFragment extends Fragment {
 
     private void initListener() {
         tvConfirmAppointment.setOnClickListener(v1 -> {
-            AppointmentProcessRequest in = new AppointmentProcessRequest();
-            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
-            in.setAppointmentStatus(AppointmentStatus.CONFIRM);
-            mViewModel.confirmAppointment(mHeaderMap,in);
+//            AppointmentProcessRequest in = new AppointmentProcessRequest();
+//            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
+//            in.setAppointmentStatus(AppointmentStatus.CONFIRM);
+//            mViewModel.confirmAppointment(mHeaderMap,in);
 
         });
 
         tvDenyAppointment.setOnClickListener(v1 -> {
-            AppointmentProcessRequest in = new AppointmentProcessRequest();
-            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
-            in.setAppointmentStatus(AppointmentStatus.DENY);
-            mViewModel.denyAppointment(mHeaderMap,in);
+//            AppointmentProcessRequest in = new AppointmentProcessRequest();
+//            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
+//            in.setAppointmentStatus(AppointmentStatus.DENY);
+//            mViewModel.denyAppointment(mHeaderMap,in);
         });
 
         tvCancelAppointment.setOnClickListener(v1 -> {
-            AppointmentProcessRequest in = new AppointmentProcessRequest();
-            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
-            in.setAppointmentStatus(AppointmentStatus.CANCEL);
-            mViewModel.cancelAppointment(mHeaderMap,in);
+//            AppointmentProcessRequest in = new AppointmentProcessRequest();
+//            in.setAppointmentId(mTimeSlotModel.getAppointmentId());
+//            in.setAppointmentStatus(AppointmentStatus.CANCEL);
+//            mViewModel.cancelAppointment(mHeaderMap,in);
 
         });
 

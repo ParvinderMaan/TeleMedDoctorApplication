@@ -70,16 +70,46 @@ tools:context=".schedule.view.EditAvailabilityFragment">
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
+         android:layout_marginTop="@dimen/_10sdp"
         android:text="13 January"
         android:textColor="@color/colorRed"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/ll_header" />
-    
 
+     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_time_slot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+         android:layout_marginTop="@dimen/_20sdp"
+         tools:itemCount="3"
+        tools:listitem="@layout/list_item_day_availability"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_slot" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbtn_add_availability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGrey"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_slot"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

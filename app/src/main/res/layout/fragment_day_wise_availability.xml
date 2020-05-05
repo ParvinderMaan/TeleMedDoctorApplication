@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -17,11 +18,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="@dimen/screen_start_padding"
-        android:paddingTop="@dimen/screen_top_padding"
         android:paddingEnd="@dimen/screen_end_padding"
         android:paddingBottom="@dimen/screen_bottom_padding">
 
         <TextView
+            android:layout_marginTop="@dimen/screen_top_padding"
             android:id="@+id/tv_header"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/ibtn_back"
@@ -34,6 +35,8 @@
 
         <ImageButton
             android:id="@+id/ibtn_back"
+            android:layout_marginTop="@dimen/screen_top_padding"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -49,25 +52,27 @@
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_cross_blue"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/screen_top_padding"
             android:layout_marginEnd="@dimen/_10sdp" />
+
+
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/layout_progress_bar"/>
+        <include
+            android:id="@+id/tv_alert_view"
+            layout="@layout/layout_top_alert_box" />
     </RelativeLayout>
 
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/layout_progress_bar"/>
-    <include
-        android:id="@+id/tv_alert_view"
-        layout="@layout/layout_top_alert_box" />
-    <!--    body layout-->
 
+    <!--    body layout-->
     <TextView
         android:id="@+id/tv_time_slot"
         android:layout_below="@+id/ll_header"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
         android:maxLines="1"
-        android:ellipsize="end"
         android:gravity="center"
         android:text="13 January"
         android:textColor="@color/colorRed"
@@ -196,6 +201,12 @@
 
      </RelativeLayout>
 
-
+   <TextView
+       android:id="@+id/tv_empty_view"
+       android:visibility="invisible"
+       android:layout_centerInParent="true"
+       android:text="No Time Slot exist"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"/>
 
 </RelativeLayout>

@@ -131,11 +131,11 @@ public class NotificationBuilder {
         JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
         TimeSlotModel into=new TimeSlotModel();
         into.setPatientId(jsonObject.get("PatientId").getAsString());
-        into.setDoctorId(jsonObject.get("DoctorId").getAsString());
-        into.setSlotFrom(jsonObject.get("SlotFrom").getAsString());
-        into.setSlotTo(jsonObject.get("SlotTo").getAsString());
-        into.setAppointmentId(jsonObject.get("AppointmentId").getAsInt());
-        into.setAppointmentStatus(jsonObject.get("AppointmentStatus").getAsInt());
+//        into.setDoctorId(jsonObject.get("DoctorId").getAsString());
+//        into.setSlotFrom(jsonObject.get("SlotFrom").getAsString());
+//        into.setSlotTo(jsonObject.get("SlotTo").getAsString());
+//        into.setAppointmentId(jsonObject.get("AppointmentId").getAsInt());
+//        into.setAppointmentStatus(jsonObject.get("AppointmentStatus").getAsInt());
         return into;
     }
 }

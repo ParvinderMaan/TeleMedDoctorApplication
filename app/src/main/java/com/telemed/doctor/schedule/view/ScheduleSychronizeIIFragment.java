@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,20 +23,15 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.telemed.doctor.R;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.dialog.AlertDialogFragment;
-import com.telemed.doctor.dialog.TimePickerDialogFragment;
 import com.telemed.doctor.helper.SharedPrefHelper;
 import com.telemed.doctor.helper.DateIterator;
 import com.telemed.doctor.schedule.model.AllMonthSchedule;
-import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.viewmodel.ScheduleSychronizeIIViewModel;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.TextStyle;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,7 +46,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
     private ScheduleSychronizeIIViewModel mViewModel;
     private MaterialCalendarView calViewSchedule;
     private HashMap<String, DayViewDecorator> mHashMapDD = new HashMap<>();
-    private String startTimeSelected, endTimeSelected, dateSelected;
+    private String dateSelected;
     private String mDayDecoratorDateSelected;
     private Calendar calendarObj;
     private String mAccessToken;
@@ -118,83 +114,8 @@ public class ScheduleSychronizeIIFragment extends Fragment {
 
 
     private void initObserver() {
-        mViewModel.getDeleteDialogVisibility()
-                .observe(getViewLifecycleOwner(), isVisibile -> {
-                    if(isVisibile){
-                        mDeleteDialogFragment = AlertDialogFragment.newInstance("delete");
-                        mDeleteDialogFragment.show(getChildFragmentManager(), "TAG");
-                        mDeleteDialogFragment.setOnAlertDialogListener(new AlertDialogFragment.AlertDialogListener() {
-                            @Override
-                            public void onClickYes() {
-                                DayScheduleRequest in=new DayScheduleRequest();
-                                in.setId(0);
-                                in.setAvailableDate(ScheduleSychronizeFragment.formatDateIII(dateSelected));
-                                in.setFromTime("00:00");
-                                in.setToTime("00:00");
-                                in.setIsAvailable(false);
-                                mDeleteDialogFragment.dismiss();
-                                mViewModel.deleteWeekSchedule(mHeaderMap,in); // id
-                            }
 
-                            @Override
-                            public void onClickNo() {
 
-                            }
-                        });
-                    }else {
-                        mDeleteDialogFragment.dismiss();
-                        mDeleteDialogFragment.setOnAlertDialogListener(null);
-                    }
-
-                });
-
-        mViewModel.getResultantDayScheduleCreation().observe(getViewLifecycleOwner(), response -> {
-
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
-                        ScheduleSychronizeFragment.WhiteColorDecorator decorator=new ScheduleSychronizeFragment.WhiteColorDecorator(mDayDecoratorDateSelected,getResources());
-                        mHashMapDD.put(mDayDecoratorDateSelected,decorator);
-                        calViewSchedule.addDecorator(decorator);
-                        ((ScheduleSychronizeFragment)requireParentFragment()).refreshPreviousUi();
-                    }
-
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),"RED");
-
-                    }
-                    break;
-            }
-        });
-
-        mViewModel.getResultantDayScheduleDeletion().observe(getViewLifecycleOwner(), response -> {
-
-            switch (response.getStatus()) {
-                case SUCCESS:
-                    if (response.getData() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getData().getMessage(),"GREEN");
-
-                        ScheduleSychronizeFragment.BlueColorDecorator decorator=new ScheduleSychronizeFragment.BlueColorDecorator(mDayDecoratorDateSelected,getResources());
-                        calViewSchedule.removeDecorator(mHashMapDD.get(mDayDecoratorDateSelected));
-                        calViewSchedule.addDecorator(decorator);
-                        mHashMapDD.put(mDayDecoratorDateSelected,decorator);
-                        ((ScheduleSychronizeFragment)requireParentFragment()).refreshPreviousUi();
-                    }
-
-                    break;
-
-                case FAILURE:
-                    if (response.getErrorMsg() != null) {
-                        ((ScheduleSychronizeFragment)requireParentFragment()).showAlertView(response.getErrorMsg(),"RED");
-
-                    }
-                    break;
-            }
-        });
 
         mViewModel.getAllSchedules()
                 .observe(getViewLifecycleOwner(), lstOfSchedules -> {
@@ -207,7 +128,7 @@ public class ScheduleSychronizeIIFragment extends Fragment {
                     if (!lstOfSchedules.isEmpty()) {
 
                         for (AllMonthSchedule item : lstOfSchedules) {
-                            String freshDate = ScheduleSychronizeFragment.formatDate(item.getDate());
+                            String freshDate = ScheduleSychronizeFragment.formatDate(item.getDateValue());
 
                             if (item.getAnyPendingAppointment()) {
                                 mHashMapDD.put(freshDate, new ScheduleSychronizeFragment.RedColorDecorator(freshDate,getResources()));
@@ -217,6 +138,9 @@ public class ScheduleSychronizeIIFragment extends Fragment {
                         }
 
                         calViewSchedule.addDecorators(new ArrayList<>(mHashMapDD.values()));
+                    }else {
+                        calViewSchedule.addDecorators(new ArrayList<>(mHashMapDD.values()));
+                     //   Toast.makeText(requireActivity(), "empty", Toast.LENGTH_SHORT).show();
                     }
 
                 });
@@ -268,14 +192,14 @@ public class ScheduleSychronizeIIFragment extends Fragment {
                 if (mHashMapDD.containsKey(dateSelected)) {
                     mDayDecoratorDateSelected=dateSelected;
                     if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.RedColorDecorator){
-                        /// delete.......
-                        mViewModel.setDeleteDialogVisibility(true);
+                        /// show EditAvail Fragment.......
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showEditAvailabilityFragment(dateSelected);
                     }else if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.WhiteColorDecorator){
-                        /// delete.......
-                        mViewModel.setDeleteDialogVisibility(true);
+                        ///  show EditAvail Fragment.......
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showEditAvailabilityFragment(dateSelected);
                     }else if(mHashMapDD.get(dateSelected) instanceof ScheduleSychronizeFragment.BlueColorDecorator){
-                        // create.......
-                        showTimePicker();
+                        /// show CreateAvail Fragment......
+                        ((ScheduleSychronizeFragment)requireParentFragment()).showCreateAvailabilityFragment(dateSelected);
                     }
                 }
             }
@@ -295,30 +219,6 @@ public class ScheduleSychronizeIIFragment extends Fragment {
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .setMaximumDate(maxDateOfCalendar)
                 .commit();
-    }
-
-
-
-
-
-
-
-    private void showTimePicker() {
-        TimePickerDialogFragment mDialogFragment = TimePickerDialogFragment.newInstance();
-        mDialogFragment.setOnTimePickerDialogFragmentListener((startTime, endTime) -> {
-            //call api....
-            DayScheduleRequest in = new DayScheduleRequest();
-            in.setId(0);
-            in.setAvailableDate(ScheduleSychronizeFragment.formatDateIII(dateSelected));
-            in.setFromTime(startTime);
-            in.setToTime(endTime);
-            in.setIsAvailable(true);
-            Log.e(TAG,in.toString());
-            mViewModel.createDaySchedule(mHeaderMap, in);
-        });
-
-        mDialogFragment.show(getChildFragmentManager(), "TAG");
-
     }
 
 

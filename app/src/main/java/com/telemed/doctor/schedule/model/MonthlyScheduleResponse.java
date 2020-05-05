@@ -44,7 +44,7 @@ public class MonthlyScheduleResponse {
 
     public static class Data {
 
-        @SerializedName("availablescehduleList")
+        @SerializedName("returnDates")
         @Expose
         private List<AllMonthSchedule> availablescehduleList = null;
 

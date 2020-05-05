@@ -2,7 +2,6 @@ package com.telemed.doctor.schedule.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.telemed.doctor.schedule.model.AllWeekSchedule;
 
 import java.util.List;
 
@@ -48,16 +47,109 @@ public class WeekScheduleResponse {
 
     public static class Data {
 
-        @SerializedName("scehduleList")
+        @SerializedName("weekDayTimeSlots")
         @Expose
-        private List<AllWeekSchedule> scehduleList = null;
+        private List<WeekDayTimeSlot> weekDayTimeSlots = null;
 
-        public List<AllWeekSchedule> getScheduleList() {
-            return scehduleList;
+        public List<WeekDayTimeSlot> getWeekDayTimeSlots() {
+            return weekDayTimeSlots;
         }
 
-        public void setScheduleList(List<AllWeekSchedule> scehduleList) {
-            this.scehduleList = scehduleList;
+        public void setWeekDayTimeSlots(List<WeekDayTimeSlot> weekDayTimeSlots) {
+            this.weekDayTimeSlots = weekDayTimeSlots;
+        }
+    }
+
+    public static class WeekDayTimeSlot {
+
+        @SerializedName("weekDayDetail")
+        @Expose
+        private List<WeekDayDetail> weekDayDetail = null;
+        @SerializedName("timeSlots")
+        @Expose
+        private List<TimeSlot> timeSlots = null;
+
+        public List<WeekDayDetail> getWeekDayDetail() {
+            return weekDayDetail;
+        }
+
+        public void setWeekDayDetail(List<WeekDayDetail> weekDayDetail) {
+            this.weekDayDetail = weekDayDetail;
+        }
+
+        public List<TimeSlot> getTimeSlots() {
+            return timeSlots;
+        }
+
+        public void setTimeSlots(List<TimeSlot> timeSlots) {
+            this.timeSlots = timeSlots;
+        }
+
+    }
+
+
+    public static class TimeSlot {
+
+        @SerializedName("fromTime")
+        @Expose
+        private String fromTime;
+        @SerializedName("toTime")
+        @Expose
+        private String toTime;
+        @SerializedName("timeDiff")
+        @Expose
+        private Integer timeDiff;
+
+        public String getFromTime() {
+            return fromTime;
+        }
+
+        public void setFromTime(String fromTime) {
+            this.fromTime = fromTime;
+        }
+
+        public String getToTime() {
+            return toTime;
+        }
+
+        public void setToTime(String toTime) {
+            this.toTime = toTime;
+        }
+
+        public Integer getTimeDiff() {
+            return timeDiff;
+        }
+
+        public void setTimeDiff(Integer timeDiff) {
+            this.timeDiff = timeDiff;
+        }
+
+    }
+
+
+    public static class WeekDayDetail {
+
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("weekDay")
+        @Expose
+        private Integer weekDay;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getWeekDay() {
+            return weekDay;
+        }
+
+        public void setWeekDay(Integer weekDay) {
+            this.weekDay = weekDay;
         }
 
     }

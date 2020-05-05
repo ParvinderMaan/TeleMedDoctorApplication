@@ -63,11 +63,14 @@ public interface WebUrl {
     String CREATE_WEEK_SCHEDULE="Doctor/CreateRecurringSchedule";
     String DELETE_WEEK_SCHEDULE="Doctor/DeleteRecurringSchedule";
     String UPDATE_WEEK_SCHEDULE="Doctor/UpdateRecurringSchedule";
-    String FETCH_WEEK_SCHEDULES="Doctor/GetNewRecurringSchedule";
-    String FETCH_MONTHLY_SCHEDULES="Doctor/GetDoctorMonthlyAvailableSchedules";
-    String FETCH_AVAIL_TIME_SLOTS="Doctor/DoctorNewAvailableTimeSlot";
-    String CREATE_DAY_SCHEDULE="Doctor/CreateDateofAvalibility";
-    String DELETE_DAY_SCHEDULE="Doctor/DeleteDateofAvalibility";
+    String FETCH_WEEK_SCHEDULES="Doctor/GetWeekDayScheduleByDoctorId";       //GetNewRecurringSchedule
+    String FETCH_MONTHLY_SCHEDULES="Doctor/GetDoctorDateSlots"; ///api/Doctor/ //GetDoctorMonthlyAvailableSchedules
+    String FETCH_AVAIL_TIME_SLOTS="Doctor/GetDateWiseDoctorTimeSlots"; //  //DoctorNewAvailableTimeSlot
+    String CREATE_DAY_SCHEDULE="Doctor/CreateRecurringSchedule"; //          //CreateDateofAvalibility
+    String DELETE_DAY_SCHEDULE="Doctor/DeleteTimeSlotById";  //DeleteDateofAvalibility
+    String EDIT_DAY_SCHEDULE="Doctor/Updateschedule";   //UpdateDateofAvalibility
+    String FETCH_DAY_SCHEDULE="Doctor/GetDateWiseDoctorSchedule";
+    String DELETE_DATES_SCHEDULE="Doctor/DeleteRecurringScheduleByDates";
 
     //booking
     String FETCH_PATIENT_DETAIL="Patient/GetPatientConsults";

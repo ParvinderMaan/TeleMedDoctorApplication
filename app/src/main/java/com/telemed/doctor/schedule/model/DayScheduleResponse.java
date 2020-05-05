@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ScheduleTimeSlotResponse {
+public class DayScheduleResponse {
     @SerializedName("status")
     @Expose
     private Boolean status;
@@ -40,18 +40,18 @@ public class ScheduleTimeSlotResponse {
         this.data = data;
     }
 
-    public class Data {
+    public static class Data {
 
-        @SerializedName("mdoeifiedDto")
+        @SerializedName("availableTimes")
         @Expose
-        private List<TimeSlotModel> availableTimeSlots = null;
+        private List<DayAvailabilityModel> availableTimes = null;
 
-        public List<TimeSlotModel> getAvailableTimeSlots() {
-            return availableTimeSlots;
+        public List<DayAvailabilityModel> getAvailableTimes() {
+            return availableTimes;
         }
 
-        public void setAvailableTimeSlots(List<TimeSlotModel> availableTimeSlots) {
-            this.availableTimeSlots = availableTimeSlots;
+        public void setAvailableTimes(List<DayAvailabilityModel> availableTimes) {
+            this.availableTimes = availableTimes;
         }
 
     }

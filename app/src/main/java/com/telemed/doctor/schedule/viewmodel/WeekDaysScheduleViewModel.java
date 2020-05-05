@@ -38,8 +38,7 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-    private MutableLiveData<Map<String, String>> headerMap;
-    private MutableLiveData<List<AllWeekSchedule>> lstOfSchedule;
+    private MutableLiveData<List<WeekScheduleResponse.WeekDayTimeSlot>> lstOfSchedule;
 
     public WeekDaysScheduleViewModel(@NonNull Application application) {
         super(application);
@@ -49,7 +48,6 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
         resultantDeleteSchedule= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
         isViewEnabled =new MutableLiveData<>();
-        headerMap=new MutableLiveData<>();
         lstOfSchedule=new MutableLiveData<>();
 
 
@@ -119,7 +117,6 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
     public void fetchWeekSchedules(Map<String, String> map) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
-
         mWebService.fetchWeekSchedules(map).enqueue(new Callback<WeekScheduleResponse>() {
             @Override
             public void onResponse(@NonNull Call<WeekScheduleResponse> call, @NonNull Response<WeekScheduleResponse> response) {
@@ -155,11 +152,11 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<List<AllWeekSchedule>> getAllSchedules() {
+    public MutableLiveData<List<WeekScheduleResponse.WeekDayTimeSlot>> getAllSchedules() {
         return lstOfSchedule;
     }
 
-    public void setScheduleList(List<AllWeekSchedule> scheduleList) {
+    public void setScheduleList(List<WeekScheduleResponse.WeekDayTimeSlot> scheduleList) {
         lstOfSchedule.setValue(scheduleList);
 
     }

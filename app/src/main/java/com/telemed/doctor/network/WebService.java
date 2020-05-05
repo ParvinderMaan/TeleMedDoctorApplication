@@ -17,6 +17,9 @@ import com.telemed.doctor.notification.model.NotificationResponse;
 import com.telemed.doctor.notification.model.ReadNotificationResponse;
 import com.telemed.doctor.password.model.ChangePasswordRequest;
 import com.telemed.doctor.password.model.ChangePasswordResponse;
+import com.telemed.doctor.schedule.model.DayScheduleResponse;
+import com.telemed.doctor.schedule.model.DeleteScheduleRequest;
+import com.telemed.doctor.schedule.model.EditDayScheduleRequest;
 import com.telemed.doctor.schedule.model.PatientDetailResponse;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
 import com.telemed.doctor.password.model.ForgotPasswordResponse;
@@ -76,10 +79,12 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -225,17 +230,33 @@ public interface WebService {
 
 
     @GET(WebUrl.FETCH_MONTHLY_SCHEDULES)
-    Call<MonthlyScheduleResponse> fetchMonthlySchedules(@HeaderMap Map<String, String> token, @Query("CurrentPage") int pageNo);
+    Call<MonthlyScheduleResponse> fetchMonthlySchedules(@HeaderMap Map<String, String> token, @Query("month") int month,@Query("year") int year);
+
 
     @GET(WebUrl.FETCH_AVAIL_TIME_SLOTS)
-    Call<ScheduleTimeSlotResponse> fetchScheduleTimeSlots(@HeaderMap Map<String, String> token, @Query("appointmentDate") String appointmentDate);
+    Call<ScheduleTimeSlotResponse> fetchScheduleTimeSlots(@HeaderMap Map<String, String> token, @Query("selectedDate") String selectedDate);
 
 
     @POST(WebUrl.CREATE_DAY_SCHEDULE)
-    Call<DayScheduleAlterationResponse> createDaySchedule(@HeaderMap Map<String, String> headers, @Body DayScheduleRequest in);
+    Call<DayScheduleAlterationResponse> createDaySchedule(@HeaderMap Map<String, String> headers, @Body DayScheduleRequest in,@Query("isDate") Boolean isDate);
+
+
+    @GET(WebUrl.FETCH_DAY_SCHEDULE)
+    Call<DayScheduleResponse> fetchDaySchedule(@HeaderMap Map<String, String> headers, @Query("selectedDate") String selectedDate);
 
     @DELETE(WebUrl.DELETE_DAY_SCHEDULE)
-    Call<DayScheduleDeletionResponse> deleteDaySchedule(@Query("Id") String scheduleId, @HeaderMap Map<String, String> token);
+    Call<DayScheduleResponse> deleteDaySchedule(@HeaderMap Map<String, String> token,@Query("timeSlotId") Integer timeSlotId);
+
+
+    @PUT(WebUrl.EDIT_DAY_SCHEDULE)
+    Call<DayScheduleResponse> editDaySchedule(@HeaderMap Map<String, String> token, @Body EditDayScheduleRequest in,@Query("timeSlotId") Integer timeSlotId);
+
+  //  @DELETE(WebUrl.DELETE_DATES_SCHEDULE)
+    @HTTP(method = "DELETE", path = WebUrl.DELETE_DATES_SCHEDULE, hasBody = true)
+    Call<DayScheduleResponse> deleteDatesSchedule(@HeaderMap Map<String, String> token,@Body DeleteScheduleRequest in);
+
+
+
 
     @GET(WebUrl.FETCH_PATIENT_DETAIL)
     Call<PatientDetailResponse> fetchPatientDetail(@HeaderMap Map<String, String> token, @Query("PatientId") String patientId);
@@ -297,5 +318,8 @@ public interface WebService {
 
     @POST(WebUrl.UPDATE_PAST_MEDICAL_HISTORY)
     Call<MedicalHistoryResponse> updatePastMedicalHistory(@HeaderMap Map<String, String> mHeaderMap,@Body MedicalHistoryRequest in);
+
+
+
 }
 

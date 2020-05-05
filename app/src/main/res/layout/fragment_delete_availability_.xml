@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="start"
+            android:layout_below="@+id/btn_synchronize_schedule"
+            android:orientation="vertical"
+            android:id="@+id/calendar_view_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:theme="@style/CalenderViewCustom"
+            app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+            app:mcv_leftArrow="@drawable/ic_arrow_left_blue"
+            app:mcv_monthLabels="@color/colorBlue"
+            app:mcv_rightArrow="@drawable/ic_arrow_right_blue"
+            app:mcv_showOtherDates="all"
+            app:mcv_weekDayLabels="@color/colorWhite"
+            app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText">
+</com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+

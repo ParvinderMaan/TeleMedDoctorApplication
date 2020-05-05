@@ -23,7 +23,7 @@ import static com.telemed.doctor.network.Status.FAILURE;
 import static com.telemed.doctor.network.Status.SUCCESS;
 
 public class ScheduleViewModel extends AndroidViewModel {
-    private final String TAG= ScheduleViewModel.class.getSimpleName();
+    private final String TAG = ScheduleViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
     private MutableLiveData<ApiResponse<MonthlyScheduleResponse>> resultAllScheduleIMonth;
@@ -31,9 +31,7 @@ public class ScheduleViewModel extends AndroidViewModel {
     private MutableLiveData<ApiResponse<MonthlyScheduleResponse>> resultAllScheduleIIIMonth;
 
     private MutableLiveData<Boolean> isLoading;
-   // private MutableLiveData<Boolean> isDialogVisible;
     private MutableLiveData<Boolean> isViewEnabled;
-  //  private MutableLiveData<Map<String, String>> headerMap;
 
     public String getTAG() {
         return TAG;
@@ -43,23 +41,17 @@ public class ScheduleViewModel extends AndroidViewModel {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
         resultAllScheduleIMonth = new MutableLiveData<>();
-        resultAllScheduleIIMonth=new MutableLiveData<>();
-        resultAllScheduleIIIMonth=new MutableLiveData<>();
-        isLoading=new MutableLiveData<>();
-   //     isDialogVisible=new MutableLiveData<>();
-        isViewEnabled =new MutableLiveData<>();
-     //   headerMap=new MutableLiveData<>();
-        //---------------------------
-
+        resultAllScheduleIIMonth = new MutableLiveData<>();
+        resultAllScheduleIIIMonth = new MutableLiveData<>();
+        isLoading = new MutableLiveData<>();
+        isViewEnabled = new MutableLiveData<>();
 
     }
-
 
 
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
     }
-
 
 
     public MutableLiveData<ApiResponse<MonthlyScheduleResponse>> getResultAllScheduleIMonth() {
@@ -71,108 +63,98 @@ public class ScheduleViewModel extends AndroidViewModel {
     }
 
 
+    public void fetchFirstMonthSchedule(Map<String, String> map, int month, int year) {
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+        mWebService.fetchMonthlySchedules(map, month, year).enqueue(new Callback<MonthlyScheduleResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    MonthlyScheduleResponse result = response.body();
+                    Log.e(TAG, result.toString());
+                    if (result.getStatus()) {
+                        resultAllScheduleIMonth.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    } else {
+                        resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                } else {
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
 
 
-    public void fetchMonthlySchedules(Map<String, String> map,int monthNo) {
-        switch (monthNo){
+            }
 
-            case 0:
+            @Override
+            public void onFailure(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+    }
+
+    public void fetchSecondMonthSchedule(Map<String, String> map, int month, int year) {
+        this.isLoading.setValue(true);
+        this.isViewEnabled.setValue(false);
+        mWebService.fetchMonthlySchedules(map, month, year).enqueue(new Callback<MonthlyScheduleResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    MonthlyScheduleResponse result = response.body();
+                    Log.e(TAG, result.toString());
+                    if (result.getStatus()) {
+                        resultAllScheduleIIMonth.setValue(new ApiResponse<>(SUCCESS, result, null));
+                    } else {
+                        resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
+                    }
+                } else {
+                    String errorMsg = ErrorHandler.reportError(response.code());
+                    resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Throwable error) {
+                isLoading.setValue(false);
+                isViewEnabled.setValue(true);
+                String errorMsg = ErrorHandler.reportError(error);
+                resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+            }
+        });
+
+    }
+
+
+    public void fetchThirdMonthSchedule(Map<String, String> map, int month, int year) {
                 this.isLoading.setValue(true);
                 this.isViewEnabled.setValue(false);
-                mWebService.fetchMonthlySchedules(map,monthNo).enqueue(new Callback<MonthlyScheduleResponse>() {
+                mWebService.fetchMonthlySchedules(map, month, year).enqueue(new Callback<MonthlyScheduleResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
                         isLoading.setValue(false);
                         isViewEnabled.setValue(true);
 
-                        if (response.isSuccessful() && response.body()!=null) {
+                        if (response.isSuccessful() && response.body() != null) {
                             MonthlyScheduleResponse result = response.body();
-                            Log.e(TAG,result.toString());
-                            if(result.getStatus()){
-                                resultAllScheduleIMonth.setValue(new ApiResponse<>(SUCCESS, result, null));
-                            }else {
-                                resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                            }
-                        }else{
-                            String errorMsg = ErrorHandler.reportError(response.code());
-                            resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                        }
-
-
-
-
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Throwable error) {
-                        isLoading.setValue(false);
-                        isViewEnabled.setValue(true);
-                        String errorMsg = ErrorHandler.reportError(error);
-                        resultAllScheduleIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                    }
-                });
-                break;
-
-            case 1:
-                this.isLoading.setValue(true);
-                this.isViewEnabled.setValue(false);
-                mWebService.fetchMonthlySchedules(map,monthNo).enqueue(new Callback<MonthlyScheduleResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
-                        isLoading.setValue(false);
-                        isViewEnabled.setValue(true);
-
-                        if (response.isSuccessful() && response.body()!=null) {
-                            MonthlyScheduleResponse result = response.body();
-                            Log.e(TAG,result.toString());
-                            if(result.getStatus()){
-                                resultAllScheduleIIMonth.setValue(new ApiResponse<>(SUCCESS, result, null));
-                            }else {
-                                resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                            }
-                        }else{
-                            String errorMsg = ErrorHandler.reportError(response.code());
-                            resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                        }
-
-
-
-
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Throwable error) {
-                        isLoading.setValue(false);
-                        isViewEnabled.setValue(true);
-                        String errorMsg = ErrorHandler.reportError(error);
-                        resultAllScheduleIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                    }
-                });
-                break;
-
-            case 2:
-                this.isLoading.setValue(true);
-                this.isViewEnabled.setValue(false);
-                mWebService.fetchMonthlySchedules(map,monthNo).enqueue(new Callback<MonthlyScheduleResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MonthlyScheduleResponse> call, @NonNull Response<MonthlyScheduleResponse> response) {
-                        isLoading.setValue(false);
-                        isViewEnabled.setValue(true);
-
-                        if (response.isSuccessful() && response.body()!=null) {
-                            MonthlyScheduleResponse result = response.body();
-                            Log.e(TAG,result.toString());
-                            if(result.getStatus()){
+                            Log.e(TAG, result.toString());
+                            if (result.getStatus()) {
                                 resultAllScheduleIIIMonth.setValue(new ApiResponse<>(SUCCESS, result, null));
-                            }else {
+                            } else {
                                 resultAllScheduleIIIMonth.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
                             }
-                        }else{
+                        } else {
                             String errorMsg = ErrorHandler.reportError(response.code());
                             resultAllScheduleIIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                         }
-
-
 
 
                     }
@@ -185,18 +167,7 @@ public class ScheduleViewModel extends AndroidViewModel {
                         resultAllScheduleIIIMonth.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
                     }
                 });
-                break;
-
-
-
-        }
-
-
-
     }
-
-
-
 
     public MutableLiveData<ApiResponse<MonthlyScheduleResponse>> getResultAllScheduleIIMonth() {
         return resultAllScheduleIIMonth;
@@ -207,11 +178,4 @@ public class ScheduleViewModel extends AndroidViewModel {
     }
 
 
-//    public MutableLiveData<Boolean> getDialogVisiblility() {
-//        return isDialogVisible;
-//    }
-
-//    public void setDialogVisiblility(Boolean isDialogVisible) {
-//        this.isDialogVisible.setValue(isDialogVisible);
-//    }
 }
