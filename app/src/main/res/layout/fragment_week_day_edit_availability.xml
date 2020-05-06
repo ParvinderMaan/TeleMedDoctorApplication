@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/rl_root"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:clickable="true"
+android:focusable="true"
+android:orientation="vertical"
+tools:context=".schedule.view.WeekDayEditAvailabilityFragment">
+<!--    header layout-->
+<RelativeLayout
+    android:id="@+id/ll_header"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="Edit Availability"
+        android:textColor="@color/colorBlue"
+        android:textSize="25sp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/ibtn_back"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/ibtn_close"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_back_blue" />
+
+    <ImageButton
+        android:id="@+id/ibtn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_cross_blue" />
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progress_bar" />
+
+    <include
+        android:id="@+id/tv_alert_view"
+        layout="@layout/layout_top_alert_box" />
+</RelativeLayout>
+
+<TextView
+    android:id="@+id/tv_time_slot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/ll_header"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:maxLines="1"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:text="Sunday"
+    android:textColor="@color/colorRed"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@+id/ll_header" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rv_time_slot"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_marginTop="@dimen/_20sdp"
+    tools:itemCount="3"
+    tools:listitem="@layout/list_item_day_availability"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_time_slot" />
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fbtn_add_availability"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_marginEnd="@dimen/_20sdp"
+    android:layout_marginBottom="@dimen/_20sdp"
+    android:src="@drawable/ic_add"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+<View
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/_20sdp"
+    android:layout_height="1dp"
+    android:background="@color/colorLightGrey"
+    app:layout_constraintTop_toBottomOf="@+id/tv_time_slot"
+    android:layout_marginStart="@dimen/_20sdp"
+    android:layout_marginEnd="@dimen/_20sdp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

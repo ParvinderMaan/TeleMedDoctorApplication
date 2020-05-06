@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/screen_start_padding"
-        android:paddingEnd="@dimen/screen_end_padding"
+
         android:paddingBottom="@dimen/screen_bottom_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +28,8 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/ibtn_back"
             android:text="Recurring Schedule"
+            android:paddingStart="@dimen/screen_start_padding"
+            android:paddingEnd="@dimen/screen_end_padding"
             android:textColor="@color/colorBlue"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -83,15 +84,16 @@
               android:layout_marginEnd="@dimen/_5sdp"
               android:orientation="vertical"
               android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-              app:cardBackgroundColor="@color/colorBlue"
-              app:cardElevation="0dp"
+              app:cardBackgroundColor="@color/colorWhite"
+              app:cardElevation="@dimen/_2sdp"
               app:layout_constraintDimensionRatio="w,1:1"
               app:layout_constraintEnd_toStartOf="@+id/cv_monday"
               app:layout_constraintHorizontal_bias="0.5"
               app:layout_constraintStart_toStartOf="parent"
               card_view:cardCornerRadius="@dimen/_15sdp"
               card_view:cardElevation="@dimen/_2sdp"
-              card_view:contentPadding="2dp">
+              card_view:contentPadding="2dp"
+            >
 
               <RelativeLayout
                   android:layout_width="match_parent"
@@ -109,7 +111,7 @@
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
                       android:text="SUNDAY"
-                      android:textColor="@color/colorWhite"
+                      android:textColor="@color/colorBlue"
                       android:textSize="16sp"
                       android:textStyle="bold" />
 
@@ -131,6 +133,7 @@
                       android:textSize="10sp" />
 
                   <ImageButton
+                      android:id="@+id/ibtn_sun_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -209,6 +212,7 @@
                       app:layout_constraintStart_toStartOf="parent"
                       app:layout_constraintTop_toTopOf="parent" />
                   <ImageButton
+                      android:id="@+id/ibtn_mon_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -289,6 +293,7 @@
                       app:layout_constraintTop_toTopOf="parent" />
 
                   <ImageButton
+                      android:id="@+id/ibtn_tues_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -371,6 +376,7 @@
                       app:layout_constraintStart_toStartOf="parent"
                       app:layout_constraintTop_toTopOf="parent" />
                   <ImageButton
+                      android:id="@+id/ibtn_thur_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -451,6 +457,7 @@
                       app:layout_constraintTop_toTopOf="parent" />
 
                   <ImageButton
+                      android:id="@+id/ibtn_wed_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -530,6 +537,7 @@
                       app:layout_constraintTop_toTopOf="parent" />
 
                   <ImageButton
+                      android:id="@+id/ibtn_fri_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -612,6 +620,7 @@
                       app:layout_constraintTop_toTopOf="parent" />
 
                   <ImageButton
+                      android:id="@+id/ibtn_sat_more"
                       android:src="@drawable/ic_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"

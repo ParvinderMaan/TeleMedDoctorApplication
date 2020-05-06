@@ -46,6 +46,7 @@ import com.telemed.doctor.dashboard.MyDashboardFragment;
 import com.telemed.doctor.miscellaneous.view.TermAndConditionFragment;
 import com.telemed.doctor.password.view.ChangePasswordFragment;
 import com.telemed.doctor.schedule.view.ScheduleSychronizeFragment;
+import com.telemed.doctor.schedule.view.WeekDayEditAvailabilityFragment;
 import com.telemed.doctor.schedule.view.WeekDaysScheduleFragment;
 import com.telemed.doctor.setting.view.SettingFragment;
 import com.telemed.doctor.signup.model.UserInfoWrapper;
@@ -423,6 +424,14 @@ public class HomeActivity extends BaseActivity implements HomeFragmentSelectedLi
                         .commit();
                 break;
 
+            case "WeekDayEditAvailabilityFragment":
+                getSupportFragmentManager().beginTransaction()
+                        //  .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.fl_container, WeekDayEditAvailabilityFragment.newInstance((Object) payload), "WeekDayEditAvailabilityFragment")
+                        .addToBackStack("WeekDayEditAvailabilityFragment")
+                        .commit();
+
+                break;
         }
 
     }

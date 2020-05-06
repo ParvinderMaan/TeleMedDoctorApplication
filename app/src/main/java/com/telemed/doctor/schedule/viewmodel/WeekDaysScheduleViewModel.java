@@ -11,10 +11,9 @@ import com.telemed.doctor.helper.ErrorHandler;
 import com.telemed.doctor.TeleMedApplication;
 import com.telemed.doctor.network.ApiResponse;
 import com.telemed.doctor.network.WebService;
-import com.telemed.doctor.schedule.model.AllWeekSchedule;
 import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
-import com.telemed.doctor.schedule.model.DeleteWeekScheduleResponse;
-import com.telemed.doctor.schedule.model.WeekScheduleRequest;
+import com.telemed.doctor.schedule.model.DayScheduleResponse;
+import com.telemed.doctor.schedule.model.DeleteWeekDayScheduleRequest;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
 
 import java.util.List;
@@ -31,19 +30,18 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
     private final String TAG= WeekDaysScheduleViewModel.class.getSimpleName();
     //@use Dagger instead
     private final WebService mWebService;
-    private MutableLiveData<ApiResponse<CreateWeekScheduleResponse>> resultantCreateSchedule;
     private MutableLiveData<ApiResponse<WeekScheduleResponse>> resultantAllSchedule;
-    private MutableLiveData<ApiResponse<DeleteWeekScheduleResponse>> resultantDeleteSchedule;
+    private MutableLiveData<ApiResponse<DayScheduleResponse>> resultantDeleteSchedule;
 
 
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<Boolean> isViewEnabled;
-    private MutableLiveData<List<WeekScheduleResponse.WeekDayTimeSlot>> lstOfSchedule;
+    private MutableLiveData<List<WeekScheduleResponse.ReturnTimeSlot>> lstOfSchedule;
 
     public WeekDaysScheduleViewModel(@NonNull Application application) {
         super(application);
         mWebService = ((TeleMedApplication) application).getRetrofitInstance();
-        resultantCreateSchedule = new MutableLiveData<>();
+
         resultantAllSchedule= new MutableLiveData<>();
         resultantDeleteSchedule= new MutableLiveData<>();
         isLoading=new MutableLiveData<>();
@@ -53,51 +51,13 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
 
     }
 
-    public void createWeekDaySchedule(Map<String, String> map, WeekScheduleRequest in) {
-        this.isLoading.setValue(true);
-        this.isViewEnabled.setValue(false);
-
-        mWebService.createWeekSchedule(map,in).enqueue(new Callback<CreateWeekScheduleResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<CreateWeekScheduleResponse> call, @NonNull Response<CreateWeekScheduleResponse> response) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-
-                if (response.isSuccessful() && response.body()!=null) {
-                    CreateWeekScheduleResponse result = response.body();
-                    Log.e(TAG,result.toString());
-                    if(result.getStatus()){
-                        resultantCreateSchedule.setValue(new ApiResponse<>(SUCCESS, result, null));
-                    }else {
-                        resultantCreateSchedule.setValue(new ApiResponse<>(FAILURE, null, result.getMessage()));
-                    }
-                }else{
-                    String errorMsg = ErrorHandler.reportError(response.code());
-                    resultantCreateSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-                }
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<CreateWeekScheduleResponse> call, @NonNull Throwable error) {
-                isLoading.setValue(false);
-                isViewEnabled.setValue(true);
-                String errorMsg = ErrorHandler.reportError(error);
-                resultantCreateSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
-            }
-        });
-
-    }
 
 
     public MutableLiveData<Boolean> getProgress() {
         return isLoading;
     }
 
-    public MutableLiveData<ApiResponse<DeleteWeekScheduleResponse>> getResultantDeleteSchedule() {
+    public MutableLiveData<ApiResponse<DayScheduleResponse>> getResultantDeleteSchedule() {
         return resultantDeleteSchedule;
     }
 
@@ -107,10 +67,6 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getEnableView() {
         return isViewEnabled;
-    }
-
-    public MutableLiveData<ApiResponse<CreateWeekScheduleResponse>> getCreateResultant() {
-        return resultantCreateSchedule;
     }
 
 
@@ -146,34 +102,34 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
                 isLoading.setValue(false);
                 isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);
-                resultantCreateSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
+                resultantAllSchedule.setValue(new ApiResponse<>(FAILURE, null, errorMsg));
             }
         });
 
     }
 
-    public MutableLiveData<List<WeekScheduleResponse.WeekDayTimeSlot>> getAllSchedules() {
+    public MutableLiveData<List<WeekScheduleResponse.ReturnTimeSlot>> getAllSchedules() {
         return lstOfSchedule;
     }
 
-    public void setScheduleList(List<WeekScheduleResponse.WeekDayTimeSlot> scheduleList) {
+    public void setScheduleList(List<WeekScheduleResponse.ReturnTimeSlot> scheduleList) {
         lstOfSchedule.setValue(scheduleList);
 
     }
 
 
-    public void deleteWeekDaySchedule(Map<String, String> map,int itemIndex) {
+    public void deleteWeekDaySchedule(Map<String, String> map, DeleteWeekDayScheduleRequest in) {
         this.isLoading.setValue(true);
         this.isViewEnabled.setValue(false);
 
-        mWebService.deleteWeekSchedule(itemIndex,map).enqueue(new Callback<DeleteWeekScheduleResponse>() {
+        mWebService.deleteWeekSchedule(map,in).enqueue(new Callback<DayScheduleResponse>() {
             @Override
-            public void onResponse(@NonNull Call<DeleteWeekScheduleResponse> call, @NonNull Response<DeleteWeekScheduleResponse> response) {
+            public void onResponse(@NonNull Call<DayScheduleResponse> call, @NonNull Response<DayScheduleResponse> response) {
                 isLoading.setValue(false);
                 isViewEnabled.setValue(true);
 
                 if (response.isSuccessful() && response.body()!=null) {
-                    DeleteWeekScheduleResponse result = response.body();
+                    DayScheduleResponse result = response.body();
                     Log.e(TAG,result.toString());
                     if(result.getStatus()){
                         resultantDeleteSchedule.setValue(new ApiResponse<>(SUCCESS, result, null));
@@ -191,7 +147,7 @@ public class WeekDaysScheduleViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<DeleteWeekScheduleResponse> call, @NonNull Throwable error) {
+            public void onFailure(@NonNull Call<DayScheduleResponse> call, @NonNull Throwable error) {
                 isLoading.setValue(false);
                 isViewEnabled.setValue(true);
                 String errorMsg = ErrorHandler.reportError(error);

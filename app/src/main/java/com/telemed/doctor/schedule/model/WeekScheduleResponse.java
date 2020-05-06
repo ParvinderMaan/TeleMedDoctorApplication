@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class WeekScheduleResponse {
-
     @SerializedName("status")
     @Expose
     private Boolean status;
@@ -42,53 +41,62 @@ public class WeekScheduleResponse {
     }
 
 
-
-
-
     public static class Data {
 
-        @SerializedName("weekDayTimeSlots")
+        @SerializedName("returnTimeSlots")
         @Expose
-        private List<WeekDayTimeSlot> weekDayTimeSlots = null;
+        private List<ReturnTimeSlot> returnTimeSlots = null;
 
-        public List<WeekDayTimeSlot> getWeekDayTimeSlots() {
-            return weekDayTimeSlots;
+        public List<ReturnTimeSlot> getReturnTimeSlots() {
+            return returnTimeSlots;
         }
 
-        public void setWeekDayTimeSlots(List<WeekDayTimeSlot> weekDayTimeSlots) {
-            this.weekDayTimeSlots = weekDayTimeSlots;
-        }
-    }
-
-    public static class WeekDayTimeSlot {
-
-        @SerializedName("weekDayDetail")
-        @Expose
-        private List<WeekDayDetail> weekDayDetail = null;
-        @SerializedName("timeSlots")
-        @Expose
-        private List<TimeSlot> timeSlots = null;
-
-        public List<WeekDayDetail> getWeekDayDetail() {
-            return weekDayDetail;
-        }
-
-        public void setWeekDayDetail(List<WeekDayDetail> weekDayDetail) {
-            this.weekDayDetail = weekDayDetail;
-        }
-
-        public List<TimeSlot> getTimeSlots() {
-            return timeSlots;
-        }
-
-        public void setTimeSlots(List<TimeSlot> timeSlots) {
-            this.timeSlots = timeSlots;
+        public void setReturnTimeSlots(List<ReturnTimeSlot> returnTimeSlots) {
+            this.returnTimeSlots = returnTimeSlots;
         }
 
     }
 
+    public class ReturnTimeSlot {
 
-    public static class TimeSlot {
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("scheduleDay")
+        @Expose
+        private Integer scheduleDay;
+        @SerializedName("timeSlotList")
+        @Expose
+        private List<TimeSlotList> timeSlotList = null;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getScheduleDay() {
+            return scheduleDay;
+        }
+
+        public void setScheduleDay(Integer scheduleDay) {
+            this.scheduleDay = scheduleDay;
+        }
+
+        public List<TimeSlotList> getTimeSlotList() {
+            return timeSlotList;
+        }
+
+        public void setTimeSlotList(List<TimeSlotList> timeSlotList) {
+            this.timeSlotList = timeSlotList;
+        }
+
+    }
+
+
+    public static class TimeSlotList {
 
         @SerializedName("fromTime")
         @Expose
@@ -122,34 +130,6 @@ public class WeekScheduleResponse {
 
         public void setTimeDiff(Integer timeDiff) {
             this.timeDiff = timeDiff;
-        }
-
-    }
-
-
-    public static class WeekDayDetail {
-
-        @SerializedName("id")
-        @Expose
-        private Integer id;
-        @SerializedName("weekDay")
-        @Expose
-        private Integer weekDay;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public Integer getWeekDay() {
-            return weekDay;
-        }
-
-        public void setWeekDay(Integer weekDay) {
-            this.weekDay = weekDay;
         }
 
     }

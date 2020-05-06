@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DayScheduleRequest {
 
-    @SerializedName("availableDays")
+    @SerializedName("weekDays")
     @Expose
     private List<Integer> availableDays = null;
     @SerializedName("availableDates")

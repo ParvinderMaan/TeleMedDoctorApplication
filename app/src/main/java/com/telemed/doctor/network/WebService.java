@@ -19,6 +19,7 @@ import com.telemed.doctor.password.model.ChangePasswordRequest;
 import com.telemed.doctor.password.model.ChangePasswordResponse;
 import com.telemed.doctor.schedule.model.DayScheduleResponse;
 import com.telemed.doctor.schedule.model.DeleteScheduleRequest;
+import com.telemed.doctor.schedule.model.DeleteWeekDayScheduleRequest;
 import com.telemed.doctor.schedule.model.EditDayScheduleRequest;
 import com.telemed.doctor.schedule.model.PatientDetailResponse;
 import com.telemed.doctor.miscellaneous.model.SignOutResponse;
@@ -47,6 +48,7 @@ import com.telemed.doctor.schedule.model.DayScheduleRequest;
 import com.telemed.doctor.schedule.model.DayScheduleAlterationResponse;
 import com.telemed.doctor.schedule.model.MonthlyScheduleResponse;
 import com.telemed.doctor.schedule.model.ScheduleTimeSlotResponse;
+import com.telemed.doctor.schedule.model.WeekDayAvailabilityResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleRequest;
 import com.telemed.doctor.schedule.model.CreateWeekScheduleResponse;
 import com.telemed.doctor.schedule.model.WeekScheduleResponse;
@@ -225,8 +227,9 @@ public interface WebService {
     @GET(WebUrl.FETCH_WEEK_SCHEDULES)
     Call<WeekScheduleResponse> fetchWeekSchedules(@HeaderMap Map<String, String> token);
 
-    @DELETE(WebUrl.DELETE_WEEK_SCHEDULE)
-    Call<DeleteWeekScheduleResponse> deleteWeekSchedule(@Query("Id") int scheduleId, @HeaderMap Map<String, String> token);
+   // @DELETE(WebUrl.DELETE_WEEK_SCHEDULE)
+    @HTTP(method = "DELETE", path = WebUrl.DELETE_WEEK_SCHEDULE, hasBody = true)
+    Call<DayScheduleResponse> deleteWeekSchedule(@HeaderMap Map<String, String> token,@Body DeleteWeekDayScheduleRequest in);
 
 
     @GET(WebUrl.FETCH_MONTHLY_SCHEDULES)
@@ -319,7 +322,7 @@ public interface WebService {
     @POST(WebUrl.UPDATE_PAST_MEDICAL_HISTORY)
     Call<MedicalHistoryResponse> updatePastMedicalHistory(@HeaderMap Map<String, String> mHeaderMap,@Body MedicalHistoryRequest in);
 
-
-
+    @GET(WebUrl.FETCH_WEEK_DAY_SCHEDULE)
+    Call<WeekDayAvailabilityResponse> fetchWeekDaySchedule(@HeaderMap Map<String, String> map, @Query("weekDay") Integer selectedWeekDay);
 }
 
