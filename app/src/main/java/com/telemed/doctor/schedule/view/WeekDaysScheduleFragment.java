@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WeekDaysScheduleFragment extends Fragment {
-    int itemToDelete=0;
+    int itemToDelete = 0;
     private WeekDaysScheduleViewModel mViewModel;
     private HomeFragmentSelectedListener mFragmentListener;
     private ImageButton ibtnClose, ibtnBack;
@@ -52,14 +52,14 @@ public class WeekDaysScheduleFragment extends Fragment {
     private TextView tvSundayTimeSlot, tvMondayTimeSlot, tvTuesdayTimeSlot, tvWednesdayTimeSlot, tvThursdayTimeSlot,
             tvFridayTimeSlot, tvSaturdayTimeSlot;
     private ImageButton ibtnSunMore, ibtnMonMore, ibtnTuesMore, ibtnWedMore, ibtnThurMore, ibtnFriMore, ibtnSatMore;
-    private View.OnClickListener mOnMoreClickListener= v -> {
-                    showMorePopUpMenu((ImageButton) v);
+    private View.OnClickListener mOnMoreClickListener = v -> {
+        showMorePopUpMenu((ImageButton) v);
 
     };
-    private View.OnClickListener mOnCardViewClickListener= v -> {
+    private View.OnClickListener mOnCardViewClickListener = v -> {
         Integer tag = ((Integer) v.getTag());
-        if(mFragmentListener!=null)
-            mFragmentListener.showFragment("WeekDayEditAvailabilityFragment",tag);
+        if (mFragmentListener != null)
+            mFragmentListener.showFragment("WeekDayEditAvailabilityFragment", tag);
 
     };
 
@@ -187,6 +187,14 @@ public class WeekDaysScheduleFragment extends Fragment {
         cvThursday.setTag(5);
         cvFriday.setTag(6);
         cvSaturday.setTag(7);
+
+        ibtnSunMore.setTag(1);
+        ibtnMonMore.setTag(2);
+        ibtnTuesMore.setTag(3);
+        ibtnWedMore.setTag(4);
+        ibtnThurMore.setTag(5);
+        ibtnFriMore.setTag(6);
+        ibtnSatMore.setTag(7);
     }
 
 
@@ -196,8 +204,6 @@ public class WeekDaysScheduleFragment extends Fragment {
 
         mViewModel.getEnableView()
                 .observe(getViewLifecycleOwner(), this::resetEnableView);
-
-
 
 
         mViewModel.getResultantAllSchedule().observe(getViewLifecycleOwner(), response -> {
@@ -232,10 +238,10 @@ public class WeekDaysScheduleFragment extends Fragment {
 
         mViewModel.getResultantDeleteSchedule()
                 .observe(getViewLifecycleOwner(), response -> {
-                    switch (response.getStatus()){
+                    switch (response.getStatus()) {
                         case SUCCESS:
                             DayScheduleResponse infoObj = response.getData();
-                            if (infoObj.getMessage() != null ) {
+                            if (infoObj.getMessage() != null) {
                                 tvAlertView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                                 tvAlertView.showTopAlert(infoObj.getMessage());
                                 updateUi2(itemToDelete);
@@ -244,7 +250,7 @@ public class WeekDaysScheduleFragment extends Fragment {
                             break;
                         case FAILURE:
                             if (response.getErrorMsg() != null) {
-                                  tvAlertView.showTopAlert(response.getErrorMsg());
+                                tvAlertView.showTopAlert(response.getErrorMsg());
 
                             }
                             break;
@@ -316,7 +322,6 @@ public class WeekDaysScheduleFragment extends Fragment {
                 ibtnSatMore.setTag(null);
                 ibtnSatMore.setOnClickListener(null);
                 break;
-
 
 
         }
@@ -393,24 +398,24 @@ public class WeekDaysScheduleFragment extends Fragment {
                     break;
 
 
-
             }
 
         }
 
     }
+
     private void showMorePopUpMenu(ImageButton v) {
         PopupMenu popupMenu = new PopupMenu(requireActivity(), v);
         Menu menu = popupMenu.getMenu();
         menu.add(0, 1, 0, "Delete");
         popupMenu.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) item -> {
-            Integer day=(Integer) v.getTag();
-            List<Integer> lstOfDeleteDays=new ArrayList<>(1); //empty
+            Integer day = (Integer) v.getTag();
+            List<Integer> lstOfDeleteDays = new ArrayList<>(1); //empty
             lstOfDeleteDays.add(day);
-            DeleteWeekDayScheduleRequest in=new DeleteWeekDayScheduleRequest();
+            DeleteWeekDayScheduleRequest in = new DeleteWeekDayScheduleRequest();
             in.setWeekDays(lstOfDeleteDays);
-            itemToDelete=day;
-            mViewModel.deleteWeekDaySchedule(mHeaderMap,in);
+            itemToDelete = day;
+            mViewModel.deleteWeekDaySchedule(mHeaderMap, in);
 
             return false;
         });
@@ -420,6 +425,7 @@ public class WeekDaysScheduleFragment extends Fragment {
 
 
     }
+
     private void resetEnableView(Boolean isView) {
 
     }

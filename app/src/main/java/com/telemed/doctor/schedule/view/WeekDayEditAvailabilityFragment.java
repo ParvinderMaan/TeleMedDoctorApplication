@@ -239,7 +239,7 @@ public class WeekDayEditAvailabilityFragment extends Fragment {
                 case SUCCESS:
                     if (response.getData() != null) {
                         WeekDayAvailabilityResponse.Data infoObj = response.getData().getData();
-                        if (infoObj.getAvailableTimes() != null && !infoObj.getAvailableTimes().isEmpty() ) {
+                        if (infoObj.getAvailableTimes() != null ) {
                             mViewModel.setAllDayScheduleList(infoObj.getAvailableTimes());
                         }
                     }

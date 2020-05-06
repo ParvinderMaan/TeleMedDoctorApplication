@@ -200,17 +200,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
+                      android:minLines="1"
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
-                      android:text="09:00 - 10:00"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
                       android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:textSize="10sp" />
                   <ImageButton
                       android:id="@+id/ibtn_mon_more"
                       android:src="@drawable/ic_more"
@@ -279,18 +276,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
-                      android:lineSpacingExtra="0sp"
-                      android:maxWidth="80dip"
-                      android:text="09:00 - 10:00"
-                      android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
                       android:minLines="1"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:lineSpacingExtra="0sp"
+                      android:maxLines="1"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
+                      android:textColor="@color/colorWhite"
+                      android:textSize="10sp" />
 
                   <ImageButton
                       android:id="@+id/ibtn_tues_more"
@@ -364,17 +357,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
+                      android:minLines="1"
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
-                      android:text="09:00AM - 10:00AM"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
                       android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:textSize="10sp" />
                   <ImageButton
                       android:id="@+id/ibtn_thur_more"
                       android:src="@drawable/ic_more"
@@ -444,17 +434,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
+                      android:minLines="1"
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
-                      android:text="09:00AM - 10:00AM"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
                       android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:textSize="10sp" />
 
                   <ImageButton
                       android:id="@+id/ibtn_wed_more"
@@ -524,17 +511,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
+                      android:minLines="1"
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
-                      android:text="09:00 - 10:00"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
                       android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:textSize="10sp" />
 
                   <ImageButton
                       android:id="@+id/ibtn_fri_more"
@@ -607,17 +591,14 @@
                       android:layout_marginStart="@dimen/_16sdp"
                       android:layout_marginTop="@dimen/_12sdp"
                       android:layout_marginEnd="@dimen/_16sdp"
-                      android:ellipsize="end"
-                      android:gravity="center_vertical"
+                      android:maxWidth="@dimen/_80sdp"
+                      android:lines="5"
+                      android:minLines="1"
                       android:lineSpacingExtra="0sp"
                       android:maxLines="1"
-                      android:text="09:00 - 10:00"
+                      android:text="09:00 - 10:00 \n09:00 - 10:00"
                       android:textColor="@color/colorWhite"
-                      android:textSize="10sp"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintHorizontal_bias="0.0"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent" />
+                      android:textSize="10sp" />
 
                   <ImageButton
                       android:id="@+id/ibtn_sat_more"

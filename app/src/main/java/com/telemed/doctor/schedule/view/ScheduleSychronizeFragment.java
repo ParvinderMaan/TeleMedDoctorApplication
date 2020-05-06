@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class ScheduleSychronizeFragment extends Fragment {
@@ -76,6 +77,7 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     static String formatDateZ(Date oldDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+
         String strDate = dateFormat.format(oldDate);
         return strDate;
     }
@@ -108,6 +110,8 @@ public class ScheduleSychronizeFragment extends Fragment {
 
     static String formatDate(String oldDate) {
         DateFormat sdFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+      //  sdFormat.setTimeZone(TimeZone.getDefault());
+
         Date freshDate = null;
         try {
             freshDate = sdFormat.parse(oldDate);
